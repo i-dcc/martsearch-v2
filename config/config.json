@@ -1,5 +1,5 @@
 {
-  //"debug": true,
+  "debug": true,
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,
@@ -73,5 +73,10 @@
       ]
     }
   },
-  "datasets": []
+  "test": {
+    "single_return_search": "cbx1",
+    "large_search":         "chromosome:1",
+    "bad_search":           "chromosome:!"
+  },
+  "datasets": []  
 }

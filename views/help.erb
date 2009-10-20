@@ -1,0 +1,221 @@
+<div id="issues" class="help">
+  <h2>Reporting Issues/Bugs and Requests</h2>
+  <p>
+    We have tried our best to build this portal as free of problems as possible, but 
+    we may have still missed something.  If you have any issues or would like to 
+    request a new feature that we have not yet thought of, please send an email to 
+    <a href="mailto:mouseportal@sanger.ac.uk">mouseportal@sanger.ac.uk</a>.
+  </p>
+</div>
+<div id="adv_search" class="help">
+  <h2 id="help_search">Searching</h2>
+  <p>
+    By default when you submit a search (without any of the query modifiers detailed 
+    below) your search will be carried out over the following terms:
+    <ul>
+      <li>Gene/Marker Symbol (both current and expired)</li>
+      <li>Gene/Marker Name (both current and expired)</li>
+      <li>Gene Synonym (both current and expired)</li>
+      <li>MGI Accession ID (both current and expired)</li>
+      <li>Ensembl Gene ID (both current and expired)</li>
+      <li>Vega Gene ID (both current and expired)</li>
+      <li>Entrez (NCBI) Gene ID (both current and expired)</li>
+      <li>CCDS ID (both current and expired)</li>
+      <li>OMIM ID (both current and expired)</li>
+      <li>
+        EUCOMM/KOMP Design, Intermediate/Targeting Vector and ES Cell 
+        Clone names
+      </li>
+      <li>Confirmed Phenotype Test</li>
+      <li>Mammalian Phenotype ID (MP Term)</li>
+    </ul>
+  </p>
+  
+  <h2>Advanced Searching</h2>
+  <p>
+     The WTSI Mouse Recource Portal supports several advanced operators, which are 
+     query words that have special meaning to us. These operators modify the search in 
+     some way, or even tell us to do a totally different type of search. For instance, 
+     &quot;marker_symbol:&quot; is a special operator, and the query 
+     <strong>marker_symbol:Cbx1</strong> doesn't do a normal search but instead finds 
+     only the genes with the marker symbol 'Cbx1'.  Listed below are details of these 
+     query modifiers.
+  </p>
+
+  <h3>Query Modifiers</h3>
+  <p>
+  Using the following query modifiers will allow you to restrict the results of your 
+  searches in a controlled way.
+  </p>
+  <table class="with_border">
+    <tr>
+      <th>marker_symbol:</th>
+      <td>
+        <p>
+          i.e. <strong>marker_symbol:cbx1</strong> would return the gene record for 'Cbx1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>marker_name:</th>
+      <td>
+        <p>
+          i.e. <strong>marker_name:chromobox*</strong> would return all genes with a marker 
+          name starting with 'chromobox'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>chromosome:</th>
+      <td>
+        <p>
+          i.e. <strong>chromosome:X</strong> would return all gene records for the X chromosome.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <p>mgi_accession_id:</p>
+      </th>
+      <td>
+        <p>
+          i.e. <strong>mgi_accession_id:MGI105369</strong> would return the gene record 
+          for 'Cbx1' - alternatively, just searching for <strong>MGI:105369</strong> would 
+          also yield the same effect as the search engine is aware of MGI Accession numbers.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>ensembl_gene_id:</th>
+      <td>
+        <p>
+          i.e. <strong>ensembl_gene_id:ENSMUSG00000018666</strong> would return the gene record for 'Cbx1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>vega_gene_id:</th>
+      <td>
+        <p>
+          i.e. <strong>vega_gene_id:OTTMUSG00000001636</strong> would return the gene record for 'Cbx1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>entrez_gene_id:</th>
+      <td>
+        <p>
+          i.e. <strong>entrez_gene_id:12412</strong> would return the gene record for 'Cbx1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>ccds_id:</th>
+      <td>
+        <p>
+          i.e. <strong>ccds_id:CCDS25303.1</strong> would return the gene record for 'Cbx1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>omim_id:</th>
+      <td>
+        <p>
+          i.e. <strong>omim_id:113705</strong> would return the gene record for 'Brca1'.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>targeting_design:</th>
+      <td>
+        <p>
+          This will restrict your results to entries with the corresponding 
+          <a href="http://www.komp.org">KOMP</a>/<a href="http://www.eucomm.org">EUCOMM</a> 
+          targeting design plate/well identifier.
+        </p>
+        <p>
+          i.e. <strong>targeting_design:19_B11</strong> would return the gene record for 'Cbx1' 
+          (as this is the target for this design), whereas <strong>targeting_design:19*</strong> 
+          would return a list of all genes targeted on design plate 19.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>intermediate_vector:</th>
+      <td>
+        <p>
+          This will restrict your results to entries with the corresponding 
+          <a href="http://www.komp.org">KOMP</a>/<a href="http://www.eucomm.org">EUCOMM</a> 
+          intermediate vector plate/well identifier.
+        </p>
+        <p>
+          i.e. <strong>intermediate_vector:PCS00019_A_B11</strong> would return the gene record for 'Cbx1', 
+          (as this is the target for this vector), whereas <strong>intermediate_vector:PCS00019_A*</strong> 
+          would return a list of all genes with vectors on plate PCS00019_A.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>targeting_vector:</th>
+      <td>
+        <p>
+          This will restrict your results to entries with the corresponding 
+          <a href="http://www.komp.org">KOMP</a>/<a href="http://www.eucomm.org">EUCOMM</a> 
+          targeting vector plate/well identifier.
+        </p>
+        <p>
+          i.e. <strong>targeting_vector:PGS00019_A_B11</strong> would return the gene record for 'Cbx1', 
+          (as this is the target for this vector), whereas <strong>targeting_vector:PGS00019_A*</strong> 
+          would return a list of all genes with vectors on plate PGS00019_A.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>escell:</th>
+      <td>
+        <p>
+          This will restrict your results to entries with the corresponding 
+          <a href="http://www.komp.org">KOMP</a>/<a href="http://www.eucomm.org">EUCOMM</a> 
+          escell clone identifier.
+        </p>
+        <p>
+          i.e. <strong>escell:EPD0027_2_A01</strong> would return the gene record for 'Cbx1', 
+          (as this is the targeted gene in this cell), whereas <strong>escell:EPD0027_2*</strong> 
+          would return a list of all genes with targeted cells on plate EPD0027_2.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>phenotype:</th>
+      <td>
+        <p>
+          This will restrict your results to entries with the corresponding positive phenotyping 
+          results.
+        </p>
+        <p>
+          i.e. <strong>phenotype:dexa</strong> would return the gene records for all genes that 
+          attained a positive result for the 'Dexa' phenotyping test.
+        </p>
+      </td>
+    </tr>
+  </table>
+  
+  <h3>Boolean Operators</h3>
+  <p>
+    In addition to the query modifiers detailed above, boolean terms 
+    such as 'AND' and 'OR' can also be used in your searches (even in 
+    conjunction with the query modifiers).  Simple examples of this type 
+    of use would be:
+    <ul>
+      <li>
+        <strong>chromosome:1 OR chromosome:2</strong> would return 
+        information for genes found on either chromosome 1 or 2.
+      </li>
+      <li>
+        <strong>targeting_design:19* AND chromosome:11</strong> would 
+        return information for genes targeted on design plate 19 which 
+        are also found on chromosome 11.
+      </li>
+    </ul>
+  </p>
+</div>

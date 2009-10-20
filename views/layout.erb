@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title></title>
+    
+    <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    
+  </head>
+  <body>
+    <div class="container">
+      
+      <div id="header" class="span-24 last">
+        <h1>WTSI Mouse Resources Portal</h1>
+      </div>
+      
+      <div id="messages" class="span-24 last">
+        <% if @messages[:status].size > 0 %>
+          <div id="status_msgs" class="notice">
+            <ul>
+              <% @messages[:status].each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <% if @messages[:error].size > 0 %>
+          <div id="error_msgs" class="error">
+            <strong>MartSearchr Error</strong>
+            <ul>
+              <% @messages[:error].each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      
+      <div id="content" class="span-24 last">
+        <%= yield %>
+      </div>
+      
+      <div id="footer" class="span-24 last">
+        Footer
+      </div>
+    </div>
+    
+    <% if @config["debug"] %>
+      <div id="debug" class="container">
+        <h1>Debugging Data</h1>
+        <h3>MartSearch Config</h3>
+        <pre><%= JSON.pretty_generate(@config) %></pre>
+      </div>
+    <% end %>
+  </body>
+</html>

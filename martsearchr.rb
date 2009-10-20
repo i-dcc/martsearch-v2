@@ -9,11 +9,7 @@ require "json"
 
 require "lib/index"
 
-##
-## Set up MartSearch
-##
-
-def init
+configure do
   @http_client = Net::HTTP
   if ENV['http_proxy']
     proxy = URI.parse( ENV['http_proxy'] )
@@ -25,12 +21,6 @@ def init
 
   @@index = Index.new( @@config["index"], @http_client ) # The index object
 end
-
-init()
-
-##
-## Define our Sinatra app
-##
 
 helpers do
   # Implementation of Rails style partials.

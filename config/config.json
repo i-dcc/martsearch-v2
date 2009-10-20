@@ -78,5 +78,7 @@
     "large_search":         "chromosome:1",
     "bad_search":           "chromosome:!"
   },
-  "datasets": []  
+  "datasets": [
+    "dcc"
+  ]
 }

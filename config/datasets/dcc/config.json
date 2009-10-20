@@ -1,8 +1,7 @@
 {
   "display":      true,
   "index":        true,
-  "proxy_url":    "/htgt/biomart",
-  "full_url":     "http://www.sanger.ac.uk/htgt/biomart",
+  "url":          "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name": "dcc",
   "display_name": "Gene Details",
   "indexing": {

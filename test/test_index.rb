@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class IndexTest < Test::Unit::TestCase
+  
   def setup
     @http_client = Net::HTTP
     if ENV['http_proxy']
@@ -20,7 +21,7 @@ class IndexTest < Test::Unit::TestCase
       assert( @index.is_alive?, "The search index is offline or misconfigured." )
     end
     
-    should "fail when we mess with the url" do
+    should "fail gracefully when we mess with the url" do
       orig_url   = @index.url
       @index.url = "http://www.foo.com"
       assert_equal( @index.is_alive?, false, "The .is_alive? function does not correctly report a broken index." )

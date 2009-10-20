@@ -5,11 +5,12 @@ rescue LoadError
   require 'shoulda'
 end
 
-$:.unshift(File.dirname(__FILE__) + '/../lib')
-
 require "uri"
 require "net/http"
 require "json"
 require "sinatra"
 
-require "lib/index"
+Dir[ File.dirname(__FILE__) + '/../lib/*.rb' ].each do |file|
+  require file
+end
+

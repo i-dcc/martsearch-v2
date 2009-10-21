@@ -15,10 +15,14 @@ class DatasetTest < Test::Unit::TestCase
       end
       
       should "fail gracefully when we mess with the url" do
-        orig_url   = dataset.url
+        orig_url    = dataset.url
         dataset.url = "http://www.foo.com"
-        assert_equal( dataset.is_alive?, false, "The .is_alive? function does not correctly report a broken dataset." )
+        dataset.reload_dataset
+        
+        assert_equal( false, dataset.is_alive?, "The .is_alive? function does not correctly report a broken dataset." )
+        
         dataset.url = orig_url
+        dataset.reload_dataset
       end
       
       should "correctly handle a simple (single item) search" do

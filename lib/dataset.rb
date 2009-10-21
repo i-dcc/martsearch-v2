@@ -14,10 +14,18 @@ class Dataset
     # Connection client...
     @http_client   = client
     
-    #@dataset = Biomart::Dataset( conf["url"] )
+    @dataset = nil
+    reload_dataset
     
   end
   
+  def is_alive?
+    @dataset.alive?
+  end
+  
+  def reload_dataset
+    @dataset = Biomart::Dataset.new( @url, { :name => @dataset_name } )
+  end
   
   
 end

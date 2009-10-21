@@ -5,7 +5,8 @@ desc "Install gems that this app depends on. May need to be run with sudo."
 task :install_deps do
   dependencies = [
     "sinatra",
-    "json"
+    "json",
+    "biomart"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

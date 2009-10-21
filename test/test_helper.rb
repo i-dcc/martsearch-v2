@@ -9,6 +9,8 @@ require "uri"
 require "net/http"
 require "json"
 require "sinatra"
+
+gem "biomart", ">0.1"
 require "biomart"
 
 Dir[ File.dirname(__FILE__) + '/../lib/*.rb' ].each do |file|

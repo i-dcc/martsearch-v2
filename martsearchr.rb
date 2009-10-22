@@ -26,11 +26,11 @@ configure do
 
   @@index = Index.new( @@config["index"], @http_client ) # The index object
   
-  @@datasets = []
+  @@datasources = []
   @@config["datasources"].each do |ds|
     ds_conf_file = File.new("#{Dir.pwd}/config/datasources/#{ds["config"]}","r")
     ds_conf      = JSON.load(ds_conf_file)
-    dataset      = Dataset.new( ds_conf, @http_client )
+    datasource      = Datasource.new( ds_conf, @http_client )
     
     if ds["custom_sort"]
       # If we have a custom sorting routine, use a Mock object
@@ -38,10 +38,10 @@ configure do
       file = File.new("#{Dir.pwd}/config/datasources/#{ds["custom_sort"]}","r")
       buffer = file.read
       file.close
-      dataset = Mock.method( dataset, :sort_results ) { eval(buffer) }
+      datasource = Mock.method( datasource, :sort_results ) { eval(buffer) }
     end
     
-    @@datasets.push( dataset )
+    @@datasources.push( datasource )
   end
 end
 
@@ -78,16 +78,16 @@ get "/search" do
   # {
   #   IndexDocUniqueKey => {
   #     "index"        => {}, # index results for this doc
-  #     "dataset_name" => [], # array of sorted biomart data
-  #     "dataset_name" => [], # array of sorted biomart data
+  #     "datasource_name" => [], # array of sorted biomart data
+  #     "datasource_name" => [], # array of sorted biomart data
   #   }
   # }
   @results = @@index.search( params[:query], params[:page] )
   
-  @@datasets.each do |dataset|
-    search_terms = @@index.grouped_terms[ dataset.joined_index_field ]
-    mart_results = dataset.search( search_terms, @@index.current_results )
-    dataset.add_to_results_stash( @results, mart_results )
+  @@datasources.each do |datasource|
+    search_terms = @@index.grouped_terms[ datasource.joined_index_field ]
+    mart_results = datasource.search( search_terms, @@index.current_results )
+    datasource.add_to_results_stash( @results, mart_results )
   end
   
   erb :search

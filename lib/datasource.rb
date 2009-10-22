@@ -1,5 +1,5 @@
-class Dataset
-  attr_reader :dataset, :display_name, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
+class Datasource
+  attr_reader :dataset, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_accessor :url, :attributes, :filters
   
   def initialize( conf, client )

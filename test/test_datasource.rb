@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class DatasourceTest < Test::Unit::TestCase
   
-  @@datasources.each do |datasource|
+  @@ms.datasources.each do |datasource|
     context "Dataset '#{datasource.dataset_name}'" do
       
       should "have basic attributes" do
@@ -42,18 +42,18 @@ class DatasourceTest < Test::Unit::TestCase
   
   def test_search( datasource, search_param )
     # Query the index
-    results = @@index.search( @@config["test"][search_param] )
+    results = @@ms.index.search( @@ms.config["test"][search_param] )
     
     assert_not_equal( results, false, "The .search function failed." )
     assert( results.is_a?(Hash), ".search does not return a hash object." )
-    assert( @@index.grouped_terms.is_a?(Hash), ".grouped_terms does not return a hash object." )
+    assert( @@ms.index.grouped_terms.is_a?(Hash), ".grouped_terms does not return a hash object." )
     
     # Now fetch the pre-computed biomart search terms 
     # and search the datasource
-    search_terms = @@index.grouped_terms[ datasource.joined_index_field ]
+    search_terms = @@ms.index.grouped_terms[ datasource.joined_index_field ]
     assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
     
-    mart_results = datasource.search( search_terms, @@index.current_results )
+    mart_results = datasource.search( search_terms, @@ms.index.current_results )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
     assert( mart_results.keys.size > 0, "The Biomart search did not retrieve any linked data.")
     

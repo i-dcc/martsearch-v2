@@ -1,5 +1,5 @@
 class Datasource
-  attr_reader :dataset, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
+  attr_reader :dataset, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute, :use_in_search
   attr_accessor :url, :attributes, :filters
   
   def initialize( conf, client )
@@ -13,6 +13,8 @@ class Datasource
     @joined_biomart_attribute = conf["searching"]["joined_biomart_attribute"]
     @filters                  = conf["searching"]["filters"]
     @attributes               = conf["searching"]["attributes"]
+    
+    @use_in_search            = conf["use_in_search"]
     
     # Connection client...
     @http_client = client

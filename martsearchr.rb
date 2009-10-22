@@ -84,11 +84,19 @@ get "/search" do
   # }
   @results = @@index.search( params[:query], params[:page] )
   
-  @@datasources.each do |datasource|
-    search_terms = @@index.grouped_terms[ datasource.joined_index_field ]
-    mart_results = datasource.search( search_terms, @@index.current_results )
-    datasource.add_to_results_stash( @results, mart_results )
+  threads = []
+  
+  @@datasources.each do |ds|
+    if ds.use_in_search
+      threads << Thread.new(ds) do |datasource|
+        search_terms = @@index.grouped_terms[ datasource.joined_index_field ]
+        mart_results = datasource.search( search_terms, @@index.current_results )
+        datasource.add_to_results_stash( @results, mart_results )
+      end
+    end
   end
+  
+  threads.each { |thread| thread.join }
   
   erb :search
 end

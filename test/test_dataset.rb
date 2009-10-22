@@ -26,11 +26,11 @@ class DatasetTest < Test::Unit::TestCase
       end
       
       should "correctly handle a simple (single item) search" do
-        
+        test_search( dataset, "single_return_search" )
       end
       
       should "correctly handle a more complicated (large) search" do
-        
+        test_search( dataset, "large_search" )
       end
       
       should "generate a biomart search link url" do
@@ -38,6 +38,24 @@ class DatasetTest < Test::Unit::TestCase
       end
       
     end
+  end
+  
+  def test_search( dataset, search_param )
+    # Query the index
+    index_results = @@index.search( @@config["test"][search_param] )
+    
+    assert_not_equal( index_results, false, "The .search function failed." )
+    assert( index_results.is_a?(Hash), ".search does not return a hash object." )
+    assert( @@index.grouped_terms.is_a?(Hash), ".grouped_terms does not return a hash object." )
+    
+    # Now fetch the pre-computed biomart search terms 
+    # and search the dataset
+    search_terms = @@index.grouped_terms[ dataset.joined_index_field ]
+    assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
+    
+    mart_results = dataset.search( search_terms, @@index.current_results )
+    assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
+    assert( mart_results.keys.size > 0, "The Biomart search did not retrieve any linked data.")
   end
   
 end

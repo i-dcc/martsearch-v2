@@ -21,5 +21,26 @@
       { "attr": "ccds_id",          "idx": "ccds_id" },
       { "attr": "omim_id",          "idx": "omim_id" }
     ]
+  },
+  "searching": {
+    "joined_index_field":       "mgi_accession_id_key",
+    "joined_biomart_filter":    "mgi_accession_id",
+    "joined_biomart_attribute": "mgi_accession_id",
+    "attributes": [
+      "marker_symbol",
+      "marker_name",
+      "synonym",
+      "chromosome",
+      "start",
+      "end",
+      "strand",
+      "mgi_accession_id",
+      "ensembl_gene_id",
+      "vega_gene_id",
+      "entrez_gene_id",
+      "ccds_id",
+      "omim_id"
+    ],
+    "filters": {}
   }
 }

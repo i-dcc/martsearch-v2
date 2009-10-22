@@ -20,6 +20,9 @@ class Dataset
     @dataset = nil
     reload_dataset
     
+    @current_search_results = nil
+    @current_sorted_results = nil
+    
   end
   
   # Simple heartbeat function - checks that the biomart 
@@ -52,10 +55,10 @@ class Dataset
     end
     
     # TODO: Need to handle Biomart::BiomartError's here!!!
-    search_results = @dataset.search( search_params )
-    sorted_results = sort_results( search_results )
+    @current_search_results = @dataset.search( search_params )
+    @current_sorted_results = sort_results()
     
-    return sorted_results
+    return @current_sorted_results
   end
   
   # Sorting function for the biomart results.  Returns a hash, 
@@ -67,9 +70,9 @@ class Dataset
   #   'Cbx1' => [ biomart return for Cbx1 ],
   #   'Cbx2' => [ biomart return for Cbx2 ]
   # }
-  def sort_results( search_results )
+  def sort_results
     sorted_results = {}
-    search_results.each do |result|
+    @current_search_results.each do |result|
       unless sorted_results[ result[ @joined_biomart_attribute ] ]
         sorted_results[ result[ @joined_biomart_attribute ] ] = []
       end

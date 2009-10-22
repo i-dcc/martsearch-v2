@@ -82,11 +82,11 @@ class Index
       @current_results       = {}
       
       data["response"]["docs"].each do |doc|
-        @current_results[ doc[@primary_field] ] = doc
+        @current_results[ doc[ @primary_field ] ] = { "index" => doc }
       end
     end
     
-    # Process these results ready for searching the marts
+    # Process and cache these results ready for searching the marts
     @grouped_terms = grouped_query_terms( @current_results )
     
     return @current_results
@@ -101,19 +101,22 @@ class Index
       grouped_terms = {}
     
       unless results.empty?
-        @current_results.each do |primary_field,doc|
-          doc.keys.each do |field|
+        results.each do |primary_field,results_stash|
+          
+          results_stash["index"].each do |field,value|
+            
             unless grouped_terms[field]
               grouped_terms[field] = []
             end
-          
-            if doc[field].is_a? Array
-              doc[field].each do |value|
-                grouped_terms[field].push(value)
+            
+            if value.is_a?(Array)
+              value.each do |v|
+                grouped_terms[field].push( v )
               end
             else
-              grouped_terms[field].push(doc[field])
+              grouped_terms[field].push( value )
             end
+            
           end
         end
       

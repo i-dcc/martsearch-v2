@@ -42,10 +42,10 @@ class DatasetTest < Test::Unit::TestCase
   
   def test_search( dataset, search_param )
     # Query the index
-    index_results = @@index.search( @@config["test"][search_param] )
+    results = @@index.search( @@config["test"][search_param] )
     
-    assert_not_equal( index_results, false, "The .search function failed." )
-    assert( index_results.is_a?(Hash), ".search does not return a hash object." )
+    assert_not_equal( results, false, "The .search function failed." )
+    assert( results.is_a?(Hash), ".search does not return a hash object." )
     assert( @@index.grouped_terms.is_a?(Hash), ".grouped_terms does not return a hash object." )
     
     # Now fetch the pre-computed biomart search terms 
@@ -56,6 +56,12 @@ class DatasetTest < Test::Unit::TestCase
     mart_results = dataset.search( search_terms, @@index.current_results )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
     assert( mart_results.keys.size > 0, "The Biomart search did not retrieve any linked data.")
+    
+    dataset.add_to_results_stash( results, mart_results )
+    assert( results.is_a?(Hash), "The results stash is no longer a hash." )
+    
+    test_result = results[ results.keys[0] ]
+    assert_not_equal( test_result[ dataset.dataset_name ], nil, "The results stash doesn't contain data from #{dataset.dataset_name}." )
   end
   
 end

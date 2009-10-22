@@ -78,8 +78,10 @@
     "large_search":         "chromosome:1",
     "bad_search":           "chromosome:!"
   },
-  "datasets": [
-    "dcc",
-    "htgt_targ"
+  "datasources": [
+    {
+      "config":       "dcc_config.json",
+      "custom_sort":  "dcc_custom_sort.rb"
+    }
   ]
 }

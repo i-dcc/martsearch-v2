@@ -33,8 +33,19 @@ config_file = File.new( File.dirname(__FILE__) + "/../config/config.json", "r" )
 @@index = Index.new( @@config["index"], @@http_client )
 
 @@datasets = []
-@@config["datasets"].each do |ds|
-  ds_conf_file = File.new( File.dirname(__FILE__) + "/../config/datasets/#{ds}/config.json","r")
+@@config["datasources"].each do |ds|
+  ds_conf_file = File.new("#{Dir.pwd}/config/datasources/#{ds["config"]}","r")
   ds_conf      = JSON.load(ds_conf_file)
-  @@datasets.push( Dataset.new( ds_conf, @@http_client ) )
+  dataset      = Dataset.new( ds_conf, @http_client )
+  
+  if ds["custom_sort"]
+    # If we have a custom sorting routine, use a Mock object
+    # to override the sorting method.
+    file = File.new("#{Dir.pwd}/config/datasources/#{ds["custom_sort"]}","r")
+    buffer = file.read
+    file.close
+    dataset = Mock.method( dataset, :sort_results ) { eval(buffer) }
+  end
+  
+  @@datasets.push( dataset )
 end

@@ -49,11 +49,11 @@
       </div>
     </div>
     
-    <% if @config["debug"] %>
+    <% if @ms.config["debug"] %>
       <div id="debug" class="container">
         <h1>Debugging Data</h1>
         <h3>MartSearch Config</h3>
-        <pre><%= JSON.pretty_generate(@config) %></pre>
+        <pre><%= JSON.pretty_generate(@ms.config) %></pre>
       </div>
     <% end %>
   </body>

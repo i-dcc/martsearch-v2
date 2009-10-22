@@ -1,2 +1,18 @@
-results for <%= params[:query] %>
-<pre><%= JSON.pretty_generate(@results) %></pre>
+<h2>Search Results for '<%= params[:query] %>'</h2>
+
+<% if !@results.empty? %>
+  <ul>
+    <% @ms.index.ordered_results.each do |key| %>
+      <% result = @results[key] %>
+      <li>
+        <h3><%= result["dcc"]["marker_symbol"] %></h3>
+        <div class="clear"></div>
+        <div>
+          
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <em>Sorry, your search did not return any results.</em>
+<% end %>

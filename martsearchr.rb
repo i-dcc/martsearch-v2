@@ -28,7 +28,7 @@ end
 
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
-  @config = @@ms.config
+  @ms = @@ms
   
   @messages = {
     :status => [],
@@ -46,6 +46,11 @@ end
 
 get "/search" do
   @results = @@ms.search( params[:query], params[:page] )
+  erb :search
+end
+
+get "/search/:query" do
+  @results = @@ms.search( params[:query], nil )
   erb :search
 end
 

@@ -1,7 +1,7 @@
 # Class representation for a Solr Index service used 
 # in MartSearch.
 class Index
-  attr_reader :primary_field, :docs_per_page, :current_results, :current_results_total, :current_page, :grouped_terms
+  attr_reader :primary_field, :docs_per_page, :ordered_results, :current_results, :current_results_total, :current_page, :grouped_terms
   attr_accessor :url
   
   def initialize( conf, client )
@@ -19,6 +19,7 @@ class Index
     @http_client   = client
     
     # Placeholders
+    @ordered_results       = []
     @current_results       = {}
     @current_results_total = 0
     @current_page          = 1
@@ -49,7 +50,7 @@ class Index
   def search( query, page=nil )
     
     start_doc = 0
-    if page and ( page > 1 )
+    if page and ( Integer(page) > 1 )
       start_doc = ( Integer(page) - 1 ) * @docs_per_page
     end
     
@@ -83,6 +84,7 @@ class Index
       
       data["response"]["docs"].each do |doc|
         @current_results[ doc[ @primary_field ] ] = { "index" => doc }
+        @ordered_results.push( doc[ @primary_field ] )
       end
     end
     

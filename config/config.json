@@ -79,6 +79,7 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "dcc"
+    "dcc",
+    "htgt_targ"
   ]
 }

@@ -1,6 +1,6 @@
 class Martsearch
   attr_reader :config
-  attr_accessor :http_client, :index, :datasources
+  attr_accessor :http_client, :index, :datasets
   
   def initialize( config_file_name )
     @http_client = Net::HTTP
@@ -14,22 +14,22 @@ class Martsearch
     
     @index = Index.new( @config["index"], @http_client ) # The index object
     
-    @datasources = []
-    @config["datasources"].each do |ds|
-      ds_conf_file = File.new("#{Dir.pwd}/config/datasources/#{ds["config"]}","r")
+    @datasets = []
+    @config["datasets"].each do |ds|
+      ds_conf_file = File.new("#{Dir.pwd}/config/datasets/#{ds["name"]}/config.json","r")
       ds_conf      = JSON.load(ds_conf_file)
-      datasource   = Datasource.new( ds_conf, @http_client )
+      dataset      = Dataset.new( ds_conf, @http_client )
       
       if ds["custom_sort"]
         # If we have a custom sorting routine, use a Mock object
         # to override the sorting method.
-        file = File.new("#{Dir.pwd}/config/datasources/#{ds["custom_sort"]}","r")
+        file = File.new("#{Dir.pwd}/config/datasets/#{ds["name"]}/custom_sort.rb","r")
         buffer = file.read
         file.close
-        datasource = Mock.method( datasource, :sort_results ) { eval(buffer) }
+        dataset = Mock.method( dataset, :sort_results ) { eval(buffer) }
       end
       
-      @datasources.push( datasource )
+      @datasets.push( dataset )
     end
   end
   
@@ -39,21 +39,23 @@ class Martsearch
   # {
   #   IndexDocUniqueKey => {
   #     "index"        => {}, # index results for this doc
-  #     "datasource_name" => []/{}, # array/hash of sorted biomart data
-  #     "datasource_name" => []/{}, # array/hash of sorted biomart data
+  #     "dataset_name" => []/{}, # array/hash of sorted biomart data
+  #     "dataset_name" => []/{}, # array/hash of sorted biomart data
   #   }
   # }
   def search( query, page )
-    results = @@ms.index.search( query, page )
+    results = @index.search( query, page )
+    
+    # FIXME: If the index returns no data - BUG OUT!!!!
     
     threads = []
     
-    @@ms.datasources.each do |ds|
+    @datasets.each do |ds|
       if ds.use_in_search
-        threads << Thread.new(ds) do |datasource|
-          search_terms = @@ms.index.grouped_terms[ datasource.joined_index_field ]
-          mart_results = datasource.search( search_terms, @@ms.index.current_results )
-          datasource.add_to_results_stash( results, mart_results )
+        threads << Thread.new(ds) do |dataset|
+          search_terms = @index.grouped_terms[ dataset.joined_index_field ]
+          mart_results = dataset.search( search_terms, @index.current_results )
+          dataset.add_to_results_stash( results, mart_results )
         end
       end
     end

@@ -1,4 +1,4 @@
-class Datasource
+class Dataset
   attr_reader :dataset, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute, :use_in_search
   attr_accessor :url, :attributes, :filters
   

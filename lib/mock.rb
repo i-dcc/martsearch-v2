@@ -1,6 +1,6 @@
 # Class for making dynamic mocks.
 #
-# Used to allow the Datasource sorting routines to be dynamically
+# Used to allow the Dataset sorting routines to be dynamically
 # overriden on a per-datasource basis.
 #
 # Code borrowed from:

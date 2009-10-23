@@ -1,6 +1,6 @@
 <h2>Search Results for '<%= params[:query] %>'</h2>
 
-<% if !@results.empty? %>
+<% if !@results.nil? %>
   <ul>
     <% @ms.index.ordered_results.each do |key| %>
       <% result = @results[key] %>

@@ -45,22 +45,25 @@ class Martsearch
   # }
   def search( query, page )
     results = @index.search( query, page )
+    # FIXME: Handle Index errors properly!!!
     
-    # FIXME: If the index returns no data - BUG OUT!!!!
-    
-    threads = []
-    
-    @datasets.each do |ds|
-      if ds.use_in_search
-        threads << Thread.new(ds) do |dataset|
-          search_terms = @index.grouped_terms[ dataset.joined_index_field ]
-          mart_results = dataset.search( search_terms, @index.current_results )
-          dataset.add_to_results_stash( results, mart_results )
+    if ( results === false) or ( @index.current_results_total === 0 )
+      results = nil
+    else
+      threads = []
+
+      @datasets.each do |ds|
+        if ds.use_in_search
+          threads << Thread.new(ds) do |dataset|
+            search_terms = @index.grouped_terms[ dataset.joined_index_field ]
+            mart_results = dataset.search( search_terms, @index.current_results )
+            dataset.add_to_results_stash( results, mart_results )
+          end
         end
       end
+
+      threads.each { |thread| thread.join }
     end
-    
-    threads.each { |thread| thread.join }
     
     return results
   end

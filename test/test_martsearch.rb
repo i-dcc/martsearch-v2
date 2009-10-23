@@ -27,6 +27,12 @@ class MartsearchTest < Test::Unit::TestCase
         assert( !results[results.keys.first][ ds.dataset_name ].nil?, "The Martsearch.search() return doesn't have any data from #{ds.dataset_name}." )
       end
     end
+    
+    should "correctly handle a bad (destined to fail) search" do
+      results = @@ms.search( @@ms.config["test"]["bad_search"], nil )
+      
+      assert( results.nil?, "A search that returns 0 results is not flagged as nil." )
+    end
   end
   
 end

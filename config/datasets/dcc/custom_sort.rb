@@ -15,19 +15,20 @@ sorted_results = {}
 
   result_data = sorted_results[ result[ @joined_biomart_attribute ] ]
 
-  result_data["marker_symbol"]    = result["marker_symbol"];
-  result_data["mgi_accession_id"] = result["mgi_accession_id"];
-  result_data["chromosome"]       = result["chromosome"];
-  result_data["start"]            = result["start"];
-  result_data["end"]              = result["end"];
+  result_data["marker_symbol"]    = result["marker_symbol"]
+  result_data["mgi_accession_id"] = result["mgi_accession_id"]
+  result_data["chromosome"]       = result["chromosome"]
+  result_data["start"]            = result["start"]
+  result_data["end"]              = result["end"]
+  result_data["strand"]           = result["strand"]
 
-  result_data["marker_names"].push( result["marker_name"] );
-  result_data["synonyms"].push( result["synonym"] );
-  result_data["ensembl_gene_ids"].push( result["ensembl_gene_id"] );
-  result_data["vega_gene_ids"].push( result["vega_gene_id"] );
-  result_data["entrez_gene_ids"].push( result["entrez_gene_id"] );
-  result_data["ccds_ids"].push( result["ccds_id"] );
-  result_data["omim_ids"].push( result["omim_id"] );
+  result_data["marker_names"].push( result["marker_name"] )
+  result_data["synonyms"].push( result["synonym"] )
+  result_data["ensembl_gene_ids"].push( result["ensembl_gene_id"] )
+  result_data["vega_gene_ids"].push( result["vega_gene_id"] )
+  result_data["entrez_gene_ids"].push( result["entrez_gene_id"] )
+  result_data["ccds_ids"].push( result["ccds_id"] )
+  result_data["omim_ids"].push( result["omim_id"] )
 end
 
 # Finally, ensure that the data in the arrays is unique

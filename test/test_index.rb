@@ -16,7 +16,7 @@ class IndexTest < Test::Unit::TestCase
     should "fail gracefully when we mess with the url" do
       orig_url   = @@ms.index.url
       @@ms.index.url = "http://www.foo.com"
-      assert_equal( @@ms.index.is_alive?, false, "The .is_alive? function does not correctly report a broken index." )
+      assert_raise(IndexUnavailableError) { @@ms.index.is_alive? }
       @@ms.index.url = orig_url
     end
     
@@ -58,9 +58,7 @@ class IndexTest < Test::Unit::TestCase
     end
     
     should "correctly handle a bad (i.e. will cause an error) search" do
-      results = @@ms.index.search( @@ms.config["test"]["bad_search"] )
-      
-      assert_equal( results, false, "The .search function does not return false in event of an error." )
+      assert_raise(IndexSearchError) { results = @@ms.index.search( @@ms.config["test"]["bad_search"] ) }
     end
     
   end

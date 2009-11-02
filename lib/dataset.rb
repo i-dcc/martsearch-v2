@@ -56,7 +56,6 @@ class Dataset
       search_params[:attributes].push(attribute)
     end
     
-    # TODO: Need to handle Biomart::BiomartError's here!!!
     @current_search_results = @dataset.search( search_params )
     @current_sorted_results = sort_results()
     

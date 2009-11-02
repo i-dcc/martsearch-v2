@@ -1,3 +1,9 @@
+# Error class for when an index search misbehaves
+class IndexSearchError < StandardError; end
+
+# Error class for when the index is unavailable
+class IndexUnavailableError < StandardError; end
+
 # Class representation for a Solr Index service used 
 # in MartSearch.
 class Index
@@ -33,14 +39,13 @@ class Index
     res = @http_client.get_response( URI.parse("#{@url}/admin/ping?wt=ruby") )
     
     if res.code != "200"
-      # TODO: raise an appropriate error
-      return false
+      raise IndexUnavailableError, "Index HTTP error #{res.code}"
     else
       data = eval(res.body)
       if data["status"] === "OK"
         return true
       else
-        return false
+        raise IndexUnavailableError, "Index Error: #{res.body}"
       end
     end
   end
@@ -49,6 +54,14 @@ class Index
   # return the processed JSON response object.
   def search( query, page=nil )
     
+    # Reset all of our stored variables
+    @ordered_results       = []
+    @current_results       = {}
+    @grouped_terms         = {}
+    @current_results_total = 0
+    @current_page          = 1
+    
+    # Calculate the start page
     start_doc = 0
     if page and ( Integer(page) > 1 )
       start_doc = ( Integer(page) - 1 ) * @docs_per_page
@@ -68,8 +81,7 @@ class Index
     
     # Process the response
     if res.code != "200"
-      # TODO: raise an appropriate error
-      return false
+      raise IndexSearchError, "Index Search Error: #{res.body}"
     else
       data = eval(res.body)
       
@@ -80,7 +92,6 @@ class Index
       end
       
       @current_results_total = data["response"]["numFound"]
-      @current_results       = {}
       
       data["response"]["docs"].each do |doc|
         @current_results[ doc[ @primary_field ] ] = { "index" => doc }

@@ -53,10 +53,15 @@ class Martsearch
   # 
   # But returns an ordered list of the search results (primary index field)
   def search( query, page )
-    search_data = @index.search( query, page )
-    # FIXME: Handle Index errors properly!!!
+    search_data = {}
     
-    if ( search_data === false ) or ( @index.current_results_total === 0 )
+    begin
+      search_data = @index.search( query, page )
+    rescue IndexSearchError => e
+      # FIXME: Add a way to test/report this index search error
+    end
+    
+    if @index.current_results_total === 0
       search_data = nil
     else
       threads = []
@@ -66,10 +71,12 @@ class Martsearch
           threads << Thread.new(ds) do |dataset|
             search_terms = @index.grouped_terms[ dataset.joined_index_field ]
             
-            # TODO: Need to handle Biomart::BiomartError's here!!!
-            mart_results = dataset.search( search_terms, @index.current_results )
-            
-            dataset.add_to_results_stash( search_data, mart_results )
+            begin
+              mart_results = dataset.search( search_terms, @index.current_results )
+              dataset.add_to_results_stash( search_data, mart_results )
+            rescue Biomart::BiomartError => e
+              # FIXME: Add a way to test/report this biomart search error
+            end
           end
         end
       end

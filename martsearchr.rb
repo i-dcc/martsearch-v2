@@ -7,10 +7,14 @@ require "rubygems"
 require "sinatra"
 require "json"
 
-gem "biomart", ">0.1"
+require "active_support"
+require "will_paginate/array"
+require "will_paginate/view_helpers"
+
+gem "biomart", ">=0.1.2"
 require "biomart"
 
-Dir[ File.dirname(__FILE__) + '/lib/*.rb' ].each do |file|
+Dir[ File.dirname(__FILE__) + "/lib/*.rb" ].each do |file|
   require file
 end
 
@@ -19,11 +23,35 @@ configure do
 end
 
 helpers do
-  # Implementation of Rails style partials.
-  # Usage: partial :foo, options
-  def partial(page, options={})
-    erb page, options.merge!(:layout => false)
+  include WillPaginate::ViewHelpers
+  
+  def tag_options(options, escape = true)
+    option_string = options.collect {|k,v| %{#{k}="#{v}"}}.join(" ")
+    option_string = " " + option_string unless option_string.blank?
   end
+
+  def content_tag(name, content, options, escape = true)
+    tag_options = tag_options(options, escape) if options
+    "<#{name}#{tag_options}>#{content}</#{name}>"
+  end
+
+  def link_to(text, link = nil, options = {})         
+    link ||= text
+    link = url_for(link)
+    "<a href=\"#{link}\">#{text}</a>"
+  end
+
+  def url_for(link_options)
+    case link_options
+    when Hash
+      path = link_options.delete(:path) || request.path_info
+      params.delete("captures")
+      path + "?" + build_query(params.merge(link_options))
+    else
+      link_options
+    end
+  end
+  
 end
 
 before do
@@ -46,16 +74,7 @@ end
 
 get "/search" do
   @results = @@ms.search( params[:query], params[:page] )
-  erb :search
-end
-
-get "/search/:query" do
-  @results = @@ms.search( params[:query], nil )
-  erb :search
-end
-
-get "/search/:query/:page" do
-  @results = @@ms.search( params[:query], params[:page] )
+  @data    = @@ms.search_data
   erb :search
 end
 

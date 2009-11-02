@@ -1,8 +1,8 @@
 begin
-  require 'shoulda'
+  require "shoulda"
 rescue LoadError
-  require 'rubygems' unless ENV['NO_RUBYGEMS']
-  require 'shoulda'
+  require "rubygems" unless ENV["NO_RUBYGEMS"]
+  require "shoulda"
 end
 
 require "uri"
@@ -10,10 +10,14 @@ require "net/http"
 require "json"
 require "sinatra"
 
-gem "biomart", ">0.1"
+require "active_support"
+require "will_paginate/array"
+require "will_paginate/view_helpers"
+
+gem "biomart", ">=0.1.2"
 require "biomart"
 
-Dir[ File.dirname(__FILE__) + '/../lib/*.rb' ].each do |file|
+Dir[ File.dirname(__FILE__) + "/../lib/*.rb" ].each do |file|
   require file
 end
 

@@ -1,9 +1,9 @@
 <h2>Search Results for '<%= params[:query] %>'</h2>
 
-<% if !@results.nil? %>
+<% if !@results.empty? %>
   <ul>
-    <% @ms.index.ordered_results.each do |key| %>
-      <% result = @results[key] %>
+    <% @results.each do |key| %>
+      <% result = @data[key] %>
       <li>
         <h3><%= result["dcc"]["marker_symbol"] %></h3>
         <div class="clear"></div>
@@ -13,6 +13,7 @@
       </li>
     <% end %>
   </ul>
+  <%= will_paginate @results %>
 <% else %>
   <em>Sorry, your search did not return any results.</em>
 <% end %>

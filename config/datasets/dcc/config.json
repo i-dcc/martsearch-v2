@@ -3,6 +3,7 @@
   "index":         true,
   "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "dcc",
+  "display_name":  "Gene Details",
   "indexing": {
     "allow_document_creation": true,
     "attribute_map": [

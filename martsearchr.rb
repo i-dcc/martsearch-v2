@@ -25,6 +25,12 @@ end
 helpers do
   include WillPaginate::ViewHelpers
   
+  def dataset_template( template_file, result_data )
+    template = File.open( "#{Dir.pwd}/config/datasets/#{template_file}", "r" )
+    erb      = ERB.new( template.read )
+    return erb.result( binding )
+  end
+  
   def tag_options(options, escape = true)
     option_string = options.collect {|k,v| %{#{k}="#{v}"}}.join(" ")
     option_string = " " + option_string unless option_string.blank?

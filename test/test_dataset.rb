@@ -59,9 +59,6 @@ class DatasetTest < Test::Unit::TestCase
     
     dataset.add_to_results_stash( results, mart_results )
     assert( results.is_a?(Hash), "The results stash is no longer a hash." )
-    
-    test_result = results[ results.keys[0] ]
-    assert_not_equal( test_result[ dataset.dataset_name ], nil, "The results stash doesn't contain data from #{dataset.dataset_name}." )
   end
   
 end

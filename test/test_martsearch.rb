@@ -17,9 +17,6 @@ class MartsearchTest < Test::Unit::TestCase
       
       assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
       assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
-      @@ms.datasets.each do |ds|
-        assert( !data[data.keys.first][ ds.dataset_name ].nil?, "The Martsearch.search() return doesn't have any data from #{ds.dataset_name}." )
-      end
     end
     
     should "correctly handle a more complicated (large) search" do
@@ -31,9 +28,6 @@ class MartsearchTest < Test::Unit::TestCase
       
       assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
       assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
-      @@ms.datasets.each do |ds|
-        assert( !data[data.keys.first][ ds.dataset_name ].nil?, "The Martsearch.search() return doesn't have any data from #{ds.dataset_name}." )
-      end
     end
     
     should "correctly handle a bad (destined to fail) search" do

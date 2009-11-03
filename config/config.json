@@ -84,7 +84,8 @@
       "custom_sort":  true
     },
     {
-      "name": "htgt_targ"
+      "name":         "htgt_targ",
+      "custom_sort":  true
     }
   ]
 }

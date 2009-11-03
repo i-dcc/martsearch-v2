@@ -1,0 +1,279 @@
+<!-- Draw the progress bar -->
+<table class="htgt_targ_allele_progress">
+  <tr>
+    <td width="15%"></td>
+    <th width="15%" class="centre">Pre-pipeline</th>
+    <th width="15%" class="centre">Designs</th>
+    <th width="15%" class="centre">Vectors</th>
+    <th width="15%" class="centre">ES Cells</th>
+    <th width="15%" class="centre">Mice</th>
+    <th width="10%"></th>
+  </tr>
+  <% result_data["htgt_targ"].each do |project| %>
+    <%
+      # Work out the sponsor string to display
+      sponsor = []
+      if project["is_eucomm"]         == "1" then sponsor.push("EUCOMM")         end
+      if project["is_komp_csd"]       == "1" then sponsor.push("KOMP-CSD")       end
+      if project["is_komp_regeneron"] == "1" then sponsor.push("KOMP-Regeneron") end
+      if project["is_norcomm"]        == "1" then sponsor.push("NorCOMM")        end
+      if project["is_mgp"]            == "1" then sponsor.push("MGP")            end
+      
+      # Work out how to draw the progress bar
+      progress = case project["pipeline_stage"]
+      when "pre"
+        {
+          "pre"     => project["status_type"],
+          "designs" => "incomp",
+          "vectors" => "incomp",
+          "cells"   => "incomp",
+          "mice"    => "incomp"
+        }
+      when "designs"
+        {
+          "pre"     => "normal",
+          "designs" => project["status_type"],
+          "vectors" => "incomp",
+          "cells"   => "incomp",
+          "mice"    => "incomp"
+        }
+      when "vectors"
+        {
+          "pre"     => "normal",
+          "designs" => "normal",
+          "vectors" => project["status_type"],
+          "cells"   => "incomp",
+          "mice"    => "incomp"
+        }
+      when "cells"
+        {
+          "pre"     => "normal",
+          "designs" => "normal",
+          "vectors" => "normal",
+          "cells"   => project["status_type"],
+          "mice"    => "incomp"
+        }
+      when "mice"
+        {
+          "pre"     => "normal",
+          "designs" => "normal",
+          "vectors" => "normal",
+          "cells"   => "normal",
+          "mice"    => project["status_type"]
+        }
+      else
+        {
+          "pre"     => "incomp",
+          "designs" => "incomp",
+          "vectors" => "incomp",
+          "cells"   => "incomp",
+          "mice"    => "incomp"
+        }
+      end
+    %>
+    
+    <!-- Progress bar row -->
+    <tr>
+      <td class="start_<%= progress["pre"] %>">
+        <strong><%= sponsor.join(", ") %></strong>
+      </td>
+      <td class="<%= progress["pre"] %> <%= progress["pre"] %>_<%= progress["designs"] %>">
+        <% if project["pipeline_stage"] == "pre" %>
+          <%= project["status"] %>
+        <% end %>
+      </td>
+      <td class="<%= progress["designs"] %> <%= progress["designs"] %>_<%= progress["vectors"] %>">
+        <% if project["pipeline_stage"] == "designs" %>
+          <%= project["status"] %>
+        <% end %>
+      </td>
+      <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
+        <% if project["pipeline_stage"] == "vectors" %>
+          <%= project["status"] %>
+        <% end %>
+      </td>
+      <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
+        <% if project["pipeline_stage"] == "cells" %>
+          <%= project["status"] %>
+        <% end %>
+      </td>
+      <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
+        <% if project["pipeline_stage"] == "mice" %>
+          <%= project["status"] %>
+        <% end %>
+      </td>
+      <td>
+        <a class="htgt_targ_allele_progress_toggle">view&nbsp;details</a>
+      </td>
+    </tr>
+    
+    <!-- The more details row -->
+    <tr>
+      <td colspan="7">
+        <div class="htgt_targ_allele_progress_content">
+          <table>
+            <tr>
+              <td width="35%" style="vertical-align:top;text-align:left;">
+                <%
+                  # Configure our link out to Ensembl...
+                  tracks_to_change = {
+                    "contig"                                     => "normal",
+                    "ruler"                                      => "normal",
+                    "scalebar"                                   => "normal",
+                    "transcript_core_ensembl"                    => "transcript_label",
+                    "transcript_vega_otter"                      => "transcript_label",
+                    "alignment_compara_364_constrained"          => "compact",
+                    "das:http://das.sanger.ac.uk/das/KO_vectors" => "normal",
+                    "alignment_compara_364_scores"               => "off",
+                    "chr_band_core"                              => "off",
+                    "dna_align_cdna_cDNA_update"                 => "off",
+                    "dna_align_core_CCDS"                        => "off",
+                    "fg_regulatory_features_funcgen"             => "off",
+                    "fg_regulatory_features_legend"              => "off",
+                    "gene_legend"                                => "off",
+                    "gc_plot"                                    => "off",
+                    "info"                                       => "off",
+                    "missing"                                    => "off",
+                    "transcript_core_ncRNA"                      => "off",
+                    "transcript_core_ensembl_IG_gene"            => "off",
+                    "variation_legend"                           => "off"
+                  }
+                  settings = []
+                  tracks_to_change.each do |key,value|
+                    settings.push("#{key}=#{value}")
+                  end
+
+                  ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
+                  ensembl_link += "?g=#{project["ensembl_gene_id"]};"
+                  ensembl_link += "contigviewbottom=#{settings.join(",")}"
+              
+                  allele_picture_text = "HTGT allele for " + project["marker_symbol"];
+                  allele_picture_text += " - <a href='http://www.sanger.ac.uk/htgt/report/gene_report?project_id=" + project["htgt_project_id"] + "' target='_blank'>view this in HTGT</a>";
+                %>
+            
+                <% if project["ensembl_gene_id"] %>
+                  <div class="htgt_targ_allele_box ui-widget-content ui-corner-all">
+                    <img src="/images/ebang.png" alt="Ensembl" />
+                    <ul>
+                      <li><a href="<%= ensembl_link %>" target="_blank">View in Ensembl</a></li>
+                    </ul>
+                  </div>
+                <% end %>
+            
+                <% if project["escells"] and project["escells"].length > 0 %>
+                  <div class="htgt_targ_allele_box ui-widget-content ui-corner-all">
+                    <img src="/images/sanger_logo.png" alt="The Wellcome Trust Sanger Institute" />
+                    <ul>
+                      <li><a href="http://www.i-dcc.org/dev/allele_pages/<%= project["htgt_project_id"] %>.html?iframe=true&amp;width=90%&amp;height=50%" class="image" rel="prettyPhoto" title="<%= allele_picture_text %>">View allele</a></li>
+                    </ul>
+                  </div>
+                <% end %>
+              </td>
+              <td style="text-align:left;">
+                <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= project["htgt_project_id"] %>" target="_blank">View this allele in HTGT</a>
+
+                <h4>ES Cell Clones</h4>
+                <% if project["escells"] and project["escells"].length > 0 %>
+                  <%
+                    conditional_clones = []
+                    nonconditional_clones = []
+                    project["escells"].each do |escell|
+                      if escell["is_targeted_non_conditional"] == "1"
+                        nonconditional_clones.push(escell)
+                      else
+                        conditional_clones.push(escell)
+                      end
+                    end
+                  %>
+                  <table class="with_border">
+                    <tr>
+                      <th>Design ID</th>
+                      <th># Conditional Clones</th>
+                      <th># Targeted Non-conditional Clones</th>
+                      <th>Genbank File</th>
+                      <th>Order</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= project["design_id"] %>"><%= project["design_id"] %></a> 
+                        <% if project["design_plate"] and project["design_well"] %>
+                          (<%= project["design_plate"] %>_<%= project["design_well"] %>)
+                        <% end %>
+                      </td>
+                      <td><%= conditional_clones.length %></td>
+                      <td><%= nonconditional_clones.length %></td>
+                      <td><a href="http://www.sanger.ac.uk/htgt/qc/seq_view_file?design_id=<%= project["design_id"] %>&amp;cassette=<%= project["cassette"] %>" class="file">view</a></td>
+                      <td>
+                        <% # partial( "/datasets/htgt_targ/_htgt_targ_details_order", :locals => { :project => project, :order_type => 'clone' } ) %>
+                      </td>
+                    </tr>
+                  </table>
+              
+                  <div>
+                    <div>
+                      <a class="htgt_targ_allele_progress_clones_toggle">view all available ES cell clones</a>
+                    </div>
+                    <div class="htgt_targ_allele_progress_clones_content">
+                      <% if conditional_clones.length > 0 %>
+                        <h5>Conditional Clones</h5>
+                        <% # this.partial({ url: dataset.base_url + "/js/templates/htgt_targ_details_escell_clones.ejs" },{ dataset: dataset, project: project, clones: conditional_clones }) %>
+                      <% end %>
+                  
+                      <% if nonconditional_clones.length > 0 %>
+                        <h5>Targeted Non-conditional Clones</h5>
+                        <% # this.partial({ url: dataset.base_url + "/js/templates/htgt_targ_details_escell_clones.ejs" },{ dataset: dataset, project: project, clones: nonconditional_clones }) %>
+                      <% end %>
+                    </div>
+                  </div>
+              
+                <% else %>
+                  <p>&nbsp;&nbsp;&nbsp;<em>None available...</em></p>
+                <% end %>
+            
+                <h4>Targeting Vector</h4>
+                <% if project["targvec_plate"] and project["targvec_well"] and project["targvec_distribute"] === "yes" %>
+                  <table class="with_border">
+                    <tr>
+                      <th>Design ID</th>
+                      <th>Targeting Vector</th>
+                      <th>Vector Strain</th>
+                      <th>Cassette</th>
+                      <th>Backbone</th>
+                      <th>Genbank File</th>
+                      <th>Order</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= project["design_id"] %>"><%= project["design_id"] %></a> 
+                        <% if project["design_plate"] and project["design_well"] %>
+                          (<%= project["design_plate"] %>_<%= project["design_well"] %>)
+                        <% end %>
+                      </td>
+                      <td><a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= project["targvec_plate"] %>"><%= project["targvec_plate"] %>_<%= project["targvec_well"] %></a></td>
+                      <td>
+                        <% if project["bac"].match("129") %>
+                          129S7
+                        <% else %>
+                          C57Bl/6J
+                        <% end %>
+                      </td>
+                      <td><%= project["cassette"] %></td>
+                      <td><%= project["backbone"] %></td>
+                      <td><a href="http://www.sanger.ac.uk/htgt/qc/seq_view_file?design_id=<%= project["design_id"] %>&amp;cassette=<%= project["cassette"] %>&amp;backbone=<%= project["backbone"] %>" class="file">view</a></td>
+                      <td>
+                        <% # this.partial({ url: dataset.base_url + "/js/templates/htgt_targ_details_order.ejs" },{ dataset: dataset, project: project, order_type: 'vector' }) %>
+                      </td>
+                    </tr>
+                  </table>
+                <% else %>
+                  <p>&nbsp;&nbsp;&nbsp;<em>None available...</em></p>
+                <% end %>
+                
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>

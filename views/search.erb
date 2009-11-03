@@ -7,12 +7,14 @@
     <div class="clear"></div>
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
-        <div class="dataset ui-widget-content ui-corner-all">
-          <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
-          <div class="dataset_content">
-            <%= dataset_template( "#{dataset.dataset_name}/template.erb", result_data ) %>
+        <% if result_data[ dataset.dataset_name ] %>
+          <div class="dataset ui-widget-content ui-corner-all">
+            <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
+            <div class="dataset_content">
+              <%= partial( "datasets/#{dataset.dataset_name}/template", :locals => { :result_data => result_data } ) %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   <% end %>

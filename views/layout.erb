@@ -4,21 +4,31 @@
   <head>
     <title></title>
     
-    <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print">
-    <!--[if lt IE 8]>
-      <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection">
-    <![endif]-->
+    <link rel="stylesheet" href="/css/reset.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
     
   </head>
   <body>
-    <div class="container">
-      
-      <div id="header" class="span-24 last">
+    <div id="wrapper">
+      <div id="header">
         <h1>WTSI Mouse Resources Portal</h1>
       </div>
       
-      <div id="messages" class="span-24 last">
+      <div id="navigation">
+        <ul>
+          <li class="current"><a href="/">Home</a></li>
+          <li><a href="/browse">Browse</a></li>
+          <li><a href="/help">Help</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+        <form id="martsearchr_nav" action="search" method="get" accept-charset="utf-8">
+          <input type="text" class="textinput" name="query" value="" />
+          <input type="submit" class="submit" value="search" />
+        </form>
+        <br style="clear: both;" />
+      </div>
+      
+      <div id="messages">
         <% if @messages[:status].size > 0 %>
           <div id="status_msgs" class="notice">
             <ul>
@@ -40,17 +50,27 @@
         <% end %>
       </div>
       
-      <div id="content" class="span-24 last">
+      <div id="content">
         <%= yield %>
       </div>
       
-      <div id="footer" class="span-24 last">
-        Footer
+      <div id="footer">
+        <p>
+          Powered by 
+          <a href="http://github.com/dazoakley/martsearchr">MartSearchr</a>, 
+          developed by the <a href="http://www.sanger.ac.uk/">Wellcome 
+          Trust Sanger Institute</a>
+          <br />
+          Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK  
+          Tel:+44 (0)1223 834244
+          <br />
+          Registered charity number 210183
+        </p>
       </div>
     </div>
     
     <% if @ms.config["debug"] %>
-      <div id="debug" class="container">
+      <div id="debug">
         <h1>Debugging Data</h1>
         <h3>MartSearch Config</h3>
         <pre><%= JSON.pretty_generate(@ms.config) %></pre>

@@ -1,24 +1,27 @@
-<h2>Search Results for '<%= params[:query] %>'</h2>
+<div id="search_results">
+  <h2>Search Results for '<%= params[:query] %>'</h2>
 
-<% if !@results.empty? %>
-  <% for result in @results %>
-    <% result_data = @data[result] %>
-    <h3 class="doc_title toggle-open"><%= result %></h3>
-    <div class="clear"></div>
-    <div class="doc_content">
-      <% for dataset in @ms.datasets %>
-        <% if result_data[ dataset.dataset_name ] %>
-          <div class="dataset ui-widget-content ui-corner-all">
-            <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
-            <div class="dataset_content">
-              <%= partial( "datasets/#{dataset.dataset_name}/template", :locals => { :result_data => result_data } ) %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
+  <% if !@results.empty? %>
+    <% for result in @results %>
+      <% result_data = @data[result] %>
+      <div class="result">
+        <h3 class="doc_title toggle-open"><%= result %></h3>
+        <div class="doc_content">
+          <% for dataset in @ms.datasets %>
+            <% if result_data[ dataset.dataset_name ] %>
+              <div class="dataset">
+                <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
+                <div class="dataset_content">
+                  <%= partial( "datasets/#{dataset.dataset_name}/template", :locals => { :result_data => result_data } ) %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <%= will_paginate @results %>
+  <% else %>
+    <em>Sorry, your search did not return any results.</em>
   <% end %>
-  <%= will_paginate @results %>
-<% else %>
-  <em>Sorry, your search did not return any results.</em>
-<% end %>
+</div>

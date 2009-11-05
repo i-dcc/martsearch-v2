@@ -48,6 +48,16 @@ small {
 	font-size: 0.8em;
 }
 
+sup {
+	font-size: 0.8em;
+	vertical-align: super;
+}
+
+sub {
+	font-size: 0.8em;
+	vertical-align: sub;
+}
+
 ol {
 	list-style: decimal
 }
@@ -168,7 +178,7 @@ caption {
 th {
 	border: 1px solid #376598;
 	text-align: left;
-	padding: 6px 12px;
+	padding: 6px 6px;
 	background-color: #6998cb;
 	color: #fff;
 }
@@ -182,7 +192,7 @@ th.nobg {
 
 td {
 	border: 1px solid #376598;
-	padding: 6px 6px 6px 12px;
+	padding: 6px 6px;
 }
 
 tr.odd td {

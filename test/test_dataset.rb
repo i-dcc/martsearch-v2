@@ -2,6 +2,21 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class DatasetTest < Test::Unit::TestCase
   
+  context "A Dataset object" do
+    setup do
+      @ds = @@ms.datasets.first
+    end
+    
+    should "correctly format superscript text" do
+      expected_text = "Akt2<sup>tm1Wcs</sup>"
+      test_text1 = "Akt2<tm1Wcs>"
+      test_text2 = "Akt2<sup>tm1Wcs</sup>"
+      
+      assert_equal( expected_text, @ds.fix_superscript_text_in_attribute(test_text1), "#{test_text1} superscript was not correctly tranformed.")
+      assert_equal( expected_text, @ds.fix_superscript_text_in_attribute(test_text2), "#{test_text2} superscript was not correctly tranformed.")
+    end
+  end
+  
   @@ms.datasets.each do |dataset|
     context "Dataset '#{dataset.dataset_name}'" do
       
@@ -55,7 +70,6 @@ class DatasetTest < Test::Unit::TestCase
     
     mart_results = dataset.search( search_terms, @@ms.index.current_results )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
-    assert( mart_results.keys.size > 0, "The Biomart search did not retrieve any linked data.")
     
     dataset.add_to_results_stash( results, mart_results )
     assert( results.is_a?(Hash), "The results stash is no longer a hash." )

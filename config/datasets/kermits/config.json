@@ -1,0 +1,32 @@
+{
+  "use_in_search": true,
+  "index":         true,
+  "url":           "http://www.sanger.ac.uk/htgt/biomart",
+  "dataset_name":  "kermits",
+  "display_name":  "Sanger Mice",
+  "indexing": {
+    "allow_document_creation": false,
+    "attribute_map": [
+      { "attr": "marker_symbol", "idx": "marker_symbol", "use_to_map": true },
+      { "attr": "colony_prefix", "idx": "colony_prefix" }
+    ]
+  },
+  "searching": {
+    "joined_index_field":       "marker_symbol",
+    "joined_biomart_filter":    "marker_symbol",
+    "joined_biomart_attribute": "marker_symbol",
+    "attributes": [
+      "marker_symbol",
+      "sponsor",
+      "escell_clone_name",
+      "colony_prefix",
+      "escell_strain",
+      "test_cross_strain",
+      "back_cross_strain",
+      "status",
+      "allele_name",
+      "emma"
+    ],
+    "filters": {}
+  }
+}

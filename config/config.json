@@ -79,13 +79,8 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    {
-      "name":         "dcc",
-      "custom_sort":  true
-    },
-    {
-      "name":         "htgt_targ",
-      "custom_sort":  true
-    }
+    { "name": "dcc",        "custom_sort": true },
+    { "name": "kermits",    "custom_sort": true },
+    { "name": "htgt_targ",  "custom_sort": true }
   ]
 }

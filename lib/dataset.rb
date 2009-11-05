@@ -126,4 +126,18 @@ class Dataset
     
   end
   
+  # Utility function to clean up superscript text in biomart attributes
+  # will convert text between <> tags to <sup></sup>, but leave other 
+  # HTML formatted text alone.
+  def fix_superscript_text_in_attribute( attribute )
+    if attribute.match("<.+>.+</.+>")
+      # HTML code - leave alone...
+    elsif attribute.match("<.+>")
+      match = /(.+)<(.+)>(.*)/.match(attribute);
+      attribute = match[1] + "<sup>" + match[2] + "</sup>" + match[3];
+    end
+    
+    return attribute;
+  end
+  
 end

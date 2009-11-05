@@ -79,6 +79,23 @@ a:focus {
 	outline: 1px dotted
 }
 
+/* Toggle Controls */
+
+.toggle-open, .toggle-close {
+	background: url(../images/bullet_arrow_down.png) no-repeat 0 center;
+	padding-left: 16px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.toggle-close {
+	background: url(../images/bullet_arrow_up.png) no-repeat 0 4px;
+}
+
+.toggle-open:hover, .toggle-close:hover {
+	cursor: pointer;
+}
+
 /* Navigation Menu */
 
 #navigation {

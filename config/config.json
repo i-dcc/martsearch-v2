@@ -81,6 +81,7 @@
   "datasets": [
     { "name": "dcc",        "custom_sort": true },
     { "name": "kermits",    "custom_sort": true },
-    { "name": "htgt_targ",  "custom_sort": true }
+    { "name": "htgt_targ",  "custom_sort": true },
+    { "name": "bacs",       "custom_sort": true }
   ]
 }

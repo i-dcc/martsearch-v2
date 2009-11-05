@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+        <th>C57Bl/6J Bacs</th>
+        <th>129 Bacs</th>
+        <th>MICER clones</th>
+        <th>View in Ensembl</th>
+    </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= result_data["bacs"]["b6_count"] %></td>
+      <td><%= result_data["bacs"]["s7_count"] %></td>
+      <td><%= result_data["bacs"]["micer_count"] %></td>
+      <td><a href="<%= result_data["bacs"]["ensembl_link"] %>">link</a></td>
+    </tr>
+  </tbody>
+</table>

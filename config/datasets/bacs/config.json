@@ -1,0 +1,22 @@
+{
+  "use_in_search": true,
+  "index":         false,
+  "url":           "http://www.sanger.ac.uk/htgt/biomart",
+  "dataset_name":  "bacs",
+  "display_name":  "Sanger DNA Clone Resources",
+  "indexing": {},
+  "searching": {
+    "joined_index_field":       "marker_symbol",
+    "joined_biomart_filter":    "marker_symbol",
+    "joined_biomart_attribute": "marker_symbol",
+    "attributes": [
+      "marker_symbol",
+      "library",
+      "chromosome",
+      "strand",
+      "start",
+      "end"
+    ],
+    "filters": {}
+  }
+}

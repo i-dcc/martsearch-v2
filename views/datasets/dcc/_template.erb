@@ -1,37 +1,33 @@
+
+<% if result_data["dcc"]["start"] and result_data["dcc"]["end"] %>
+  <span style="float: right;">
+    <img src="http://gbrowse.informatics.jax.org/cgi-bin/gbrowse_img/thumbs_current/?abs=1;options=Everything;width=200;name=<%= result_data["dcc"]["chromosome"] %>%3A<%= result_data["dcc"]["start"] %>-<%= result_data["dcc"]["end"] %>" alt="" />
+  </span>
+<% end %>
+
 <table>
   <tr>
-    <td style="text-align: left;" width="100%">
-      <table>
-        <tr>
-          <th width="125px">Marker Name(s):</th>
-          <td><%= result_data["dcc"]["marker_names"].join(", ") %></td>
-        </tr>
-        <tr>
-          <th>Synonyms:</th>
-          <td><%= result_data["dcc"]["synonyms"].join(", ") %></td>
-        </tr>
-        <tr>
-          <%
-            location_text = "Chr#{result_data["dcc"]["chromosome"]}"
-            
-            if result_data["dcc"]["start"] and result_data["dcc"]["end"]
-              location_text = location_text + ":#{result_data["dcc"]["start"]}-#{result_data["dcc"]["end"]}"
-            end
-            
-            if result_data["dcc"]["strand"]
-              location_text = location_text + "(#{result_data["dcc"]["strand"]})"
-            end
-          %>
-          <th>Location:</th>
-          <td><%= location_text %></td>
-        </tr>
-      </table>
-    </td>
-    <td style="text-align: right;">
-      <% if result_data["dcc"]["start"] and result_data["dcc"]["end"] %>
-        <img src="http://gbrowse.informatics.jax.org/cgi-bin/gbrowse_img/thumbs_current/?abs=1;options=Everything;width=200;name=<%= result_data["dcc"]["chromosome"] %>%3A<%= result_data["dcc"]["start"] %>-<%= result_data["dcc"]["end"] %>" alt="" />
-      <% end %>
-    </td>
+    <th width="125px">Marker Name(s):</th>
+    <td><%= result_data["dcc"]["marker_names"].join(", ") %></td>
+  </tr>
+  <tr>
+    <th>Synonyms:</th>
+    <td><%= result_data["dcc"]["synonyms"].join(", ") %></td>
+  </tr>
+  <tr>
+    <%
+      location_text = "Chr#{result_data["dcc"]["chromosome"]}"
+      
+      if result_data["dcc"]["start"] and result_data["dcc"]["end"]
+        location_text = location_text + ":#{result_data["dcc"]["start"]}-#{result_data["dcc"]["end"]}"
+      end
+      
+      if result_data["dcc"]["strand"]
+        location_text = location_text + "(#{result_data["dcc"]["strand"]})"
+      end
+    %>
+    <th>Location:</th>
+    <td><%= location_text %></td>
   </tr>
 </table>
 

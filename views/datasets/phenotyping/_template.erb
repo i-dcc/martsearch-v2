@@ -1,0 +1,73 @@
+<% 
+  ds = @ms.datasets_by_name["phenotyping"]
+  ds_attrib_objects = ds.dataset.attributes
+%>
+
+<table>
+  <thead>
+    <tr>
+      <th>ES Cell Clone Name</th>
+      <th>Allele Name</th>
+      <th>Allele Type</th>
+      <th>Cassette Type</th>
+      <% ds.attributes.each do |attrib| %>
+        <% unless attrib =~ /comment|url|marker_symbol|escell_clone_name|pipeline|colony_prefix/ %>
+          <th></th>
+        <% end %>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% result_data["phenotyping"].each do |result| %>
+      <tr>
+        <td>
+          <% if result["escell_clone_name"] %>
+            <%= result["escell_clone_name"] %>
+          <% else %>
+            <%= result["marker_symbol"] + "-" + result["colony_prefix"] %>
+          <% end %>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <% ds.attributes.each do |attrib| %>
+          <% unless attrib =~ /comment|url|marker_symbol|escell_clone_name|pipeline|colony_prefix/ %>
+            <% title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>" %>
+            <% if result[attrib] %>
+              <%
+                title_text += "<p><strong>Result:</strong> #{result[attrib]}<br />"
+                if result["#{attrib}_comment"]
+                  title_text += "<strong>Comments:</strong> #{result["#{attrib}_comment"]}</p>"
+                end
+                
+                link = ""
+                if result["#{attrib}_url"]
+                  link = "<a href='http://www.sanger.ac.uk#{result["#{attrib}_url"]}' target='_blank'><img src='/images/bullet_go.png' /></a>"
+                  title_text += "<p><em>Click the arrow for more information on this test result.</em></p>"
+                end
+              %>
+              <td class="<%= result[attrib] %> pheno_result" title="<%= title_text %>" rel="qtip"><%= link %></td>
+            <% else %>
+              <% title_text += "<p>Test not carried out.</p>" %>
+              <td class="test_not_done pheno_result" title="<%= title_text %>" rel="qtip"></td>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery(document).ready( function() {
+    jQuery(".phenotyping").find("td[rel^='qtip']").each( function() {
+      jQuery(this).qtip({
+         content:  jQuery(this).attr('title'),
+         show:     'mouseover',
+         hide:     'mouseout',
+         style:    { name: 'dark' },
+         position: { corner: { target: 'topLeft', tooltip: 'bottomRight' } }
+      });
+    });
+  });
+</script>

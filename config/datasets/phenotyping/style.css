@@ -1,0 +1,42 @@
+.phenotyping table td {
+	background: #fff;
+}
+
+.phenotyping table td.test_not_done {
+	cursor: pointer;
+}
+
+.phenotyping table td.significant_difference {
+	background-color: #c1272d;
+	cursor: pointer;
+}
+
+.phenotyping table td.no_significant_difference {
+	background-color: #074987;
+	cursor: pointer;
+}
+
+.phenotyping table td.not_applicable {
+	background-color: #b8b8b8;
+	cursor: pointer;
+}
+
+.phenotyping table td.early_indication_of_possible_phenotype {
+	background-color: #fbcc35;
+	cursor: pointer;
+}
+
+.phenotyping table td.completed_data_available {
+	background-color: #9910cc;
+	cursor: pointer;
+}
+
+.phenotyping table td.pheno_result {
+	width: 14px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.phenotyping table td.pheno_result a img {
+	border: none;
+}

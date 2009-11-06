@@ -1,8 +1,10 @@
 class Dataset
-  attr_reader :dataset, :dataset_name, :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute, :use_in_search
+  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :custom_sort
+  attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
+  
   attr_accessor :url, :attributes, :filters, :display_name
   
-  def initialize( conf, client )
+  def initialize( conf )
     
     @url                      = conf["url"]
     @dataset_name             = conf["dataset_name"]
@@ -16,11 +18,23 @@ class Dataset
     
     @use_in_search            = conf["use_in_search"]
     
-    # Connection client...
-    @http_client = client
+    @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
     
-    @dataset = nil
-    reload_dataset
+    if conf["custom_sort"]
+      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/custom_sort.rb","r")
+      @custom_sort = file.read
+      file.close
+    else
+      @custom_sort = nil
+    end
+    
+    if conf["custom_css"]
+      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/style.css","r")
+      @stylesheet = file.read
+      file.close
+    else
+      @stylesheet = nil
+    end
     
     @current_search_results = nil
     @current_sorted_results = nil

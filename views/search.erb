@@ -11,7 +11,7 @@
             <% if result_data[ dataset.dataset_name ] %>
               <div class="dataset">
                 <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
-                <div class="dataset_content">
+                <div class="dataset_content <%= dataset.dataset_name %>">
                   <%= partial( "datasets/#{dataset.dataset_name}/template", :locals => { :result_data => result_data } ) %>
                 </div>
               </div>

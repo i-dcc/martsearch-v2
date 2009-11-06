@@ -1,6 +1,6 @@
 class Martsearch
   attr_reader :config, :search_data, :search_results
-  attr_accessor :http_client, :index, :datasets
+  attr_accessor :http_client, :index, :datasets, :datasets_by_name
   
   def initialize( config_file_name )
     @http_client = Net::HTTP
@@ -16,20 +16,22 @@ class Martsearch
     
     @datasets = []
     @config["datasets"].each do |ds|
-      ds_conf_file = File.new("#{Dir.pwd}/config/datasets/#{ds["name"]}/config.json","r")
+      ds_conf_file = File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r")
       ds_conf      = JSON.load(ds_conf_file)
-      dataset      = Dataset.new( ds_conf, @http_client )
+      dataset      = Dataset.new( ds_conf )
       
-      if ds["custom_sort"]
+      if dataset.custom_sort
         # If we have a custom sorting routine, use a Mock object
         # to override the sorting method.
-        file = File.new("#{Dir.pwd}/config/datasets/#{ds["name"]}/custom_sort.rb","r")
-        buffer = file.read
-        file.close
-        dataset = Mock.method( dataset, :sort_results ) { eval(buffer) }
+        dataset = Mock.method( dataset, :sort_results ) { eval( dataset.custom_sort ) }
       end
       
       @datasets.push( dataset )
+    end
+    
+    @datasets_by_name = {}
+    @datasets.each do |ds|
+      @datasets_by_name[ds.dataset_name] = ds
     end
     
     # Error Message Stash...
@@ -97,12 +99,26 @@ class Martsearch
   end
   
   # Simple utility function - returns a paginated (using will_paginate) 
-  # list of the search results (the index primary key)
+  # list of the search results (the index primary key).
   def paged_results
     results = WillPaginate::Collection.create( @index.current_page, @index.docs_per_page, @index.current_results_total ) do |pager|
        pager.replace(@index.ordered_results)
     end
     return results
+  end
+  
+  # Utility function to return all of the custom stylesheets for the 
+  # datasets as one concatenated file.
+  def dataset_stylesheets
+    stylesheet = ""
+    
+    @datasets.each do |ds|
+      if ds.use_in_search and ds.stylesheet
+        stylesheet << "\n" + ds.stylesheet
+      end
+    end
+    
+    return stylesheet
   end
   
 end

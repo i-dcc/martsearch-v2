@@ -1,6 +1,8 @@
 {
   "use_in_search": true,
   "index":         false,
+  "custom_sort":   true,
+  "custom_css":    false,
   "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "bacs",
   "display_name":  "Sanger DNA Clone Resources",

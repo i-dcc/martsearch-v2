@@ -1,6 +1,8 @@
 {
   "use_in_search": true,
   "index":         true,
+  "custom_sort":   true,
+  "custom_css":    false,
   "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "htgt_targ",
   "display_name":  "Sanger ES Cells",

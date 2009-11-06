@@ -104,3 +104,8 @@ end
 get "/help" do
   erb :help
 end
+
+get "/css/dataset_styles.css" do
+  content_type "text/css"
+  @@ms.dataset_stylesheets
+end

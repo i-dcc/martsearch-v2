@@ -74,7 +74,7 @@
     }
   },
   "test": {
-    "single_return_search": "cbx1",
+    "single_return_search": "cbx7",
     "large_search":         "chromosome:1",
     "bad_search":           "chromosome:!"
   },

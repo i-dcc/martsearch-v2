@@ -2,7 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title></title>
+    <% if @page_title %>
+      <title><%= @page_title %> - WTSI Mouse Resources Portal</title>
+    <% else %>
+      <title>WTSI Mouse Resources Portal</title>
+    <% end %>
     
     <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="/css/dataset_styles.css" type="text/css" media="screen, projection" />
@@ -17,10 +21,10 @@
       
       <div id="navigation">
         <ul>
-          <li class="current"><a href="/">Home</a></li>
-          <li><a href="/browse">Browse</a></li>
-          <li><a href="/help">Help</a></li>
-          <li><a href="/about">About</a></li>
+          <li<% if @current === "home" %> class="current"<% end %>><a href="/">Home</a></li>
+          <li<% if @current === "browse" %> class="current"<% end %>><a href="/browse">Browse</a></li>
+          <li<% if @current === "help" %> class="current"<% end %>><a href="/help">Help</a></li>
+          <li<% if @current === "about" %> class="current"<% end %>><a href="/about">About</a></li>
         </ul>
         <form id="martsearchr_nav" action="search" method="get" accept-charset="utf-8">
           <input type="text" class="textinput" name="query" value="" />

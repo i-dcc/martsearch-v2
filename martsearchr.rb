@@ -72,6 +72,7 @@ end
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
   @ms = @@ms
+  @current = nil
   
   @messages = {
     :status => [],
@@ -84,24 +85,33 @@ before do
 end
 
 get "/" do
+  @current = "home"
   erb :main
 end
 
 get "/search" do
-  @results = @@ms.search( params[:query], params[:page] )
-  @data    = @@ms.search_data
+  @current    = "home"
+  @page_title = "Search Results for '#{params[:query]}'"
+  @results    = @@ms.search( params[:query], params[:page] )
+  @data       = @@ms.search_data
   erb :search
 end
 
 get "/browse" do
+  @current    = "browse"
+  @page_title = "Browse"
   erb :browse
 end
 
 get "/about" do
+  @current    = "about"
+  @page_title = "About"
   erb :about
 end
 
 get "/help" do
+  @current    = "help"
+  @page_title = "Help"
   erb :help
 end
 

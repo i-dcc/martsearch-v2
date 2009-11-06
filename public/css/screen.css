@@ -18,7 +18,7 @@
 }
 
 #footer {
-	font-size: 0.8em;
+	font-size: 0.9em;
 	text-align: right;
 	border-top: 2px solid #376598;
 	padding-top: 10px;
@@ -29,7 +29,7 @@
 /* Typography */
 
 body {
-	font: 11px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
+	font: 10px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
 }
 
 hr {
@@ -47,16 +47,16 @@ h5 { font-size: 1.3em }
 h6 { font-size: 1.1em }
 
 small {
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 sup {
-	font-size: 0.8em;
+	font-size: 0.9em;
 	vertical-align: super;
 }
 
 sub {
-	font-size: 0.8em;
+	font-size: 0.9em;
 	vertical-align: sub;
 }
 
@@ -101,7 +101,7 @@ a:focus {
 }
 
 .toggle-close {
-	background: url(../images/bullet_arrow_up.png) no-repeat 0 4px;
+	background: url(../images/bullet_arrow_up.png) no-repeat 0 center;
 }
 
 .toggle-open:hover, .toggle-close:hover {
@@ -178,22 +178,22 @@ caption {
 }
 
 th {
-	border: 1px solid #376598;
+	border: 1px solid #999;
 	text-align: left;
 	padding: 6px 6px;
-	background-color: #6998cb;
-	color: #fff;
+	background-color: #ccc;
+	color: #333;
 }
 
 th.nobg {
 	border-top: 0;
 	border-left: 0;
-	border-right: 1px solid #376598;
+	border-right: 1px solid #999;
 	background: none;
 }
 
 td {
-	border: 1px solid #376598;
+	border: 1px solid #999;
 	padding: 6px 6px;
 }
 

@@ -108,6 +108,67 @@ a:focus {
 	cursor: pointer;
 }
 
+/* Pagination Controls */
+
+.pagination {
+	margin-bottom: 10px;
+}
+
+.pagination a {
+	color: #333;
+	background-color: #ccc;
+	border: 1px solid #999;
+	padding: 3px;
+}
+
+.pagination a:hover {
+	color: #fff;
+	background-color: #6998cb;
+	border-color: #376598;
+}
+
+.pagination .current {
+	color: #fff;
+	background-color: #376598;
+	border: 1px solid #999;
+	padding: 5px;
+}
+
+/* Data Browsing Controls */
+
+#browsable_content {
+	margin: 0 auto;
+	margin-bottom: 25px;
+}
+
+#browsable_content th,
+#browsable_content td {
+	vertical-align: middle;
+}
+
+#browsable_content td {
+	line-height: 2.5em;
+}
+
+#browsable_content a {
+	padding: 4px;
+	border: 1px solid #999;
+	background-color: #ccc;
+	color: #333;
+}
+
+#browsable_content a:hover {
+	color: #fff;
+	background-color: #6998cb;
+	border-color: #376598;
+}
+
+#browsable_content a.current {
+	color: #fff;
+	background-color: #6998cb;
+	border: 1px solid #376598;
+}
+
 /* Navigation Menu */
 
 #navigation {
@@ -132,7 +193,6 @@ a:focus {
 #navigation li a {
 	float: left;
 	display: block;
-	text-decoration: none;
 	color: #333;
 	font-weight: bold;
 	margin: 0 3px 0 0;
@@ -185,13 +245,6 @@ th {
 	color: #333;
 }
 
-th.nobg {
-	border-top: 0;
-	border-left: 0;
-	border-right: 1px solid #999;
-	background: none;
-}
-
 td {
 	border: 1px solid #999;
 	padding: 6px 6px;
@@ -199,6 +252,14 @@ td {
 
 tr.odd td {
 	background: #f1f1f1;
+}
+
+table.nobg th, table.nobg td {
+	background: none;
+}
+
+table.noborder th, table.noborder td {
+	border: none;
 }
 
 /* Martsearchr Search Form */

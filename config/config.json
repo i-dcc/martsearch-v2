@@ -84,21 +84,8 @@
         "U","V","W","X","Y","Z",
         ["0-9","(0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*)"]
       ]
-    }
-  },
-  "browsing": [
-    {
-      "index_field":  "marker_symbol_str",
-      "display_name": "Marker Symbol",
-      "exact_search": false,
-      "options": [
-        "A","B","C","D","E","F","G","H","I","J",
-        "K","L","M","N","O","P","Q","R","S","T",
-        "U","V","W","X","Y","Z",
-        ["0-9","(0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*)"]
-      ]
     },
-    {
+    "chromosome": {
       "index_field":  "chromosome",
       "display_name": "Chromosome",
       "exact_search": true,
@@ -107,8 +94,53 @@
         "11","12","13","14","15","16","17","18","19",
         "X","Y"
       ]
+    },
+    "phenotyping": {
+      "index_field":  "phenotype",
+      "display_name": "Positive Phenotyping Test",
+      "exact_search": true,
+      "options": [
+        ["ABR","abr"],
+        ["Adult Expression", "adult_expression"],
+        ["Blood Pressure", "blood_pressure"],
+        ["Body Weight Curve", "body_weight_curve"],
+        ["Body Weight Curve (Normal Chow)", "body_weight_curve_normal_chow"],
+        ["Brain Histology", "brain_histology"],
+        ["Calorimetry", "calorimetry"],
+        ["Citrobacter Challenge", "citrobacter_challenge"],
+        ["Core Temperature", "core_temperature"],
+        ["DEXA","dexa"],
+        ["Dysmorphology", "dysmorphology"],
+        ["Embryo Expression", "embryo_expression"],
+        ["Eye Morphology", "eye_morphology"],
+        ["Fasted Clinical Chemistry", "fasted_clinical_chemistry"],
+        ["Fertility", "fertility"],
+        ["Full Clinical Chemistry", "full_clinical_chemistry"],
+        ["Grip Strength", "grip_strength"],
+        ["Haematology", "haematology"],
+        ["Heart Histology", "heart_histology"],
+        ["Heart Weights", "heart_weights"],
+        ["Histology", "histology"],
+        ["Homozygote Viability", "homozygote_viability"],
+        ["Hot Plate", "hot_plate"],
+        ["Insulin", "insulin"],
+        ["ip-GTT", "ip_gtt"],
+        ["Micronuclei", "micronuclei"],
+        ["Modified Shirpa", "modified_shirpa"],
+        ["Number of Hits", "number_of_hits"],
+        ["Open Field", "open_field"],
+        ["Peripheral Blood Lymphocytes", "peripheral_blood_lymphocytes"],
+        ["Prepulse Inhibition", "prepulse_inhibition"],
+        ["Recessive Lethal Study", "recessive_lethal_study"],
+        ["Rotarod", "rotarod"],
+        ["Salmonella Challenge", "salmonella_challenge"],
+        ["Serum Immunoglobulins", "serum_immunoglobulins"],
+        ["Skin Screen", "skin_screen"],
+        ["Tail Length", "tail_length"],
+        ["X-Ray Imaging", "x_ray_imaging"]
+      ]
     }
-  ],
+  },
   "test": {
     "single_return_search": "cbx7",
     "large_search":         "chromosome:1",

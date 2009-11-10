@@ -1,19 +1,29 @@
-<table>
+<table id="browsable_content" class="nobg noborder">
   <% @ms.config["browsable_content"].each do |key,browser| %>
     <tr>
       <th><%= browser["display_name"] %>:</th>
       <td>
-        <ul class="browse_list">
-          <% browser["options"].each do |option| %>
-            <li>
-              <% if option.is_a?(Array) %>
-                <a href="<%= "/browse/#{key}/#{option[0].downcase}" %>"><%= option[0] %></a>
-              <% else %>
-                <a href="<%= "/browse/#{key}/#{option.downcase}" %>"><%= option %></a>
-              <% end %>
-            </li>
+        <% browser["options"].each do |option| %>
+          <%
+            query = nil
+            text  = nil
+          
+            if option.is_a?(Array) 
+              query = option[0].downcase
+              text  = option[0]
+            else
+              query = option.downcase
+              text  = option
+            end
+            
+            text.gsub!(" ","&nbsp;")
+          %>
+          <% if key === params[:field] and query === params[:query] %>
+            <a href="<%= "/browse/#{key}/#{query}" %>" class="current"><%= text %></a> 
+          <% else %>
+            <a href="<%= "/browse/#{key}/#{query}" %>"><%= text %></a> 
           <% end %>
-        </ul>
+        <% end %>
       </td>
     </tr>
   <% end %>

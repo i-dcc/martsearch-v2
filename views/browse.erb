@@ -35,7 +35,7 @@
     <%= partial( :search_results ) %>
   </div>
   
-  <% if @debug %>
+  <% if @ms.config["debug"] %>
     <div>
       Solr search parameters used: <%= @solr_query %>
     </div>

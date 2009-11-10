@@ -91,8 +91,9 @@ end
 
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
-  @ms = @@ms
-  @current = nil
+  @ms              = @@ms
+  @current         = nil
+  @page_title      = nil
   
   @messages = {
     :status => [],
@@ -130,6 +131,7 @@ end
 get "/browse/?" do
   @current    = "browse"
   @page_title = "Browse"
+  @results    = nil
   erb :browse
 end
 

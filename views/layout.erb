@@ -76,9 +76,9 @@
     
     <% if @ms.config["debug"] %>
       <div id="debug">
-        <h1>Debugging Data</h1>
+        <h2>Debugging Data</h2>
         <h3>MartSearch Config</h3>
-        <pre><%= JSON.pretty_generate(@ms.config) %></pre>
+        <pre><%= @ms.config.to_yaml %></pre>
       </div>
     <% end %>
     

@@ -8,9 +8,12 @@
             query = nil
             text  = nil
           
-            if option.is_a?(Array) 
+            if option.is_a?(Array)
               query = option[0].downcase
               text  = option[0]
+            elsif option.is_a?(Hash)
+              query = option["slug"].downcase
+              text  = option["text"]
             else
               query = option.downcase
               text  = option
@@ -29,15 +32,17 @@
   <% end %>
 </table>
 
-<% if @results and !@results.empty? %>
-  <h3>'<%= @browsing_by[:field] %>' / '<%= @browsing_by[:query] %>'</h3>
-  <div id="search_results">
+<h3>'<%= @browsing_by[:field] %>' / '<%= @browsing_by[:query] %>'</h3>
+<div id="search_results">
+  <% if @results and !@results.empty? %>
     <%= partial( :search_results ) %>
-  </div>
-  
-  <% if @ms.config["debug"] %>
-    <div>
-      Solr search parameters used: <%= @solr_query %>
-    </div>
+  <% else %>
+    <em>Sorry, your search did not return any results.</em>
   <% end %>
+</div>
+
+<% if @ms.config["debug"] %>
+  <div>
+    Solr search parameters used: <%= @solr_query %>
+  </div>
 <% end %>

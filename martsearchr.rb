@@ -150,33 +150,44 @@ end
     }
     browser["options"].each do |option|
       unless @browsing_by[:query]
+        
+        @solr_query  = nil
+        exact_search = false
+        search_term  = nil
+        
         if option.is_a?(Array)
           if option[0].downcase === params[:query].downcase
             @browsing_by[:query] = option[0]
             @solr_query          = "#{browser["index_field"]}:#{option[1]}"
-            unless browser["exact_search"]
-              # if the configuration doesnt already contain a grouped query 
-              # make the search case insensitive (as we assume we are searching
-              # on a solr string field - i.e. not interpreted in any way...)
-              unless @solr_query.match(/\)$/)
-                @solr_query = "(#{browser["index_field"]}:#{option[1].downcase}* OR #{browser["index_field"]}:#{option[1].upcase}*)"
-              end
-            end
+            search_term          = option[1]
+          end
+        elsif option.is_a?(Hash)
+          if option["slug"].downcase == params[:query].downcase
+            @browsing_by[:query] = option["text"]
+            @solr_query          = "#{browser["index_field"]}:#{option["query"]}"
+            search_term          = option["query"]
           end
         else
           if option.downcase === params[:query].downcase
             @browsing_by[:query] = option
             @solr_query          = "#{browser["index_field"]}:#{option}"
-            unless browser["exact_search"]
-              # if the configuration doesnt already contain a grouped query 
-              # make the search case insensitive (as we assume we are searching
-              # on a solr string field - i.e. not interpreted in any way...)
-              unless @solr_query.match(/\)$/)
-                @solr_query = "(#{browser["index_field"]}:#{option.downcase}* OR #{browser["index_field"]}:#{option.upcase}*)"
-              end
+            search_term          = option
+          end
+        end
+        
+        # if the configuration doesnt already contain a grouped query 
+        # make the search case insensitive (as we assume we are searching
+        # on a solr string field - i.e. not interpreted in any way...)
+        unless @solr_query.nil?
+          unless @solr_query.match(/\)$/)
+            if browser["exact_search"]
+              @solr_query = "(#{browser["index_field"]}:#{search_term.downcase} OR #{browser["index_field"]}:#{search_term.upcase})"
+            else
+              @solr_query = "(#{browser["index_field"]}:#{search_term.downcase}* OR #{browser["index_field"]}:#{search_term.upcase}*)"
             end
           end
         end
+        
       end
     end
   

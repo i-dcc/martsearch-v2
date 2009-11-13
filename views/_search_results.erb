@@ -18,3 +18,14 @@
   </div>
 <% end %>
 <%= will_paginate @results %>
+
+<% if @ms.index.current_results_total > @ms.index.docs_per_page %>
+  <script type="text/javascript" charset="utf-8">
+    jQuery(document).ready(function() {
+      jQuery(".doc_title").each( function(index) {
+        jQuery(this).parent().find(".doc_content").hide();
+        jQuery(this).addClass("toggle-close");
+      });
+    });
+  </script>
+<% end %>

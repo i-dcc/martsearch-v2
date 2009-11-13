@@ -32,14 +32,16 @@
   <% end %>
 </table>
 
-<h3>'<%= @browsing_by[:field] %>' / '<%= @browsing_by[:query] %>'</h3>
-<div id="search_results">
-  <% if @results and !@results.empty? %>
-    <%= partial( :search_results ) %>
-  <% else %>
-    <em>Sorry, your search did not return any results.</em>
-  <% end %>
-</div>
+<% if @browsing_by %>
+  <h3>'<%= @browsing_by[:field] %>' / '<%= @browsing_by[:query] %>'</h3>
+  <div id="search_results">
+    <% if @results and !@results.empty? %>
+      <%= partial( :search_results ) %>
+    <% else %>
+      <em>Sorry, your search did not return any results.</em>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @ms.config["debug"] %>
   <div>

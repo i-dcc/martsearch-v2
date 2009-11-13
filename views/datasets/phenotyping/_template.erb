@@ -57,17 +57,3 @@
     <% end %>
   </tbody>
 </table>
-
-<script type="text/javascript" charset="utf-8">
-  jQuery(document).ready( function() {
-    jQuery(".phenotyping").find("td[rel^='qtip']").each( function() {
-      jQuery(this).qtip({
-         content:  jQuery(this).attr('title'),
-         show:     'mouseover',
-         hide:     'mouseout',
-         style:    { name: 'dark' },
-         position: { corner: { target: 'topLeft', tooltip: 'bottomRight' } }
-      });
-    });
-  });
-</script>

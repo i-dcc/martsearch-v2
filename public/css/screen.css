@@ -118,6 +118,9 @@ a:focus {
 	color: #333;
 	background-color: #ccc;
 	border: 1px solid #999;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	padding: 3px;
 }
 
@@ -131,6 +134,9 @@ a:focus {
 	color: #fff;
 	background-color: #376598;
 	border: 1px solid #999;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	padding: 5px;
 }
 
@@ -144,17 +150,19 @@ a:focus {
 #browsable_content th,
 #browsable_content td {
 	vertical-align: middle;
-}
-
-#browsable_content td {
-	line-height: 2.5em;
+	padding: 4px;
 }
 
 #browsable_content a {
-	padding: 4px;
+	display: inline-block;
 	border: 1px solid #999;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	background-color: #ccc;
 	color: #333;
+	margin-bottom: 2px;
+	padding: 3px 5px;
 }
 
 #browsable_content a:hover {
@@ -278,7 +286,7 @@ form#martsearchr {
 	border-top: 2px solid #6998cb;
 	border-bottom: 2px solid #6998cb;
 	margin-bottom: 10px;
-	padding: 5px;
+	padding: 8px 5px 5px;
 }
 
 #search_results .result .dataset {
@@ -289,3 +297,26 @@ form#martsearchr {
 	padding: 7px;
 	margin-bottom: 7px;
 }
+
+#search_results h3 {
+	width: 30%;
+}
+
+#search_results .result div.doc_datasets_present {
+	font-size: 0.9em;
+	float: right;
+	width: 65%;
+	text-align: right;
+}
+
+#search_results .result div.doc_datasets_present span.dataset_present {
+	color: #fff;
+	font-weight: bold;
+	background-color: #fd9acd;
+	border: 1px solid #ca679a;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	padding: 4px;
+}
+

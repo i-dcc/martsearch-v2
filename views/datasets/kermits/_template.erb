@@ -6,7 +6,7 @@
       <th>Colony Prefix</th>
       <th>ES Cell Clone Name</th>
       <th>Genetic Background</th>
-      <th>Order</th>
+      <th class="nobg noborder"></th>
     </tr>
   </thead>
   <tbody>
@@ -35,7 +35,7 @@
           %>
           <%= genetic_background.join(';') %>
         </td>
-        <td>
+        <td class="nobg noborder">
           <% if result["emma"] === "1" %>
             <%
               link = nil
@@ -46,7 +46,7 @@
               end
             %>
             <% if link %>
-              <a href="<%= link %>">Register Interest in a Mouse</a>
+              <a href="<%= link %>" class="order">Register Interest in a Mouse</a>
             <% else %>
               <em>currently unavailable</em>
             <% end %>

@@ -45,34 +45,24 @@ sorted_results = {}
     
     # And ES Cell info
     if result["escell_clone_name"] and ( result["escell_distribute"] or result["is_targeted_non_cond"] )
-      unless project["escells"]
-        project["escells"] = []
-      end
-      
-      project["escells"].push({
+      clone = {
         "escell_clone_name"    => result["escell_clone_name"],
         "allele_name"          => result["allele_name"],
         "es_cell_line"         => result["es_cell_line"],
         "colonies_picked"      => result["colonies_picked"],
         "escell_distribute"    => result["escell_distribute"],
         "is_targeted_non_cond" => result["is_targeted_non_cond"]
-      })
+      }
       
-      unless project["conditional_clone_count"]
-        project["conditional_clone_count"] = 0
-      end
+      unless project["conditional_clones"]         then project["conditional_clones"]    = []     end
+      unless project["nonconditional_clones"]      then project["nonconditional_clones"] = []     end
       
-      unless project["nonconditional_clone_count"]
-        project["nonconditional_clone_count"] = 0
-      end
-      
-      if result["is_targeted_non_cond"] == "1"
-        project["nonconditional_clone_count"] += 1
+      if result["is_targeted_non_cond"]
+        project["nonconditional_clones"].push(clone)
       else
-        project["conditional_clone_count"] += 1
+        project["conditional_clones"].push(clone)
       end
     end
-    
   end
   
 end

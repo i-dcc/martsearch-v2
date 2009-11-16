@@ -1,6 +1,7 @@
 /* @override http://localhost:9393/css/screen.css */
 
 @import url(/css/reset.css);
+@import url(/css/jquery.prettyPhoto.css);
 
 /* Page Layout */
 
@@ -99,6 +100,19 @@ a:focus {
 
 a:active {
 	outline: none;
+}
+
+a.order {
+	border: 1px solid #999;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	padding: 4px 4px 4px 20px;
+	background: #f4f4f4 url(../images/cart.png) no-repeat 2px center;
+}
+
+a.order:hover {
+	background-color: #ccc;
 }
 
 /* Toggle Controls */
@@ -306,6 +320,10 @@ form#martsearchr {
 	-webkit-border-radius: 5px;
 	padding: 7px;
 	margin-bottom: 7px;
+}
+
+#search_results .dataset_title {
+	margin-bottom: 10px;
 }
 
 #search_results h3 {

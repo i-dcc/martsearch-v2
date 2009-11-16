@@ -1,0 +1,34 @@
+<%
+  # Configure our link out to Ensembl...
+  tracks_to_change = {
+    "contig"                                     => "normal",
+    "ruler"                                      => "normal",
+    "scalebar"                                   => "normal",
+    "transcript_core_ensembl"                    => "transcript_label",
+    "transcript_vega_otter"                      => "transcript_label",
+    "alignment_compara_364_constrained"          => "compact",
+    "das:http://das.sanger.ac.uk/das/KO_vectors" => "normal",
+    "alignment_compara_364_scores"               => "off",
+    "chr_band_core"                              => "off",
+    "dna_align_cdna_cDNA_update"                 => "off",
+    "dna_align_core_CCDS"                        => "off",
+    "fg_regulatory_features_funcgen"             => "off",
+    "fg_regulatory_features_legend"              => "off",
+    "gene_legend"                                => "off",
+    "gc_plot"                                    => "off",
+    "info"                                       => "off",
+    "missing"                                    => "off",
+    "transcript_core_ncRNA"                      => "off",
+    "transcript_core_ensembl_IG_gene"            => "off",
+    "variation_legend"                           => "off"
+  }
+  settings = []
+  tracks_to_change.each do |key,value|
+    settings.push("#{key}=#{value}")
+  end
+
+  ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
+  ensembl_link += "?g=#{project["ensembl_gene_id"]};"
+  ensembl_link += "contigviewbottom=#{settings.join(",")}"
+%>
+<a href="<%= ensembl_link %>" target="_blank">View this allele in Ensembl</a>

@@ -1,5 +1,5 @@
 class Dataset
-  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :custom_sort
+  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :javascript, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   
   attr_accessor :url, :attributes, :filters, :display_name
@@ -34,6 +34,14 @@ class Dataset
       file.close
     else
       @stylesheet = nil
+    end
+    
+    if conf["custom_js"]
+      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/javascript.js","r")
+      @javascript = file.read
+      file.close
+    else
+      @javascript = nil
     end
     
     @current_search_results = nil

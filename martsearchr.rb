@@ -234,3 +234,8 @@ get "/css/dataset_styles.css" do
   content_type "text/css"
   @@ms.dataset_stylesheets
 end
+
+get "/js/dataset_javascripts.js" do
+  content_type "text/javascript"
+  @@ms.dataset_javascripts
+end

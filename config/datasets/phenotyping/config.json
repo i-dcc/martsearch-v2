@@ -3,6 +3,7 @@
   "index":         true,
   "custom_sort":   false,
   "custom_css":    true,
+  "custom_js":     true,
   "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "phenotyping",
   "display_name":  "Phenotyping",

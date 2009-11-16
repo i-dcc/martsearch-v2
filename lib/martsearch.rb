@@ -121,4 +121,17 @@ class Martsearch
     return stylesheet
   end
   
+  # Utility function to return all of the custom javascript files for 
+  # the datasets as one concatenated file.
+  def dataset_javascripts
+    js = ""
+    
+    @datasets.each do |ds|
+      if ds.use_in_search and ds.javascript
+        js << "\n" + ds.javascript
+      end
+    end
+    
+    return js
+  end
 end

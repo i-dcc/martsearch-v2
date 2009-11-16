@@ -102,7 +102,9 @@ a:active {
 	outline: none;
 }
 
-a.order {
+/* Ordering Buttons */
+
+.order {
 	border: 1px solid #999;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -113,6 +115,11 @@ a.order {
 
 a.order:hover {
 	background-color: #ccc;
+}
+
+.unavailable {
+	color: #999;
+	background-image: url(../images/cart_error.png);
 }
 
 /* Toggle Controls */

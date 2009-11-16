@@ -31,7 +31,7 @@ class Martsearch
     
     @datasets_by_name = {}
     @datasets.each do |ds|
-      @datasets_by_name[ds.dataset_name] = ds
+      @datasets_by_name[ds.dataset_name.to_sym] = ds
     end
     
     # Error Message Stash...

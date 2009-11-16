@@ -26,6 +26,11 @@
 	color: #666;
 }
 
+.clear {
+	clear: both;
+	margin-top: 12px;
+}
+
 /* Typography */
 
 body {
@@ -267,11 +272,11 @@ tr.odd td {
 	background: #f1f1f1;
 }
 
-table.nobg th, table.nobg td {
+.nobg, table.nobg th, table.nobg td {
 	background: none;
 }
 
-table.noborder th, table.noborder td {
+.noborder, table.noborder th, table.noborder td {
 	border: none;
 }
 
@@ -325,3 +330,25 @@ form#martsearchr {
 	padding: 4px;
 }
 
+/* Sanger Welcome Page Specifics */
+
+table#welcome td {
+	border: none;
+}
+
+table#welcome td td {
+	border: 1px solid #999;
+}
+
+table#welcome td td.noborder {
+	border: none;
+}
+
+table#welcome table.noborder td {
+	border: none;
+}
+
+table#welcome table#summary_statistics,
+table#welcome table#summary_statistics th {
+	text-align: center;
+}

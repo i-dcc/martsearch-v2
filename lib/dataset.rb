@@ -5,48 +5,34 @@ class Dataset
   attr_accessor :url, :attributes, :filters, :display_name
   
   def initialize( conf )
-    
     @url                      = conf["url"]
     @dataset_name             = conf["dataset_name"]
     @display_name             = conf["display_name"]
-    
     @joined_index_field       = conf["searching"]["joined_index_field"]
     @joined_biomart_filter    = conf["searching"]["joined_biomart_filter"]
     @joined_biomart_attribute = conf["searching"]["joined_biomart_attribute"]
     @filters                  = conf["searching"]["filters"]
     @attributes               = conf["searching"]["attributes"]
-    
     @use_in_search            = conf["use_in_search"]
-    
     @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
+    @custom_sort              = nil
+    @stylesheet               = nil
+    @javascript               = nil
     
     if conf["custom_sort"]
-      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/custom_sort.rb","r")
-      @custom_sort = file.read
-      file.close
-    else
-      @custom_sort = nil
+      @custom_sort = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/custom_sort.rb")
     end
     
     if conf["custom_css"]
-      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/style.css","r")
-      @stylesheet = file.read
-      file.close
-    else
-      @stylesheet = nil
+      @stylesheet = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/style.css")
     end
     
     if conf["custom_js"]
-      file = File.new("#{Dir.pwd}/config/datasets/#{@dataset_name}/javascript.js","r")
-      @javascript = file.read
-      file.close
-    else
-      @javascript = nil
+      @javascript = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/javascript.js")
     end
     
     @current_search_results = nil
     @current_sorted_results = nil
-    
   end
   
   # Simple heartbeat function - checks that the biomart 
@@ -61,16 +47,18 @@ class Dataset
     @dataset = Biomart::Dataset.new( @url, { :name => @dataset_name } )
   end
   
-  # 
-  def search( query, index_docs )
-    
+  # Function to perform the biomart queries needed to retrieve the 
+  # bulk data.  Takes an array of values to be searched against the 
+  # 'joined_biomart_filter' set in the config file.  Returns the sorted 
+  # and processed data.
+  def search( query )
     search_params  = {
       :attributes      => [],
       :filters         => { @joined_biomart_filter => query.join(",") },
       :process_results => true
     }
     
-    @filters.each do |name,value|
+    @filters.each do |name,value| then
       search_params[:filters][name] = value
     end
     
@@ -160,6 +148,17 @@ class Dataset
     end
     
     return attribute;
+  end
+  
+  private
+  
+  # Utility function to read in a file and return it's contents 
+  # as a string.
+  def load_file( file_name )
+    file      = File.new(file_name,"r")
+    file_data = file.read
+    file.close
+    return file_data
   end
   
 end

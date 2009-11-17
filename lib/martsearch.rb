@@ -79,7 +79,7 @@ class Martsearch
             search_terms = @index.grouped_terms[ dataset.joined_index_field ]
             
             begin
-              mart_results = dataset.search( search_terms, @index.current_results )
+              mart_results = dataset.search( search_terms )
               dataset.add_to_results_stash( search_data, mart_results )
             rescue Biomart::BiomartError => error
               @errors.push({
@@ -87,6 +87,7 @@ class Martsearch
                 :full_text => error
               })
             end
+            
           end
         end
       end

@@ -68,7 +68,7 @@ class DatasetTest < Test::Unit::TestCase
     search_terms = @@ms.index.grouped_terms[ dataset.joined_index_field ]
     assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
     
-    mart_results = dataset.search( search_terms, @@ms.index.current_results )
+    mart_results = dataset.search( search_terms )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
     
     dataset.add_to_results_stash( results, mart_results )

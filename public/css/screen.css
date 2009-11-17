@@ -27,14 +27,19 @@
 	margin-top: 12px;
 }
 
+.center {
+	text-align: center;
+	margin: 0 auto;
+}
+
 /* Typography */
 
 body {
-	font: 10px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
+	font: 11px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
 }
 
 hr {
-	border: 0 #376598 solid;
+	border: 1px solid #ccc;
 	border-top-width: 1px;
 	clear: both;
 	height: 0

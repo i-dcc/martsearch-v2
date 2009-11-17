@@ -12,3 +12,66 @@
   trap insertions, mutant mouse lines, and phenotypic data generated 
   from the Institute's primary screen.
 </p>
+
+<hr />
+
+<h2>Powered by MartSearchr</h2>
+<p>
+  The WTSI Mouse Resource Portal is powered by software called 
+  <a href="http://github.com/dazoakley/martsearchr/">MartSearchr</a>, 
+  a server-side client written in Ruby used to pull together data from 
+  distributed data sources (housed in Biomarts) in a single unified view.
+</p>
+<p>
+  MartSearchr works by first building an Apache Solr index of all of the 
+  available search terms in the cloud of Biomarts (each collection of 
+  terms represents a gene).
+</p>
+<p>
+  When a user performs a search, the query is first run against the index 
+  which returns a paginated list of genes and associated meta data, this 
+  meta data is then used to retrieve the information from the cloud of 
+  biomarts (data sources) available to the search interface.
+</p>
+<p>
+  A graphical representation of this process is shown below.
+</p>
+<div class="center">
+  <img src="/images/martsearch-design.png" alt="MartSearch Design" />
+</div>
+
+<hr />
+
+<h2>Using MartSearchr to Make the WTSI Mouse Resource Portal</h2>
+<p>
+  Here are some of the reasons we decided to use this approach to building 
+  this the WTSI Mouse Resource Portal.
+</p>
+<ul>
+  <li>
+    <p>
+      <strong>Presenting an Integrated Overview of Mouse Data</strong>
+    </p>
+    <p>
+      The WTSI Mouse Resource Portal focuses on mouse genes, the results 
+      of high-throughput gene knockout programs,  and related phenotypic 
+      and expression data. The WTSI Mouse Resource Portal talks with 
+      Biomarts via web-services to gather and present its data.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>No Need for a Central Data Store or Web Server</strong>
+    </p>
+    <p>
+      Does mouse informatics have an obvious single centre? Gene curation, 
+      the production of mutant ES cells, the production of mutant mice, 
+      expression and phenotyping studies all have important informatic data 
+      and presentation techniques to offer the end-user. The software that 
+      has been developed for the purpose of this portal (MartSearchr) allows 
+      these diverse groups to remain engaged in the portal's user interface 
+      without having to centralise portal development and data in a single 
+      datastore.
+    </p>
+  </li>
+</ul>

@@ -8,7 +8,11 @@ task :install_deps do
   dependencies = [
     "sinatra",
     "json",
-    "biomart"
+    "biomart",
+    "rdiscount",
+    "active_support",
+    "mislav-will_paginate",
+    "rack-rack-contrib"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

@@ -10,7 +10,7 @@
         <% end %>
       <% end %>
     </div>
-    <h3 class="doc_title toggle-open"><%= result %></h3>
+    <h3 class="doc_title toggle-open"><%= result_data["index"]["marker_symbol"] %></h3>
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
         <% if result_data[ dataset.dataset_name ] %>

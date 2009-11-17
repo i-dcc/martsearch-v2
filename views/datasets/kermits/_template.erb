@@ -1,0 +1,60 @@
+<table>
+  <thead>
+    <tr>
+      <th>Allele Name</th>
+      <th>Allele Type</th>
+      <th>Colony Prefix</th>
+      <th>ES Cell Clone Name</th>
+      <th>Genetic Background</th>
+      <th class="nobg noborder"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% result_data["kermits"].each do |result| %>
+      <tr>
+        <td><%= result["allele_name"] %></td>
+        <td>
+          <%
+            allele_type = case result["allele_name"]
+            when /tm\d+a/ then "Conditional Knockout-First"
+            when /tm\d+e/ then "Targeted Trap"
+            when /tm\d\(/ then "Deletion"
+            else "-"
+            end
+          %>
+          <%= allele_type %>
+        </td>
+        <td><%= result["colony_prefix"] %></td>
+        <td><%= result["escell_clone_name"] %></td>
+        <td>
+          <%
+            genetic_background = [];
+            if result["back_cross_strain"] then genetic_background.push(result["back_cross_strain"]) end
+            if result["test_cross_strain"] then genetic_background.push(result["test_cross_strain"]) end
+            if result["escell_strain"]     then genetic_background.push(result["escell_strain"])     end
+          %>
+          <%= genetic_background.join(';') %>
+        </td>
+        <td class="nobg noborder">
+          <% if result["emma"] === "1" %>
+            <%
+              link = nil
+              if result["sponsor"] === "EUCOMM"
+                link = "http://www.emmanet.org/apps/springEmma/search?keyword=#{result["marker_symbol"]}&amp;select_by=affectedGene&amp;search=ok";
+              elsif result["sponsor"] === "KOMP"
+                link = "mailto:mouseinterest@sanger.ac.uk?subject=Interest in Mouse for #{result["marker_symbol"]}"
+              end
+            %>
+            <% if link %>
+              <a href="<%= link %>" class="order">Register Interest in a Mouse</a>
+            <% else %>
+              <span class="order unavailable">currently unavailable</span>
+            <% end %>
+          <% else %>
+            <span class="order unavailable">currently unavailable</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

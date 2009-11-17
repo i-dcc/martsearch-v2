@@ -1,6 +1,6 @@
 {
   "debug":       false,
-  "portal_name": "MartSearch",
+  "portal_name": "WTSI Mouse Resources Portal",
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,
@@ -15,19 +15,62 @@
         "marker_symbol":              { "type": "text", "indexed": true },
         "marker_symbol_str":          { "type": "string", "indexed": true },
         "symbol":                     { "type": "text", "indexed": true },
+        "secondary_mgi_accession_id": { "type": "textTight", "indexed": true, "multi_valued": true },
         "marker_name":                { "type": "text", "indexed": true, "multi_valued": true },
+        "type":                       { "type": "text", "indexed": true },
         "synonym":                    { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
-        "chromosome":                 { "type": "textTight", "indexed": true }
+        "chromosome":                 { "type": "textTight", "indexed": true },
+        "coord_start":                { "type": "sint", "indexed": true },
+        "coord_end":                  { "type": "sint", "indexed": true },
+        "strand":                     { "type": "string" },
+        "ensembl_gene_id":            { "type": "textTight", "indexed": true, "multi_valued": true },
+        "ensembl_peptide_id":         { "type": "textTight", "indexed": true, "multi_valued": true },
+        "ensembl_transcript_id":      { "type": "textTight", "indexed": true, "multi_valued": true },
+        "vega_gene_id":               { "type": "textTight", "indexed": true, "multi_valued": true },
+        "ncbi_gene_id":               { "type": "sint", "indexed": true, "multi_valued": true },
+        "ccds_id":                    { "type": "textTight", "indexed": true, "multi_valued": true },
+        "omim_id":                    { "type": "textTight", "indexed": true, "multi_valued": true },
+        "design_plate":               { "type": "textTight", "indexed": true, "multi_valued": true },
+        "design_well":                { "type": "textTight", "indexed": true, "multi_valued": true },
+        "intermediate_vector_plate":  { "type": "textTight", "indexed": true, "multi_valued": true },
+        "intermediate_vector_well":   { "type": "textTight", "indexed": true, "multi_valued": true },
+        "targeting_vector_plate":     { "type": "textTight", "indexed": true, "multi_valued": true },
+        "targeting_vector_well":      { "type": "textTight", "indexed": true, "multi_valued": true },
+        "allele":                     { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "escell":                     { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "phenotype":                  { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
+        "phenotype_comment":          { "type": "text", "indexed": true, "multi_valued": true },
+        "mp_term":                    { "type": "textTight", "indexed": true, "multi_valued": true },
+        "MP":                         { "type": "textTight", "indexed": true, "multi_valued": true },
+        "colony_prefix":              { "type": "textTight", "indexed": true, "multi_valued": true }
       },
       "copy_fields": [
         { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
         { "source": "mgi_accession_id_key",       "dest": "MGI" },
+        { "source": "secondary_mgi_accession_id", "dest": "mgi_accession_id" },
+        { "source": "secondary_mgi_accession_id", "dest": "MGI" },
         { "source": "marker_symbol",              "dest": "marker_symbol_str" },
         { "source": "marker_symbol",              "dest": "symbol" },
+        { "source": "mp_term",                    "dest": "MP" },
         { "source": "mgi_accession_id_key",       "dest": "text" },
         { "source": "marker_symbol",              "dest": "text" },
         { "source": "marker_name",                "dest": "text" },
-        { "source": "synonym",                    "dest": "text" }
+        { "source": "synonym",                    "dest": "text" },
+        { "source": "secondary_mgi_accession_id", "dest": "text" },
+        { "source": "ensembl_gene_id",            "dest": "text" },
+        { "source": "ensembl_peptide_id",         "dest": "text" },
+        { "source": "ensembl_transcript_id",      "dest": "text" },
+        { "source": "vega_gene_id",               "dest": "text" },
+        { "source": "entrez_gene_id",             "dest": "text" },
+        { "source": "ccds_id",                    "dest": "text" },
+        { "source": "omim_id",                    "dest": "text" },
+        { "source": "intermediate_vector_plate",  "dest": "text" },
+        { "source": "targeting_vector_plate",     "dest": "text" },
+        { "source": "escell",                     "dest": "text" },
+        { "source": "phenotype",                  "dest": "text" },
+        { "source": "phenotype_comment",          "dest": "text" },
+        { "source": "mp_term",                    "dest": "text" },
+        { "source": "colony_prefix",              "dest": "text" }
       ]
     }
   },
@@ -52,6 +95,51 @@
         "11","12","13","14","15","16","17","18","19",
         "X","Y"
       ]
+    },
+    "phenotyping": {
+      "index_field":  "phenotype",
+      "display_name": "Positive Phenotyping Test",
+      "exact_search": true,
+      "options": [
+        ["ABR","abr"],
+        { "text": "Adult Expression", "query": "adult_expression", "slug": "adult-expression" },
+        { "text": "Blood Pressure", "query": "blood_pressure", "slug": "blood-pressure" },
+        { "text": "Body Weight Curve", "query": "body_weight_curve", "slug": "body-weight-curve" },
+        { "text": "Body Weight Curve (Normal Chow)", "query": "body_weight_curve_normal_chow", "slug": "body-weight-curve-normal-chow" },
+        { "text": "Brain Histology", "query": "brain_histology", "slug": "brain-histology" },
+        ["Calorimetry", "calorimetry"],
+        { "text": "Citrobacter Challenge", "query": "citrobacter_challenge", "slug": "citrobacter-challenge" },
+        { "text": "Core Temperature", "query": "core_temperature", "slug": "core-temperature" },
+        ["DEXA","dexa"],
+        ["Dysmorphology", "dysmorphology"],
+        { "text": "Embryo Expression", "query": "embryo_expression", "slug": "embryo-expression" },
+        { "text": "Eye Morphology", "query": "eye_morphology", "slug": "eye-morphology" },
+        { "text": "Fasted Clinical Chemistry", "query": "fasted_clinical_chemistry", "slug": "fasted-clinical-chemistry" },
+        ["Fertility", "fertility"],
+        { "text": "Full Clinical Chemistry", "query": "full_clinical_chemistry", "slug": "full-clinical-chemistry" },
+        { "text": "Grip Strength", "query": "grip_strength", "slug": "grip-strength" },
+        ["Haematology", "haematology"],
+        { "text": "Heart Histology", "query": "heart_histology", "slug": "heart-histology" },
+        { "text": "Heart Weights", "query": "heart_weights", "slug": "heart-weights" },
+        ["Histology", "histology"],
+        { "text": "Homozygote Viability", "query": "homozygote_viability", "slug": "homozygote-viability" },
+        { "text": "Hot Plate", "query": "hot_plate", "slug": "hot-plate" },
+        ["Insulin", "insulin"],
+        { "text": "ip-GTT", "query": "ip_gtt", "slug": "ip-gtt" },
+        ["Micronuclei", "micronuclei"],
+        { "text": "Modified Shirpa", "query": "modified_shirpa", "slug": "modified-shirpa" },
+        { "text": "Number of Hits", "query": "number_of_hits", "slug": "number-of-hits" },
+        { "text": "Open Field", "query": "open_field", "slug": "open-field" },
+        { "text": "Peripheral Blood Lymphocytes", "query": "peripheral_blood_lymphocytes", "slug": "peripheral-blood-lymphocytes" },
+        { "text": "Prepulse Inhibition", "query": "prepulse_inhibition", "slug": "prepulse-inhibition" },
+        { "text": "Recessive Lethal Study", "query": "recessive_lethal_study", "slug": "recessive-lethal-study" },
+        ["Rotarod", "rotarod"],
+        { "text": "Salmonella Challenge", "query": "salmonella_challenge", "slug": "salmonella-challenge" },
+        { "text": "Serum Immunoglobulins", "query": "serum_immunoglobulins", "slug": "serum-immunoglobulins" },
+        { "text": "Skin Screen", "query": "skin_screen", "slug": "skin-screen" },
+        { "text": "Tail Length", "query": "tail_length", "slug": "tail-length" },
+        { "text": "X-Ray Imaging", "query": "x_ray_imaging", "slug": "x-ray-imaging" }
+      ]
     }
   },
   "test": {
@@ -60,6 +148,10 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "dcc"
+    "dcc",
+    "phenotyping",
+    "kermits",
+    "htgt_targ",
+    "bacs"
   ]
 }

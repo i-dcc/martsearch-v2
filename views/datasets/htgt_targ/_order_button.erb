@@ -1,0 +1,11 @@
+<% if project["is_komp_csd"] === "1" %>
+  <% if order_type === "vector" %>
+    <a href="http://www.komp.org/vectorOrder.php?projectid=<%= project["htgt_project_id"] %>" target="_blank" class="order">order</a>
+  <% elsif order_type === "clone" %>
+    <a href="http://www.komp.org/orders.php?project=CSD<%= project["htgt_project_id"] %>&amp;product=1" target="_blank" class="order">order</a>
+  <% else %>
+    <a href="http://www.komp.org/geneinfo.php?project=CSD<%= project["htgt_project_id"] %>" target="_blank" class="order">order</a>
+  <% end %>
+<% elsif project["is_eucomm"] === "1" %>
+  <a href="http://www.eummcr.org/order.php" target="_blank" class="order">order</a>
+<% end %>

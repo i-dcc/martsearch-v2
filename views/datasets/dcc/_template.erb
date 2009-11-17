@@ -31,54 +31,56 @@
   </tr>
 </table>
 
-<h5>Other Gene IDs</h5>
-<table>
-  <tr>
-    <th width="15%">MGI Gene Accession:</th>
-    <td width="18%"><%= link_to( result_data["dcc"]["mgi_accession_id"], "http://www.informatics.jax.org/searches/accession_report.cgi?id=#{result_data["dcc"]["mgi_accession_id"]}" ) %></td>
-    
-    <%
-      ensembl_ids = result_data["dcc"]["ensembl_gene_ids"]
-      ensembl_links = []
-      for ensembl_id in ensembl_ids
-        ensembl_links.push( link_to( ensembl_id, "http://www.ensembl.org/Mus_musculus/contigview?gene=#{ensembl_id}" ) )
-      end
-    %>
-    <th width="15%">Ensembl Gene ID:</th>
-    <td width="18%"><%= ensembl_links.join(", ") %></td>
-    
-    <%
-      vega_ids = result_data["dcc"]["vega_gene_ids"]
-      vega_links = []
-      for vega_id in vega_ids
-        vega_links.push( link_to( vega_id, "http://vega.sanger.ac.uk/Mus_musculus/geneview?gene=#{vega_id}&amp;db=core" ) )
-      end
-    %>
-    <th width="15%">Vega Gene ID:</th>
-    <td width="18%"><%= vega_links.join(", ") %></td>
-  </tr>
-  <tr>
-    <%
-      entrez_ids = result_data["dcc"]["entrez_gene_ids"]
-      entrez_links = []
-      for entrez_id in entrez_ids
-        entrez_links.push( link_to( entrez_id, "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{entrez_id}" ) )
-      end
-    %>
-    <th>Entrez Gene ID:</th>
-    <td><%= entrez_links.join(", ") %></td>
-    
-    <%
-      ccds_ids = result_data["dcc"]["ccds_ids"]
-      ccds_links = []
-      for ccds_id in ccds_ids
-        ccds_links.push( link_to( ccds_id, "http://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&amp;DATA=#{ccds_id}" ) )
-      end
-    %>
-    <th>CCDS ID:</th>
-    <td><%= ccds_links.join(", ") %></td>
-    
-    <th>OMIM ID:</th>
-    <td><%= result_data["dcc"]["omim_ids"].join(", ") %></td>
-  </tr>
-</table>
+<h5 class="dcc_other_gene_ids_toggle">Other Gene IDs</h5>
+<div class="dcc_other_gene_ids_content">
+  <table>
+    <tr>
+      <th width="15%">MGI Gene Accession:</th>
+      <td width="18%"><%= link_to( result_data["dcc"]["mgi_accession_id"], "http://www.informatics.jax.org/searches/accession_report.cgi?id=#{result_data["dcc"]["mgi_accession_id"]}" ) %></td>
+
+      <%
+        ensembl_ids = result_data["dcc"]["ensembl_gene_ids"]
+        ensembl_links = []
+        for ensembl_id in ensembl_ids
+          ensembl_links.push( link_to( ensembl_id, "http://www.ensembl.org/Mus_musculus/contigview?gene=#{ensembl_id}" ) )
+        end
+      %>
+      <th width="15%">Ensembl Gene ID:</th>
+      <td width="18%"><%= ensembl_links.join(", ") %></td>
+
+      <%
+        vega_ids = result_data["dcc"]["vega_gene_ids"]
+        vega_links = []
+        for vega_id in vega_ids
+          vega_links.push( link_to( vega_id, "http://vega.sanger.ac.uk/Mus_musculus/geneview?gene=#{vega_id}&amp;db=core" ) )
+        end
+      %>
+      <th width="15%">Vega Gene ID:</th>
+      <td width="18%"><%= vega_links.join(", ") %></td>
+    </tr>
+    <tr>
+      <%
+        entrez_ids = result_data["dcc"]["entrez_gene_ids"]
+        entrez_links = []
+        for entrez_id in entrez_ids
+          entrez_links.push( link_to( entrez_id, "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{entrez_id}" ) )
+        end
+      %>
+      <th>Entrez Gene ID:</th>
+      <td><%= entrez_links.join(", ") %></td>
+
+      <%
+        ccds_ids = result_data["dcc"]["ccds_ids"]
+        ccds_links = []
+        for ccds_id in ccds_ids
+          ccds_links.push( link_to( ccds_id, "http://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&amp;DATA=#{ccds_id}" ) )
+        end
+      %>
+      <th>CCDS ID:</th>
+      <td><%= ccds_links.join(", ") %></td>
+
+      <th>OMIM ID:</th>
+      <td><%= result_data["dcc"]["omim_ids"].join(", ") %></td>
+    </tr>
+  </table>
+</div>

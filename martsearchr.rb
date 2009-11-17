@@ -104,10 +104,6 @@ before do
     :status => [],
     :error  => []
   }
-  
-  unless @@ms.index.is_alive?
-    @messages[:error].push("The search index is currently unavailable, please check back again soon.")
-  end
 end
 
 get "/?" do
@@ -148,6 +144,8 @@ end
     @page_title = "Search Results for '#{params[:query]}'"
     @results    = @@ms.search( params[:query], params[:page] )
     @data       = @@ms.search_data
+    check_for_errors
+    
     erb :search
   end
 end
@@ -214,11 +212,12 @@ end
         
       end
     end
-  
+    
     # Perform our search...
     @results    = @@ms.search( @solr_query, params[:page] )
     @data       = @@ms.search_data
-  
+    check_for_errors
+    
     erb :browse
   end
 end
@@ -276,4 +275,14 @@ get "/js/martsearch*.js" do
   
   content_type "text/javascript"
   return js_text
+end
+
+def check_for_errors
+  unless @@ms.index.is_alive?
+    @messages[:error].push({ :highlight => "The search index is currently unavailable, please check back again soon." })
+  end
+  
+  @@ms.errors.each do |error|
+    @messages[:error].push(error)
+  end
 end

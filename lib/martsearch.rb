@@ -1,6 +1,6 @@
 class Martsearch
   attr_reader :config, :search_data, :search_results
-  attr_accessor :http_client, :index, :datasets, :datasets_by_name
+  attr_accessor :http_client, :index, :datasets, :datasets_by_name, :errors
   
   def initialize( config_file_name )
     @http_client = Net::HTTP
@@ -35,7 +35,7 @@ class Martsearch
     end
     
     # Error Message Stash...
-    @error_messages = []
+    @errors = []
     
     # Stores for current search result data
     @search_data    = {}
@@ -59,8 +59,11 @@ class Martsearch
     
     begin
       search_data = @index.search( query, page )
-    rescue IndexSearchError => e
-      # FIXME: Add a way to test/report this index search error
+    rescue IndexSearchError => error
+      @errors.push({
+        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
+        :full_text => error
+      })
     end
     
     if @index.current_results_total === 0
@@ -76,8 +79,11 @@ class Martsearch
             begin
               mart_results = dataset.search( search_terms, @index.current_results )
               dataset.add_to_results_stash( search_data, mart_results )
-            rescue Biomart::BiomartError => e
-              # FIXME: Add a way to test/report this biomart search error
+            rescue Biomart::BiomartError => error
+              @errors.push({
+                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
+                :full_text => error
+              })
             end
           end
         end

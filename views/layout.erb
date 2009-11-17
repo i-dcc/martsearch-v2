@@ -33,7 +33,7 @@
       
       <div id="messages">
         <% if @messages[:status].size > 0 %>
-          <div id="status_msgs" class="notice">
+          <div id="status_msgs" class="messages">
             <ul>
               <% @messages[:status].each do |msg| %>
                 <li><%= msg %></li>
@@ -42,11 +42,17 @@
           </div>
         <% end %>
         <% if @messages[:error].size > 0 %>
-          <div id="error_msgs" class="error">
-            <strong>MartSearchr Error</strong>
+          <div id="error_msgs" class="messages">
+            <h2>Sorry, an Error Has Occurred</h2>
             <ul>
               <% @messages[:error].each do |msg| %>
-                <li><%= msg %></li>
+                <li>
+                  <%= msg[:highlight] %>
+                  <% if msg[:full_text] %>
+                    <small><a class="error_msg_toggle">view the full error message</a></small>
+                    <div class="error_msg_content"><%= msg[:full_text] %></div>
+                  <% end %>
+                </li>
               <% end %>
             </ul>
           </div>

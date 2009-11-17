@@ -58,7 +58,7 @@ class Dataset
       :process_results => true
     }
     
-    @filters.each do |name,value| then
+    @filters.each do |name,value|
       search_params[:filters][name] = value
     end
     

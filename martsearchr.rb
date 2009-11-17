@@ -6,6 +6,7 @@ require "net/http"
 require "rubygems"
 require "sinatra"
 require "json"
+require "rdiscount"
 
 require "active_support"
 require "will_paginate/collection"
@@ -104,6 +105,8 @@ before do
     :status => [],
     :error  => []
   }
+  
+  check_for_messages
 end
 
 get "/?" do
@@ -284,5 +287,21 @@ def check_for_errors
   
   @@ms.errors.each do |error|
     @messages[:error].push(error)
+  end
+end
+
+def check_for_messages
+  pwd = File.dirname(__FILE__)
+  Dir[ "#{pwd}/messages/*.html", "#{pwd}/messages/*.markdown" ].each do |file|
+    case file
+    when /html/
+      html = File.new( file, "r" )
+      @messages[:status].push(html.read)
+      html.close
+    when /markdown/
+      md = File.new( file, "r" )
+      @messages[:status].push( RDiscount.new(md.read).to_html )
+      md.close
+    end
   end
 end

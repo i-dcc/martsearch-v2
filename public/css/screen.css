@@ -132,6 +132,10 @@ a.order:hover {
 	margin-bottom: 0;
 }
 
+.messages p {
+	margin-bottom: 2px;
+}
+
 #status_msgs {
 	color: #323200;
 	border-color: #cacb66;

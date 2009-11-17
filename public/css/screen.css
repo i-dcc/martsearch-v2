@@ -428,3 +428,21 @@ table#welcome table#summary_statistics,
 table#welcome table#summary_statistics th {
 	text-align: center;
 }
+
+/* WTSI Header Customizations */
+ 
+#wrapper {
+	padding-top: 0;
+}
+
+#header {
+	background: url(../images/swoosh_mice.png) no-repeat left top;
+	height: 66px;
+	text-align: left;
+}
+
+#header h1 {
+	float: right;
+	margin-top: 41px;
+	margin-bottom: 0;
+}

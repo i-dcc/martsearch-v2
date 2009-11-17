@@ -19,6 +19,11 @@ Dir[ File.dirname(__FILE__) + "/lib/*.rb" ].each do |file|
   require file
 end
 
+# We're going to use the version number as a cache breaker 
+# for the CSS and javascript code. Update with each release 
+# of your portal (especially if you change the CSS or JS)!!!
+PORTAL_VERSION = "0.0.1"
+
 configure do
   @@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
 end
@@ -230,12 +235,45 @@ get "/help/?" do
   erb :help
 end
 
-get "/css/dataset_styles.css" do
+get "/css/martsearch*.css" do
+  css_text = ""
+  css_files = [
+    "reset.css",
+    "jquery.prettyPhoto.css",
+    "screen.css"
+  ]
+  
+  css_files.each do |file|
+    css_text << "\n /* #{file} */ \n\n"
+    file = File.new("#{Dir.pwd}/public/css/#{file}","r")
+    css_text << file.read
+    file.close
+  end
+  
+  css_text << "\n /* DATASET CUSTOM CSS */ \n\n"
+  css_text << @@ms.dataset_stylesheets
+  
   content_type "text/css"
-  @@ms.dataset_stylesheets
+  return css_text
 end
 
-get "/js/dataset_javascripts.js" do
+get "/js/martsearch*.js" do
+  js_text = ""
+  js_files = [
+    "jquery-plugins.min.js",
+    "martsearchr.js"
+  ]
+  
+  js_files.each do |file|
+    js_text << "\n /* #{file} */ \n\n"
+    file = File.new("#{Dir.pwd}/public/js/#{file}","r")
+    js_text << file.read
+    file.close
+  end
+  
+  js_text << "\n // DATASET CUSTOM JS \n\n"
+  js_text << @@ms.dataset_javascripts
+  
   content_type "text/javascript"
-  @@ms.dataset_javascripts
+  return js_text
 end

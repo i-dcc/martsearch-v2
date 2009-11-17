@@ -1,8 +1,3 @@
-/* @override http://localhost:9393/css/screen.css */
-
-@import url(/css/reset.css);
-@import url(/css/jquery.prettyPhoto.css);
-
 /* Page Layout */
 
 #wrapper {

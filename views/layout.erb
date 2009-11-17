@@ -3,9 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <% if @page_title %>
-      <title><%= @page_title %> - WTSI Mouse Resources Portal</title>
+      <title><%= @page_title %> - <%= @ms.portal_name %></title>
     <% else %>
-      <title>WTSI Mouse Resources Portal</title>
+      <title><%= @ms.portal_name %></title>
     <% end %>
     
     <link rel="stylesheet" href="/css/martsearch-<%= PORTAL_VERSION %>.css" type="text/css" media="screen, projection" />
@@ -14,7 +14,7 @@
   <body>
     <div id="wrapper">
       <div id="header">
-        <h1>WTSI Mouse Resources Portal</h1>
+        <h1><%= @ms.portal_name %></h1>
       </div>
       
       <div id="navigation">

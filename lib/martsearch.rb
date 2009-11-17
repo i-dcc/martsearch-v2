@@ -1,5 +1,5 @@
 class Martsearch
-  attr_reader :config, :search_data, :search_results
+  attr_reader :config, :search_data, :search_results, :portal_name
   attr_accessor :http_client, :index, :datasets, :datasets_by_name, :errors
   
   def initialize( config_file_name )
@@ -11,6 +11,8 @@ class Martsearch
     
     config_file = File.new( config_file_name, "r" )
     @config     = JSON.load(config_file)
+    
+    @portal_name = @config["portal_name"]
     
     @index = Index.new( @config["index"], @http_client ) # The index object
     

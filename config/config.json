@@ -2,8 +2,8 @@
   "debug":       false,
   "portal_name": "WTSI Mouse Resources Portal",
   "email": {
-    "to":   "...@example.com",
-    "from": "...@example.com"
+    "to":   "mouseportal@sanger.ac.uk",
+    "from": "martsearch@sanger.ac.uk"
   },
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",

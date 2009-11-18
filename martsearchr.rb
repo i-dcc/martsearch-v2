@@ -7,6 +7,7 @@ require "rubygems"
 require "sinatra"
 require "json"
 require "rdiscount"
+require "pony"
 
 require "active_support"
 require "will_paginate/collection"
@@ -25,8 +26,40 @@ end
 # of your portal (especially if you change the CSS or JS)!!!
 PORTAL_VERSION = "0.0.1"
 
-configure do
-  @@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
+# Initialise the MartSearch object
+@@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
+
+configure :production do
+  not_found do
+    # Email if this is a broken link within the portal
+    @martsearch_error = false
+    if request.env["HTTP_REFERER"]
+      if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
+        @martsearch_error = true
+        @@ms.send_email({
+          :subject => "[MartSearch 404] '#{request.env["REQUEST_PATH"]}'",
+          :body    => "404 Error raised on the page '#{request.env["REQUEST_PATH"]}'.  This was linked to from '#{request.env["HTTP_REFERER"]}'."
+        })
+      end
+    end
+    
+    @request = request
+    erb :not_found
+  end
+
+  error do
+    template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
+    template = ERB.new(template_file.read)
+    template_file.close
+    
+    @@ms.send_email({
+     :subject => "[MartSearch Error] '#{request.env["sinatra.error"].message}'",
+     :body    => template.result(binding)
+    })
+    
+    @request = request
+    erb :error
+  end
 end
 
 helpers do
@@ -296,3 +329,4 @@ def check_for_messages
     end
   end
 end
+

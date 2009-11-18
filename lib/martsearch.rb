@@ -143,4 +143,30 @@ class Martsearch
     
     return js
   end
+  
+  # Utility function to send an email to/from an address specified in the 
+  # config file.  Uses Pony (http://github.com/benprew/pony) to handle the 
+  # email delivery.
+  def send_email( options={} )
+    pony_opts = {
+      :to      => self.config["email"]["to"],
+      :from    => self.config["email"]["from"],
+      :subject => "A Message from MartSearch...",
+      :body    => "You have been sent this message from your MartSearch portal."
+    }
+
+    if self.config["email"]["smtp"]
+      pony_opts[:via]  = :smtp
+      pony_opts[:smtp] = {}
+      [:host, :port, :user, :pass, :auth, :domain].each do |opt|
+        if self.config["email"]["smtp"][opt.to_s]
+          pony_opts[:smtp][opt] = self.config["email"]["smtp"][opt.to_s]
+        end
+      end
+    else
+      pony_opts[:via] = :sendmail
+    end
+
+    Pony.mail( pony_opts.merge(options) )
+  end
 end

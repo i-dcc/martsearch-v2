@@ -1,0 +1,23 @@
+<h2>Sorry, the Page You Were Looking for Cannot Be Found [404]</h2>
+
+<% if @martsearch_error %>
+  <p>
+    Sorry, it looks like an link within <%= @ms.portal_name %> has been 
+    misconfigured.  The team responsible for this site have automatically 
+    been sent an email to let them know that this needs fixing.
+  </p>
+<% else %>
+  <p>
+    You were incorrectly referred to this page by: 
+    <a href="<%= @request.env["HTTP_REFERER"]%>"><%= @request.env["HTTP_REFERER"]%></a>
+  </p>
+<% end %>
+
+<p>
+  Please try to find what you were looking for by using the search form 
+  above or by heading to the <a href="/">Home Page</a>.
+</p>
+<p>
+  Sorry for any inconvenience caused.
+</p>
+

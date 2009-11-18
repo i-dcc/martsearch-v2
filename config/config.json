@@ -1,6 +1,10 @@
 {
   "debug":       false,
   "portal_name": "MartSearch",
+  "email": {
+    "to":   "...@example.com",
+    "from": "...@example.com"
+  },
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,

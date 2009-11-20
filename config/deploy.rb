@@ -1,6 +1,6 @@
-set :application, "martsearch"
+set :application, "sanger_mouse_portal"
 set :repository,  "git://github.com/dazoakley/martsearchr.git"
-set :branch, "master"
+set :branch, "sanger_mouse_portal"
 set :user, "team87"
 
 set :scm, :git

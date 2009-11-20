@@ -1,0 +1,1 @@
+set :deploy_to, "/software/team87/deploy/staging/#{application}"

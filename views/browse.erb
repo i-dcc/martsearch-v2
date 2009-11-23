@@ -22,9 +22,9 @@
             text.gsub!(" ","&nbsp;")
           %>
           <% if key === params[:field] and query === params[:query] %>
-            <a href="<%= "/browse/#{key}/#{query}" %>" class="current"><%= text %></a> 
+            <a href="<%= "#{BASE_URI}/browse/#{key}/#{query}" %>" class="current"><%= text %></a> 
           <% else %>
-            <a href="<%= "/browse/#{key}/#{query}" %>"><%= text %></a> 
+            <a href="<%= "#{BASE_URI}/browse/#{key}/#{query}" %>"><%= text %></a> 
           <% end %>
         <% end %>
       </td>

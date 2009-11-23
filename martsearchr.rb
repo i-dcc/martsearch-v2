@@ -151,19 +151,19 @@ end
 get "/search" do
   # Catch out empty search parameters - would otherwise cause infinite redirects
   if params[:query] =~ /^$/
-    redirect "/"
+    redirect "#{BASE_URI}/"
   else
     if params[:page]
-      redirect "/search/#{params[:query]}/#{params[:page]}"
+      redirect "#{BASE_URI}/search/#{params[:query]}/#{params[:page]}"
     else
-      redirect "/search/#{params[:query]}"
+      redirect "#{BASE_URI}/search/#{params[:query]}"
     end
   end
 end
 
 get "/search/" do
   # Catch out empty search parameters - would otherwise cause infinite redirects
-  redirect "/"
+  redirect "#{BASE_URI}/"
 end
 
 ["/search/:query/?", "/search/:query/:page/?"].each do |path|

@@ -28,6 +28,7 @@ PORTAL_VERSION = "0.0.1"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
+BASE_URI = @@ms.config["base_uri"]
 
 configure :production do
   not_found do
@@ -103,7 +104,7 @@ helpers do
       params.delete("captures")
       path + "?" + build_query(params.merge(link_options))
     else
-      if link_options =~ /^\/search|\/browse/ and request.path_info =~ /^\/search|\/browse/
+      if link_options =~ /\/search|\/browse/ and request.path_info =~ /\/search|\/browse/
         # we've been given a pagination link
         tmp  = link_options.split("?")
         opts = parse_query(tmp[1])
@@ -111,9 +112,9 @@ helpers do
         
         # Work out the url to use
         if tmp[0].match("/search")
-          url = "/search/#{params["query"]}"
+          url = "#{BASE_URI}/search/#{params["query"]}"
         elsif tmp[0].match("/browse")
-          url = "/browse/#{params["field"]}/#{params["query"]}"
+          url = "#{BASE_URI}/browse/#{params["field"]}/#{params["query"]}"
         end
         
         if opts["page"]

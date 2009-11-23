@@ -1,7 +1,7 @@
-<form id="martsearchr" action="search" method="get" accept-charset="utf-8">
+<form id="martsearchr" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
   <input type="text" name="query" value="" size="50" />&nbsp;
   <input type="submit" value="Search" /><br />
-  <small>Enter gene symbols, gene or product identifiers or any other search term described in the <a href="/help">help</a> section.</small>
+  <small>Enter gene symbols, gene or product identifiers or any other search term described in the <a href="<%= BASE_URI %>/help">help</a> section.</small>
 </form>
 
 <div class="clear"></div>

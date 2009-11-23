@@ -1,6 +1,7 @@
 {
   "debug":       false,
   "portal_name": "WTSI Mouse Resources Portal",
+  "base_uri":    "",
   "email": {
     "to":   "mouseportal@sanger.ac.uk",
     "from": "martsearch@sanger.ac.uk"

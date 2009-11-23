@@ -16,7 +16,7 @@ STDERR.reopen(log)
 
 require "logger"
 configure do
-  LOGGER = Logger.new("#{File.dirname(__FILE__)}/log/martsearch.log", "daily") 
+  LOGGER = Logger.new("#{File.dirname(__FILE__)}/log/martsearch.log", "weekly") 
 end
 
 helpers do

@@ -42,7 +42,7 @@
                 
                 link = ""
                 if result["#{attrib}_url"]
-                  link = "<a href='http://www.sanger.ac.uk#{result["#{attrib}_url"]}' target='_blank'><img src='/images/bullet_go.png' /></a>"
+                  link = "<a href='http://www.sanger.ac.uk#{result["#{attrib}_url"]}' target='_blank'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
                   title_text += "<p><em>Click the arrow for more information on this test result.</em></p>"
                 end
               %>

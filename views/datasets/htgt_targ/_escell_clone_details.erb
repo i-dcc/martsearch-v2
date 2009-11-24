@@ -13,13 +13,17 @@
       <tr>
         <td><a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= clone["escell_clone_name"].slice(0, clone["escell_clone_name"].length - 4) %>"><%= clone["escell_clone_name"] %></a></td>
         <td>
-          <% if clone["es_cell_line"].match("JM8") %>
-            C57BL/6N
-          <% elsif clone["es_cell_line"].match("C2") %>
-            C57BL/6N
-          <% elsif clone["es_cell_line"].match("AB2.2") %>
-            129S7
-          <% end %>
+          <%
+            cell_line = ""
+            if clone["es_cell_line"]
+              case clone["es_cell_line"]
+              when /JM8/   then cell_line = "C57BL/6N"
+              when /C2/    then cell_line = "C57BL/6N"
+              when /AB2.2/ then cell_line = "129S7"
+              end
+            end
+          %>
+          <%= cell_line %>
         </td>
         <td><%= clone["es_cell_line"] %></td>
         <td><%= clone["allele_name"] %></td>

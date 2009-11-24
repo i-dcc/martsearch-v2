@@ -19,13 +19,10 @@ class Martsearch
     @portal_name = @config["portal_name"]
     @index       = Index.new( @config["index"], @http_client ) # The index object
     
-    @cache = nil
-    if @config["cache"]
-      if @config["cache"].is_a?(Hash)
-        @cache = initialize_cache( @config["cache"]["type"] )
-      else
-        @cache = initialize_cache()
-      end
+    if @config["cache"] && @config["cache"].is_a?(Hash)
+      @cache = initialize_cache( @config["cache"]["type"] )
+    else
+      @cache = initialize_cache()
     end
     
     @datasets         = []

@@ -9,18 +9,15 @@ class Martsearch
       @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
     end
     
-    config_file = File.new( config_file_name, "r" )
-    @config     = JSON.load(config_file)
-    
+    @config      = JSON.load( File.new( config_file_name, "r" ) )
     @portal_name = @config["portal_name"]
+    @index       = Index.new( @config["index"], @http_client ) # The index object
     
-    @index = Index.new( @config["index"], @http_client ) # The index object
-    
-    @datasets = []
+    @datasets         = []
+    @datasets_by_name = {}
     @config["datasets"].each do |ds|
-      ds_conf_file = File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r")
-      ds_conf      = JSON.load(ds_conf_file)
-      dataset      = Dataset.new( ds_conf )
+      ds_conf = JSON.load( File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r") )
+      dataset = Dataset.new( ds_conf )
       
       if dataset.custom_sort
         # If we have a custom sorting routine, use a Mock object
@@ -29,17 +26,11 @@ class Martsearch
       end
       
       @datasets.push( dataset )
+      @datasets_by_name[ dataset.dataset_name.to_sym ] = dataset
     end
     
-    @datasets_by_name = {}
-    @datasets.each do |ds|
-      @datasets_by_name[ds.dataset_name.to_sym] = ds
-    end
-    
-    # Error Message Stash...
-    @errors = []
-    
-    # Stores for current search result data
+    # Stores for search result data and errors...
+    @errors         = []
     @search_data    = {}
     @search_results = []
   end
@@ -57,10 +48,11 @@ class Martsearch
   # 
   # But returns an ordered list of the search results (primary index field)
   def search( query, page )
-    search_data = {}
+    @search_data    = {}
+    @search_results = []
     
     begin
-      search_data = @index.search( query, page )
+      @search_data = @index.search( query, page )
     rescue IndexSearchError => error
       @errors.push({
         :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
@@ -69,35 +61,29 @@ class Martsearch
     end
     
     if @index.current_results_total === 0
-      search_data = nil
+      @search_data = nil
     else
       threads = []
-
+      
       @datasets.each do |ds|
         if ds.use_in_search
           threads << Thread.new(ds) do |dataset|
-            search_terms = @index.grouped_terms[ dataset.joined_index_field ]
-            
             begin
+              search_terms = @index.grouped_terms[ dataset.joined_index_field ]
               mart_results = dataset.search( search_terms )
-              dataset.add_to_results_stash( search_data, mart_results )
+              dataset.add_to_results_stash( @search_data, mart_results )
             rescue Biomart::BiomartError => error
               @errors.push({
                 :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
                 :full_text => error
               })
             end
-            
           end
         end
       end
-
+      
       threads.each { |thread| thread.join }
     end
-    
-    # Store the search data...
-    @search_data    = search_data
-    @search_results = []
     
     if @index.ordered_results.size > 0
       @search_results = paged_results()

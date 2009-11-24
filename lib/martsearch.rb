@@ -60,45 +60,15 @@ class Martsearch
   # 
   # But returns an ordered list of the search results (primary index field)
   def search( query, page )
-    @search_data    = {}
-    @search_results = []
-    
-    begin
-      @search_data = @index.search( query, page )
-    rescue IndexSearchError => error
-      @errors.push({
-        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
-        :full_text => error
-      })
+    if page.nil?
+      page = 1
     end
     
-    if @index.current_results_total === 0
-      @search_data = nil
+    cached_data = @cache.fetch("query:#{query}-page:#{page}")
+    if cached_data
+      search_from_cache( cached_data )
     else
-      threads = []
-      
-      @datasets.each do |ds|
-        if ds.use_in_search
-          threads << Thread.new(ds) do |dataset|
-            begin
-              search_terms = @index.grouped_terms[ dataset.joined_index_field ]
-              mart_results = dataset.search( search_terms )
-              dataset.add_to_results_stash( @search_data, mart_results )
-            rescue Biomart::BiomartError => error
-              @errors.push({
-                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
-                :full_text => error
-              })
-            end
-          end
-        end
-      end
-      
-      threads.each { |thread| thread.join }
-    end
-    
-    if @index.ordered_results.size > 0
-      @search_results = paged_results()
+      search_from_fresh( query, page )
     end
     
     # Return paged_results
@@ -169,6 +139,73 @@ class Martsearch
   end
   
   private
+  
+  # Utility function to extract search results from a cached data object
+  def search_from_cache( cached_data )
+    cached_data_obj              = JSON.parse(cached_data)
+    @search_data                 = cached_data_obj["search_data"]
+    @index.current_page          = cached_data_obj["current_page"]
+    @index.current_results_total = cached_data_obj["current_results_total"]
+    @index.ordered_results       = cached_data_obj["ordered_results"]
+    
+    @search_results = []
+    if @index.ordered_results.size > 0
+      @search_results = paged_results()
+    end
+  end
+  
+  # Utility function to perform a search off of the index and datasets
+  def search_from_fresh( query, page )
+    @search_data    = {}
+    @search_results = []
+  
+    begin
+      @search_data = @index.search( query, page )
+    rescue IndexSearchError => error
+      @errors.push({
+        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
+        :full_text => error
+      })
+    end
+  
+    if @index.current_results_total === 0
+      @search_data = nil
+    else
+      threads = []
+    
+      @datasets.each do |ds|
+        if ds.use_in_search
+          threads << Thread.new(ds) do |dataset|
+            begin
+              search_terms = @index.grouped_terms[ dataset.joined_index_field ]
+              mart_results = dataset.search( search_terms )
+              dataset.add_to_results_stash( @search_data, mart_results )
+            rescue Biomart::BiomartError => error
+              @errors.push({
+                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
+                :full_text => error
+              })
+            end
+          end
+        end
+      end
+    
+      threads.each { |thread| thread.join }
+    end
+  
+    if @index.ordered_results.size > 0
+      @search_results = paged_results()
+    end
+    
+    # Cache these search results for future use
+    obj_to_cache = {
+      :search_data           => @search_data,
+      :current_page          => @index.current_page,
+      :current_results_total => @index.current_results_total,
+      :ordered_results       => @index.ordered_results
+    }
+    @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json )
+  end
   
   # Helper function to initialize the caching system.  Uses 
   # ActiveSupport::Cache so that we can easily support multiple 

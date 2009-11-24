@@ -4,7 +4,12 @@
   "base_uri":    "/mouseportal",
   "email": {
     "to":   "mouseportal@sanger.ac.uk",
-    "from": "martsearch@sanger.ac.uk"
+    "from": "martsearch@sanger.ac.uk",
+    "smtp": {
+      "host":   "mail.sanger.ac.uk",
+      "port":   "25",
+      "domain": "sanger.ac.uk"
+    }
   },
   "cache": {
     "type": "file"

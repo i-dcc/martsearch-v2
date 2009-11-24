@@ -145,15 +145,23 @@ end
 
 get "/?" do
   @current = "home"
-  @sanger_counts = {
-    :phenotyping       => @@ms.datasets_by_name[:phenotyping].dataset.count(),
-    :mice              => @@ms.datasets_by_name[:kermits].dataset.count( :filters => { :mi_centre => "WTSI", :status => "Genotype Confirmed" } ),
-    :escells           => @@ms.datasets_by_name[:htgt_targ].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed"] } ),
-    :targ_vectors      => @@ms.datasets_by_name[:htgt_targ].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed","ES Cells - No QC Positives","ES Cells - Electroporation Unsuccessful","ES Cells - Electroporation in Progress","Vector - DNA Not Suitable for Electroporation","Vector Complete"] } ),
-    :micer_clones      => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "MICER" } ),
-    :c57_bacs          => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "C57Bl/6J" } ),
-    :one_two_nine_bacs => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "129S7" } )
-  }
+  
+  sanger_counts_from_cache = @@ms.cache.fetch("sanger_counts", :expires_in => 3.hours )
+  if sanger_counts_from_cache
+    @sanger_counts = JSON.parse(sanger_counts_from_cache)
+  else
+    @sanger_counts = {
+      "phenotyping"       => @@ms.datasets_by_name[:phenotyping].dataset.count(),
+      "mice"              => @@ms.datasets_by_name[:kermits].dataset.count( :filters => { :mi_centre => "WTSI", :status => "Genotype Confirmed" } ),
+      "escells"           => @@ms.datasets_by_name[:htgt_targ].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed"] } ),
+      "targ_vectors"      => @@ms.datasets_by_name[:htgt_targ].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed","ES Cells - No QC Positives","ES Cells - Electroporation Unsuccessful","ES Cells - Electroporation in Progress","Vector - DNA Not Suitable for Electroporation","Vector Complete"] } ),
+      "micer_clones"      => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "MICER" } ),
+      "c57_bacs"          => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "C57Bl/6J" } ),
+      "one_two_nine_bacs" => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "129S7" } )
+    }
+    @@ms.cache.write( "sanger_counts", @sanger_counts.to_json )
+  end
+  
   erb :main
 end
 

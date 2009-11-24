@@ -1,6 +1,23 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class MartsearchTest < Test::Unit::TestCase
+  context "Creating a MartSearch object" do
+    should "be possible with a filename" do
+      json_file = File.dirname(__FILE__) + "/../config/config.json"
+      json_obj  = JSON.load( File.new( json_file, "r" ) )
+      ms = Martsearch.new( json_file )
+      assert( ms.is_a?(Martsearch), "A MartSearch object cannot be created from a file location." )
+      assert_equal( json_obj, ms.config, "The MartSearch object has not correctly parsed the JSON file." )
+    end
+    
+    should "be possible from a Ruby hash/object" do
+      conf = @@ms.config.clone
+      ms = Martsearch.new( conf )
+      assert( ms.is_a?(Martsearch), "A martsearch object cannot be created from a configuration hash/object." )
+      assert_equal( conf, ms.config, "The MartSearch object has not correctly accepeted the configuration hash/object." )
+    end
+  end
+  
   context "A Martsearch object" do
     should "have basic attributes" do
       assert( !@@ms.config.nil?, "The Martsearch object does not have a configuration structure." )
@@ -38,4 +55,61 @@ class MartsearchTest < Test::Unit::TestCase
     end
   end
   
+  context "The MartSearch cache" do
+    setup do
+      @config = @@ms.config.clone
+    end
+    
+    should "allow the creation/use of a memory based cache" do
+      @config["cache"] = true
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::MemoryStore), "The memory based cache has not been initialised correctly." )
+      
+      test_file_and_memory_based_cache_use( ms.cache, "memory" )
+    end
+    
+    should "allow the creation/use of a file based cache" do
+      @config["cache"] = { "type" => "file" }
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::FileStore), "The file based cache has not been initialised correctly." )
+      
+      @config["cache"] = { "type" => "file", "file_store" => "#{File.dirname(__FILE__)}/../tmp/cache" }
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::FileStore), "The file based cache (with a custom location) has not been initialised correctly." )
+      
+      test_file_and_memory_based_cache_use( ms.cache, "file" )
+    end
+    
+    should "allow the creation of a memcached based cache" do
+      @config["cache"] = { "type" => "memcached" }
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::MemCacheStore), "The memcached based cache has not been initialised correctly." )
+      
+      @config["cache"] = { "type" => "memcached", "servers" => ['192.168.1.1:11000', '192.168.1.2:11001'] }
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::MemCacheStore), "The memcached based cache (with load balanced servers) has not been initialised correctly." )
+      
+      @config["cache"] = { "type" => "memcached", "namespace" => "foobar" }
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::MemCacheStore), "The memcached based cache (with a custom namespace) has not been initialised correctly." )
+      
+      # Note: we do not actually test the use of memcached here as there's no 
+      # guarantee of actually having a memcached server there to respond to! 
+      # As it's a core part of ActiveSupport and Rails, we'll assume it's well tested...
+    end
+  end
+  
+  def test_file_and_memory_based_cache_use( cache, type )
+    todays_date = Date.today
+    cache.write( "date", todays_date )
+    assert_equal( todays_date, cache.fetch("date"), "The #{type} based cache fell over storing a 'date' stamp!" )
+    assert_equal( true, cache.exist?("date"), "The #{type} based cache fell over recalling a 'date' stamp!" )
+    assert_equal( nil, cache.fetch("foo"), "The #{type} based cache does not return 'nil' upon an empty value." )
+    
+    cache.write( "foo", "bar", :expires_in => 1.second )
+    sleep(2)
+    assert( cache.exist?("foo"), "The :expires_in attribute on the #{type} based cache works?!?!?" )
+    cache.delete_matched( Regexp.new(".*") )
+    assert_equal( false, cache.exist?("foo"), "The 'delete_matched' method hasn't emptied out the cache..." )
+  end
 end

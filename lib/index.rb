@@ -7,8 +7,8 @@ class IndexUnavailableError < StandardError; end
 # Class representation for a Solr Index service used 
 # in MartSearch.
 class Index
-  attr_reader :primary_field, :docs_per_page, :ordered_results, :current_results, :current_results_total, :current_page, :grouped_terms
-  attr_accessor :url
+  attr_reader :primary_field, :docs_per_page, :grouped_terms
+  attr_accessor :url, :ordered_results, :current_results, :current_results_total, :current_page
   
   def initialize( conf, client )
     # Schema specific details...

@@ -271,6 +271,11 @@ get "/help/?" do
   erb :help
 end
 
+get "/clear_cache/?" do
+  @@ms.cache.delete_matched( Regexp.new(".*") )
+  redirect "#{BASE_URI}/"
+end
+
 get "/css/martsearch*.css" do
   css_text = ""
   css_files = [

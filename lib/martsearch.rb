@@ -1,26 +1,35 @@
 class Martsearch
-  attr_reader :config, :search_data, :search_results, :portal_name
+  attr_reader :config, :search_data, :search_results, :portal_name, :cache
   attr_accessor :http_client, :index, :datasets, :datasets_by_name, :errors
   
-  def initialize( config_file_name )
+  def initialize( config_desc )
     @http_client = Net::HTTP
     if ENV['http_proxy']
       proxy = URI.parse( ENV['http_proxy'] )
       @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
     end
     
-    config_file = File.new( config_file_name, "r" )
-    @config     = JSON.load(config_file)
+    @config = nil
+    if config_desc.is_a?(String)
+      @config = JSON.load( File.new( config_desc, "r" ) )
+    else
+      @config = config_desc
+    end
     
     @portal_name = @config["portal_name"]
+    @index       = Index.new( @config["index"], @http_client ) # The index object
     
-    @index = Index.new( @config["index"], @http_client ) # The index object
+    if @config["cache"] && @config["cache"].is_a?(Hash)
+      @cache = initialize_cache( @config["cache"]["type"] )
+    else
+      @cache = initialize_cache()
+    end
     
-    @datasets = []
+    @datasets         = []
+    @datasets_by_name = {}
     @config["datasets"].each do |ds|
-      ds_conf_file = File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r")
-      ds_conf      = JSON.load(ds_conf_file)
-      dataset      = Dataset.new( ds_conf )
+      ds_conf = JSON.load( File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r") )
+      dataset = Dataset.new( ds_conf )
       
       if dataset.custom_sort
         # If we have a custom sorting routine, use a Mock object
@@ -29,17 +38,11 @@ class Martsearch
       end
       
       @datasets.push( dataset )
+      @datasets_by_name[ dataset.dataset_name.to_sym ] = dataset
     end
     
-    @datasets_by_name = {}
-    @datasets.each do |ds|
-      @datasets_by_name[ds.dataset_name.to_sym] = ds
-    end
-    
-    # Error Message Stash...
-    @errors = []
-    
-    # Stores for current search result data
+    # Stores for search result data and errors...
+    @errors         = []
     @search_data    = {}
     @search_results = []
   end
@@ -57,50 +60,15 @@ class Martsearch
   # 
   # But returns an ordered list of the search results (primary index field)
   def search( query, page )
-    search_data = {}
-    
-    begin
-      search_data = @index.search( query, page )
-    rescue IndexSearchError => error
-      @errors.push({
-        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
-        :full_text => error
-      })
+    if page.nil?
+      page = 1
     end
     
-    if @index.current_results_total === 0
-      search_data = nil
+    cached_data = @cache.fetch("query:#{query}-page:#{page}")
+    if cached_data
+      search_from_cache( cached_data )
     else
-      threads = []
-
-      @datasets.each do |ds|
-        if ds.use_in_search
-          threads << Thread.new(ds) do |dataset|
-            search_terms = @index.grouped_terms[ dataset.joined_index_field ]
-            
-            begin
-              mart_results = dataset.search( search_terms )
-              dataset.add_to_results_stash( search_data, mart_results )
-            rescue Biomart::BiomartError => error
-              @errors.push({
-                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
-                :full_text => error
-              })
-            end
-            
-          end
-        end
-      end
-
-      threads.each { |thread| thread.join }
-    end
-    
-    # Store the search data...
-    @search_data    = search_data
-    @search_results = []
-    
-    if @index.ordered_results.size > 0
-      @search_results = paged_results()
+      search_from_fresh( query, page )
     end
     
     # Return paged_results
@@ -168,5 +136,103 @@ class Martsearch
     end
 
     Pony.mail( pony_opts.merge(options) )
+  end
+  
+  private
+  
+  # Utility function to extract search results from a cached data object
+  def search_from_cache( cached_data )
+    cached_data_obj              = JSON.parse(cached_data)
+    @search_data                 = cached_data_obj["search_data"]
+    @index.current_page          = cached_data_obj["current_page"]
+    @index.current_results_total = cached_data_obj["current_results_total"]
+    @index.ordered_results       = cached_data_obj["ordered_results"]
+    
+    @search_results = []
+    if @index.ordered_results.size > 0
+      @search_results = paged_results()
+    end
+  end
+  
+  # Utility function to perform a search off of the index and datasets
+  def search_from_fresh( query, page )
+    @search_data    = {}
+    @search_results = []
+  
+    begin
+      @search_data = @index.search( query, page )
+    rescue IndexSearchError => error
+      @errors.push({
+        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
+        :full_text => error
+      })
+    end
+  
+    if @index.current_results_total === 0
+      @search_data = nil
+    else
+      threads = []
+    
+      @datasets.each do |ds|
+        if ds.use_in_search
+          threads << Thread.new(ds) do |dataset|
+            begin
+              search_terms = @index.grouped_terms[ dataset.joined_index_field ]
+              mart_results = dataset.search( search_terms )
+              dataset.add_to_results_stash( @search_data, mart_results )
+            rescue Biomart::BiomartError => error
+              @errors.push({
+                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
+                :full_text => error
+              })
+            end
+          end
+        end
+      end
+    
+      threads.each { |thread| thread.join }
+    end
+  
+    if @index.ordered_results.size > 0
+      @search_results = paged_results()
+    end
+    
+    # Cache these search results for future use
+    obj_to_cache = {
+      :search_data           => @search_data,
+      :current_page          => @index.current_page,
+      :current_results_total => @index.current_results_total,
+      :ordered_results       => @index.ordered_results
+    }
+    @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json )
+  end
+  
+  # Helper function to initialize the caching system.  Uses 
+  # ActiveSupport::Cache so that we can easily support multiple 
+  # cache backends.
+  def initialize_cache( type=nil )
+    case type
+    when /memcache/
+      servers = ["localhost"]
+      opts = { :namespace => "martsearch", :no_reply => true }
+      
+      if self.config["cache"]["servers"]
+        servers = self.config["cache"]["servers"]
+      end
+      
+      if self.config["cache"]["namespace"]
+        opts[:namespace] = self.config["cache"]["namespace"]
+      end
+      
+      return ActiveSupport::Cache::MemCacheStore.new( servers, opts )
+    when /file/
+      file_store = "#{Dir.pwd}/tmp/cache"
+      if self.config["cache"]["file_store"]
+        file_store = self.config["cache"]["file_store"]
+      end
+      return ActiveSupport::Cache::FileStore.new( file_store )
+    else
+      return ActiveSupport::Cache::MemoryStore.new()
+    end
   end
 end

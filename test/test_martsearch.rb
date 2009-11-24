@@ -62,15 +62,10 @@ class MartsearchTest < Test::Unit::TestCase
     
     should "allow the creation/use of a memory based cache" do
       @config["cache"] = true
-      ms    = Martsearch.new( @config )
-      cache = ms.cache
-      assert( cache.is_a?(ActiveSupport::Cache::MemoryStore), "The memory based cache has not been initialised correctly." )
+      ms = Martsearch.new( @config )
+      assert( ms.cache.is_a?(ActiveSupport::Cache::MemoryStore), "The memory based cache has not been initialised correctly." )
       
-      todays_date = Date.today
-      cache.write( "date", todays_date )
-      assert_equal( todays_date, cache.fetch("date"), "The memory based cache fell over storing a 'date' stamp!" )
-      assert_equal( true, cache.exist?("date"), "The memory based cache fell over recalling a 'date' stamp!" )
-      assert_equal( nil, cache.fetch("foo"), "The memory based cache does not return 'nil' upon an empty value." )
+      test_file_and_memory_based_cache_use( ms.cache, "memory" )
     end
     
     should "allow the creation/use of a file based cache" do
@@ -82,12 +77,7 @@ class MartsearchTest < Test::Unit::TestCase
       ms = Martsearch.new( @config )
       assert( ms.cache.is_a?(ActiveSupport::Cache::FileStore), "The file based cache (with a custom location) has not been initialised correctly." )
       
-      cache       = ms.cache
-      todays_date = Date.today
-      cache.write( "date", todays_date )
-      assert_equal( todays_date, cache.fetch("date"), "The file based cache fell over storing a 'date' stamp!" )
-      assert_equal( true, cache.exist?("date"), "The file based cache fell over recalling a 'date' stamp!" )
-      assert_equal( nil, cache.fetch("foo"), "The file based cache does not return 'nil' upon an empty value." )
+      test_file_and_memory_based_cache_use( ms.cache, "file" )
     end
     
     should "allow the creation of a memcached based cache" do
@@ -107,5 +97,19 @@ class MartsearchTest < Test::Unit::TestCase
       # guarantee of actually having a memcached server there to respond to! 
       # As it's a core part of ActiveSupport and Rails, we'll assume it's well tested...
     end
+  end
+  
+  def test_file_and_memory_based_cache_use( cache, type )
+    todays_date = Date.today
+    cache.write( "date", todays_date )
+    assert_equal( todays_date, cache.fetch("date"), "The #{type} based cache fell over storing a 'date' stamp!" )
+    assert_equal( true, cache.exist?("date"), "The #{type} based cache fell over recalling a 'date' stamp!" )
+    assert_equal( nil, cache.fetch("foo"), "The #{type} based cache does not return 'nil' upon an empty value." )
+    
+    cache.write( "foo", "bar", :expires_in => 1.second )
+    sleep(2)
+    assert( cache.exist?("foo"), "The :expires_in attribute on the #{type} based cache works?!?!?" )
+    cache.delete_matched( Regexp.new(".*") )
+    assert_equal( false, cache.exist?("foo"), "The 'delete_matched' method hasn't emptied out the cache..." )
   end
 end

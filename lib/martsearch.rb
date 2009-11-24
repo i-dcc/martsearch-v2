@@ -1,17 +1,32 @@
 class Martsearch
-  attr_reader :config, :search_data, :search_results, :portal_name
+  attr_reader :config, :search_data, :search_results, :portal_name, :cache
   attr_accessor :http_client, :index, :datasets, :datasets_by_name, :errors
   
-  def initialize( config_file_name )
+  def initialize( config_desc )
     @http_client = Net::HTTP
     if ENV['http_proxy']
       proxy = URI.parse( ENV['http_proxy'] )
       @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
     end
     
-    @config      = JSON.load( File.new( config_file_name, "r" ) )
+    @config = nil
+    if config_desc.is_a?(String)
+      @config = JSON.load( File.new( config_desc, "r" ) )
+    else
+      @config = config_desc
+    end
+    
     @portal_name = @config["portal_name"]
     @index       = Index.new( @config["index"], @http_client ) # The index object
+    
+    @cache = nil
+    if @config["cache"]
+      if @config["cache"].is_a?(Hash)
+        @cache = initialize_cache( @config["cache"]["type"] )
+      else
+        @cache = initialize_cache()
+      end
+    end
     
     @datasets         = []
     @datasets_by_name = {}
@@ -154,5 +169,36 @@ class Martsearch
     end
 
     Pony.mail( pony_opts.merge(options) )
+  end
+  
+  private
+  
+  # Helper function to initialize the caching system.  Uses 
+  # ActiveSupport::Cache so that we can easily support multiple 
+  # cache backends.
+  def initialize_cache( type=nil )
+    case type
+    when /memcache/
+      servers = ["localhost"]
+      opts = { :namespace => "martsearch", :no_reply => true }
+      
+      if self.config["cache"]["servers"]
+        servers = self.config["cache"]["servers"]
+      end
+      
+      if self.config["cache"]["namespace"]
+        opts[:namespace] = self.config["cache"]["namespace"]
+      end
+      
+      return ActiveSupport::Cache::MemCacheStore.new( servers, opts )
+    when /file/
+      file_store = "#{Dir.pwd}/tmp/cache"
+      if self.config["cache"]["file_store"]
+        file_store = self.config["cache"]["file_store"]
+      end
+      return ActiveSupport::Cache::FileStore.new( file_store )
+    else
+      return ActiveSupport::Cache::MemoryStore.new()
+    end
   end
 end

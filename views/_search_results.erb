@@ -27,7 +27,7 @@
 <% end %>
 <%= will_paginate @results %>
 
-<% if @ms.index.current_results_total > @ms.index.docs_per_page %>
+<% if @ms.index.current_results_total > 1 %>
   <script type="text/javascript" charset="utf-8">
     jQuery(".doc_title").each( function(index) {
       jQuery(this).parent().find(".doc_content").hide();

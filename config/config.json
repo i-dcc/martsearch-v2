@@ -136,7 +136,6 @@
         { "text": "ip-GTT", "query": "ip_gtt", "slug": "ip-gtt" },
         ["Micronuclei", "micronuclei"],
         { "text": "Modified Shirpa", "query": "modified_shirpa", "slug": "modified-shirpa" },
-        { "text": "Number of Hits", "query": "number_of_hits", "slug": "number-of-hits" },
         { "text": "Open Field", "query": "open_field", "slug": "open-field" },
         { "text": "Peripheral Blood Lymphocytes", "query": "peripheral_blood_lymphocytes", "slug": "peripheral-blood-lymphocytes" },
         { "text": "Prepulse Inhibition", "query": "prepulse_inhibition", "slug": "prepulse-inhibition" },

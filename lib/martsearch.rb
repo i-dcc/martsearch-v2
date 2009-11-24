@@ -204,7 +204,7 @@ class Martsearch
       :current_results_total => @index.current_results_total,
       :ordered_results       => @index.ordered_results
     }
-    @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json )
+    @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json, :expires_in => 3.hours )
   end
   
   # Helper function to initialize the caching system.  Uses 

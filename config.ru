@@ -1,10 +1,8 @@
 require "rack"
 require "rack/contrib"
+require "martsearchr.rb"
 
 use Rack::ETag
-use Rack::ResponseCache, "#{File.dirname(__FILE__)}/tmp/static-cache"
-
-require "martsearchr.rb"
 
 set :environment, :production
 set :run, false

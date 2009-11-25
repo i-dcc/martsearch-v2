@@ -11,12 +11,12 @@
   <tbody>
     <% clones.each do |clone| %>
       <tr>
-        <td><a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= clone["escell_clone_name"].slice(0, clone["escell_clone_name"].length - 4) %>"><%= clone["escell_clone_name"] %></a></td>
+        <td><a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= clone["escell_clone"].slice(0, clone["escell_clone"].length - 4) %>"><%= clone["escell_clone"] %></a></td>
         <td>
           <%
             cell_line = ""
-            if clone["es_cell_line"]
-              case clone["es_cell_line"]
+            if clone["escell_line"]
+              case clone["escell_line"]
               when /JM8/   then cell_line = "C57BL/6N"
               when /C2/    then cell_line = "C57BL/6N"
               when /AB2.2/ then cell_line = "129S7"
@@ -25,7 +25,7 @@
           %>
           <%= cell_line %>
         </td>
-        <td><%= clone["es_cell_line"] %></td>
+        <td><%= clone["escell_line"] %></td>
         <td><%= clone["allele_name"] %></td>
         <td class="nobg noborder">
           <%= partial( "datasets/htgt_targ/order_button", :locals => { :project => project, :order_type => 'clone' } ) %>

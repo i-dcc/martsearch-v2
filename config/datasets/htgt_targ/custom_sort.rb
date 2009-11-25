@@ -6,7 +6,7 @@ sorted_results = {}
   # projects that have generated ES Cells...
   process_result = false
   
-  if !result["htgt_project_id"].nil?
+  if !result["ikmc_project_id"].nil?
     if result["status_sequence"] and result["status_sequence"].to_i >= 95
       if result["is_komp_regeneron"] != "1" and result["is_norcomm"] != 1
         process_result = true
@@ -21,19 +21,19 @@ sorted_results = {}
     end
     
     # And a project entry...
-    if sorted_results[ result[ @joined_biomart_attribute ] ][ result["htgt_project_id"] ].nil?
-      sorted_results[ result[ @joined_biomart_attribute ] ][ result["htgt_project_id"] ] = {}
+    if sorted_results[ result[ @joined_biomart_attribute ] ][ result["ikmc_project_id"] ].nil?
+      sorted_results[ result[ @joined_biomart_attribute ] ][ result["ikmc_project_id"] ] = {}
     end
     
     # Define our 'project' entry
-    project = sorted_results[ result[ @joined_biomart_attribute ] ][ result["htgt_project_id"] ]
+    project = sorted_results[ result[ @joined_biomart_attribute ] ][ result["ikmc_project_id"] ]
     
     # Extract the singular (per project) values
     singular_attributes = [
       "is_eucomm", "is_komp_csd", "is_komp_regeneron", "is_norcomm",
       "is_mgp", "marker_symbol", "ensembl_gene_id", "status",
       "status_code", "status_type", "status_description", "status_sequence",
-      "pipeline_stage", "htgt_project_id", "bac", "design_id",
+      "pipeline_stage", "ikmc_project_id", "bac", "design_id",
       "design_plate", "design_well", "intvec_plate", "intvec_well",
       "intvec_distribute", "targvec_plate", "targvec_well", "targvec_distribute",
       "backbone", "cassette", "allele_name", "is_latest_for_gene"
@@ -44,20 +44,20 @@ sorted_results = {}
     end
     
     # And ES Cell info
-    if result["escell_clone_name"] and ( result["escell_distribute"] or result["is_targeted_non_cond"] )
+    if result["escell_clone"] and ( result["escell_distribute"] or result["targeted_trap"] )
       clone = {
-        "escell_clone_name"    => result["escell_clone_name"],
+        "escell_clone"         => result["escell_clone"],
         "allele_name"          => result["allele_name"],
-        "es_cell_line"         => result["es_cell_line"],
+        "escell_line"         => result["escell_line"],
         "colonies_picked"      => result["colonies_picked"],
         "escell_distribute"    => result["escell_distribute"],
-        "is_targeted_non_cond" => result["is_targeted_non_cond"]
+        "targeted_trap" => result["targeted_trap"]
       }
       
       unless project["conditional_clones"]         then project["conditional_clones"]    = []     end
       unless project["nonconditional_clones"]      then project["nonconditional_clones"] = []     end
       
-      if result["is_targeted_non_cond"]
+      if result["targeted_trap"]
         project["nonconditional_clones"].push(clone)
       else
         project["conditional_clones"].push(clone)

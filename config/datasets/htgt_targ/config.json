@@ -18,7 +18,7 @@
       { "attr": "targvec_plate",     "idx": "targeting_vector_plate" },
       { "attr": "targvec_well",      "idx": "targeting_vector_well" },
       { "attr": "allele_name",       "idx": "allele" },
-      { "attr": "escell_clone_name", "idx": "escell" }
+      { "attr": "escell_clone",      "idx": "escell" }
     ]
   },
   "searching": {
@@ -40,7 +40,7 @@
       "status_description",
       "status_sequence",
       "pipeline_stage",
-      "htgt_project_id",
+      "ikmc_project_id",
       "bac",
       "design_id",
       "design_plate",
@@ -54,12 +54,12 @@
       "backbone",
       "cassette",
       "allele_name",
-      "escell_clone_name",
+      "escell_clone",
       "escell_distribute",
-      "es_cell_line",
+      "escell_line",
       "colonies_picked",
       "is_latest_for_gene",
-      "is_targeted_non_cond"
+      "targeted_trap"
     ],
     "filters": {}
   }

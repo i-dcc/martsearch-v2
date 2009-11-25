@@ -156,9 +156,10 @@ class Martsearch
   
   # Utility function to perform a search off of the index and datasets
   def search_from_fresh( query, page )
-    @search_data    = {}
-    @search_results = []
-  
+    @search_data         = {}
+    @search_results      = []
+    do_not_save_to_cache = false
+    
     begin
       @search_data = @index.search( query, page )
     rescue IndexSearchError => error
@@ -166,6 +167,7 @@ class Martsearch
         :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
         :full_text => error
       })
+      do_not_save_to_cache = true
     end
   
     if @index.current_results_total === 0
@@ -185,6 +187,7 @@ class Martsearch
                 :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
                 :full_text => error
               })
+              do_not_save_to_cache = true
             end
           end
         end
@@ -197,14 +200,15 @@ class Martsearch
       @search_results = paged_results()
     end
     
-    # Cache these search results for future use
-    obj_to_cache = {
-      :search_data           => @search_data,
-      :current_page          => @index.current_page,
-      :current_results_total => @index.current_results_total,
-      :ordered_results       => @index.ordered_results
-    }
-    @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json, :expires_in => 3.hours )
+    unless do_not_save_to_cache
+      obj_to_cache = {
+        :search_data           => @search_data,
+        :current_page          => @index.current_page,
+        :current_results_total => @index.current_results_total,
+        :ordered_results       => @index.ordered_results
+      }
+      @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json, :expires_in => 3.hours )
+    end
   end
   
   # Helper function to initialize the caching system.  Uses 

@@ -69,7 +69,7 @@
         { "source": "ensembl_peptide_id",         "dest": "text" },
         { "source": "ensembl_transcript_id",      "dest": "text" },
         { "source": "vega_gene_id",               "dest": "text" },
-        { "source": "entrez_gene_id",             "dest": "text" },
+        { "source": "ncbi_gene_id",               "dest": "text" },
         { "source": "ccds_id",                    "dest": "text" },
         { "source": "omim_id",                    "dest": "text" },
         { "source": "intermediate_vector_plate",  "dest": "text" },

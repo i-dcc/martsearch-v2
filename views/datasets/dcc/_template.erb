@@ -60,7 +60,7 @@
     </tr>
     <tr>
       <%
-        entrez_ids = result_data["dcc"]["entrez_gene_ids"]
+        entrez_ids = result_data["dcc"]["ncbi_gene_ids"]
         entrez_links = []
         for entrez_id in entrez_ids
           entrez_links.push( link_to( entrez_id, "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{entrez_id}" ) )

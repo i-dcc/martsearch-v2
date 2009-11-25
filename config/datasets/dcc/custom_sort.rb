@@ -7,7 +7,7 @@ sorted_results = {}
       "synonyms"         => [],
       "ensembl_gene_ids" => [],
       "vega_gene_ids"    => [],
-      "entrez_gene_ids"  => [],
+      "ncbi_gene_ids"    => [],
       "ccds_ids"         => [],
       "omim_ids"         => []
     }
@@ -26,7 +26,7 @@ sorted_results = {}
   result_data["synonyms"].push( result["synonym"] )
   result_data["ensembl_gene_ids"].push( result["ensembl_gene_id"] )
   result_data["vega_gene_ids"].push( result["vega_gene_id"] )
-  result_data["entrez_gene_ids"].push( result["entrez_gene_id"] )
+  result_data["ncbi_gene_ids"].push( result["ncbi_gene_id"] )
   result_data["ccds_ids"].push( result["ccds_id"] )
   result_data["omim_ids"].push( result["omim_id"] )
 end
@@ -37,7 +37,7 @@ sorted_results.each do |key,result_data|
   result_data["synonyms"].uniq!
   result_data["ensembl_gene_ids"].uniq!
   result_data["vega_gene_ids"].uniq!
-  result_data["entrez_gene_ids"].uniq!
+  result_data["ncbi_gene_ids"].uniq!
   result_data["ccds_ids"].uniq!
   result_data["omim_ids"].uniq!
 end

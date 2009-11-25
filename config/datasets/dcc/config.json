@@ -4,7 +4,7 @@
   "custom_sort":   true,
   "custom_css":    false,
   "custom_js":     true,
-  "url":           "http://www.sanger.ac.uk/htgt/biomart",
+  "url":           "http://www.i-dcc.org/biomart",
   "dataset_name":  "dcc",
   "display_name":  "Gene Details",
   "indexing": {
@@ -20,7 +20,7 @@
       { "attr": "synonym",          "idx": "synonym" },
       { "attr": "ensembl_gene_id",  "idx": "ensembl_gene_id" },
       { "attr": "vega_gene_id",     "idx": "vega_gene_id" },
-      { "attr": "entrez_gene_id",   "idx": "ncbi_gene_id" },
+      { "attr": "ncbi_gene_id",     "idx": "ncbi_gene_id" },
       { "attr": "ccds_id",          "idx": "ccds_id" },
       { "attr": "omim_id",          "idx": "omim_id" }
     ]
@@ -40,7 +40,7 @@
       "mgi_accession_id",
       "ensembl_gene_id",
       "vega_gene_id",
-      "entrez_gene_id",
+      "ncbi_gene_id",
       "ccds_id",
       "omim_id"
     ],

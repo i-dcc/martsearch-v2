@@ -64,6 +64,7 @@ class Martsearch
       page = 1
     end
     
+    @errors     = []
     cached_data = @cache.fetch("query:#{query}-page:#{page}")
     if cached_data
       search_from_cache( cached_data )

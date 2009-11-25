@@ -40,7 +40,7 @@
             <%
               link = nil
               if result["sponsor"] === "EUCOMM"
-                link = "http://www.emmanet.org/apps/springEmma/search?keyword=#{result["marker_symbol"]}&amp;select_by=affectedGene&amp;search=ok";
+                link = "http://www.emmanet.org/mutant_types.php?keyword=#{result["marker_symbol"]}";
               elsif result["sponsor"] === "KOMP"
                 link = "mailto:mouseinterest@sanger.ac.uk?subject=Interest in Mouse for #{result["marker_symbol"]}"
               end

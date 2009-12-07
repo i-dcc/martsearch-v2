@@ -40,3 +40,24 @@
 .phenotyping table td.pheno_result a img {
 	border: none;
 }
+
+/* Phenotyping details pages */
+
+#test-description, .test-parameter-group {
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 15px;
+	background-color: #f1f1f1;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+}
+
+.test-parameter-group {
+	padding: 10px;
+}
+
+#test-parameter-groups div.test-parameter-group div.pheno_result {
+	text-align: center;
+	margin-bottom: 7px;
+}

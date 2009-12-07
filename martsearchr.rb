@@ -127,6 +127,8 @@ helpers do
       end
     end
   end
+  
+  load "#{Dir.pwd}/config/datasets/phenotyping/view_helpers.rb"
 end
 
 before do
@@ -353,3 +355,4 @@ def check_for_messages
   end
 end
 
+load "#{Dir.pwd}/config/datasets/phenotyping/routes.rb"

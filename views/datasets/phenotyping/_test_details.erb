@@ -22,7 +22,7 @@
         <% end %>
         <% displayed_images.each do |image| %>
           <% stripped_image_name = image.match(/^(.+)\.\w+$/)[1] %>
-          <div class="pheno_result"><img src="<%= "#{BASE_URI}/images/pheno_results/#{@colony_prefix}/#{@test.slug}/#{image}?v=#{PORTAL_VERSION}" %>" alt="<%= group.images[stripped_image_name] %>" /></div>
+          <div class="pheno_result"><img src="<%= "#{BASE_URI}/images/pheno_images/#{@colony_prefix}/#{@test.slug}/#{image}?v=#{PORTAL_VERSION}" %>" alt="<%= group.images[stripped_image_name] %>" /></div>
         <% end %>
       </div>
     <% end %>

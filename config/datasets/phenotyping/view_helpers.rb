@@ -1,5 +1,5 @@
 
-@@pheno_img_loc = "#{Dir.pwd}/public/images/pheno_results"
+@@pheno_img_loc = "#{Dir.pwd}/public/images/pheno_images"
 @@pheno_test_desc_file = "#{Dir.pwd}/config/datasets/phenotyping/test_conf.json"
 
 # Class to generically describe a phenotyping test, takes a JSON 

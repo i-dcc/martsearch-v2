@@ -27,6 +27,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
     run "ln -nfs #{release_path}/public #{shared_path}/htdocs/mouseportal"
     run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
+    run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
   end
 end
 

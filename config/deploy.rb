@@ -1,5 +1,5 @@
 set :application, "sanger_mouse_portal"
-set :repository,  "git://github.com/dazoakley/martsearchr.git"
+set :repository, "git://github.com/dazoakley/martsearchr.git"
 set :branch, "sanger_mouse_portal"
 set :user, "team87"
 
@@ -14,7 +14,6 @@ role :web, "localhost"
 role :app, "localhost"
 set :ssh_options, { :port => 10025 }
 
-
 namespace :deploy do
   desc "Restart Passenger"
   task :restart, :roles => :app, :except => { :no_release => true } do
@@ -28,6 +27,7 @@ namespace :deploy do
     run "ln -nfs #{release_path}/public #{shared_path}/htdocs/mouseportal"
     run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
     run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
+    run "ln -nfs #{shared_path}/pheno_abr #{release_path}/tmp/pheno_abr"
   end
 end
 

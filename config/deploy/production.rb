@@ -1,1 +1,1 @@
-set :deploy_to, "/software/team87/brave_new_world/capistrano_managed_apps/production/#{application}"
+set :deploy_to, "/software/team87/deploy/staging/#{application}"

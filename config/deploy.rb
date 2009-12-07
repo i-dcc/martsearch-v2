@@ -1,7 +1,7 @@
 set :application, "sanger_mouse_portal"
 set :repository, "git://github.com/dazoakley/martsearchr.git"
 set :branch, "sanger_mouse_portal"
-set :user, "do2"
+set :user, "team87"
 
 set :scm, :git
 set :deploy_via, :export

@@ -1,6 +1,7 @@
 
-@@pheno_img_loc = "#{Dir.pwd}/public/images/pheno_images"
+@@pheno_img_loc        = "#{Dir.pwd}/public/images/pheno_images"
 @@pheno_test_desc_file = "#{Dir.pwd}/config/datasets/phenotyping/test_conf.json"
+@@pheno_abr_loc        = "#{Dir.pwd}/tmp/pheno_abr"
 
 # Class to generically describe a phenotyping test, takes a JSON 
 # configuration object to set itsef up...
@@ -58,16 +59,15 @@ end
 # colony_prefix => { pheno_test => [images found] }
 def find_pheno_images
   pheno_test_images = {}
-  location          = @@pheno_img_loc
-
-  if File.exists?(location) && File.directory?(location)
-    Dir.foreach(location) do |colony_prefix|
+  
+  if File.exists?(@@pheno_img_loc) and File.directory?(@@pheno_img_loc)
+    Dir.foreach(@@pheno_img_loc) do |colony_prefix|
       unless colony_prefix =~ /\.|\.\./
         pheno_test_images[colony_prefix] = pheno_images_for_colony(colony_prefix)
       end
     end
   end
-
+  
   return pheno_test_images
 end
 
@@ -78,7 +78,7 @@ def pheno_images_for_colony( colony_prefix )
   path        = "#{@@pheno_img_loc}/#{colony_prefix}"
   test_images = {}
 
-  if File.exists?(path) && File.directory?(path)
+  if File.exists?(path) and File.directory?(path)
     Dir.foreach(path) do |test_dir|
       unless test_dir =~ /\.|\.\./
         Dir.chdir("#{path}/#{test_dir}")
@@ -91,11 +91,28 @@ def pheno_images_for_colony( colony_prefix )
   return test_images
 end
 
+# Function to run through the ABR pheno test directory (supplied by Neil) and 
+# return a list of colonies with a webpage detailing thier phenotyping results.
+def find_pheno_abr_results
+  colonies_with_data = []
+  
+  if File.exists?(@@pheno_abr_loc) and File.directory?(@@pheno_abr_loc)
+    Dir.foreach(@@pheno_abr_loc) do |colony_prefix|
+      if ( colony_prefix =~ /^\w\w\w\w$/ )
+        if File.directory?("#{@@pheno_abr_loc}/#{colony_prefix}") and File.exists?("#{@@pheno_abr_loc}/#{colony_prefix}/ABR/index.shtml")
+          colonies_with_data.push(colony_prefix)
+        end
+      end
+    end
+  end
+  
+  return colonies_with_data
+end
+
 # Function to set-up and @@ms.cache all of the required pheno data so that we 
 # can easily build up links to and display pages from the images dumped 
-# by Jacqui.
+# by Jacqui, and the pages dumped by Neil.
 def setup_pheno_configuration
-  # @@ms.cache the objects for rendering the phenotyping report pages.
   unless @@ms.cache.fetch("pheno_test_renders")
     pheno_conf         = JSON.load( File.new( @@pheno_test_desc_file, "r" ) )
     pheno_test_renders = {}
@@ -110,9 +127,12 @@ def setup_pheno_configuration
     @@ms.cache.write( "pheno_test_renders", Marshal.dump(pheno_test_renders), :expires_in => 12.hours )
   end
 
-  # @@ms.cache the list of colonies with tests and images associated with them.
   unless @@ms.cache.fetch("pheno_test_images")
     @@ms.cache.write( "pheno_test_images", find_pheno_images.to_json, :expires_in => 12.hours )
+  end
+  
+  unless @@ms.cache.fetch("pheno_abr_results")
+    @@ms.cache.write( "pheno_abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
 end
 
@@ -120,10 +140,18 @@ end
 # that have a detailed phenotyping report page.
 def pheno_links( colony_prefix )
   setup_pheno_configuration
-  colony_info = JSON.parse( @@ms.cache.fetch( "pheno_test_images" ) )[colony_prefix]
-  if colony_info.nil?
-    return []
-  else
-    return colony_info.keys
+  
+  tests_to_link = []
+  image_info = JSON.parse( @@ms.cache.fetch("pheno_test_images") )[colony_prefix]
+  abr_info   = JSON.parse( @@ms.cache.fetch("pheno_abr_results") )
+  
+  unless image_info.nil?
+    tests_to_link = image_info.keys
   end
+  
+  if abr_info.include?(colony_prefix)
+    tests_to_link.push("abr")
+  end
+  
+  return tests_to_link
 end

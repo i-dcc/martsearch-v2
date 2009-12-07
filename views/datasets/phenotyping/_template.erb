@@ -44,7 +44,11 @@
                 end
                 
                 link_text = ""
-                if attrib === "body_weight_curve"
+                if attrib === "abr"
+                  if detail_links.include?("abr")
+                    link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+                  end
+                elsif attrib === "body_weight_curve"
                   if detail_links.include?( "body-weight-curve-high-fat-diet" )
                     link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/body-weight-curve-high-fat-diet'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
                   end

@@ -1,4 +1,5 @@
 coverage/*
 coverage.info
 tmp/metric_fu*
+tmp/pheno_abr*
 public/images/pheno_images*

@@ -1,4 +1,16 @@
 
+# Static route for testing Neils pages with the portal.  In production 
+# this will be handled by a bit of apache proxying and url rewriting.
+get "/phenotyping/:colony_prefix/abr/?" do
+  html_text = ""
+  
+  File.open("#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/index.shtml", "r") do |f|
+    html_text = f.read
+  end
+  
+  return html_text
+end
+
 get "/phenotyping/:colony_prefix/:pheno_test/?" do
   setup_pheno_configuration
   

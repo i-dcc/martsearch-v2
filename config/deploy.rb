@@ -18,6 +18,7 @@ namespace :deploy do
   desc "Restart Passenger"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{File.join(current_path,"tmp","restart.txt")}"
+    run "chgrp team87 #{File.join(current_path,"tmp")}"
   end
   
   desc "Symlink shared configs and folders on each release."

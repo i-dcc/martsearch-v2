@@ -1,14 +1,42 @@
 
-# Static route for testing Neils pages with the portal.  In production 
-# this will be handled by a bit of apache proxying and url rewriting.
-get "/phenotyping/:colony_prefix/abr/?" do
-  html_text = ""
+# Static routes for ABR data - this allows us to pull in the static 
+# data generated for the ABR tests.
+get "/phenotyping/:colony_prefix/abr" do
+  redirect "#{BASE_URI}/phenotyping/#{params[:colony_prefix]}/abr/"
+end
+
+get "/phenotyping/:colony_prefix/abr/" do
+  file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/index.shtml"
   
-  File.open("#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/index.shtml", "r") do |f|
-    html_text = f.read
+  if File.exists?(file)
+    html_text = ""
+    
+    File.open(file,"r") do |f|
+      html_text = f.read
+    end
+    
+    erb html_text
+  else
+    status 404
+    erb :not_found
   end
+end
+
+get "/phenotyping/:colony_prefix/abr/*" do
+  file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/#{params["splat"][0]}"
   
-  return html_text
+  if File.exists?(file)
+    content = nil
+    File.open(file,"r") do |f|
+      content = f.read
+    end
+    
+    content_type MIME::Types.type_for(file)
+    return content
+  else
+    status 404
+    erb :not_found
+  end
 end
 
 get "/phenotyping/:colony_prefix/:pheno_test/?" do

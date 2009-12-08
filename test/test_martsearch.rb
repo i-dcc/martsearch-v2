@@ -26,32 +26,54 @@ class MartsearchTest < Test::Unit::TestCase
     end
     
     should "correctly handle a simple (single item) search" do
-      results = @@ms.search( @@ms.config["test"]["single_return_search"], nil )
-      data    = @@ms.search_data
+      # We perform these tests twice to ensure that we test searching from 
+      # both an empty and a primed cache.
+      [1,2].each do |i|
+        results = @@ms.search( @@ms.config["test"]["single_return_search"], nil )
+        data    = @@ms.search_data
       
-      assert( results.is_a?(Array), "A MartSearch search does not return an array." )
-      assert( results.size > 0, "The results array (from a MartSearch search) is empty." )
+        assert( results.is_a?(Array), "A MartSearch search does not return an array." )
+        assert( results.size > 0, "The results array (from a MartSearch search) is empty." )
       
-      assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
-      assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
+        assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
+        assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
+      end
     end
     
     should "correctly handle a more complicated (large) search" do
-      results = @@ms.search( @@ms.config["test"]["large_search"], nil )
-      data    = @@ms.search_data
+      # We perform these tests twice to ensure that we test searching from 
+      # both an empty and a primed cache.
+      [1,2].each do |i|
+        results = @@ms.search( @@ms.config["test"]["large_search"], nil )
+        data    = @@ms.search_data
       
-      assert( results.is_a?(Array), "A MartSearch search does not return an array." )
-      assert( results.size > 0, "The results array (from a MartSearch search) is empty." )
+        assert( results.is_a?(Array), "A MartSearch search does not return an array." )
+        assert( results.size > 0, "The results array (from a MartSearch search) is empty." )
       
-      assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
-      assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
+        assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
+        assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
+      end
     end
     
-    should "correctly handle a bad (destined to fail) search" do
+    should "correctly handle index errors" do
       results = @@ms.search( @@ms.config["test"]["bad_search"], nil )
       
       assert( results.is_a?(Array), "A MartSearch search does not return an array." )
       assert( results.empty?, "The results array (from a MartSearch search) is not empty." )
+    end
+    
+    should "correctly handle biomart errors" do
+      mock_ms = @@ms.clone
+      mock_ms.datasets[0].attributes = ["foo","bar","baz"]
+      
+      results = mock_ms.search( mock_ms.config["test"]["single_return_search"], nil )
+      data    = mock_ms.search_data
+      
+      assert( results.is_a?(Array), "A MartSearch search does not return an array." )
+      assert( results.size > 0, "The results array (from a MartSearch search) is empty." )
+      
+      assert( data.is_a?(Hash), "The Martsearch.search() return is not a hash." )
+      assert( !data[data.keys.first]["index"].nil?, "The Martsearch.search() return doesn't have any index data." )
     end
     
     should "be able to send emails upon error" do

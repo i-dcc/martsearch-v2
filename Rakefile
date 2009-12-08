@@ -13,7 +13,11 @@ task :install_deps do
     "rdiscount",
     "mail",
     "active_support",
-    "mislav-will_paginate"
+    "will_paginate",
+    "metric_fu",
+    "chronic",
+    "shoulda",
+    "test-unit"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

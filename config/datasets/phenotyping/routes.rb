@@ -23,7 +23,7 @@ get "/phenotyping/:colony_prefix/abr/" do
 end
 
 get "/phenotyping/:colony_prefix/abr/*" do
-  if params["splat"][0] == "__utm.gif"
+  if params["splat"][0] =~ /\_\_utm\.gif/
     redirect "#{BASE_URI}/__utm.gif"
   else
     file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/#{params["splat"][0]}"

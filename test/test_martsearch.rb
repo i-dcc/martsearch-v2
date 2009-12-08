@@ -53,6 +53,17 @@ class MartsearchTest < Test::Unit::TestCase
       assert( results.is_a?(Array), "A MartSearch search does not return an array." )
       assert( results.empty?, "The results array (from a MartSearch search) is not empty." )
     end
+    
+    should "be able to send emails upon error" do
+      assert_nothing_raised(Exception) {
+        @@ms.send_email({
+          :to      => "do2@sanger.ac.uk",
+          :from    => "martsearch_testsuite@sanger.ac.uk",
+          :subject => "MartSearch Test Suite Email",
+          :body    => "Did it work?"
+        })
+      }
+    end
   end
   
   context "The MartSearch cache" do

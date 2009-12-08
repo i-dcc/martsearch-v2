@@ -71,11 +71,11 @@ class Index
     res = @http_client.post_form(
       URI.parse("#{@url}/select"),
       {
-        :wt    => "ruby",
-        :q     => query,
-        :sort  => @sort_results_by,
-        :start => start_doc,
-        :rows  => @docs_per_page
+        "wt"    => "ruby",
+        "q"     => query,
+        "sort"  => @sort_results_by,
+        "start" => start_doc,
+        "rows"  => @docs_per_page
       }
     )
     

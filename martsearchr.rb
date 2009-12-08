@@ -7,14 +7,14 @@ require "rubygems"
 require "sinatra"
 require "json"
 require "rdiscount"
-require "pony"
+require "mail"
 
 require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
 
-gem "biomart", ">=0.1.2"
+gem "biomart", ">=0.1.3"
 require "biomart"
 
 Dir[ File.dirname(__FILE__) + "/lib/*.rb" ].each do |file|

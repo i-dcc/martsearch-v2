@@ -9,6 +9,8 @@ require "uri"
 require "net/http"
 require "json"
 require "sinatra"
+require "rdiscount"
+require "mail"
 
 require "active_support"
 require "will_paginate/array"

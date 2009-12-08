@@ -61,3 +61,21 @@
 	text-align: center;
 	margin-bottom: 7px;
 }
+
+#results-summary,
+#methods-summary,
+#abr-thresholds-summary,
+#abr-thresholds,
+#abr-input-output-functions-summary {
+	border-bottom: 2px solid #999;
+	padding-top: 10px;
+}
+
+#abr-thresholds-summary div.pheno-content table.pheno-image-data tbody tr td,
+#abr-thresholds div.pheno-content table tbody tr td {
+	border: none;
+}
+
+#abr-thresholds div.pheno-content table tbody tr td table td {
+	border: 1px solid #999;
+}

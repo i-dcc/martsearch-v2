@@ -11,7 +11,7 @@ task :install_deps do
     "json",
     "biomart",
     "rdiscount",
-    "pony",
+    "mail",
     "active_support",
     "mislav-will_paginate"
   ]

@@ -7,7 +7,7 @@ require "rubygems"
 require "sinatra"
 require "json"
 require "rdiscount"
-require "pony"
+require "mail"
 
 require "active_support"
 require "will_paginate/collection"

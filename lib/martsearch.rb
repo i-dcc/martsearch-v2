@@ -114,29 +114,52 @@ class Martsearch
   end
   
   # Utility function to send an email to/from an address specified in the 
-  # config file.  Uses Pony (http://github.com/benprew/pony) to handle the 
-  # email delivery.
+  # config file.  Uses Mail (http://github.com/mikel/mail) to handle the 
+  # email formatting (and delivery if using SMTP).
   def send_email( options={} )
-    pony_opts = {
+    mail_opts = {
       :to      => self.config["email"]["to"],
       :from    => self.config["email"]["from"],
       :subject => "A Message from MartSearch...",
       :body    => "You have been sent this message from your MartSearch portal."
-    }
-
+    }.merge!(options)
+    
+    mail = Mail.new do
+      from     mail_opts[:from]
+      to       mail_opts[:to]
+      subject  mail_opts[:subject]
+      body     mail_opts[:body]
+    end
+    
     if self.config["email"]["smtp"]
-      pony_opts[:via]  = :smtp
-      pony_opts[:smtp] = {}
-      [:host, :port, :user, :pass, :auth, :domain].each do |opt|
+      smtp_opts = { :host => "127.0.0.1", :port => "25" }
+      
+      [:host, :port, :user, :pass].each do |opt|
         if self.config["email"]["smtp"][opt.to_s]
-          pony_opts[:smtp][opt] = self.config["email"]["smtp"][opt.to_s]
+          smtp_opts[opt] = self.config["email"]["smtp"][opt.to_s]
         end
       end
+      
+      Mail.defaults do
+        smtp smtp_opts[:host], smtp_opts[:port]
+        if smtp_opts[:user] then user smtp_opts[:user] end
+        if smtp_opts[:pass] then pass smtp_opts[:pass] end
+      end
+      
+      mail.deliver!
     else
-      pony_opts[:via] = :sendmail
+      # Send via sendmail
+      sendmail = `which sendmail`.chomp
+      if sendmail.empty? then sendmail = "/usr/sbin/sendmail" end
+      
+      IO.popen('-', 'w+') do |pipe|
+        if pipe
+          pipe.write(mail.to_s)
+        else
+          exec(sendmail, "-t")
+        end
+      end
     end
-
-    Pony.mail( pony_opts.merge(options) )
   end
   
   private

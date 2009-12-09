@@ -17,7 +17,8 @@ task :install_deps do
     "metric_fu",
     "chronic",
     "shoulda",
-    "test-unit"
+    "test-unit",
+    "rack-test"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

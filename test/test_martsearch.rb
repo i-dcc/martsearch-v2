@@ -79,8 +79,8 @@ class MartsearchTest < Test::Unit::TestCase
     should "be able to send emails upon error" do
       assert_nothing_raised(Exception) {
         @@ms.send_email({
-          :to      => "do2@sanger.ac.uk",
-          :from    => "martsearch_testsuite@sanger.ac.uk",
+          :to      => "test@test.com",
+          :from    => "martsearch_testsuite@test.com",
           :subject => "MartSearch Test Suite Email",
           :body    => "Did it work?"
         })

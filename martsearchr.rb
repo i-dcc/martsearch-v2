@@ -27,7 +27,7 @@ end
 PORTAL_VERSION = "0.0.1"
 
 # Initialise the MartSearch object
-@@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
+@@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
 BASE_URI = @@ms.config["base_uri"]
 
 configure :production do
@@ -37,9 +37,14 @@ configure :production do
     if request.env["HTTP_REFERER"]
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
+        
+        template_file = File.new("#{Dir.pwd}/views/not_found_email.erb","r")
+        template = ERB.new(template_file.read)
+        template_file.close
+        
         @@ms.send_email({
           :subject => "[MartSearch 404] '#{request.env["REQUEST_PATH"]}'",
-          :body    => "404 Error raised on the page '#{request.env["REQUEST_PATH"]}'.  This was linked to from '#{request.env["HTTP_REFERER"]}'."
+          :body    => template.result(binding)
         })
       end
     end
@@ -49,7 +54,7 @@ configure :production do
   end
 
   error do
-    template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
+    template_file = File.new("#{Dir.pwd}}/views/error_email.erb","r")
     template = ERB.new(template_file.read)
     template_file.close
     
@@ -169,14 +174,14 @@ end
 
 get "/search" do
   # Catch out empty search parameters - would otherwise cause infinite redirects
-  if params[:query] =~ /^$/
-    redirect "#{BASE_URI}/"
-  else
+  if params[:query]
     if params[:page]
       redirect "#{BASE_URI}/search/#{params[:query]}/#{params[:page]}"
     else
       redirect "#{BASE_URI}/search/#{params[:query]}"
     end
+  else
+    redirect "#{BASE_URI}/"
   end
 end
 

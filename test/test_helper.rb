@@ -19,9 +19,10 @@ require "will_paginate/view_helpers"
 gem "biomart", ">=0.1.2"
 require "biomart"
 
-Dir[ File.dirname(__FILE__) + "/../lib/*.rb" ].each do |file|
-  require file
-end
+require "#{File.dirname(__FILE__)}/../lib/mock.rb"
+require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
+require "#{File.dirname(__FILE__)}/../lib/index.rb"
+require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
 
 ##
 ## Some basic setup shared between the test suites

@@ -20,15 +20,15 @@ class Dataset
     @javascript               = nil
     
     if conf["custom_sort"]
-      @custom_sort = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/custom_sort.rb")
+      @custom_sort = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/custom_sort.rb")
     end
     
     if conf["custom_css"]
-      @stylesheet = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/style.css")
+      @stylesheet = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/style.css")
     end
     
     if conf["custom_js"]
-      @javascript = load_file("#{Dir.pwd}/config/datasets/#{@dataset_name}/javascript.js")
+      @javascript = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/javascript.js")
     end
     
     @current_search_results = nil

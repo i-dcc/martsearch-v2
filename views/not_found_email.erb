@@ -1,0 +1,13 @@
+A page/file could not be found: <%= @request.env["REQUEST_PATH"] %>
+
+===================================================================
+Request Environment:
+===================================================================
+
+PID:  <%= $$ %>
+PWD:  <%= Dir.getwd %>
+
+<%= @request.env.to_a.
+  sort{|a,b| a.first <=> b.first}.
+  map{ |k,v| "%-25s%p" % [k+':', v] }.
+  join("\n  ") %>

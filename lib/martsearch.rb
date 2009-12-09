@@ -28,7 +28,7 @@ class Martsearch
     @datasets         = []
     @datasets_by_name = {}
     @config["datasets"].each do |ds|
-      ds_conf = JSON.load( File.new("#{Dir.pwd}/config/datasets/#{ds}/config.json","r") )
+      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds}/config.json","r") )
       dataset = Dataset.new( ds_conf )
       
       if dataset.custom_sort

@@ -27,7 +27,7 @@ end
 PORTAL_VERSION = "0.0.1"
 
 # Initialise the MartSearch object
-@@ms = Martsearch.new( "#{Dir.pwd}/config/config.json" )
+@@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
 BASE_URI = @@ms.config["base_uri"]
 
 configure :production do
@@ -155,14 +155,14 @@ end
 
 get "/search" do
   # Catch out empty search parameters - would otherwise cause infinite redirects
-  if params[:query] =~ /^$/
-    redirect "#{BASE_URI}/"
-  else
+  if params[:query]
     if params[:page]
       redirect "#{BASE_URI}/search/#{params[:query]}/#{params[:page]}"
     else
       redirect "#{BASE_URI}/search/#{params[:query]}"
     end
+  else
+    redirect "#{BASE_URI}/"
   end
 end
 

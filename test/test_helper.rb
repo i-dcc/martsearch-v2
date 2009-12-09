@@ -28,4 +28,11 @@ require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
 ## Some basic setup shared between the test suites
 ##
 
-@@ms = Martsearch.new( File.dirname(__FILE__) + "/../config/config.json" )
+# Read in our config
+conf_file = "#{File.dirname(__FILE__)}/../config/config.json"
+conf_obj  = JSON.load( File.new( conf_file, "r" ) )
+
+# Override the base URI for tests...
+conf_obj["base_uri"] = ""
+
+@@ms = Martsearch.new( conf_obj )

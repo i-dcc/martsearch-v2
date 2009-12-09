@@ -26,7 +26,7 @@ task :install_deps do
 end
 
 # Load rake tasks from the tasks directory
-Dir["tasks/*.rake"].each { |t| load t }
+Dir["tasks/*.task"].each { |t| load t }
 
 MetricFu::Configuration.run do |config| 
   config.metrics  = [:churn, :saikuro, :flog, :flay, :reek, :roodi, :rcov]

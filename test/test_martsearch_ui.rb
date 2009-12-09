@@ -121,14 +121,16 @@ class MartsearchUiTest < Test::Unit::TestCase
       @@ms.config["browsable_content"].each do |name,conf|
         [ conf["options"][0], conf["options"][1] ].each do |param|
           param_string = param
+          url_slug     = param
           if param.is_a?(Array)
             param_string = param[0]
+            url_slug     = param[0]
           elsif param.is_a?(Hash)
-            param_string = param["query"]
+            param_string = param["text"]
+            url_slug     = param["slug"]
           end
           
-          @browser.get "/browse/#{name}/#{param_string.downcase}"
-          
+          @browser.get "/browse/#{name}/#{url_slug.downcase}"
           assert( @browser.last_response.body.include?("Browsing Data by #{conf["display_name"]}: '#{param_string}'"), "Browse template not rendering the results header." )
           assert( @browser.last_response.ok?, "Unable to make request to '/browse/#{name}/#{param_string.downcase}'." )
         end

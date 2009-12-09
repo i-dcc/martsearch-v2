@@ -23,23 +23,19 @@ get "/phenotyping/:colony_prefix/abr/" do
 end
 
 get "/phenotyping/:colony_prefix/abr/*" do
-  if params["splat"][0] =~ /\_\_utm\.gif/
-    redirect "#{BASE_URI}/__utm.gif"
-  else
-    file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/#{params["splat"][0]}"
+  file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
 
-    if File.exists?(file)
-      content = nil
-      File.open(file,"r") do |f|
-        content = f.read
-      end
-
-      content_type MIME::Types.type_for(file)
-      return content
-    else
-      status 404
-      erb :not_found
+  if File.exists?(file)
+    content = nil
+    File.open(file,"r") do |f|
+      content = f.read
     end
+
+    content_type MIME::Types.type_for(file)
+    return content
+  else
+    status 404
+    erb :not_found
   end
 end
 

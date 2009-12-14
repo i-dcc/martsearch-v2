@@ -13,17 +13,7 @@
     <% result_data["kermits"].each do |result| %>
       <tr>
         <td><%= result["allele_name"] %></td>
-        <td>
-          <%
-            allele_type = case result["allele_name"]
-            when /tm\d+a/ then "Conditional Knockout-First"
-            when /tm\d+e/ then "Targeted Trap"
-            when /tm\d\(/ then "Deletion"
-            else "-"
-            end
-          %>
-          <%= allele_type %>
-        </td>
+        <td><%= result["allele_type"] %></td>
         <td><%= result["colony_prefix"] %></td>
         <td><%= result["escell_clone"] %></td>
         <td>

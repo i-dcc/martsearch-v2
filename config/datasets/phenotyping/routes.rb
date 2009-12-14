@@ -51,7 +51,6 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   search_data    = @@ms.search_data
   
   if search_data.nil?
-    
     # Okay... so there is no data in the Biomart or search engine for 
     # this colony.  So we can't display the marker_symbol and we have to 
     # guess at the pipeline...
@@ -63,22 +62,16 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
     if @test.nil?
       @test = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )["mouse-gp"][params[:pheno_test]]
     end
-    
   else
-    if search_data.keys.size != 1 or search_data[search_data.keys[0]]["phenotyping"].size != 1
-      @message[:error].push({ :highlight => "Sorry, we are unable to display phenotyping test data (#{params[:pheno_test]}) for this colony (#{params[:colony_prefix]}) due to ambiguities in our current data structure.  Please contact <a href='mailto:mouseportal@sanger.ac.uk'>mouseportal@sanger.ac.uk</a> with this error so that we can fix this for you." })
-      erb :error
-    else
-      page_data = search_data[search_data.keys[0]]
-      
-      pipeline = case page_data["phenotyping"][0]["pipeline"]
-      when "MouseGP" then "mouse-gp"
-      when "P1/2"    then "mgp-pipeline-1-2"
-      end
-      
-      @test          = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )[pipeline][params[:pheno_test]]
-      @marker_symbol = page_data["index"]["symbol"]
+    page_data = search_data[search_data.keys[0]]
+    
+    pipeline = case page_data["phenotyping"][0]["pipeline"]
+    when "MouseGP" then "mouse-gp"
+    when "P1/2"    then "mgp-pipeline-1-2"
     end
+    
+    @test          = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )[pipeline][params[:pheno_test]]
+    @marker_symbol = page_data["index"]["symbol"]
   end
   
   if @test_images.nil? or @test.nil?

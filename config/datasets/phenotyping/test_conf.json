@@ -13,8 +13,8 @@
         }
       ]
     },
-    "calorimetry": {
-      "slug": "calorimetry",
+    "indirect-calorimetry": {
+      "slug": "indirect-calorimetry",
       "name": "Indirect Calorimetry",
       "description": "Indirect Calorimetry (week 12) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Respiratory metabolic function is assessed using the LabMaster system (TSE-systems). Mice are housed individually in calorimetry cages for a period of approximately 21 hours including a 5 hour light phase acclimatisation period. This is followed consecutively by a 12 hour dark (19:30 - 07:30) and minimum 3 hour light phase. Cumulative food intake, activity (beam breaks), volume of oxygen consumed and volume of carbon dioxide produced are all measured. From this data the respiratory exchange ratio and energy expenditure are derived. Water bottles are weighed before and after the experiment to assess water consumption.",
       "parameter_groups": [
@@ -182,9 +182,9 @@
         }
       ]
     },
-    "heart-weights": {
-      "slug": "heart-weights",
-      "name": "Heart Weights",
+    "heart-weight": {
+      "slug": "heart-weight",
+      "name": "Heart Weight",
       "description": "Heart Weights (week 16) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): After the terminal bleed hearts are dissected and weighed.",
       "parameter_groups": [
         {
@@ -339,8 +339,8 @@
         }
       ]
     },
-    "calorimetry": {
-      "slug": "calorimetry",
+    "indirect-calorimetry": {
+      "slug": "indirect-calorimetry",
       "name": "Indirect Calorimetry",
       "description": "Indirect Calorimetry (week 12) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Respiratory metabolic function is assessed using the LabMaster system (TSE-systems). Mice are housed individually in calorimetry cages for a period of approximately 21 hours including a 5 hour light phase acclimatisation period. This is followed consecutively by a 12 hour dark (19:30 - 07:30) and minimum 3 hour light phase. Cumulative food intake, activity (beam breaks), volume of oxygen consumed and volume of carbon dioxide produced are all measured. From this data the respiratory exchange ratio and energy expenditure are derived. Water bottles are weighed before and after the experiment to assess water consumption.",
       "parameter_groups": [
@@ -538,9 +538,9 @@
         }
       ]
     },
-    "heart-weights": {
-      "slug": "heart-weights",
-      "name": "Heart Weights",
+    "heart-weight": {
+      "slug": "heart-weight",
+      "name": "Heart Weight",
       "description": "Heart Weights (week 15) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): After the terminal bleed hearts are dissected and weighed.",
       "parameter_groups": [
         {

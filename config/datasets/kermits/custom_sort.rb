@@ -8,6 +8,12 @@ sorted_results = {}
     # Correct the <> notation in several attributes...
     if result["allele_name"]
       result["allele_name"] = self.fix_superscript_text_in_attribute(result["allele_name"])
+      result["allele_type"] = case result["allele_name"]
+      when /tm\d+a/ then "Conditional Knockout-First"
+      when /tm\d+e/ then "Targeted Trap"
+      when /tm\d\(/ then "Deletion"
+      else               ""
+      end
     end
     if result["back_cross_strain"]
       result["back_cross_strain"] = self.fix_superscript_text_in_attribute(result["back_cross_strain"])

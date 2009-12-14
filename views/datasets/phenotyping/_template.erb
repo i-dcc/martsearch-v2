@@ -7,12 +7,13 @@
   <thead>
     <tr>
       <th>Pipeline</th>
+      <th>Comparison Type</th>
       <th>ES Cell Clone Name</th>
       <th>Allele Name</th>
       <th>Allele Type</th>
       <th>Cassette Type</th>
       <% ds.attributes.each do |attrib| %>
-        <% unless attrib =~ /comment|url|marker_symbol|escell_clone_name|pipeline|colony_prefix/ %>
+        <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
           <th></th>
         <% end %>
       <% end %>
@@ -20,49 +21,93 @@
   </thead>
   <tbody>
     <% result_data["phenotyping"].each do |result| %>
-      <% detail_links = pheno_links(result["colony_prefix"]) %>
+      <%
+        # FIXME: Put all of this logic in a custom sort method so that the output 
+        # can be cached!!!
+        
+        # See if there is a joined kermits entry
+        related_kermits_entry = nil
+        if result["colony_prefix"] && result_data["kermits"]
+          result_data["kermits"].each do |kerm|
+            if kerm["colony_prefix"] === result["colony_prefix"]
+              related_kermits_entry = kerm
+            end
+          end
+        end
+        
+        # See if there is a joined htgt_targ entry
+        related_htgt_targ_entry = nil
+        if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["htgt_targ"]
+          result_data["htgt_targ"].each do |targ|
+            ["conditional_clones","nonconditional_clones"].each do |clone_type|
+              if targ[clone_type]
+                targ[clone_type].each do |clone|
+                  if clone["escell_clone"] === related_kermits_entry["escell_clone"]
+                    related_htgt_targ_entry = targ
+                  end
+                end
+              end
+            end
+          end
+        end
+        
+        # Get a list of tests with details pages to link to
+        detail_links = pheno_links(result["colony_prefix"])
+      %>
       <tr>
         <td><%= result["pipeline"] %></td>
+        <td><%= result["comparison"] %></td>
         <td>
-          <% if result["escell_clone_name"] %>
-            <%= result["escell_clone_name"] %>
+          <% if related_kermits_entry && related_kermits_entry["escell_clone"] %>
+            <%= related_kermits_entry["escell_clone"] %>
           <% else %>
             <%= result["marker_symbol"] + "-" + result["colony_prefix"] %>
           <% end %>
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <% ds.attributes.each do |attrib| %>
-          <% unless attrib =~ /comment|url|marker_symbol|escell_clone_name|pipeline|colony_prefix/ %>
-            <% title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>" %>
-            <% if result[attrib] %>
-              <%
-                title_text += "<p><strong>Result:</strong> #{result[attrib]}<br />"
-                if result["#{attrib}_comment"]
-                  title_text += "<strong>Comments:</strong> #{result["#{attrib}_comment"]}</p>"
-                end
-                
-                link_text = ""
-                if attrib === "abr"
-                  if detail_links.include?("abr")
-                    link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
-                  end
-                elsif attrib === "body_weight_curve"
-                  if detail_links.include?( "body-weight-curve-high-fat-diet" )
-                    link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/body-weight-curve-high-fat-diet/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
-                  end
-                else
-                  if detail_links.include?( attrib.gsub("_","-") )
-                    link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{attrib.gsub("_","-")}/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
-                  end
-                end
-              %>
-              <td class="<%= result[attrib] %> pheno_result" title="<%= title_text %>" rel="qtip"><%= link_text %></td>
+        <td>
+          <%
+            allele_name = result["allele_name"]
+            if related_kermits_entry && related_kermits_entry["allele_name"]
+              allele_name = related_kermits_entry["allele_name"]
+            end
+          %>
+          <%= allele_name %>
+        </td>
+        <td>
+          <% if related_kermits_entry %>
+            <%= related_kermits_entry["allele_type"] %>
+          <% end %>
+        </td>
+        <td>
+          <% if related_htgt_targ_entry && related_htgt_targ_entry["cassette"] %>
+            <% if related_htgt_targ_entry["cassette"].match("_P") %>
+              Promotor Driven
             <% else %>
-              <% title_text += "<p>Test not carried out.</p>" %>
-              <td class="test_not_done pheno_result" title="<%= title_text %>" rel="qtip"></td>
+              Promotorless
             <% end %>
+          <% end %>
+        </td>
+        <% ds.attributes.each do |attrib| %>
+          <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
+            <% title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>" %>
+            <%
+              title_text += "<p><strong>Result:</strong> #{result[attrib]}<br />"
+              if result["#{attrib}_comment"]
+                title_text += "<strong>Comments:</strong> #{result["#{attrib}_comment"]}</p>"
+              end
+              
+              link_text = ""
+              if attrib === "abr"
+                if detail_links.include?("abr")
+                  link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+                end
+              else
+                if detail_links.include?( attrib.gsub("_","-") )
+                  link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{attrib.gsub("_","-")}/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+                end
+              end
+            %>
+            <td class="<%= css_class_for_test(result[attrib]) %> pheno_result" title="<%= title_text %>" rel="qtip"><%= link_text %></td>
           <% end %>
         <% end %>
       </tr>

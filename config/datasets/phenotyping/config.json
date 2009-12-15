@@ -92,9 +92,9 @@
     ]
   },
   "searching": {
-    "joined_index_field":       "marker_symbol",
-    "joined_biomart_filter":    "marker_symbol",
-    "joined_biomart_attribute": "marker_symbol",
+    "joined_index_field":       "colony_prefix",
+    "joined_biomart_filter":    "colony_prefix",
+    "joined_biomart_attribute": "colony_prefix",
     "attributes": [
       "colony_prefix",
       "marker_symbol",

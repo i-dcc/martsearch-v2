@@ -7,3 +7,10 @@
     <em>Sorry, your search did not return any results.</em>
   <% end %>
 </div>
+
+<% if @ms.config["debug"] %>
+  <div id="debug-search">
+    <h3>Search Data (Debug Info)</h3>
+    <pre><%= @data.to_yaml %></pre>
+  </div>
+<% end %>

@@ -82,9 +82,8 @@
     </div>
     
     <% if @ms.config["debug"] %>
-      <div id="debug">
-        <h2>Debugging Data</h2>
-        <h3>MartSearch Config</h3>
+      <div id="debug-config">
+        <h3>MartSearch Config (Debug Info)</h3>
         <pre><%= @ms.config.to_yaml %></pre>
       </div>
     <% end %>

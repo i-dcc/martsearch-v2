@@ -38,7 +38,7 @@ configure :production do
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
         
-        template_file = File.new("#{Dir.pwd}/views/not_found_email.erb","r")
+        template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
         template = ERB.new(template_file.read)
         template_file.close
         
@@ -54,7 +54,7 @@ configure :production do
   end
 
   error do
-    template_file = File.new("#{Dir.pwd}}/views/error_email.erb","r")
+    template_file = File.new("#{File.dirname(__FILE__)}}/views/error_email.erb","r")
     template = ERB.new(template_file.read)
     template_file.close
     

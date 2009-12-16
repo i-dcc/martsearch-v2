@@ -52,22 +52,28 @@ class Dataset
   # 'joined_biomart_filter' set in the config file.  Returns the sorted 
   # and processed data.
   def search( query )
-    search_params  = {
-      :attributes      => [],
-      :filters         => { @joined_biomart_filter => query.join(",") },
-      :process_results => true
-    }
+    # Don't perform a search on empty parameters - this is bad!
+    if query
+      search_params  = {
+        :attributes      => [],
+        :filters         => { @joined_biomart_filter => query.join(",") },
+        :process_results => true
+      }
     
-    @filters.each do |name,value|
-      search_params[:filters][name] = value
+      @filters.each do |name,value|
+        search_params[:filters][name] = value
+      end
+    
+      @attributes.each do |attribute|
+        search_params[:attributes].push(attribute)
+      end
+    
+      @current_search_results = @dataset.search( search_params )
+      @current_sorted_results = sort_results()
+    else
+      @current_search_results = {}
+      @current_sorted_results = {}
     end
-    
-    @attributes.each do |attribute|
-      search_params[:attributes].push(attribute)
-    end
-    
-    @current_search_results = @dataset.search( search_params )
-    @current_sorted_results = sort_results()
     
     return @current_sorted_results
   end

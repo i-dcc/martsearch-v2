@@ -66,7 +66,11 @@ class DatasetTest < Test::Unit::TestCase
     # Now fetch the pre-computed biomart search terms 
     # and search the dataset
     search_terms = @@ms.index.grouped_terms[ dataset.joined_index_field ]
-    assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
+    if search_terms
+      assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
+    else
+      assert( search_terms.nil?, "The retrieved search terms is nil" )
+    end
     
     mart_results = dataset.search( search_terms )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )

@@ -153,7 +153,7 @@ end
 get "/?" do
   @current = "home"
   
-  sanger_counts_from_cache = @@ms.cache.fetch("sanger_counts", :expires_in => 3.hours )
+  sanger_counts_from_cache = @@ms.cache.fetch("sanger_counts")
   if sanger_counts_from_cache
     @sanger_counts = JSON.parse(sanger_counts_from_cache)
   else
@@ -166,7 +166,7 @@ get "/?" do
       "c57_bacs"          => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "C57Bl/6J" } ),
       "one_two_nine_bacs" => @@ms.datasets_by_name[:bacs].dataset.count( :filters => { :library => "129S7" } )
     }
-    @@ms.cache.write( "sanger_counts", @sanger_counts.to_json )
+    @@ms.cache.write( "sanger_counts", @sanger_counts.to_json, :expires_in => 3.hours )
   end
   
   erb :main

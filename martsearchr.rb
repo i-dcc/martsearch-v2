@@ -54,7 +54,7 @@ configure :production do
   end
 
   error do
-    template_file = File.new("#{File.dirname(__FILE__)}}/views/error_email.erb","r")
+    template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
     template = ERB.new(template_file.read)
     template_file.close
     

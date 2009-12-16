@@ -112,5 +112,5 @@ get "/phenotyping/heatmap" do
     @@ms.cache.write( "pheno_heatmap", @heat_map.to_json, :expires_in => 12.hours )
   end
   
-  erb :"datasets/phenotyping/heat_map"
+  erb :"datasets/phenotyping/heatmap"
 end

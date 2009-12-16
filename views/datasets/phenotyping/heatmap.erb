@@ -58,6 +58,12 @@
         <td><%= result["comparison"] %></td>
         <% pheno_tests.each do |test| %>
           <%
+            title_text = "<h6>#{@pheno_test_name_map[test]}</h6>"
+            title_text += "<p><strong>Result:</strong> #{result[test]}<br />"
+            if result["#{test}_comment"]
+              title_text += "<strong>Comments:</strong> #{result["#{test}_comment"]}</p>"
+            end
+            
             link_text = ""
             if test === "abr"
               if detail_links.include?("abr")

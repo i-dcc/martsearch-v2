@@ -89,8 +89,8 @@
         </td>
         <% ds.attributes.each do |attrib| %>
           <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
-            <% title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>" %>
             <%
+              title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>"
               title_text += "<p><strong>Result:</strong> #{result[attrib]}<br />"
               if result["#{attrib}_comment"]
                 title_text += "<strong>Comments:</strong> #{result["#{attrib}_comment"]}</p>"

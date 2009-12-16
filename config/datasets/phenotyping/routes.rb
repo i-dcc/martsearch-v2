@@ -46,20 +46,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   @colony_prefix = params[:colony_prefix]
   @test_images   = JSON.parse( @@ms.cache.fetch("pheno_test_images") )[params[:colony_prefix]][params[:pheno_test]]
   @test          = nil
-  
-  search_data = nil
-  search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{@colony_prefix}")
-  
-  if search_data_from_cache
-    search_data = JSON.parse(search_data_from_cache)
-  else
-    search_data = @@ms.datasets_by_name[:phenotyping].dataset.search(
-      :filters         => { "colony_prefix" => @colony_prefix },
-      :attributes      => [ "pipeline", "marker_symbol" ],
-      :process_results => true
-    )
-    @@ms.cache.write( "pheno_details_page_search:#{@colony_prefix}", search_data.to_json, :expires_in => 12.hours )
-  end
+  search_data    = search_mart_by_colony_prefix(@colony_prefix)
   
   if search_data.nil?
     # Okay... so there is no data in the Biomart for this colony. 

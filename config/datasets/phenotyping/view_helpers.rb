@@ -176,3 +176,23 @@ def css_class_for_test(status_desc)
   else                                             "test_not_done"
   end
 end
+
+# Utility function to retrieve all of the data from the mart for a 
+# given colony_prefix
+def search_mart_by_colony_prefix(colony_prefix)
+  search_data            = nil
+  search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{colony_prefix}")
+  
+  if search_data_from_cache
+    search_data = JSON.parse(search_data_from_cache)
+  else
+    search_data = @@ms.datasets_by_name[:phenotyping].dataset.search(
+      :filters         => { "colony_prefix" => colony_prefix },
+      :attributes      => @@ms.datasets_by_name[:phenotyping].attributes,
+      :process_results => true
+    )
+    @@ms.cache.write( "pheno_details_page_search:#{colony_prefix}", search_data.to_json, :expires_in => 12.hours )
+  end
+  
+  return search_data
+end

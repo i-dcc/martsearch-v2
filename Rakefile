@@ -12,7 +12,7 @@ task :install_deps do
     "biomart",
     "rdiscount",
     "mail",
-    "active_support",
+    "activesupport",
     "will_paginate",
     "metric_fu",
     "chronic",

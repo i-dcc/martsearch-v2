@@ -47,13 +47,24 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   @test_images   = JSON.parse( @@ms.cache.fetch("pheno_test_images") )[params[:colony_prefix]][params[:pheno_test]]
   @test          = nil
   
-  results        = @@ms.search( "colony_prefix:#{@colony_prefix}", 1 )
-  search_data    = @@ms.search_data
+  search_data = nil
+  search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{@colony_prefix}")
+  
+  if search_data_from_cache
+    search_data = JSON.parse(search_data_from_cache)
+  else
+    search_data = @@ms.datasets_by_name[:phenotyping].dataset.search(
+      :filters         => { "colony_prefix" => @colony_prefix },
+      :attributes      => [ "pipeline", "marker_symbol" ],
+      :process_results => true
+    )
+    @@ms.cache.write( "pheno_details_page_search:#{@colony_prefix}", search_data.to_json, :expires_in => 12.hours )
+  end
   
   if search_data.nil?
-    # Okay... so there is no data in the Biomart or search engine for 
-    # this colony.  So we can't display the marker_symbol and we have to 
-    # guess at the pipeline...
+    # Okay... so there is no data in the Biomart for this colony. 
+    # So we can't display the marker_symbol and we have to guess 
+    # at the pipeline...
     
     # Try MGP-Pipeline 1/2 first
     @test = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )["mgp-pipeline-1-2"][params[:pheno_test]]
@@ -63,15 +74,13 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
       @test = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )["mouse-gp"][params[:pheno_test]]
     end
   else
-    page_data = search_data[search_data.keys[0]]
-    
-    pipeline = case page_data["phenotyping"][0]["pipeline"]
+    pipeline = case search_data[0]["pipeline"]
     when "MouseGP" then "mouse-gp"
     when "P1/2"    then "mgp-pipeline-1-2"
     end
     
     @test          = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )[pipeline][params[:pheno_test]]
-    @marker_symbol = page_data["index"]["symbol"]
+    @marker_symbol = search_data[0]["marker_symbol"]
   end
   
   if @test_images.nil? or @test.nil?

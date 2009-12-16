@@ -87,3 +87,30 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
     erb :"datasets/phenotyping/_test_details"
   end
 end
+
+get "/phenotyping/heatmap" do
+  setup_pheno_configuration
+  
+  heat_map_from_cache  = @@ms.cache.fetch("pheno_heatmap")
+  @pheno_test_name_map = JSON.parse( @@ms.cache.fetch("pheno_test_names") )
+  
+  if heat_map_from_cache
+    @heat_map = JSON.parse(heat_map_from_cache)
+  else
+    pheno_dataset       = @@ms.datasets_by_name[:phenotyping].dataset
+    attributes_to_fetch = @@ms.datasets_by_name[:phenotyping].attributes
+    attributes_to_fetch.push("marker_symbol")
+    
+    @heat_map = []
+    results = pheno_dataset.search( :attributes => attributes_to_fetch, :process_results => true )
+    
+    results.sort_by { |r| r["marker_symbol"] }.each do |result|
+      result["allele_name"] = @@ms.datasets_by_name[:phenotyping].fix_superscript_text_in_attribute(result["allele_name"])
+      @heat_map.push(result)
+    end
+    
+    @@ms.cache.write( "pheno_heatmap", @heat_map.to_json, :expires_in => 12.hours )
+  end
+  
+  erb :"datasets/phenotyping/heat_map"
+end

@@ -1,0 +1,52 @@
+<%
+  pheno_tests = []
+  @heat_map[0].keys.each do |attribute|
+    unless attribute =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/
+      pheno_tests.push(attribute)
+    end
+  end
+  pheno_tests = pheno_tests.sort
+%>
+
+<div class="phenotyping">
+  <table id="phenotyping_heatmap">
+    <tr>
+      <th>Pipeline</th>
+      <th>Colony Prefix</th>
+      <th>Gene</th>
+      <th>Allele</th>
+      <th>Genotypes Compared</th>
+      <% pheno_tests.each do |test| %>
+        <th><span class="vertical_text"><%= @pheno_test_name_map[test] %></span></th>
+      <% end %>
+    </tr>
+    <% @heat_map.each do |result| %>
+      <%
+        # Get a list of tests with details pages to link to
+        detail_links = pheno_links(result["colony_prefix"])
+      %>
+      <tr>
+        <td><%= result["pipeline"] %></td>
+        <td><%= result["colony_prefix"] %></td>
+        <td><%= result["marker_symbol"] %></td>
+        <td><%= result["allele_name"] %></td>
+        <td><%= result["comparison"] %></td>
+        <% pheno_tests.each do |test| %>
+          <%
+            link_text = ""
+            if test === "abr"
+              if detail_links.include?("abr")
+                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+              end
+            else
+              if detail_links.include?( test.gsub("_","-") )
+                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+              end
+            end
+          %>
+          <td class="<%= css_class_for_test(result[test]) %> pheno_result"><%= link_text %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>

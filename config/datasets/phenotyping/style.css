@@ -1,3 +1,5 @@
+/* phenotyping custom css */
+
 .phenotyping table td {
 	background: #fff;
 }
@@ -33,13 +35,33 @@
 }
 
 .phenotyping table td.pheno_result {
-	width: 14px;
-	padding-left: 2px;
-	padding-right: 2px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 0;
+	min-width: 20px;
 }
 
 .phenotyping table td.pheno_result a img {
 	border: none;
+	padding: 4px;
+}
+
+/* Heatmap specific code */
+
+#phenotyping_heatmap th {
+	vertical-align:	bottom;
+	height: 280px;
+}
+
+#phenotyping_heatmap .vertical_text {
+	white-space: nowrap;
+	display: block;
+	width: 16px;
+	rotation: 90deg !important;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-writing-mode:tb-rl;
+	writing-mode:tb-rl;
 }
 
 /* Phenotyping details pages */

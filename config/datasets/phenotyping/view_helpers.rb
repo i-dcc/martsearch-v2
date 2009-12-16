@@ -134,6 +134,14 @@ def setup_pheno_configuration
   unless @@ms.cache.fetch("pheno_abr_results")
     @@ms.cache.write( "pheno_abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
+  
+  unless @@ms.cache.fetch("pheno_test_names")
+    attribute_map = {}
+    @@ms.datasets_by_name[:phenotyping].dataset.attributes.each do |name,attribute|
+      attribute_map[name] = attribute.display_name
+    end
+    @@ms.cache.write( "pheno_test_names", attribute_map.to_json, :expires_in => 12.hours )
+  end
 end
 
 # Function to return an array of pheno tests for a given colony_prefix 

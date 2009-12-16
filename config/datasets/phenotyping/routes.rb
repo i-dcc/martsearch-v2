@@ -87,6 +87,7 @@ end
 get "/phenotyping/heatmap" do
   setup_pheno_configuration
   
+  @page_title          = "Phenotyping Overview"
   heat_map_from_cache  = @@ms.cache.fetch("pheno_heatmap")
   @pheno_test_name_map = JSON.parse( @@ms.cache.fetch("pheno_test_names") )
   

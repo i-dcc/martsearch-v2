@@ -46,28 +46,33 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   @colony_prefix = params[:colony_prefix]
   @test_images   = JSON.parse( @@ms.cache.fetch("pheno_test_images") )[params[:colony_prefix]][params[:pheno_test]]
   @test          = nil
-  search_data    = search_mart_by_colony_prefix(@colony_prefix)
   
-  if search_data.nil?
-    # Okay... so there is no data in the Biomart for this colony. 
-    # So we can't display the marker_symbol and we have to guess 
-    # at the pipeline...
-    
-    # Try MGP-Pipeline 1/2 first
-    @test = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )["mgp-pipeline-1-2"][params[:pheno_test]]
-    
-    # if that brings back nothing, try MouseGP
-    if @test.nil?
-      @test = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )["mouse-gp"][params[:pheno_test]]
-    end
-  else
+  # Try to figure out our pipeline and marker_symbol
+  search_data    = search_mart_by_colony_prefix(@colony_prefix)
+  pipeline       = nil
+  
+  if search_data
     pipeline = case search_data[0]["pipeline"]
     when "MouseGP" then "mouse-gp"
     when "P1/2"    then "mgp-pipeline-1-2"
     end
     
-    @test          = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )[pipeline][params[:pheno_test]]
     @marker_symbol = search_data[0]["marker_symbol"]
+  end
+  
+  # Now fetch the test page renderer object.
+  # If we still can't figure out the pipeline, we have to guess...
+  renderer_objects = Marshal.load( @@ms.cache.fetch("pheno_test_renders") )
+  if pipeline.nil?
+    # Try MGP-Pipeline 1/2 first
+    @test = renderer_objects["mgp-pipeline-1-2"][params[:pheno_test]]
+    
+    # if that brings back nothing, try MouseGP
+    if @test.nil?
+      @test = renderer_objects["mouse-gp"][params[:pheno_test]]
+    end
+  else
+    @test = renderer_objects[pipeline][params[:pheno_test]]
   end
   
   if @test_images.nil? or @test.nil?

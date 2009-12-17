@@ -43,7 +43,7 @@ configure :production do
         template_file.close
         
         @@ms.send_email({
-          :subject => "[MartSearch 404] '#{request.env["REQUEST_PATH"]}'",
+          :subject => "[MartSearch 404] '#{request.env["REQUEST_URI"]}'",
           :body    => template.result(binding)
         })
       end

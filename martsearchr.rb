@@ -2,29 +2,29 @@
 
 require "uri"
 require "net/http"
+require "cgi"
 
 require "rubygems"
 require "sinatra"
 require "json"
 require "rdiscount"
 require "mail"
-
 require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
-
 gem "biomart", ">=0.1.3"
 require "biomart"
 
-Dir[ File.dirname(__FILE__) + "/lib/*.rb" ].each do |file|
-  require file
-end
+require "#{File.dirname(__FILE__)}/lib/mock.rb"
+require "#{File.dirname(__FILE__)}/lib/dataset.rb"
+require "#{File.dirname(__FILE__)}/lib/index.rb"
+require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
 
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.1"
+PORTAL_VERSION = "0.0.2"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )

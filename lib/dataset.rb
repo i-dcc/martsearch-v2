@@ -156,6 +156,36 @@ class Dataset
     return attribute;
   end
   
+  def data_origin_url( query )
+    attrs = []
+    @attributes.each do |attribute|
+      attrs.push("#{@dataset_name}.default.attributes.#{attribute}")
+    end
+    
+    url = @url + "/martview?VIRTUALSCHEMANAME=default"
+    url << "&VISIBLEPANEL=resultspanel"
+    url << "&FILTERS="
+    url << "#{@dataset_name}.default.filters.#{@joined_biomart_filter}.&quot;"
+    
+    if query.is_a?(Array) then url << "#{CGI::escape(query.join(","))}&quot;"
+    else                       url << "#{CGI::escape(query)}&quot;"
+    end
+    
+    url << "&ATTRIBUTES="
+    attr_string = attrs.join("|")
+    while ( url.length + attr_string.length ) > 2048
+      # This loop ensures that the URL we form is not more than 2048 characters 
+      # long - the maximum length that IE can deal with.  We do the shortening by 
+      # dropping attributes from the selection, it's a pain, but at least it'll be 
+      # easy for the user to add the attribute back in MartView.
+      attrs.pop
+      attr_string = attrs.join("|")
+    end
+    url << attr_string
+    
+    return url
+  end
+  
   private
   
   # Utility function to read in a file and return it's contents 

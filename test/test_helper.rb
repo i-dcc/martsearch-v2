@@ -7,6 +7,7 @@ end
 
 require "uri"
 require "net/http"
+require "cgi"
 require "json"
 require "sinatra"
 require "rdiscount"

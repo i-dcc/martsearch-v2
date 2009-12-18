@@ -4,7 +4,7 @@
     We have tried our best to build this portal as free of problems as possible, but 
     we may have still missed something.  If you have any issues or would like to 
     request a new feature that we have not yet thought of, please send an email to 
-    <a href="mailto:mouseportal@sanger.ac.uk">mouseportal@sanger.ac.uk</a>.
+    <a href="mailto:<%= @ms.config["email"]["to"] %>"><%= @ms.config["email"]["to"] %></a>.
   </p>
 </div>
 
@@ -33,9 +33,11 @@
     <li>Confirmed Positive Phenotype Test Name</li>
   </ul>
   
+  <hr />
+  
   <h2>Advanced Searching</h2>
   <p>
-     The WTSI Mouse Recource Portal supports several advanced operators, which are 
+     The <%= @ms.config["portal_name"] %> supports several advanced operators, which are 
      query words that have special meaning to us. These operators modify the search in 
      some way, or even tell us to do a totally different type of search. For instance, 
      &quot;marker_symbol:&quot; is a special operator, and the query 
@@ -220,4 +222,36 @@
       are also found on chromosome 11.
     </li>
   </ul>
+  <p>
+    Please note that by default, leaving a space between two search parameters causes the 
+    search engine to perform an OR query, i.e. <strong>chromosome:1 chromosome:2</strong> 
+    is equivalent to <strong>chromosome:1 OR chromosome:2</strong>.
+  </p>
+  
+  <h3>Spaces in Search Terms</h3>
+  <p>
+    As mentioned in the above paragraph, our search engine interprets 
+    whitespace to mean the logical operator 'OR'.  Therefore, if you would 
+    like to search for a term such as <em>breast cancer</em> you must 
+    enclose the words that are supposed to be interpreted together in 
+    double-quotes.
+  </p>
+  <table>
+    <tr>
+      <th>Search</th>
+      <th>Interpretation</th>
+    </tr>
+    <tr>
+      <td><strong>breast cancer</strong></td>
+      <td>&quot;breast&quot; OR &quot;cancer&quot;</td>
+    </tr>
+    <tr>
+      <td><strong>'breast cancer'</strong></td>
+      <td>&quot;breast&quot; OR &quot;cancer&quot;</td>
+    </tr>
+    <tr>
+      <td><strong>&quot;breast cancer&quot;</strong></td>
+      <td>&quot;breast cancer&quot; together as one term</td>
+    </tr>
+  </table>
 </div>

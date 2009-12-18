@@ -48,14 +48,37 @@ class DatasetTest < Test::Unit::TestCase
         test_search( dataset, "large_search" )
       end
       
-      should "generate a biomart search link url" do
-        
+      should "generate a search link url back to the orginal data source" do
+        test_data_origin_url( dataset, "single_return_search" )
+        test_data_origin_url( dataset, "large_search" )
       end
       
     end
   end
   
   def test_search( dataset, search_param )
+    search_terms = setup_basic_search( dataset, search_param )
+    
+    mart_results = dataset.search( search_terms )
+    assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
+    
+    dataset.add_to_results_stash( @@ms.index.current_results, mart_results )
+    assert( @@ms.index.current_results.is_a?(Hash), "The results stash is no longer a hash." )
+  end
+  
+  def test_data_origin_url( dataset, search_param )
+    search_terms = setup_basic_search( dataset, search_param )
+    
+    if search_terms
+      url = dataset.data_origin_url( search_terms )
+      assert( url.is_a?(String), "dataset.data_origin_url() does not return a string." )
+      assert( !url.empty?, "dataset.data_origin_url() does not return an empty string." )
+      assert( url.match(/^http:\/\/.*/), "dataset.data_origin_url() does not return a url." )
+      assert( url.length < 2048, "dataset.data_origin_url() is returning url's that are too long for IE to handle." )
+    end
+  end
+  
+  def setup_basic_search( dataset, search_param )
     # Query the index
     results = @@ms.index.search( @@ms.config["test"][search_param] )
     
@@ -64,7 +87,6 @@ class DatasetTest < Test::Unit::TestCase
     assert( @@ms.index.grouped_terms.is_a?(Hash), ".grouped_terms does not return a hash object." )
     
     # Now fetch the pre-computed biomart search terms 
-    # and search the dataset
     search_terms = @@ms.index.grouped_terms[ dataset.joined_index_field ]
     if search_terms
       assert( search_terms.is_a?(Array), "The retrieved search terms are not in an array." )
@@ -72,11 +94,6 @@ class DatasetTest < Test::Unit::TestCase
       assert( search_terms.nil?, "The retrieved search terms is nil" )
     end
     
-    mart_results = dataset.search( search_terms )
-    assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
-    
-    dataset.add_to_results_stash( results, mart_results )
-    assert( results.is_a?(Hash), "The results stash is no longer a hash." )
+    return search_terms
   end
-  
 end

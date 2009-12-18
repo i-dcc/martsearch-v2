@@ -406,6 +406,15 @@ form#martsearchr {
 	padding: 4px;
 }
 
+#search_results .result div.dataset_original_data {
+	text-align: right;
+}
+
+#search_results .result div.dataset_original_data a {
+	background: url(../images/bullet_go.png) no-repeat left center;
+	padding: 2px 0 2px 16px;
+}
+
 /* Sanger Welcome Page Specifics */
 
 table#welcome td {

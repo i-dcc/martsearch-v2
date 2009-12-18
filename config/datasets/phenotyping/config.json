@@ -4,7 +4,7 @@
   "custom_sort":   false,
   "custom_css":    true,
   "custom_js":     true,
-  "url":           "http://htgt.internal.sanger.ac.uk:9002/biomart",
+  "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "phenotyping",
   "display_name":  "Phenotyping",
   "indexing": {

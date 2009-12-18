@@ -34,13 +34,46 @@ sorted_results = {}
       "is_mgp", "marker_symbol", "ensembl_gene_id", "status",
       "status_code", "status_type", "status_description", "status_sequence",
       "pipeline_stage", "ikmc_project_id", "bac", "design_id",
-      "design_plate", "design_well", "intvec_plate", "intvec_well",
-      "intvec_distribute", "targvec_plate", "targvec_well", "targvec_distribute",
-      "backbone", "cassette", "allele_name", "is_latest_for_gene"
+      "design_plate", "design_well", "backbone", "cassette", 
+      "allele_name", "is_latest_for_gene"
     ]
     
     singular_attributes.each do |attribute|
       project[attribute] = result[attribute]
+    end
+    
+    # And Intermediate Vector info
+    if result["intvec_distribute"] === "yes" or result["targvec_distribute"] === "yes"
+      unless project["intermediate_vectors"]
+        project["intermediate_vectors"] = []
+      end
+      
+      int_vector = {
+        "intvec_plate"      => result["intvec_plate"],
+        "intvec_well"       => result["intvec_well"],
+        "intvec_distribute" => result["intvec_distribute"]
+      }
+      
+      unless project["intermediate_vectors"].include?(int_vector)
+        project["intermediate_vectors"].push(int_vector)
+      end
+    end
+    
+    # And Targeting Vector info
+    if result["targvec_distribute"] === "yes"
+      unless project["targeting_vectors"]
+        project["targeting_vectors"] = []
+      end
+      
+      targ_vector = {
+        "targvec_plate"      => result["targvec_plate"],
+        "targvec_well"       => result["targvec_well"],
+        "targvec_distribute" => result["targvec_distribute"]
+      }
+      
+      unless project["targeting_vectors"].include?(targ_vector)
+        project["targeting_vectors"].push(targ_vector)
+      end
     end
     
     # And ES Cell info
@@ -48,14 +81,14 @@ sorted_results = {}
       clone = {
         "escell_clone"         => result["escell_clone"],
         "allele_name"          => result["allele_name"],
-        "escell_line"         => result["escell_line"],
+        "escell_line"          => result["escell_line"],
         "colonies_picked"      => result["colonies_picked"],
         "escell_distribute"    => result["escell_distribute"],
-        "targeted_trap" => result["targeted_trap"]
+        "targeted_trap"        => result["targeted_trap"]
       }
       
-      unless project["conditional_clones"]         then project["conditional_clones"]    = []     end
-      unless project["nonconditional_clones"]      then project["nonconditional_clones"] = []     end
+      unless project["conditional_clones"]    then project["conditional_clones"]    = [] end
+      unless project["nonconditional_clones"] then project["nonconditional_clones"] = [] end
       
       if result["targeted_trap"]
         project["nonconditional_clones"].push(clone)

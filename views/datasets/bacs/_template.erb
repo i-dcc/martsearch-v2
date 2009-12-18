@@ -4,6 +4,7 @@
         <th>C57Bl/6J Bacs</th>
         <th>129 Bacs</th>
         <th>MICER clones</th>
+        <th>KO Targeting Vectors</th>
         <th>View in Ensembl</th>
     </tr>
   </thead>
@@ -12,7 +13,23 @@
       <td><%= result_data["bacs"]["b6_count"] %></td>
       <td><%= result_data["bacs"]["s7_count"] %></td>
       <td><%= result_data["bacs"]["micer_count"] %></td>
-      <td><a href="<%= result_data["bacs"]["ensembl_link"] %>">link</a></td>
+      <td>
+        <%
+          targ_vect_count = 0
+          project         = {}
+          if result_data["htgt_targ"]
+            project = result_data["htgt_targ"][0]
+            result_data["htgt_targ"].each do |project|
+              if project["targeting_vectors"]
+                targ_vect_count += project["targeting_vectors"].size
+              end
+            end
+          end
+        %>
+        <%= targ_vect_count %>&nbsp;&nbsp;
+        <%= partial( "datasets/htgt_targ/order_button", :locals => { :project => project, :order_type => 'vector' } ) %>
+      </td>
+      <td><a href="<%= result_data["bacs"]["ensembl_link"] %>" class="external-link">link</a></td>
     </tr>
   </tbody>
 </table>

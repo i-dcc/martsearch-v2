@@ -6,7 +6,7 @@
   "custom_js":     false,
   "url":           "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":  "bacs",
-  "display_name":  "Sanger DNA Clone Resources",
+  "display_name":  "DNA Clone Resources",
   "indexing": {},
   "searching": {
     "joined_index_field":       "marker_symbol",

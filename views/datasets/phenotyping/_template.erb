@@ -22,9 +22,6 @@
   <tbody>
     <% result_data["phenotyping"].each do |result| %>
       <%
-        # FIXME: Put all of this logic in a custom sort method so that the output 
-        # can be cached!!!
-        
         # See if there is a joined kermits entry
         related_kermits_entry = nil
         if result["colony_prefix"] && result_data["kermits"]

@@ -10,9 +10,9 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= result_data["bacs"]["b6_count"] %></td>
-      <td><%= result_data["bacs"]["s7_count"] %></td>
-      <td><%= result_data["bacs"]["micer_count"] %></td>
+      <td><%= result_data["bacs"][0]["b6_count"] %></td>
+      <td><%= result_data["bacs"][0]["s7_count"] %></td>
+      <td><%= result_data["bacs"][0]["micer_count"] %></td>
       <td>
         <%
           targ_vect_count = 0
@@ -29,7 +29,7 @@
         <%= targ_vect_count %>&nbsp;&nbsp;
         <%= partial( "datasets/htgt_targ/order_button", :locals => { :project => project, :order_type => 'vector' } ) %>
       </td>
-      <td><a href="<%= result_data["bacs"]["ensembl_link"] %>" class="external-link">link</a></td>
+      <td><a href="<%= result_data["bacs"][0]["ensembl_link"] %>" class="external-link">link</a></td>
     </tr>
   </tbody>
 </table>

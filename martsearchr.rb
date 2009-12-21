@@ -135,8 +135,8 @@ helpers do
   
   # Load in any custom (per dataset) helpers
   @@ms.datasets.each do |ds|
-    if ds.custom_view_helpers
-      eval( ds.custom_view_helpers )
+    if ds.use_custom_view_helpers
+      load "#{File.dirname(__FILE__)}/config/datasets/#{ds.dataset_name}/view_helpers.rb"
     end
   end
 end
@@ -322,13 +322,6 @@ get "/js/martsearch*.js" do
   return js_text
 end
 
-# Load in any custom (per dataset) routes
-@@ms.datasets.each do |ds|
-  if ds.custom_routes
-    eval( ds.custom_routes )
-  end
-end
-
 def check_for_errors
   unless @@ms.index.is_alive?
     @messages[:error].push({ :highlight => "The search index is currently unavailable, please check back again soon." })
@@ -355,3 +348,12 @@ def check_for_messages
   end
 end
 
+<<<<<<< HEAD
+=======
+# Load in any custom (per dataset) routes
+@@ms.datasets.each do |ds|
+  if ds.use_custom_routes
+    load "#{File.dirname(__FILE__)}/config/datasets/#{ds.dataset_name}/routes.rb"
+  end
+end
+>>>>>>> e8fee2e... Cleanup of the custom view helpers and routes code.

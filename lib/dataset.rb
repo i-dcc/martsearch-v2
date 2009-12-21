@@ -1,6 +1,7 @@
 class Dataset
-  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :javascript, :custom_sort, :custom_view_helpers, :custom_routes
+  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :javascript, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
+  attr_reader :use_custom_view_helpers, :use_custom_routes
   
   attr_accessor :url, :attributes, :filters, :display_name
   
@@ -18,8 +19,8 @@ class Dataset
     @stylesheet               = nil
     @javascript               = nil
     @custom_sort              = nil
-    @custom_view_helpers      = nil
-    @custom_routes            = nil
+    @use_custom_view_helpers  = conf["custom_view_helpers"]
+    @use_custom_routes        = conf["custom_routes"]
     
     if conf["custom_sort"]
       @custom_sort = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/custom_sort.rb")
@@ -31,14 +32,6 @@ class Dataset
     
     if conf["custom_js"]
       @javascript = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/javascript.js")
-    end
-    
-    if conf["custom_view_helpers"]
-      @custom_view_helpers = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/view_helpers.rb")
-    end
-    
-    if conf["custom_routes"]
-      @custom_routes = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/routes.rb")
     end
     
     @current_search_results = nil

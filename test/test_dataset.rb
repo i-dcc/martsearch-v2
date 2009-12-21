@@ -62,7 +62,7 @@ class DatasetTest < Test::Unit::TestCase
     mart_results = dataset.search( search_terms )
     assert( mart_results.is_a?(Hash), "The Biomart results are not in a hash." )
     
-    dataset.add_to_results_stash( @@ms.index.current_results, mart_results )
+    dataset.add_to_results_stash( @@ms.index.primary_field, @@ms.index.current_results, mart_results )
     assert( @@ms.index.current_results.is_a?(Hash), "The results stash is no longer a hash." )
   end
   

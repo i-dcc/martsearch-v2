@@ -102,22 +102,20 @@ class Dataset
   
   # Function to add the biomart results into the results_stash - 
   # a cache of all the returned search data used to render a page.
-  def add_to_results_stash( stash, biomart_results )
+  def add_to_results_stash( index_key, stash, biomart_results )
     
     # First, see if the primary key of the index is the same 
     # as the primary key of our biomart_results, if yes, use 
     # this association as it's easy and bloody fast!
-    do_a_recursive_lookup = true
-    stash.each do |stash_key,stash_data|
-      if biomart_results[stash_key]
-        stash_data[@dataset_name] = biomart_results[stash_key]
-        do_a_recursive_lookup = false
+    if @joined_index_field === index_key
+      
+      stash.each do |stash_key,stash_data|
+        if biomart_results[stash_key]
+          stash_data[@dataset_name] = biomart_results[stash_key]
+        end
       end
-    end
-    
-    # If the above was unsuccessful, looks like we have some work 
-    # to do...
-    if do_a_recursive_lookup
+      
+    else
       
       # Create a lookup hash of the @joined_index_field values 
       # so that we can easily associate our biomart_results back 
@@ -136,10 +134,15 @@ class Dataset
       
       biomart_results.each do |biomart_key,biomart_data|
         if lookup[biomart_key] && stash[ lookup[biomart_key] ]
-          stash[ lookup[biomart_key] ][@dataset_name] = biomart_data
+          unless stash[ lookup[biomart_key] ][@dataset_name]
+            stash[ lookup[biomart_key] ][@dataset_name] = []
+          end
+          
+          biomart_data.each do |data|
+            stash[ lookup[biomart_key] ][@dataset_name].push(data)
+          end
         end
       end
-      
     end
     
   end

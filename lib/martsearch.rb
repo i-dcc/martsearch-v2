@@ -205,7 +205,7 @@ class Martsearch
             begin
               search_terms = @index.grouped_terms[ dataset.joined_index_field ]
               mart_results = dataset.search( search_terms )
-              dataset.add_to_results_stash( @search_data, mart_results )
+              dataset.add_to_results_stash( @index.primary_field, @search_data, mart_results )
             rescue Biomart::BiomartError => error
               @errors.push({
                 :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",

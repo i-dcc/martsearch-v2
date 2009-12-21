@@ -132,6 +132,13 @@ helpers do
       end
     end
   end
+  
+  # Load in any custom (per dataset) helpers
+  @@ms.datasets.each do |ds|
+    if ds.custom_view_helpers
+      eval( ds.custom_view_helpers )
+    end
+  end
 end
 
 before do
@@ -313,6 +320,13 @@ get "/js/martsearch*.js" do
   
   content_type "text/javascript"
   return js_text
+end
+
+# Load in any custom (per dataset) routes
+@@ms.datasets.each do |ds|
+  if ds.custom_routes
+    eval( ds.custom_routes )
+  end
 end
 
 def check_for_errors

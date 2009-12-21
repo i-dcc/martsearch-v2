@@ -133,7 +133,12 @@ helpers do
     end
   end
   
-  load "#{Dir.pwd}/config/datasets/phenotyping/view_helpers.rb"
+  # Load in any custom (per dataset) helpers
+  @@ms.datasets.each do |ds|
+    if ds.custom_view_helpers
+      eval( ds.custom_view_helpers )
+    end
+  end
 end
 
 before do
@@ -334,6 +339,13 @@ get "/js/martsearch*.js" do
   return js_text
 end
 
+# Load in any custom (per dataset) routes
+@@ms.datasets.each do |ds|
+  if ds.custom_routes
+    eval( ds.custom_routes )
+  end
+end
+
 def check_for_errors
   unless @@ms.index.is_alive?
     @messages[:error].push({ :highlight => "The search index is currently unavailable, please check back again soon." })
@@ -359,5 +371,3 @@ def check_for_messages
     end
   end
 end
-
-load "#{Dir.pwd}/config/datasets/phenotyping/routes.rb"

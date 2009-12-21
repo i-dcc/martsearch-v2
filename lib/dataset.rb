@@ -135,7 +135,9 @@ class Dataset
       end
       
       biomart_results.each do |biomart_key,biomart_data|
-        stash[ lookup[biomart_key] ][@dataset_name] = biomart_data
+        if lookup[biomart_key] && stash[ lookup[biomart_key] ]
+          stash[ lookup[biomart_key] ][@dataset_name] = biomart_data
+        end
       end
       
     end

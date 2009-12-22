@@ -348,12 +348,9 @@ def check_for_messages
   end
 end
 
-<<<<<<< HEAD
-=======
 # Load in any custom (per dataset) routes
 @@ms.datasets.each do |ds|
   if ds.use_custom_routes
     load "#{File.dirname(__FILE__)}/config/datasets/#{ds.dataset_name}/routes.rb"
   end
 end
->>>>>>> e8fee2e... Cleanup of the custom view helpers and routes code.

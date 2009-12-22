@@ -24,6 +24,7 @@ require "#{File.dirname(__FILE__)}/../lib/mock.rb"
 require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
 require "#{File.dirname(__FILE__)}/../lib/index.rb"
 require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
+require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 
 ##
 ## Some basic setup shared between the test suites

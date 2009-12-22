@@ -1,5 +1,3 @@
-require 'metric_fu'
-
 desc 'Default task: run all tests'
 task :default => [:test]
 
@@ -14,7 +12,6 @@ task :install_deps do
     "mail",
     "activesupport",
     "will_paginate",
-    "metric_fu",
     "chronic",
     "shoulda",
     "test-unit",
@@ -28,20 +25,3 @@ end
 
 # Load rake tasks from the tasks directory
 Dir["tasks/*.task"].each { |t| load t }
-
-MetricFu::Configuration.run do |config| 
-  config.metrics  = [:churn, :saikuro, :flog, :flay, :reek, :roodi, :rcov]
-  config.graphs   = [:flog, :flay, :reek, :roodi, :rcov]
-  config.reek     = { :dirs_to_reek => ["lib"] }
-  config.rcov     = { 
-                      :test_files => ["test/test_*.rb"],
-                      :rcov_opts => [
-                        "--sort coverage", 
-                        "--no-html", 
-                        "--text-coverage",
-                        "--no-color",
-                        "--profile",
-                        "--exclude /gems/,/Library/,spec"
-                      ]
-                    }
-end

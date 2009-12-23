@@ -7,20 +7,18 @@ set :logging, false
 set :public, "#{File.dirname(__FILE__)}/../public"
 set :views, "#{File.dirname(__FILE__)}/../views"
 
-CONF_FILE = "#{File.dirname(__FILE__)}/../config/config.json"
-
 class MartsearchUiTest < Test::Unit::TestCase
   context "A MartSearch application" do
     setup do
       # Read in the config file
-      conf_obj  = JSON.load( File.new( CONF_FILE, "r" ) )
+      conf_obj  = JSON.load( File.new( @@conf_file, "r" ) )
       
       # Copy the config file for safe keeping
-      system("cp #{CONF_FILE} #{CONF_FILE}.orig")
+      system("cp #{@@conf_file} #{@@conf_file}.orig")
       
       # Alter the conf_obj and save it in place of the original conf_file
       conf_obj["base_uri"] = ""
-      File.open( CONF_FILE, "w" ) { |f| f.write( conf_obj.to_json ) }
+      File.open( @@conf_file, "w" ) { |f| f.write( conf_obj.to_json ) }
       
       require "#{File.dirname(__FILE__)}/../martsearchr.rb"
       
@@ -30,8 +28,8 @@ class MartsearchUiTest < Test::Unit::TestCase
     
     teardown do
       # Put our original conf file back
-      File.delete(CONF_FILE)
-      system("mv #{CONF_FILE}.orig #{CONF_FILE}")
+      File.delete(@@conf_file)
+      system("mv #{@@conf_file}.orig #{@@conf_file}")
     end
 
     should "have the portal name in the header" do

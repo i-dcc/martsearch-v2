@@ -31,8 +31,8 @@ require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 ##
 
 # Read in our config
-conf_file = "#{File.dirname(__FILE__)}/../config/config.json"
-conf_obj  = JSON.load( File.new( conf_file, "r" ) )
+@@conf_file = "#{File.dirname(__FILE__)}/../config/config.json"
+conf_obj  = JSON.load( File.new( @@conf_file, "r" ) )
 
 # Override the base URI for tests...
 conf_obj["base_uri"] = ""

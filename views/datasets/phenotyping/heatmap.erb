@@ -15,6 +15,15 @@
   td.pheno_result {
     cursor: auto !important;
   }
+  
+  #tooltip{
+    position: absolute;
+    border: 1px solid #333;
+    background: #f7f5d1;
+    padding: 2px 5px;
+    color: #333;
+    display: none;
+  }
 </style>
 
 <%
@@ -75,7 +84,7 @@
               end
             end
           %>
-          <td class="<%= css_class_for_test(result[test]) %> pheno_result"><%= link_text %></td>
+          <td class="<%= css_class_for_test(result[test]) %> pheno_result" tooltip="<%= title_text %>"><%= link_text %></td>
         <% end %>
       </tr>
     <% end %>
@@ -83,3 +92,38 @@
   
   <%= partial( "datasets/phenotyping/heatmap_legend" ) %>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  // Offset for the tooltip
+  xOffset = 10;
+  yOffset = 20;
+  
+  jQuery(document).ready(function() {
+    jQuery("#phenotyping_heatmap").bind("mouseover", function(e) {
+      var target = jQuery(e.target);
+      if ( target.is("td.pheno_result") ) {
+        jQuery("body").append("<div id='tooltip'>" + target.attr("tooltip") + "</div>");
+        jQuery("#tooltip")
+          .css("top", (e.pageY - xOffset) + "px")
+          .css("left",(e.pageX + yOffset) + "px")
+          .fadeIn("fast");
+      } else if ( target.parent().parent().is("td.pheno_result") ) {
+        jQuery("body").append("<div id='tooltip'>" + target.parent().parent().attr("tooltip") + "</div>");
+        jQuery("#tooltip")
+          .css("top", (e.pageY - xOffset) + "px")
+          .css("left",(e.pageX + yOffset) + "px")
+          .fadeIn("fast");
+      }
+    });
+    
+    jQuery("#phenotyping_heatmap").bind("mouseout", function(e) {
+      jQuery("#tooltip").remove();
+    });
+    
+    jQuery("#phenotyping_heatmap").bind("mousemove", function(e) {
+      jQuery("#tooltip")
+        .css("top", (e.pageY - xOffset) + "px")
+        .css("left",(e.pageX + yOffset) + "px");
+    });
+  });
+</script>

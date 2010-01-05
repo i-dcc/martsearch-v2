@@ -70,8 +70,9 @@
             title_text = "<h6>#{@pheno_test_name_map[test]}</h6>"
             title_text += "<p><strong>Result:</strong> #{result[test]}"
             if result["#{test}_comments"]
-              title_text += "<br /><br /><strong>Comments:</strong> #{result["#{test}_comments"]}</p>"
+              title_text += "<br /><br /><strong>Comments:</strong> #{result["#{test}_comments"]}"
             end
+            title_text += "</p>"
             
             link_text = ""
             if test === "abr"

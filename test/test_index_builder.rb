@@ -41,7 +41,7 @@ class IndexBuilderTest < Test::Unit::TestCase
     ##
     
     should "generate a Solr XML schema" do
-      solr_schema = @index_builder.solr_schema()
+      solr_schema = @index_builder.solr_schema_xml()
       assert( !solr_schema.nil?, "The @index_builder.solr_schema method returned nil." )
       assert( solr_schema.is_a?(String), "@index_builder.solr_schema did not return a string value." )
       # TODO: If/when there is a DTD to validate the Solr XML against - use it!
@@ -82,20 +82,31 @@ class IndexBuilderTest < Test::Unit::TestCase
         begin
           results = mart.search( :attributes => attribute_map.keys, :filters => { "marker_symbol" => ["Akt2","Cbx7"] } )
           @index_builder.process_dataset_results_public( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute )
+          
+          assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )
+          assert( @index_builder.documents["MGI:104874"] != nil, "@index_builder.documents does not contain a data entry for Akt2." )
+          assert( @index_builder.documents["MGI:1196439"] != nil, "@index_builder.documents does not contain a data entry for Cbx7." )
         rescue Biomart::FilterError => error
           # This dataset does not have a "marker_symbol" filter so we can't test 
           # it with this simple test... not too much of a worry...
         end
-        
-        assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )
       end
       
       # Document cleaning...
       @index_builder.documents.values.each do |doc|
         @index_builder.clean_document_public(doc)
+        assert( doc[ @index_builder.index_conf["schema"]["unique_key"] ].size === 1, "@index_builder.clean_document has not removed duplicate entries." )
       end
       
-      #p @index_builder.documents
+      # Saving the document XMLs
+      @index_builder.build_document_xmls()
+      assert( !@index_builder.xml_dir.nil?, "@index_builder.xml_dir was not set by @index_builder.build_document_xmls()." )
+      
+      present_dir  = Dir.getwd
+      Dir.chdir( @index_builder.xml_dir )
+      xml_files    = Dir.glob("solr-*.xml")
+      Dir.chdir( present_dir )
+      assert( xml_files.size > 0, "@index_builder.build_document_xmls() did not produce any XML files." )
     end
     
     ## NOTE: Uncomment the following to run a FULL test of the document 

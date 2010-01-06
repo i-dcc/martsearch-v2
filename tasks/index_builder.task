@@ -1,0 +1,33 @@
+
+require "uri"
+require "net/http"
+require "cgi"
+
+require "rubygems"
+require "json"
+require "sinatra"
+require "rdiscount"
+require "mail"
+require "active_support"
+require "will_paginate/array"
+require "will_paginate/view_helpers"
+
+gem "biomart", ">=0.1.3"
+require "biomart"
+
+require "#{File.dirname(__FILE__)}/../lib/mock.rb"
+require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
+require "#{File.dirname(__FILE__)}/../lib/index.rb"
+require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
+require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
+
+@builder = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
+
+namespace :solr do
+  desc "Generates the Solr 'schema.xml' file in the current directory"
+  task :schema do
+    file = File.open( "schema.xml", "w" )
+    file.print @builder.solr_schema_xml()
+    file.close
+  end
+end

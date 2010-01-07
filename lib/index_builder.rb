@@ -52,34 +52,35 @@ class IndexBuilder
   # config defined on a per-dataset basis.
   def build_documents
     @index_conf["datasets"].each do |dataset_conf|
-      # Only index a dataset if we have been asked to...
-      if dataset_conf["index"]
-        unless @test_environment
-          puts "Fetching data from dataset: '#{dataset_conf["display_name"]}'"
-        end
-        
-        # Extract all of the needed index mapping data from "attribute_map"
-        mapping_data = process_attribute_map( dataset_conf["indexing"]["attribute_map"] )
-        
-        attribute_map      = mapping_data[:attribute_map]
-        primary_attribute  = mapping_data[:primary_attribute]
-        map_to_index_field = mapping_data[:map_to_index_field]
-        
-        # Do we need to cache lookup data?
-        unless map_to_index_field == @index_conf["schema"]["unique_key"].to_sym
-          cache_documents_by( map_to_index_field )
-        end
-        
-        # Grab a Biomart::Dataset object and search and retrieve all the data it holds
-        mart    = biomart_dataset( dataset_conf )
-        results = mart.search( :attributes => attribute_map.keys )
-        
-        # Now loop through the results building up document structures
-        unless @test_environment
-          puts "Processing #{results[:data].size} rows of Biomart results"
-        end
-        process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute )
+      unless @test_environment
+        puts "Fetching data from dataset: '#{dataset_conf["display_name"]}'"
       end
+      
+      # Extract all of the needed index mapping data from "attribute_map"
+      mapping_data = process_attribute_map( dataset_conf["indexing"]["attribute_map"] )
+      
+      attribute_map      = mapping_data[:attribute_map]
+      primary_attribute  = mapping_data[:primary_attribute]
+      map_to_index_field = mapping_data[:map_to_index_field]
+      
+      # Do we need to cache lookup data?
+      unless map_to_index_field == @index_conf["schema"]["unique_key"].to_sym
+        cache_documents_by( map_to_index_field )
+      end
+      
+      # Grab a Biomart::Dataset object and search and retrieve all the data it holds
+      mart    = biomart_dataset( dataset_conf )
+      results = mart.search( :attributes => attribute_map.keys )
+      
+      # Also cache all of the "Display Names" for the biomart attributes
+      # as we want to index those if we're indexing an attribute name.
+      biomart_attributes = mart.attributes()
+      
+      # Now loop through the results building up document structures
+      unless @test_environment
+        puts "Processing #{results[:data].size} rows of Biomart results"
+      end
+      process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, biomart_attributes )
     end
     
     # Finally, remove duplicates from our documents
@@ -207,7 +208,8 @@ class IndexBuilder
           map_to_index_field = mapping_obj["idx"].to_sym
         end
       end
-      map[ mapping_obj["attr"] ] = { "attr" => mapping_obj["attr"], "idx" => mapping_obj["idx"].to_sym }
+      map[ mapping_obj["attr"] ]        = mapping_obj
+      map[ mapping_obj["attr"] ]["idx"] = map[ mapping_obj["attr"] ]["idx"].to_sym
     end
     
     unless primary_attribute
@@ -279,7 +281,7 @@ class IndexBuilder
   # Utility function to run through all of the results returned from 
   # the dataset and either create document constructs or append data to 
   # existing document constructs.
-  def process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute )
+  def process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, biomart_attributes )
     # Figure out the position of the primary_attribute in the results array
     primary_attribute_pos = nil
     results[:headers].each_index do |position|
@@ -306,25 +308,43 @@ class IndexBuilder
         # Okay, if we have a doc - process the biomart attributes
         if doc
           # First, create a hash out of the data_row
-          data_obj = {}
+          data_row_obj = {}
           results[:headers].each_index do |position|
-            data_obj[ results[:headers][position] ] = data_row[position]
+            data_row_obj[ results[:headers][position] ] = data_row[position]
           end
           
           # Now do the processing
-          data_obj.each do |attr_name,attr_value|
+          data_row_obj.each do |attr_name,attr_value|
             # Extract and index our initial data return
-            value_to_index = extract_value_to_index( attr_name, attr_value, attribute_map, data_obj )
+            value_to_index = extract_value_to_index( attr_name, attr_value, attribute_map, data_row_obj, biomart_attributes )
+            
             if value_to_index && doc[ attribute_map[attr_name]["idx"] ]
-              doc[ attribute_map[attr_name]["idx"] ].push( value_to_index )
+              if value_to_index.is_a?(Array)
+                value_to_index.each do |value|
+                  doc[ attribute_map[attr_name]["idx"] ].push( value )
+                end
+              else
+                doc[ attribute_map[attr_name]["idx"] ].push( value_to_index )
+              end
             end
             
             # Any further metadata to be extracted from here? (i.e. MP terms in comments)
             if value_to_index and attribute_map[attr_name]["extract"]
-              regexp = Regexp.new( attribute_map[attr_name]["extract"]["regexp"] )
-              matches = regexp.match( value_to_index )
+              regexp  = Regexp.new( attribute_map[attr_name]["extract"]["regexp"] )
+              matches = false
+              
+              if value_to_index.is_a?(Array)
+                value_to_index.each do |value|
+                  unless matches
+                    matches = regexp.match( value )
+                  end
+                end
+              else
+                matches = regexp.match( value_to_index )
+              end
+              
               if matches
-                doc[ attribute_map[attr_name]["extract"]["idx"] ].push( matches[0] )
+                doc[ attribute_map[attr_name]["extract"]["idx"].to_sym ].push( matches[0] )
               end
             end
           end
@@ -335,7 +355,7 @@ class IndexBuilder
   
   # Utility function to determine what data values we need to 
   # add to the index given the dataset configuration.
-  def extract_value_to_index( attr_name, attr_value, attr_options, mart_data )
+  def extract_value_to_index( attr_name, attr_value, attr_options, mart_data, mart_attributes )
     options        = attr_options[attr_name]
     value_to_index = attr_value
 
@@ -347,7 +367,7 @@ class IndexBuilder
 
     if options["index_attr_name"]
       if value_to_index
-        value_to_index = attr_name
+        value_to_index = [ attr_name, mart_attributes[attr_name].display_name ]
       end
     end
 
@@ -355,7 +375,7 @@ class IndexBuilder
       other_attr       = options["if_other_attr_indexed"]
       other_attr_value = mart_data[ other_attr ]
 
-      unless extract_value_to_index( other_attr, other_attr_value, attr_options, mart_data )
+      unless extract_value_to_index( other_attr, other_attr_value, attr_options, mart_data, mart_attributes )
         value_to_index = nil
       end
     end

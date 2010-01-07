@@ -161,6 +161,8 @@
     "phenotyping",
     "kermits",
     "htgt_targ",
-    "bacs"
+    "bacs",
+    "htgt_trap",
+    "ensembl"
   ]
 }

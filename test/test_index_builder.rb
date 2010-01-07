@@ -69,7 +69,7 @@ class IndexBuilderTest < Test::Unit::TestCase
         
         # document caching
         unless map_to_index_field == @index_builder.index_conf["schema"]["unique_key"].to_sym
-          cache_documents_by_public( map_to_index_field )
+          @index_builder.cache_documents_by_public( map_to_index_field )
           assert( !@index_builder.documents_by[map_to_index_field].nil?, "The document cache (made by cache_documents_by()) is nil." )
           assert( @index_builder.documents_by[map_to_index_field].is_a?(Hash), "The document cache (made by cache_documents_by()) is not a Hash." )
         end

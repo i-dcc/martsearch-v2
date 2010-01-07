@@ -3,3 +3,4 @@ coverage/*
 coverage.info
 tmp/*/*
 public/images/pheno*
+schema.xml

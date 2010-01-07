@@ -10,12 +10,22 @@ class Dataset
     @url                      = conf["url"]
     @dataset_name             = conf["dataset_name"]
     @display_name             = conf["display_name"]
-    @joined_index_field       = conf["searching"]["joined_index_field"]
-    @joined_biomart_filter    = conf["searching"]["joined_biomart_filter"]
-    @joined_biomart_attribute = conf["searching"]["joined_biomart_attribute"]
-    @filters                  = conf["searching"]["filters"]
-    @attributes               = conf["searching"]["attributes"]
+    
     @use_in_search            = conf["use_in_search"]
+    @joined_index_field       = nil
+    @joined_biomart_filter    = nil
+    @joined_biomart_attribute = nil
+    @filters                  = nil
+    @attributes               = nil
+    
+    if @use_in_search
+      @joined_index_field       = conf["searching"]["joined_index_field"]
+      @joined_biomart_filter    = conf["searching"]["joined_biomart_filter"]
+      @joined_biomart_attribute = conf["searching"]["joined_biomart_attribute"]
+      @filters                  = conf["searching"]["filters"]
+      @attributes               = conf["searching"]["attributes"]
+    end
+    
     @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
     @stylesheet               = nil
     @javascript               = nil

@@ -29,11 +29,31 @@ require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 namespace :solr do
   
   desc "Generates the Solr 'schema.xml' file in the current directory"
-  task :schema do
+  task :schema_xml do
     file = File.open( "schema.xml", "w" )
     file.print @builder.solr_schema_xml()
     file.close
   end
   
+  desc "Generates the Solr document XMLs and saves them in the /tmp directory"
+  task :build_document_xmls do
+    pwd = Dir.pwd
+    dir = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
+    
+    begin
+      Dir.mkdir( dir )
+    rescue Errno::EEXIST => e
+      system("/bin/rm -rf '#{dir}'")
+      Dir.mkdir( dir )
+    end
+    
+    @builder.build_documents()
+    @builder.build_document_xmls( dir )
+  end
+  
+  desc "Retrieves all of the data to be indexed from the datasets and uploads them to the Solr index"
+  task :rebuild_index => :build_document_xmls do
+    @builder.send_documents_to_solr()
+  end
   
 end

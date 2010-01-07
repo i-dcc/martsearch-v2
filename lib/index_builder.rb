@@ -116,7 +116,7 @@ class IndexBuilder
         docs.push( @documents[name] )
       end
       
-      file = File.open( "#{dir}/solr-xml-#{chunk_number}.xml", "w" )
+      file = File.open( "#{dir}/solr-xml-#{chunk_number+1}.xml", "w" )
       file.print solr_document_xml(docs)
       file.close
     end

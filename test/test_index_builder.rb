@@ -81,7 +81,7 @@ class IndexBuilderTest < Test::Unit::TestCase
         # Biomart result processing
         begin
           results = mart.search( :attributes => attribute_map.keys, :filters => { "marker_symbol" => ["Akt2","Cbx7"] } )
-          @index_builder.process_dataset_results_public( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute )
+          @index_builder.process_dataset_results_public( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, mart.attributes )
           
           assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )
           assert( @index_builder.documents["MGI:104874"] != nil, "@index_builder.documents does not contain a data entry for Akt2." )
@@ -109,7 +109,7 @@ class IndexBuilderTest < Test::Unit::TestCase
       assert( xml_files.size > 0, "@index_builder.build_document_xmls() did not produce any XML files." )
       
       # Upload XML to Solr
-      @index_builder.send_documents_to_solr()
+      #@index_builder.send_documents_to_solr()
     end
     
     ## NOTE: Uncomment the following to run a FULL test of the document 

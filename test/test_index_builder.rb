@@ -61,14 +61,14 @@ class IndexBuilderTest < Test::Unit::TestCase
         assert( !mapping_data[:map_to_index_field].nil?, "@index_builder.process_attribute_map does not return a map_to_index_field." )
         assert( mapping_data[:attribute_map].is_a?(Hash), "@index_builder.process_attribute_map does not return attribute_map as a Hash." )
         assert( mapping_data[:primary_attribute].is_a?(String), "@index_builder.process_attribute_map does not return primary_attribute as a String." )
-        assert( mapping_data[:map_to_index_field].is_a?(String), "@index_builder.process_attribute_map does not return map_to_index_field as a String." )
+        assert( mapping_data[:map_to_index_field].is_a?(Symbol), "@index_builder.process_attribute_map does not return map_to_index_field as a Symbol." )
         
         attribute_map      = mapping_data[:attribute_map]
         primary_attribute  = mapping_data[:primary_attribute]
         map_to_index_field = mapping_data[:map_to_index_field]
         
         # document caching
-        unless map_to_index_field == @index_builder.index_conf["schema"]["unique_key"]
+        unless map_to_index_field == @index_builder.index_conf["schema"]["unique_key"].to_sym
           cache_documents_by_public( map_to_index_field )
           assert( !@index_builder.documents_by[map_to_index_field].nil?, "The document cache (made by cache_documents_by()) is nil." )
           assert( @index_builder.documents_by[map_to_index_field].is_a?(Hash), "The document cache (made by cache_documents_by()) is not a Hash." )
@@ -95,7 +95,7 @@ class IndexBuilderTest < Test::Unit::TestCase
       # Document cleaning...
       @index_builder.documents.values.each do |doc|
         @index_builder.clean_document_public(doc)
-        assert( doc[ @index_builder.index_conf["schema"]["unique_key"] ].size === 1, "@index_builder.clean_document has not removed duplicate entries." )
+        assert( doc[ @index_builder.index_conf["schema"]["unique_key"].to_sym ].size === 1, "@index_builder.clean_document has not removed duplicate entries." )
       end
       
       # Saving the document XMLs
@@ -107,6 +107,9 @@ class IndexBuilderTest < Test::Unit::TestCase
       xml_files    = Dir.glob("solr-*.xml")
       Dir.chdir( present_dir )
       assert( xml_files.size > 0, "@index_builder.build_document_xmls() did not produce any XML files." )
+      
+      # Upload XML to Solr
+      @index_builder.send_documents_to_solr()
     end
     
     ## NOTE: Uncomment the following to run a FULL test of the document 
@@ -118,6 +121,11 @@ class IndexBuilderTest < Test::Unit::TestCase
     #  assert( @index_builder.documents.empty?, "The default @index_builder.documents hash is NOT empty." )
     #  
     #  @index_builder.build_documents()
+    #  @index_builder.build_document_xmls()
+    #  @index_builder.send_documents_to_solr()
+    #  
+    #  puts "Full index rebuild ran!"
+    #  puts "document XMLs saved to #{@index_builder.xml_dir}"
     #  
     #  assert( @index_builder.documents.is_a?(Hash), "The @index_builder.documents construct is not a Hash." )
     #  assert( !@index_builder.documents.empty?, "@index_builder.build_documents has NOT populated @index_builder.documents." )

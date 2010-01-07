@@ -12,12 +12,14 @@ require "json"
 require "sinatra"
 require "rdiscount"
 require "mail"
+require "builder"
+require "rsolr"
 
 require "active_support"
 require "will_paginate/array"
 require "will_paginate/view_helpers"
 
-gem "biomart", ">=0.1.2"
+gem "biomart", ">=0.1.3"
 require "biomart"
 
 require "#{File.dirname(__FILE__)}/../lib/mock.rb"

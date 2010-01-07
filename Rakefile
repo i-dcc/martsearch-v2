@@ -16,7 +16,8 @@ task :install_deps do
     "shoulda",
     "test-unit",
     "rack-test",
-    "builder"
+    "builder",
+    "rsolr"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

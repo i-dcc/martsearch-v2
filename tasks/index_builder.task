@@ -8,6 +8,9 @@ require "json"
 require "sinatra"
 require "rdiscount"
 require "mail"
+require "builder"
+require "rsolr"
+
 require "active_support"
 require "will_paginate/array"
 require "will_paginate/view_helpers"
@@ -24,10 +27,13 @@ require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 @builder = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
 
 namespace :solr do
+  
   desc "Generates the Solr 'schema.xml' file in the current directory"
   task :schema do
     file = File.open( "schema.xml", "w" )
     file.print @builder.solr_schema_xml()
     file.close
   end
+  
+  
 end

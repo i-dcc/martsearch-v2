@@ -115,6 +115,7 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "markers"
+    "markers",
+    "dcc"
   ]
 }

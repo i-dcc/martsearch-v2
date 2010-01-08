@@ -157,6 +157,64 @@ end
 
 get "/?" do
   @current = "home"
+  
+  ikmc_counts_from_cache = @@ms.cache.fetch("ikmc_counts")
+  if ikmc_counts_from_cache
+    @ikmc_counts = JSON.parse(ikmc_counts_from_cache)
+  else
+    @ikmc_counts = {
+      "Vectors" => {
+        "Generated" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "TIGM" } )
+        },
+        "Available" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "TIGM" } )
+        }
+      },
+      "ES Cells" => {
+        "Generated" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "TIGM" } )
+        },
+        "Available" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "project" => "TIGM" } )
+        }
+      },
+      "Mice" => {
+        "Generated" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "TIGM" } )
+        },
+        "Available" => {
+          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "TIGM" } )
+        }
+      }
+    }
+    @@ms.cache.write( "ikmc_counts", @ikmc_counts.to_json, :expires_in => 3.hours )
+  end
+  
   erb :main
 end
 

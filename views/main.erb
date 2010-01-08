@@ -6,3 +6,35 @@
 
 <div class="clear"></div>
 
+<div>
+  <h2>About This Portal</h2>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+  
+  <hr />
+  
+  <h2>IKMC Gene Progress Summary</h2>
+  <table>
+    <tr>
+      <th>No. Genes</th>
+      <th>KOMP-CSD</th>
+      <th>KOMP-Regeneron</th>
+      <th>EUCOMM</th>
+      <th>NorCOMM</th>
+      <th>TIGM</th>
+    </tr>
+    <% ["Vectors","ES Cells","Mice"].each do |product| %>
+      <% ["Generated","Available"].each do |status| %>
+        <tr>
+          <th><%= "#{product} #{status}" %></th>
+          <td><%= @ikmc_counts[product][status]["csd"] %></td>
+          <td><%= @ikmc_counts[product][status]["reg"] %></td>
+          <td><%= @ikmc_counts[product][status]["euc"] %></td>
+          <td><%= @ikmc_counts[product][status]["nor"] %></td>
+          <td><%= @ikmc_counts[product][status]["tig"] %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

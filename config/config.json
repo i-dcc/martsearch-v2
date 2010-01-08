@@ -47,7 +47,9 @@
           "phenotype_comment":          { "type": "text", "indexed": true, "multi_valued": true },
           "mp_term":                    { "type": "textTight", "indexed": true, "multi_valued": true },
           "MP":                         { "type": "textTight", "indexed": true, "multi_valued": true },
-          "colony_prefix":              { "type": "textTight", "indexed": true, "multi_valued": true }
+          "colony_prefix":              { "type": "textTight", "indexed": true, "multi_valued": true },
+          "go_id":                      { "type": "textTight", "indexed": true, "multi_valued": true },
+          "go_term":                    { "type": "text", "indexed": true, "multi_valued": true }
         },
         "copy_fields": [
           { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
@@ -75,7 +77,9 @@
           { "source": "phenotype",                  "dest": "text" },
           { "source": "phenotype_comment",          "dest": "text" },
           { "source": "mp_term",                    "dest": "text" },
-          { "source": "colony_prefix",              "dest": "text" }
+          { "source": "colony_prefix",              "dest": "text" },
+          { "source": "go_id",                      "dest": "text" },
+          { "source": "go_term",                    "dest": "text" }
         ]
       }
     },

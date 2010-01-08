@@ -29,9 +29,18 @@ sorted_results = {}
   result_data["ensembl_gene_ids"].push( result["ensembl_gene_id_103"] )
   result_data["vega_gene_ids"].push( result["vega_gene_id_1011"] )
   result_data["entrez_gene_ids"].push( result["mouse_entrez_gene_id_108"] )
-  result_data["go_entries"].push( { :id => result["go_id_104_att"], :term => result["go_term_104"] } )
-  result_data["human_orthologs"].push( { :symbol => result["human_symbol_105"], :entrez_gene_id => result["human_entrez_gene_id_105"] } )
-  result_data["rat_orthologs"].push( { :symbol => result["rat_symbol_109"], :entrez_gene_id => result["rat_entrez_gene_id_109"] } )
+  
+  unless result["go_id_104_att"].nil? && result["go_term_104"].nil?
+    result_data["go_entries"].push( { :id => result["go_id_104_att"], :term => result["go_term_104"] } )
+  end
+  
+  unless result["human_symbol_105"].nil?
+    result_data["human_orthologs"].push( { :symbol => result["human_symbol_105"], :entrez_gene_id => result["human_entrez_gene_id_105"] } )
+  end
+  
+  unless result["rat_symbol_109"].nil?
+    result_data["rat_orthologs"].push( { :symbol => result["rat_symbol_109"], :entrez_gene_id => result["rat_entrez_gene_id_109"] } )
+  end
 end
 
 # Finally, ensure that the data in the arrays is unique

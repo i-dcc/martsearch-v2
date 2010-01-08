@@ -76,32 +76,47 @@
       </tr>
     </table>
     
-    <h6>Gene Ontology</h6>
-    <ul>
-      <% result_data["markers"]["go_entries"].each do |go| %>
-        <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go[:id] %>"><%= "#{go[:term]} (#{go[:id]})" %></a></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
-
-<div>
-  <h5 class="markers_toggle">Orthologs</h5>
-  <div class="markers_content">
-    <% [ "human", "rat" ].each do |orth| %>
-      <h6><%= orth.capitalize %></h6>
-      <table>
-        <tr>
-          <th>Marker Symbol</th>
-          <th>Entrez Gene ID</th>
-        </tr>
-        <% result_data["markers"]["#{orth}_orthologs"].each do |orth_data| %>
-          <tr>
-            <td><%= orth_data[:symbol] %></td>
-            <td><%= link_to( orth_data[:entrez_gene_id], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data[:entrez_gene_id]}" ) %></td>
-          </tr>
+    <% if result_data["markers"]["go_entries"].size > 0 %>
+      <h6>Gene Ontology</h6>
+      <ul>
+        <% result_data["markers"]["go_entries"].each do |go| %>
+          <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go[:id] %>"><%= "#{go[:term]} (#{go[:id]})" %></a></li>
         <% end %>
-      </table>
+      </ul>
     <% end %>
   </div>
 </div>
+
+<%
+  orthalog_species = [ "human", "rat" ]
+  show_orthalogs = false
+  
+  orthalog_species.each do |orth|
+    if result_data["markers"]["#{orth}_orthologs"].size > 0
+      show_orthalogs = true
+    end
+  end
+%>
+
+<% if show_orthalogs %>
+  <div>
+    <h5 class="markers_toggle">Orthologs</h5>
+    <div class="markers_content">
+      <% orthalog_species.each do |orth| %>
+        <h6><%= orth.capitalize %></h6>
+        <table>
+          <tr>
+            <th>Marker Symbol</th>
+            <th>Entrez Gene ID</th>
+          </tr>
+          <% result_data["markers"]["#{orth}_orthologs"].each do |orth_data| %>
+            <tr>
+              <td><%= orth_data[:symbol] %></td>
+              <td><%= link_to( orth_data[:entrez_gene_id], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data[:entrez_gene_id]}" ) %></td>
+            </tr>
+          <% end %>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

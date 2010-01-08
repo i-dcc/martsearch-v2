@@ -35,11 +35,21 @@
       "mgi_accession_id",
       "ccds_id",
       "omim_id",
+      "igtc",
+      "imsr",
+      "mgi_gene_traps",
+      "targeted_mutations",
+      "other_mutations",
       "ikmc_project",
       "ikmc_project_id",
+      "status",
+      "vector_available",
+      "vector_generated",
+      "escell_available",
+      "escell_generated",
       "mouse_available",
-      "mouse_generated"
-      
+      "mouse_generated",
+      "tigm_gene_traps"
     ],
     "filters": {}
   }

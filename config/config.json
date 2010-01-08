@@ -6,6 +6,9 @@
     "to":   "mouseportal@sanger.ac.uk",
     "from": "do2@sanger.ac.uk"
   },
+  "cache": {
+    "type": "file"
+  },
   "index": {
       "url":             "http://www.sanger.ac.uk/mouseportal/solr",
       "docs_per_page":   10,

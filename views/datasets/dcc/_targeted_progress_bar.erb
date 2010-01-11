@@ -1,0 +1,52 @@
+<%
+  # Get the project_status info for this project entry
+  # and work out how to draw the progress bar...
+  project_status = get_status_info( project )
+  progress       = get_progressbar_info( project_status )
+%>
+
+<table class="dcc_allele_progress" width="100%">
+  <tr>
+    <td width="15%"></td>
+    <th width="15%" class="centre">Pre-pipeline</th>
+    <th width="15%" class="centre">Designs</th>
+    <th width="15%" class="centre">Vectors</th>
+    <th width="15%" class="centre">ES Cells</th>
+    <th width="15%" class="centre">Mice</th>
+    <th class="nobg noborder"></th>
+  </tr>
+  <!-- Progress bar row -->
+  <tr>
+    <td class="start_<%= progress["pre"] %>">
+      <strong><%= project[:project] %></strong>
+    </td>
+    <td class="<%= progress["pre"] %> <%= progress["pre"] %>_<%= progress["designs"] %>">
+      <% if project_status[:stage] == "pre" %>
+        <%= project[:status] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["designs"] %> <%= progress["designs"] %>_<%= progress["vectors"] %>">
+      <% if project_status[:stage] == "designs" %>
+        <%= project[:status] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
+      <% if project_status[:stage] == "vectors" %>
+        <%= project[:status] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
+      <% if project_status[:stage] == "cells" %>
+        <%= project[:status] %>
+      <% end %>
+    </td>
+    <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
+      <% if project_status[:stage] == "mice" %>
+        <%= project[:status] %>
+      <% end %>
+    </td>
+    <td class="nobg noborder">
+      <a class="dcc_allele_progress_details_toggle">view&nbsp;details</a>
+    </td>
+  </tr>
+</table>

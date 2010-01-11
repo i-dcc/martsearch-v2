@@ -5,8 +5,7 @@ sorted_results = {}
     sorted_results[ result[ @joined_biomart_attribute ] ] = {
       :projects        => {},
       :ccds_ids        => [],
-      :omim_ids        => [],
-      :tigm_gene_traps => []
+      :omim_ids        => []
     }
   end
 
@@ -32,7 +31,10 @@ sorted_results = {}
   
   unless result["ikmc_project_id"].nil?
     if result["ikmc_project"] === "TIGM"
-      result_data[:tigm_gene_traps].push( result["ikmc_project_id"] )
+      unless result_data[:projects]["TIGM"]
+        result_data[:projects]["TIGM"] = []
+      end
+      result_data[:projects]["TIGM"].push( result["ikmc_project_id"] )
     else
       result_data[:projects][ result["ikmc_project_id"] ] = {
         :project          => result["ikmc_project"],
@@ -52,14 +54,13 @@ end
 # Finally, ensure that the data in the arrays is unique 
 # and that we only return stuff when we have project info...
 sorted_results.each do |key,result_data|
-  if result_data[:projects].empty? and result_data[:tigm_gene_traps].empty?
+  if result_data[:projects].empty?
     sorted_results[key] = nil
   else
     # TODO: write a sort function so that the more advanced products go at the top - see Jeremy's 'details.php' page for ideas!
     
     result_data[:ccds_ids].uniq!
     result_data[:omim_ids].uniq!
-    result_data[:tigm_gene_traps].uniq!
   end
 end
 

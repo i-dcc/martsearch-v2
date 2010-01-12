@@ -2,7 +2,7 @@
 # This method defines the possible statuses for each project 
 # and returns a project_status hash for a given project entry.
 def get_status_info( project )
-  status_definitions = case project[:project]
+  status_definitions = case project["project"]
   when /EUCOMM|KOMP-CSD|NorCOMM/
     {
       "On Hold"                                                 => { :stage => "pre",     :type => "warn"   },
@@ -16,7 +16,7 @@ def get_status_info( project )
       "Design Completed"                                        => { :stage => "designs", :type => "normal" },
       "Vector Construction in Progress"                         => { :stage => "vectors", :type => "normal" },
       "Vector Unsuccessful - Project Terminated"                => { :stage => "vectors", :type => "error"  },
-      "Vector Unsuccessful - Alternate Design in Progres"       => { :stage => "vectors", :type => "warn"   },
+      "Vector Unsuccessful - Alternate Design in Progress"      => { :stage => "vectors", :type => "warn"   },
       "Vector - Initial Attempt Unsuccessful"                   => { :stage => "vectors", :type => "warn"   },
       "Vector Complete"                                         => { :stage => "vectors", :type => "normal" },
       "Vector - DNA Not Suitable for Electroporation"           => { :stage => "vectors", :type => "warn"   },
@@ -45,7 +45,7 @@ def get_status_info( project )
     }
   end
   
-  return status_definitions[ project[:status] ]
+  return status_definitions[ project["status"] ]
 end
 
 # This method encapsulates the logic needed to draw a project 
@@ -128,32 +128,32 @@ end
 def product_order_url( project, result_data, order_type )
   url = ""
   
-  if project[:project] === "KOMP-CSD"
+  if project["project"] === "KOMP-CSD"
     case order_type
     when "vectors"
-      url = "http://www.komp.org/vectorOrder.php?projectid=#{project[:project_id]}"
+      url = "http://www.komp.org/vectorOrder.php?projectid=#{project["project_id"]}"
     when "cells"
-      url = "http://www.komp.org/orders.php?project=CSD#{project[:project_id]}&amp;product=1"
+      url = "http://www.komp.org/orders.php?project=CSD#{project["project_id"]}&amp;product=1"
     else
-      url = "http://www.komp.org/geneinfo.php?project=CSD#{project[:project_id]}"
+      url = "http://www.komp.org/geneinfo.php?project=CSD#{project["project_id"]}"
     end
-  elsif project[:project] === "KOMP-Regeneron"
+  elsif project["project"] === "KOMP-Regeneron"
     case order_type
     when "vectors"
-      url = "http://www.komp.org/vectorOrder.php?projectid=#{project[:project_id]}"
+      url = "http://www.komp.org/vectorOrder.php?projectid=#{project["project_id"]}"
     when "cells"
-      url = "http://www.komp.org/orders.php?project=#{project[:project_id]}&amp;product=1"
+      url = "http://www.komp.org/orders.php?project=#{project["project_id"]}&amp;product=1"
     else
-      url = "http://www.komp.org/geneinfo.php?project=#{project[:project_id]}"
+      url = "http://www.komp.org/geneinfo.php?project=#{project["project_id"]}"
     end
-  elsif project[:project] === "EUCOMM"
+  elsif project["project"] === "EUCOMM"
     case order_type
     when "mice"
       url = "http://www.emmanet.org/mutant_types.php?keyword=#{result_data["index"]["marker_symbol"]}%25EUCOMM&select_by=InternationalStrainName&search=ok"
     else
       url = "http://www.eummcr.org/order.php"
     end
-  elsif project[:project] === "NorCOMM"
+  elsif project["project"] === "NorCOMM"
     url = "http://www.phenogenomics.ca/services/cmmr/escell_services.html"
   end
   

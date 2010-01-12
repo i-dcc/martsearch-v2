@@ -52,6 +52,16 @@
         %>
         <th width="15%">Ensembl Gene ID:</th>
         <td width="18%"><%= ensembl_links.join(", ") %></td>
+        
+        <%
+          vega_ids = result_data["markers"]["vega_gene_ids"]
+          vega_links = []
+          for vega_id in vega_ids
+            vega_links.push( link_to( vega_id, "http://vega.sanger.ac.uk/Mus_musculus/geneview?gene=#{vega_id}&amp;db=core" ) )
+          end
+        %>
+        <th width="15%">Vega Gene ID:</th>
+        <td width="18%"><%= vega_links.join(", ") %></td>
       </tr>
       <tr>
         <%
@@ -65,28 +75,44 @@
         <td><%= entrez_links.join(", ") %></td>
 
         <%
-          vega_ids = result_data["markers"]["vega_gene_ids"]
-          vega_links = []
-          for vega_id in vega_ids
-            vega_links.push( link_to( vega_id, "http://vega.sanger.ac.uk/Mus_musculus/geneview?gene=#{vega_id}&amp;db=core" ) )
+          ccds_links = []
+          if result_data["dcc"] and result_data["dcc"]["ccds_ids"]
+            result_data["dcc"]["ccds_ids"].each do |ccds_id|
+              ccds_links.push( link_to( ccds_id, "http://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&amp;DATA=#{ccds_id}" ) )
+            end
           end
         %>
-        <th width="15%">Vega Gene ID:</th>
-        <td width="18%"><%= vega_links.join(", ") %></td>
+        <th>CCDS ID:</th>
+        <td><%= ccds_links.join(", ") %></td>
+
+        <th></th>
+        <td></td>
       </tr>
     </table>
+    
+    <% if result_data["dcc"] and result_data["dcc"]["omim_ids"] %>
+      <% if result_data["dcc"]["omim_ids"].size > 0 %>
+        <h6>OMIM Diseases</h6>
+        <ul>
+          <% result_data["dcc"]["omim_ids"].each do |omim_dis| %>
+            <li><%= omim_dis["desc"] %> (OMIM ID: <%= omim_dis["id"] %>)</li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
     
     <% if result_data["markers"]["go_entries"].size > 0 %>
       <h6>Gene Ontology</h6>
       <ul>
         <% result_data["markers"]["go_entries"].each do |go| %>
-          <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go[:id] %>"><%= "#{go[:term]} (#{go[:id]})" %></a></li>
+          <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go["id"] %>"><%= "#{go["term"]} (#{go["id"]})" %></a></li>
         <% end %>
       </ul>
     <% end %>
   </div>
 </div>
 
+<!--
 <%
   orthalog_species = [ "human", "rat" ]
   show_orthalogs = false
@@ -111,8 +137,8 @@
           </tr>
           <% result_data["markers"]["#{orth}_orthologs"].each do |orth_data| %>
             <tr>
-              <td><%= orth_data[:symbol] %></td>
-              <td><%= link_to( orth_data[:entrez_gene_id], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data[:entrez_gene_id]}" ) %></td>
+              <td><%= orth_data["symbol"] %></td>
+              <td><%= link_to( orth_data["entrez_gene_id"], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data["entrez_gene_id"]}" ) %></td>
             </tr>
           <% end %>
         </table>
@@ -120,3 +146,4 @@
     </div>
   </div>
 <% end %>
+-->

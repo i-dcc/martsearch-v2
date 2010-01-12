@@ -35,6 +35,7 @@
       "mgi_accession_id",
       "ccds_id",
       "omim_id",
+      "omim_description",
       "igtc",
       "imsr",
       "mgi_gene_traps",

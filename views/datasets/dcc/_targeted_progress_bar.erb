@@ -18,58 +18,69 @@
   <!-- Progress bar row -->
   <tr>
     <td class="start_<%= progress["pre"] %>">
-      <strong><%= project[:project] %></strong>
+      <strong><%= project["project"] %></strong><br />
+      Project: 
+      <% if project["project"] === "KOMP-Regeneron" %>
+        <% velocigene_id = project["project_id"].gsub("VG","") %>
+        <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank"><%= project["project_id"] %></a>
+      <% else %>
+        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= project["project_id"] %>" target="_blank"><%= project["project_id"] %></a>
+      <% end %>
     </td>
     <td class="<%= progress["pre"] %> <%= progress["pre"] %>_<%= progress["designs"] %>">
       <% if project_status[:stage] == "pre" %>
-        <%= project[:status] %>
+        <%= project["status"] %>
       <% end %>
     </td>
     <td class="<%= progress["designs"] %> <%= progress["designs"] %>_<%= progress["vectors"] %>">
       <% if project_status[:stage] == "designs" %>
-        <%= project[:status] %>
+        <%= project["status"] %>
       <% end %>
     </td>
     <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
       <div style="margin-bottom:6px;">
         <% if project_status[:stage] == "vectors" %>
-          <%= project[:status] %>
+          <%= project["status"] %>
         <% end %>
       </div>
-      <% if project[:vector_available] == "1" %>
+      <% if project["vector_available"] == "1" %>
         <a href="<%= product_order_url( project, result_data, "vectors" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
       <div style="margin-bottom:6px;">
         <% if project_status[:stage] == "cells" %>
-          <%= project[:status] %>
+          <%= project["status"] %>
         <% end %>
       </div>
-      <% if project[:escell_available] == "1" %>
+      <% if project["escell_available"] == "1" %>
         <a href="<%= product_order_url( project, result_data, "cells" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
       <div style="margin-bottom:6px;">
         <% if project_status[:stage] == "mice" %>
-          <%= project[:status] %>
+          <%= project["status"] %>
         <% end %>
       </div>
-      <% if project[:mouse_available] == "1" %>
+      <% if project["mouse_available"] == "1" %>
         <a href="<%= product_order_url( project, result_data, "mice" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="nobg noborder">
-      <a class="dcc_allele_progress_details_toggle">view&nbsp;details</a>
+      <% if project["vector_available"] == "1" or project["escell_available"] == "1" %>
+        <a class="dcc_allele_progress_details_toggle">view&nbsp;details</a>
+      <% end %>
     </td>
   </tr>
 </table>
 
-<div class="dcc_allele_progress_details_content">
-  <% if project[:project] === "KOMP-Regeneron" %>
-    <%= partial( "datasets/dcc/regeneron_details", :locals => { :project => project, :result_data => result_data } ) %>
-  <% else %>
-    <%= partial( "datasets/dcc/euc_csd_nor_details", :locals => { :project => project, :result_data => result_data } ) %>
-  <% end %>
-</div>
+<% if project["vector_available"] == "1" or project["escell_available"] == "1" %>
+  <div class="dcc_allele_progress_details_content">
+    <% if project["project"] === "KOMP-Regeneron" %>
+      <%= partial( "datasets/dcc/regeneron_details", :locals => { :project => project, :result_data => result_data } ) %>
+    <% else %>
+      <%= partial( "datasets/dcc/euc_csd_nor_details", :locals => { :project => project, :result_data => result_data } ) %>
+    <% end %>
+  </div>
+<% end %>

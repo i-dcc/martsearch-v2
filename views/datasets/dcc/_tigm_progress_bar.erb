@@ -17,9 +17,31 @@
     <td class="normal normal_normal"></td>
     <td class="normal normal_normal"></td>
     <td class="normal normal_incomp">
-      <%= project.size %> gene traps available
+      <div style="margin-bottom:6px;">
+        <% if project.size === 1 %>
+          <%= project.size %> gene trap available
+        <% else %>
+          <%= project.size %> gene traps available
+        <% end %>
+      </div>
+      <a href="<%= tigm_order_url(project,result_data) %>" class="order">order</a>
     </td>
     <td class="end_incomp incomp"></td>
-    <td class="nobg noborder"></td>
+    <td class="nobg noborder">
+      <a class="dcc_allele_progress_details_toggle">view&nbsp;details</a>
+    </td>
   </tr>
 </table>
+
+<div class="dcc_allele_progress_details_content">
+  <h5>All TIGM Gene Traps</h5>
+  <p>
+    <%
+      trap_links = []
+      project.each do |trap|
+        trap_links.push("<a href='#{tigm_ncbi_url(trap)}'>#{trap}</a>")
+      end
+    %>
+    <%= trap_links.join(", ") %>
+  </p>
+</div>

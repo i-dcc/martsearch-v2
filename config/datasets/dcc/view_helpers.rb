@@ -1,6 +1,6 @@
 
 # This method defines the possible statuses for each project 
-# and returns a project_status hash for a given project entry
+# and returns a project_status hash for a given project entry.
 def get_status_info( project )
   status_definitions = case project[:project]
   when /EUCOMM|KOMP-CSD|NorCOMM/
@@ -103,4 +103,59 @@ def get_progressbar_info( project_status )
   end
   
   return progress
+end
+
+# Simple function to return a URL to be used in a href tag 
+# for order buttons on TIGM projects.
+def tigm_order_url( project, result_data )
+  url =  "http://www.tigm.org/cgi-bin/tigminfo.cgi"
+  url << "?survey=IKMC%20Website"
+  url << "&mgi1=#{result_data["index"]["mgi_accession_id_key"]}"
+  url << "&gene1=#{result_data["index"]["marker_symbol"]}"
+  url << "&comments1=#{project[0]}"
+  return url
+end
+
+# Link URL generator for TIGM clones linking to NCBI.
+def tigm_ncbi_url( clone )
+  url =  "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi"
+  url << "?cmd=Search&db=nucgss&doptcmdl=GenBank"
+  url << "&term=%22#{clone}%22"
+  return url
+end
+
+# Link URL generator for ordering products.
+def product_order_url( project, result_data, order_type )
+  url = ""
+  
+  if project[:project] === "KOMP-CSD"
+    case order_type
+    when "vectors"
+      url = "http://www.komp.org/vectorOrder.php?projectid=#{project[:project_id]}"
+    when "cells"
+      url = "http://www.komp.org/orders.php?project=CSD#{project[:project_id]}&amp;product=1"
+    else
+      url = "http://www.komp.org/geneinfo.php?project=CSD#{project[:project_id]}"
+    end
+  elsif project[:project] === "KOMP-Regeneron"
+    case order_type
+    when "vectors"
+      url = "http://www.komp.org/vectorOrder.php?projectid=#{project[:project_id]}"
+    when "cells"
+      url = "http://www.komp.org/orders.php?project=#{project[:project_id]}&amp;product=1"
+    else
+      url = "http://www.komp.org/geneinfo.php?project=#{project[:project_id]}"
+    end
+  elsif project[:project] === "EUCOMM"
+    case order_type
+    when "mice"
+      url = "http://www.emmanet.org/mutant_types.php?keyword=#{result_data["index"]["marker_symbol"]}%25EUCOMM&select_by=InternationalStrainName&search=ok"
+    else
+      url = "http://www.eummcr.org/order.php"
+    end
+  elsif project[:project] === "NorCOMM"
+    url = "http://www.phenogenomics.ca/services/cmmr/escell_services.html"
+  end
+  
+  return url
 end

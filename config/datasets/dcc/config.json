@@ -3,7 +3,7 @@
   "index":                true,
   "custom_sort":          true,
   "custom_css":           true,
-  "custom_js":            false,
+  "custom_js":            true,
   "custom_view_helpers" : true,
   "custom_routes":        false,
   "url":           "http://www.i-dcc.org/biomart",

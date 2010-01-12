@@ -31,18 +31,33 @@
       <% end %>
     </td>
     <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
-      <% if project_status[:stage] == "vectors" %>
-        <%= project[:status] %>
+      <div style="margin-bottom:6px;">
+        <% if project_status[:stage] == "vectors" %>
+          <%= project[:status] %>
+        <% end %>
+      </div>
+      <% if project[:vector_available] == "1" %>
+        <a href="<%= product_order_url( project, result_data, "vectors" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
-      <% if project_status[:stage] == "cells" %>
-        <%= project[:status] %>
+      <div style="margin-bottom:6px;">
+        <% if project_status[:stage] == "cells" %>
+          <%= project[:status] %>
+        <% end %>
+      </div>
+      <% if project[:escell_available] == "1" %>
+        <a href="<%= product_order_url( project, result_data, "cells" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
-      <% if project_status[:stage] == "mice" %>
-        <%= project[:status] %>
+      <div style="margin-bottom:6px;">
+        <% if project_status[:stage] == "mice" %>
+          <%= project[:status] %>
+        <% end %>
+      </div>
+      <% if project[:mouse_available] == "1" %>
+        <a href="<%= product_order_url( project, result_data, "mice" ) %>" class="order" target="_blank">order</a>
       <% end %>
     </td>
     <td class="nobg noborder">
@@ -50,3 +65,11 @@
     </td>
   </tr>
 </table>
+
+<div class="dcc_allele_progress_details_content">
+  <% if project[:project] === "KOMP-Regeneron" %>
+    <%= partial( "datasets/dcc/regeneron_details", :locals => { :project => project, :result_data => result_data } ) %>
+  <% else %>
+    <%= partial( "datasets/dcc/euc_csd_nor_details", :locals => { :project => project, :result_data => result_data } ) %>
+  <% end %>
+</div>

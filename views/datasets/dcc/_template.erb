@@ -1,9 +1,3 @@
-<%=
-  require "pp"
-  pp result_data["dcc"]
-%>
-
-
 <% result_data["dcc"][:projects].each do |project_id,project_info| %>
   <div>
     <% 
@@ -12,7 +6,7 @@
         progress_bar_template = "tigm_progress_bar"
       end
     %>
-    <%= partial( "datasets/dcc/#{progress_bar_template}", :locals => { :project => project_info } ) %>
+    <%= partial( "datasets/dcc/#{progress_bar_template}", :locals => { :project => project_info, :result_data => result_data } ) %>
     
     <div class="clear"></div>
   </div>

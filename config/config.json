@@ -67,6 +67,7 @@
   "datasets": [
     "ikmc-dcc-gene_details",
     "sanger-bacs",
-    "sanger-htgt_targ"
+    "sanger-htgt_targ",
+    "sanger-kermits"
   ]
 }

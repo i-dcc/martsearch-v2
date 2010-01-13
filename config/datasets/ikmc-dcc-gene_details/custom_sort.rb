@@ -26,7 +26,7 @@ sorted_results = {}
   result_data["synonyms"].push( result["synonym"] )
   result_data["ensembl_gene_ids"].push( result["ensembl_gene_id"] )
   result_data["vega_gene_ids"].push( result["vega_gene_id"] )
-  result_data["entrez_gene_ids"].push( result["entrez_gene_id"] )
+  result_data["entrez_gene_ids"].push( result["ncbi_gene_id"] )
   result_data["ccds_ids"].push( result["ccds_id"] )
   result_data["omim_ids"].push( result["omim_id"] )
 end

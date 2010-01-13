@@ -108,6 +108,7 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
+    "ensembl-mmusculus_gene_ensembl",
     "ikmc-dcc-gene_details",
     "sanger-bacs",
     "sanger-htgt_targ",

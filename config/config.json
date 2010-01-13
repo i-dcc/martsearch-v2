@@ -157,14 +157,12 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "ensembl-mmusculus_gene_ensembl",
     "ikmc-dcc-gene_details",
-    "ikmc-dcc-knockout_attempts",
-    "mgi-markers",
-    "sanger-bacs",
-    "sanger-htgt_targ",
-    "sanger-htgt_trap",
+    "sanger-phenotyping",
     "sanger-kermits",
-    "sanger-phenotyping"
+    "sanger-htgt_targ",
+    "sanger-bacs",
+    "ensembl-mmusculus_gene_ensembl",
+    "sanger-htgt_trap"
   ]
 }

@@ -116,6 +116,7 @@
   },
   "datasets": [
     "mgi-markers",
-    "ikmc-dcc-knockout_attempts"
+    "ikmc-dcc-knockout_attempts",
+    "eurexpress-template"
   ]
 }

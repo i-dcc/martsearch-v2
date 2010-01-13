@@ -79,8 +79,19 @@
       <th>CCDS ID:</th>
       <td><%= ccds_links.join(", ") %></td>
 
-      <th>OMIM ID:</th>
-      <td><%= result_data["ikmc-dcc-gene_details"]["omim_ids"].join(", ") %></td>
+      <th></th>
+      <td></td>
     </tr>
   </table>
+  
+  <% if result_data["ikmc-dcc-gene_details"] and result_data["ikmc-dcc-gene_details"]["omim_ids"] %>
+    <% if result_data["ikmc-dcc-gene_details"]["omim_ids"].size > 0 %>
+      <h6>OMIM Diseases</h6>
+      <ul>
+        <% result_data["ikmc-dcc-gene_details"]["omim_ids"].each do |omim_desc| %>
+          <li><%= omim_desc["desc"] %> (OMIM ID: <%= omim_desc["id"] %>)</li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
 </div>

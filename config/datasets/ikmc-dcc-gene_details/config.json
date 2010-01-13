@@ -45,7 +45,8 @@
       "vega_gene_id",
       "ncbi_gene_id",
       "ccds_id",
-      "omim_id"
+      "omim_id",
+      "omim_description"
     ],
     "filters": {}
   }

@@ -1,0 +1,56 @@
+<h4>ES Cell Clones</h4>
+<% if (project["conditional_clones"] or project["nonconditional_clones"]) and (project["conditional_clones"].length > 0 or project["nonconditional_clones"].length > 0) %>
+  <table class="with_border">
+    <tr>
+      <th>Design ID</th>
+      <th># Conditional Clones</th>
+      <th># Targeted Non-conditional Clones</th>
+      <th>Genbank File</th>
+      <th class="nobg noborder"></th>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= project["design_id"] %>"><%= project["design_id"] %></a> 
+        <% if project["design_plate"] and project["design_well"] %>
+          (<%= project["design_plate"] %>_<%= project["design_well"] %>)
+        <% end %>
+      </td>
+      <td><%= project["conditional_clones"].length %></td>
+      <td><%= project["nonconditional_clones"].length %></td>
+      <td><a href="http://www.sanger.ac.uk/htgt/qc/seq_view_file?design_id=<%= project["design_id"] %>&amp;cassette=<%= project["cassette"] %>" class="file">view</a></td>
+      <td class="nobg noborder">
+        <%= partial( "datasets/sanger-htgt_targ/order_button", :locals => { :project => project, :order_type => 'clone' } ) %>
+      </td>
+    </tr>
+  </table>
+  
+  <div>
+    <div>
+      <a class="sanger-htgt_targ_allele_progress_clones_toggle">view all available ES cell clones</a>
+    </div>
+    <div class="sanger-htgt_targ_allele_progress_clones_content">
+      <table width="100%">
+        <tr>
+          <td width="50%" class="noborder">
+            <h5>Conditional Clones</h5>
+            <% if project["conditional_clones"].length > 0 %>
+              <%= partial( "datasets/sanger-htgt_targ/escell_clone_details", :locals => { :clones => project["conditional_clones"], :project => project } ) %>
+            <% else %>
+              <em>No clones available.</em>
+            <% end %>
+          </td>
+          <td width="50%" class="noborder">
+            <h5>Targeted Non-conditional Clones</h5>
+            <% if project["nonconditional_clones"].length > 0 %>
+              <%= partial( "datasets/sanger-htgt_targ/escell_clone_details", :locals => { :clones => project["nonconditional_clones"], :project => project } ) %>
+            <% else %>
+              <em>No clones available.</em>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <p>&nbsp;&nbsp;&nbsp;<em>No clones available.</em></p>
+<% end %>

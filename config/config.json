@@ -65,6 +65,8 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "ikmc-dcc-gene_details"
+    "ikmc-dcc-gene_details",
+    "sanger-bacs",
+    "sanger-htgt_targ"
   ]
 }

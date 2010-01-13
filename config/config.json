@@ -118,6 +118,7 @@
     "sanger-htgt_targ",
     "sanger-htgt_trap",
     "sanger-kermits",
-    "sanger-phenotyping"
+    "sanger-phenotyping",
+    "eurexpress-template"
   ]
 }

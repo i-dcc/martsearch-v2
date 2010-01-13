@@ -65,6 +65,6 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "dcc"
+    "ikmc-dcc-gene_details"
   ]
 }

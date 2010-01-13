@@ -54,7 +54,7 @@ class IndexBuilderTest < Test::Unit::TestCase
     should "act as expected when we simulate the document building process..." do
       @index_builder.index_conf["datasets"].each do |dataset_conf|
         # attribute_map processing
-        mapping_data = @index_builder.process_attribute_map_public( dataset_conf["indexing"]["attribute_map"] )
+        mapping_data = @index_builder.process_attribute_map_public( dataset_conf )
         assert( mapping_data.is_a?(Hash), "@index_builder.process_attribute_map does not return a Hash." )
         assert( !mapping_data[:attribute_map].nil?, "@index_builder.process_attribute_map does not return an attribute_map." )
         assert( !mapping_data[:primary_attribute].nil?, "@index_builder.process_attribute_map does not return a primary_attribute." )

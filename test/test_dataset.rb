@@ -18,15 +18,15 @@ class DatasetTest < Test::Unit::TestCase
   end
   
   @@ms.datasets.each do |dataset|
-    context "Dataset '#{dataset.dataset_name}'" do
+    context "Dataset '#{dataset.internal_name}'" do
       
       should "have basic attributes" do
         assert( dataset.url, ".url is nil - incorrect parsing of config?" )
-        assert( dataset.dataset_name, ".display_name is nil - incorrect parsing of config?" )
+        assert( !dataset.display_name.nil?, ".display_name is nil - incorrect parsing of config?" )
       end
       
       should "respond to pings" do
-        assert( dataset.is_alive?, "The biomart dataset #{dataset.dataset_name} is offline or misconfigured." )
+        assert( dataset.is_alive?, "The biomart dataset for #{dataset.internal_name} is offline or misconfigured." )
       end
       
       should "fail gracefully when we mess with the url" do

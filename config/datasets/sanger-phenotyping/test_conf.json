@@ -545,7 +545,9 @@
       "parameter_groups": [
         {
           "description": "The data for each mouse are represented as a single symbol on the graphs below. Standard errors of the mean (box) and standard deviations (whiskers) for each of the genotypes are shown adjacent to the raw data. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green (where available).",
-          "images": []
+          "images": [
+            { "heartwt": "Heart Weight" }
+          ]
         }
       ]
     },

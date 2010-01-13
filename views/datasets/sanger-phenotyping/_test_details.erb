@@ -1,0 +1,30 @@
+<h2>
+  <% if @marker_symbol %>
+    <%= @test.name %> data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+  <% else %>
+    <%= @test.name %> data for <%= @colony_prefix %>
+  <% end %>
+</h2>
+
+<div id="test-description">
+  <%= @test.description %>
+</div>
+
+<div id="test-parameter-groups">
+  <% @test.parameter_groups.each do |group| %>
+
+    <% displayed_images = group.images_to_render?( @test_images ) %>
+
+    <% if displayed_images.size > 0 %>
+      <div class="test-parameter-group">
+        <% if group.description %>
+          <p><%= group.description %></p>
+        <% end %>
+        <% displayed_images.each do |image| %>
+          <% stripped_image_name = image.match(/^(.+)\.\w+$/)[1] %>
+          <div class="pheno_result"><img src="<%= "#{BASE_URI}/images/pheno_images/#{@colony_prefix}/#{@test.slug}/#{image}?v=#{PORTAL_VERSION}" %>" alt="<%= group.images[stripped_image_name] %>" /></div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

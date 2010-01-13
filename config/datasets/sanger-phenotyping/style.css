@@ -1,0 +1,104 @@
+/* sanger-phenotyping custom css */
+
+.sanger-phenotyping table td {
+	background: #fff;
+}
+
+.sanger-phenotyping table td.test_not_done {
+	background-color: #f1f1f1;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.completed_data_available {
+	background-color: #376598;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.significant_difference {
+	background-color: #de2920;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.no_significant_difference {
+	background-color: #6998cb;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.not_applicable {
+	background-color: #ccc;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.early_indication_of_possible_phenotype {
+	background-color: #fcfe66;
+	cursor: pointer;
+}
+
+.sanger-phenotyping table td.pheno_result {
+	text-align: center;
+	vertical-align: middle;
+	padding: 0;
+	min-width: 20px;
+}
+
+.sanger-phenotyping table td.pheno_result a img {
+	border: none;
+	padding: 4px;
+}
+
+/* Heatmap specific code */
+
+#sanger-phenotyping_heatmap th {
+	vertical-align:	bottom;
+	height: 280px;
+}
+
+#sanger-phenotyping_heatmap .vertical_text {
+	white-space: nowrap;
+	display: block;
+	width: 16px;
+	rotation: 90deg !important;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-writing-mode:tb-rl;
+	writing-mode:tb-rl;
+}
+
+/* Phenotyping details pages */
+
+#test-description, .test-parameter-group {
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 15px;
+	background-color: #f1f1f1;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+}
+
+.test-parameter-group {
+	padding: 10px;
+}
+
+#test-parameter-groups div.test-parameter-group div.pheno_result {
+	text-align: center;
+	margin-bottom: 7px;
+}
+
+#results-summary,
+#methods-summary,
+#abr-thresholds-summary,
+#abr-thresholds,
+#abr-input-output-functions-summary {
+	border-bottom: 2px solid #999;
+	padding-top: 10px;
+}
+
+#abr-thresholds-summary div.pheno-content table.pheno-image-data tbody tr td,
+#abr-thresholds div.pheno-content table tbody tr td {
+	border: none;
+}
+
+#abr-thresholds div.pheno-content table tbody tr td table td {
+	border: 1px solid #999;
+}

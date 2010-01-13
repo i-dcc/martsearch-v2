@@ -57,7 +57,7 @@ class IndexBuilder
       end
       
       # Extract all of the needed index mapping data from "attribute_map"
-      mapping_data = process_attribute_map( dataset_conf["indexing"]["attribute_map"] )
+      mapping_data = process_attribute_map( dataset_conf )
       
       attribute_map      = mapping_data[:attribute_map]
       primary_attribute  = mapping_data[:primary_attribute]
@@ -168,7 +168,9 @@ class IndexBuilder
     dataset_conf = []
     @martsearch.datasets.each do |ds|
       if ds.config["index"] and !ds.config["indexing"].nil?
-        dataset_conf.push( ds.config )
+        conf_to_hold = ds.config.clone
+        conf_to_hold["internal_name"] = ds.internal_name
+        dataset_conf.push( conf_to_hold )
       end
     end
     return dataset_conf
@@ -176,8 +178,8 @@ class IndexBuilder
   
   # Utility function to either find or create a Biomart::Dataset object
   def biomart_dataset( ds_conf )
-    if @martsearch.datasets_by_name[ ds_conf["dataset_name"].to_sym ].dataset
-      return @martsearch.datasets_by_name[ ds_conf["dataset_name"].to_sym ].dataset
+    if @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
+      return @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
     else
       return Biomart::Dataset.new( ds_conf["url"], { :name => ds_conf["dataset_name"] } )
     end
@@ -190,11 +192,13 @@ class IndexBuilder
   
   # Utility function to process the attribute_map configuration into 
   # something we can use to map biomart results to our index configuration.
-  def process_attribute_map( attribute_map )
+  def process_attribute_map( dataset_conf )
+    attribute_map      = dataset_conf["indexing"]["attribute_map"]
+    
     map                = {}
     primary_attribute  = nil
     map_to_index_field = nil
-
+    
     # Extract all of the needed index mapping data from the "attribute_map"
     # - The "attribute_map" defines how the biomart attributes relate to the index "fields"
     # - The "primary_attribute" is the biomart attribute used to associate a set of biomart 
@@ -213,7 +217,7 @@ class IndexBuilder
     end
     
     unless primary_attribute
-      raise StandardError "You have not specified an attribute to map to the index with in #{dataset["dataset_name"]}!"
+      raise StandardError "You have not specified an attribute to map to the index with in #{dataset_conf["internal_name"]}!"
     end
     
     return {

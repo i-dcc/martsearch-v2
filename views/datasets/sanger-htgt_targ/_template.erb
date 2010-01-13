@@ -1,0 +1,21 @@
+<% result_data["sanger-htgt_targ"].each do |project| %>
+  <div>
+    <!-- Progress Bar -->
+    <%= partial( "datasets/sanger-htgt_targ/progress_bar", :locals => { :project => project } ) %>
+    
+    <div class="sanger-htgt_targ_allele_progress_details_content">
+      <!-- Links -->
+      <%= partial( "datasets/sanger-htgt_targ/links", :locals => { :project => project } ) %>
+      
+      <!-- ES Cells -->
+      <%= partial( "datasets/sanger-htgt_targ/escell_clones", :locals => { :project => project } ) %>
+      
+      <!-- Targeting Vectors -->
+      <!--
+      <div class="clear"></div>
+      <%# partial( "datasets/sanger-htgt_targ/targeting_vectors", :locals => { :project => project } ) %>
+      -->
+    </div>
+    <div class="clear"></div>
+  </div>
+<% end %>

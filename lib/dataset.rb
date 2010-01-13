@@ -1,17 +1,22 @@
 class Dataset
-  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :javascript, :custom_sort
+  attr_reader :dataset, :dataset_name, :stylesheet, :javascript, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_reader :use_custom_view_helpers, :use_custom_routes, :config
+  attr_reader :internal_name, :use_in_search, :display
   
   attr_accessor :url, :attributes, :filters, :display_name
   
-  def initialize( conf )
+  def initialize( internal_name, conf )
+    @internal_name            = internal_name
+    
     @config                   = conf
     @url                      = conf["url"]
     @dataset_name             = conf["dataset_name"]
     @display_name             = conf["display_name"]
     
     @use_in_search            = conf["use_in_search"]
+    @display                  = conf["display"]
+    
     @joined_index_field       = nil
     @joined_biomart_filter    = nil
     @joined_biomart_attribute = nil
@@ -34,15 +39,15 @@ class Dataset
     @use_custom_routes        = conf["custom_routes"]
     
     if conf["custom_sort"]
-      @custom_sort = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/custom_sort.rb")
+      @custom_sort = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/custom_sort.rb")
     end
     
     if conf["custom_css"]
-      @stylesheet = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/style.css")
+      @stylesheet = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/style.css")
     end
     
     if conf["custom_js"]
-      @javascript = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@dataset_name}/javascript.js")
+      @javascript = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/javascript.js")
     end
     
     @current_search_results = nil
@@ -125,7 +130,7 @@ class Dataset
       
       stash.each do |stash_key,stash_data|
         if biomart_results[stash_key]
-          stash_data[@dataset_name] = biomart_results[stash_key]
+          stash_data[@internal_name] = biomart_results[stash_key]
         end
       end
       
@@ -148,12 +153,12 @@ class Dataset
       
       biomart_results.each do |biomart_key,biomart_data|
         if lookup[biomart_key] && stash[ lookup[biomart_key] ]
-          unless stash[ lookup[biomart_key] ][@dataset_name]
-            stash[ lookup[biomart_key] ][@dataset_name] = []
+          unless stash[ lookup[biomart_key] ][@internal_name]
+            stash[ lookup[biomart_key] ][@internal_name] = []
           end
           
           biomart_data.each do |data|
-            stash[ lookup[biomart_key] ][@dataset_name].push(data)
+            stash[ lookup[biomart_key] ][@internal_name].push(data)
           end
         end
       end

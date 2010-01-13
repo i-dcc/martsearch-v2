@@ -91,7 +91,7 @@ class Martsearch
     stylesheet = ""
     
     @datasets.each do |ds|
-      if ds.use_in_search and ds.stylesheet
+      if ds.stylesheet
         stylesheet << "\n" + ds.stylesheet
       end
     end
@@ -105,7 +105,7 @@ class Martsearch
     js = ""
     
     @datasets.each do |ds|
-      if ds.use_in_search and ds.javascript
+      if ds.javascript
         js << "\n" + ds.javascript
       end
     end

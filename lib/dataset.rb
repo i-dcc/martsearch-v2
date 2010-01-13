@@ -1,9 +1,10 @@
 class Dataset
-  attr_reader :dataset, :dataset_name, :use_in_search, :stylesheet, :javascript, :custom_sort
+  attr_reader :dataset, :dataset_name, :stylesheet, :javascript, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_reader :use_custom_view_helpers, :use_custom_routes, :config
+  attr_reader :internal_name, :use_in_search, :display
   
-  attr_accessor :url, :attributes, :filters, :display_name, :internal_name
+  attr_accessor :url, :attributes, :filters, :display_name
   
   def initialize( internal_name, conf )
     @internal_name            = internal_name
@@ -14,6 +15,8 @@ class Dataset
     @display_name             = conf["display_name"]
     
     @use_in_search            = conf["use_in_search"]
+    @display                  = conf["display"]
+    
     @joined_index_field       = nil
     @joined_biomart_filter    = nil
     @joined_biomart_attribute = nil

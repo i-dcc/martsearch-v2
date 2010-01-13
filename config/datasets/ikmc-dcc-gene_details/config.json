@@ -1,4 +1,5 @@
 {
+  "display":              true,
   "use_in_search":        true,
   "index":                true,
   "custom_sort":          true,

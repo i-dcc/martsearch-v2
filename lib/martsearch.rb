@@ -27,9 +27,9 @@ class Martsearch
     
     @datasets         = []
     @datasets_by_name = {}
-    @config["datasets"].each do |ds|
-      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds}/config.json","r") )
-      dataset = Dataset.new( ds_conf )
+    @config["datasets"].each do |ds_name|
+      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
+      dataset = Dataset.new( ds_name, ds_conf )
       
       if dataset.custom_sort
         # If we have a custom sorting routine, use a Mock object
@@ -38,7 +38,7 @@ class Martsearch
       end
       
       @datasets.push( dataset )
-      @datasets_by_name[ dataset.dataset_name.to_sym ] = dataset
+      @datasets_by_name[ dataset.internal_name.to_sym ] = dataset
     end
     
     # Stores for search result data and errors...
@@ -52,9 +52,9 @@ class Martsearch
   # Stores a results stash holding the data in a structure like...
   # {
   #   IndexDocUniqueKey => {
-  #     "index"        => {}, # index results for this doc
-  #     "dataset_name" => []/{}, # array/hash of sorted biomart data
-  #     "dataset_name" => []/{}, # array/hash of sorted biomart data
+  #     "index"         => {}, # index results for this doc
+  #     "internal_name" => []/{}, # array/hash of sorted biomart data
+  #     "internal_name" => []/{}, # array/hash of sorted biomart data
   #   }
   # }
   # 
@@ -91,7 +91,7 @@ class Martsearch
     stylesheet = ""
     
     @datasets.each do |ds|
-      if ds.use_in_search and ds.stylesheet
+      if ds.stylesheet
         stylesheet << "\n" + ds.stylesheet
       end
     end
@@ -105,7 +105,7 @@ class Martsearch
     js = ""
     
     @datasets.each do |ds|
-      if ds.use_in_search and ds.javascript
+      if ds.javascript
         js << "\n" + ds.javascript
       end
     end

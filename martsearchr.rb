@@ -136,7 +136,7 @@ helpers do
   # Load in any custom (per dataset) helpers
   @@ms.datasets.each do |ds|
     if ds.use_custom_view_helpers
-      load "#{File.dirname(__FILE__)}/config/datasets/#{ds.dataset_name}/view_helpers.rb"
+      load "#{File.dirname(__FILE__)}/config/datasets/#{ds.internal_name}/view_helpers.rb"
     end
   end
 end
@@ -409,6 +409,6 @@ end
 # Load in any custom (per dataset) routes
 @@ms.datasets.each do |ds|
   if ds.use_custom_routes
-    load "#{File.dirname(__FILE__)}/config/datasets/#{ds.dataset_name}/routes.rb"
+    load "#{File.dirname(__FILE__)}/config/datasets/#{ds.internal_name}/routes.rb"
   end
 end

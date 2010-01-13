@@ -1,0 +1,107 @@
+<table class="sanger-htgt_targ_allele_progress">
+  <tr>
+    <td width="15%"></td>
+    <th width="15%" class="centre">Pre-pipeline</th>
+    <th width="15%" class="centre">Designs</th>
+    <th width="15%" class="centre">Vectors</th>
+    <th width="15%" class="centre">ES Cells</th>
+    <th width="15%" class="centre">Mice</th>
+    <th class="nobg noborder"></th>
+  </tr>
+  <%
+    # Work out the sponsor string to display
+    sponsor = []
+    if project["is_eucomm"]         == "1" then sponsor.push("EUCOMM")         end
+    if project["is_komp_csd"]       == "1" then sponsor.push("KOMP-CSD")       end
+    if project["is_komp_regeneron"] == "1" then sponsor.push("KOMP-Regeneron") end
+    if project["is_norcomm"]        == "1" then sponsor.push("NorCOMM")        end
+    if project["is_mgp"]            == "1" then sponsor.push("MGP")            end
+    
+    # Work out how to draw the progress bar
+    progress = case project["pipeline_stage"]
+    when "pre"
+      {
+        "pre"     => project["status_type"],
+        "designs" => "incomp",
+        "vectors" => "incomp",
+        "cells"   => "incomp",
+        "mice"    => "incomp"
+      }
+    when "designs"
+      {
+        "pre"     => "normal",
+        "designs" => project["status_type"],
+        "vectors" => "incomp",
+        "cells"   => "incomp",
+        "mice"    => "incomp"
+      }
+    when "vectors"
+      {
+        "pre"     => "normal",
+        "designs" => "normal",
+        "vectors" => project["status_type"],
+        "cells"   => "incomp",
+        "mice"    => "incomp"
+      }
+    when "cells"
+      {
+        "pre"     => "normal",
+        "designs" => "normal",
+        "vectors" => "normal",
+        "cells"   => project["status_type"],
+        "mice"    => "incomp"
+      }
+    when "mice"
+      {
+        "pre"     => "normal",
+        "designs" => "normal",
+        "vectors" => "normal",
+        "cells"   => "normal",
+        "mice"    => project["status_type"]
+      }
+    else
+      {
+        "pre"     => "incomp",
+        "designs" => "incomp",
+        "vectors" => "incomp",
+        "cells"   => "incomp",
+        "mice"    => "incomp"
+      }
+    end
+  %>
+  
+  <!-- Progress bar row -->
+  <tr>
+    <td class="start_<%= progress["pre"] %>">
+      <strong><%= sponsor.join(", ") %></strong>
+    </td>
+    <td class="<%= progress["pre"] %> <%= progress["pre"] %>_<%= progress["designs"] %>">
+      <% if project["pipeline_stage"] == "pre" %>
+        <%= project["status"] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["designs"] %> <%= progress["designs"] %>_<%= progress["vectors"] %>">
+      <% if project["pipeline_stage"] == "designs" %>
+        <%= project["status"] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
+      <% if project["pipeline_stage"] == "vectors" %>
+        <%= project["status"] %>
+      <% end %>
+    </td>
+    <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
+      <% if project["pipeline_stage"] == "cells" %>
+        <%= project["status"] %>
+      <% end %>
+    </td>
+    <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
+      <% if project["pipeline_stage"] == "mice" %>
+        <%= project["status"] %>
+      <% end %>
+    </td>
+    <td class="nobg noborder">
+      <a class="sanger-htgt_targ_allele_progress_details_toggle">view&nbsp;details</a>
+    </td>
+  </tr>
+</table>

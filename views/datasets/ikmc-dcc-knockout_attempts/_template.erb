@@ -1,0 +1,13 @@
+<% result_data["ikmc-dcc-knockout_attempts"]["projects"].each do |project_id,project_info| %>
+  <div>
+    <% 
+      progress_bar_template = "targeted_progress_bar"
+      if project_id === "TIGM"
+        progress_bar_template = "tigm_progress_bar"
+      end
+    %>
+    <%= partial( "datasets/ikmc-dcc-knockout_attempts/#{progress_bar_template}", :locals => { :project => project_info, :result_data => result_data } ) %>
+    
+    <div class="clear"></div>
+  </div>
+<% end %>

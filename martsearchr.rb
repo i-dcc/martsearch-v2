@@ -165,50 +165,50 @@ get "/?" do
     @ikmc_counts = {
       "Vectors" => {
         "Generated" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_generated" => "1", "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "TIGM" } )
         },
         "Available" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "vector_available" => "1", "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "TIGM" } )
         }
       },
       "ES Cells" => {
         "Generated" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_generated" => "1", "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "TIGM" } )
         },
         "Available" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "escell_available" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "project" => "TIGM" } )
         }
       },
       "Mice" => {
         "Generated" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_generated" => "1", "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "TIGM" } )
         },
         "Available" => {
-          "csd" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:dcc].dataset.count( :filters => { "mouse_available" => "1", "project" => "TIGM" } )
+          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-CSD" } ),
+          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-Regeneron" } ),
+          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "EUCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "TIGM" } )
         }
       }
     }

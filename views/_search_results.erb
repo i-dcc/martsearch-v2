@@ -18,9 +18,15 @@
             <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
             <div class="dataset_content <%= dataset.internal_name %>">
               <%= partial( "datasets/#{dataset.internal_name}/template", :locals => { :result_data => result_data } ) %>
-            </div>
-            <div class="dataset_original_data">
-              <a href="<%= dataset.data_origin_url( result_data["index"][ dataset.joined_index_field ] ) %>" target="_blank">view this data at its original source</a>
+              <div class="attribution">
+                <div class="dataset_original_data">
+                  <a href="<%= dataset.data_origin_url( result_data["index"][ dataset.joined_index_field ] ) %>" target="_blank">view this data at its original source</a>
+                </div>
+                <% if dataset.config["attribution"] and dataset.config["attribution_link"] %>
+                  Data provided by 
+                  <a href="<%= dataset.config["attribution_link"] %>" target="_blank"><%= dataset.config["attribution"] %></a>.
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>

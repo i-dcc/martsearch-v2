@@ -17,7 +17,7 @@ class MartsearchUiTest < Test::Unit::TestCase
       system("cp #{@@conf_file} #{@@conf_file}.orig")
       
       # Alter the conf_obj and save it in place of the original conf_file
-      conf_obj["base_uri"] = ""
+      conf_obj["portal_url"] = "http://example.org/"
       File.open( @@conf_file, "w" ) { |f| f.write( conf_obj.to_json ) }
       
       require "#{File.dirname(__FILE__)}/../martsearchr.rb"

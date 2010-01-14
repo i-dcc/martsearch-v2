@@ -1,0 +1,84 @@
+
+require "uri"
+require "net/http"
+require "rubygems"
+require "json"
+
+@config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
+
+# Determine the address of the portal
+u = URI.parse( @config["portal_url"] )
+@url = "#{u.scheme}://#{u.host}:#{u.port}"
+
+if u.path =~ /\/$/
+  @url << "#{u.path}"
+else
+  @url << "/"
+end
+
+# Set up a HTTP client
+@http_client = Net::HTTP
+if ENV['http_proxy'] or ENV['HTTP_PROXY']
+  proxy = URI.parse( ENV['http_proxy'] ) || URI.parse( ENV['HTTP_PROXY'] )
+  @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
+end
+
+namespace :cache do
+  
+  desc "Clears the search cache"
+  task :clear do
+    puts "Clearing cache..."
+    res = @http_client.get_response( URI.parse("#{@url}clear_cache") )
+  end
+  
+  desc "Primes the search cache"
+  task :prime do
+    # We prime the cache by visiting the home page of the 
+    # portal and the first page of every browsable content 
+    # button.  This should make the portal seem reasonably 
+    # snappy for users...
+    
+    puts "Priming cache..."
+    
+    # Home page first
+    puts " - home page"
+    res = @http_client.get_response( URI.parse("#{@url}") )
+    
+    if res.code != "200"
+      raise "Unable to request #{@url}: #{res.body}"
+    end
+    
+    # Now the browsable content
+    @config["browsable_content"].each do |key,browser|
+      puts " - browsable_content: #{browser["display_name"]}"
+      
+      browser["options"].each do |option|
+        query = nil
+        text  = nil
+        
+        if option.is_a?(Array)
+          query = option[0].downcase
+          text  = option[0]
+        elsif option.is_a?(Hash)
+          query = option["slug"].downcase
+          text  = option["text"]
+        else
+          query = option.downcase
+          text  = option
+        end
+        
+        puts "   - #{text}"
+        res = @http_client.get_response( URI.parse("#{@url}browse/#{key}/#{query}/1") )
+        
+        if res.code != "200"
+          raise "Unable to request #{@url}browse/#{key}/#{query}/1: #{res.body}"
+        end
+      end
+    end
+  end
+  
+  desc "Both clears and primes the search cache"
+  task :refresh => [ :clear, :prime ] do
+  end
+  
+end

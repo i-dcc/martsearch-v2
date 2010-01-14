@@ -7,9 +7,12 @@
   "custom_js":            true,
   "custom_view_helpers" : true,
   "custom_routes":        false,
-  "url":           "http://www.i-dcc.org/biomart",
-  "dataset_name":  "dcc",
-  "display_name":  "IKMC Knockout Attempts",
+  "url":                  "http://www.i-dcc.org/biomart",
+  "dataset_name":         "dcc",
+  "display_name":         "IKMC Knockout Attempts",
+  "attribution":          "The International Knockout Mouse Consortium (IKMC)",
+  "attribution_link":     "http://www.knockoutmouse.org/",
+  "description":          "",
   "indexing": {
     "allow_document_creation": true,
     "attribute_map": [

@@ -377,7 +377,7 @@ form#martsearchr {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	padding: 7px;
+	padding: 7px 7px 0;
 	margin-bottom: 7px;
 }
 
@@ -407,7 +407,16 @@ form#martsearchr {
 	padding: 4px;
 }
 
+#search_results .result div.attribution {
+	min-height: 16px;
+	font-size: 10px;
+	border-top: 1px solid #6998cb;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
 #search_results .result div.dataset_original_data {
+	float: right;
 	text-align: right;
 }
 

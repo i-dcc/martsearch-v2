@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <th>Assay ID</th>
+    <th>External Set ID</th>
+  </tr>
+  <% result_data["eurexpress-template"].each do |result| %>
+    <tr>
+      <td><%= link_to( result["ass_assay_id_key"], "http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{result["ass_assay_id_key"]}#top" ) %></td>
+      <td><%= result["ass_external_set_id"] %></td>
+    </tr>
+  <% end %>
+</table>

@@ -13,7 +13,7 @@ u = URI.parse( @config["portal_url"] )
 if u.path =~ /\/$/
   @url << "#{u.path}"
 else
-  @url << "/"
+  @url << "#{u.path}/"
 end
 
 # Set up a HTTP client

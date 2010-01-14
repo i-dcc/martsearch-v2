@@ -28,7 +28,7 @@ PORTAL_VERSION = "0.0.2"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
-BASE_URI = @@ms.config["base_uri"]
+BASE_URI = @@ms.base_uri()
 
 configure :production do
   not_found do

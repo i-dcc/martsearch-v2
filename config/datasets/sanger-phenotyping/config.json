@@ -7,9 +7,12 @@
   "custom_js":            true,
   "custom_view_helpers":  true,
   "custom_routes":        true,
-  "url":           "http://www.sanger.ac.uk/htgt/biomart",
-  "dataset_name":  "phenotyping",
-  "display_name":  "Phenotyping",
+  "url":                  "http://www.sanger.ac.uk/htgt/biomart",
+  "dataset_name":         "phenotyping",
+  "display_name":         "Phenotyping",
+  "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
+  "attribution_link":     "http://www.sanger.ac.uk/",
+  "description":          "",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [

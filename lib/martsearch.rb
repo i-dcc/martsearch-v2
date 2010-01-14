@@ -4,8 +4,8 @@ class Martsearch
   
   def initialize( config_desc )
     @http_client = Net::HTTP
-    if ENV['http_proxy']
-      proxy = URI.parse( ENV['http_proxy'] )
+    if ENV['http_proxy'] or ENV['HTTP_PROXY']
+      proxy = URI.parse( ENV['http_proxy'] ) || URI.parse( ENV['HTTP_PROXY'] )
       @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
     end
     
@@ -159,6 +159,18 @@ class Martsearch
           exec(sendmail, "-t")
         end
       end
+    end
+  end
+  
+  # Utility function to tell the templates if they need to prepend 
+  # anything to the link uri's for things such as images, stylesheets 
+  # or javascript files
+  def base_uri
+    url = URI.parse( @config["portal_url"] )
+    if url.path === "/"
+      return ""
+    else
+      return url.path
     end
   end
   

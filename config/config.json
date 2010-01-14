@@ -1,7 +1,7 @@
 {
-  "debug":       false,
   "portal_name": "International Knockout Mouse Consortium",
-  "base_uri":    "",
+  "portal_url":  "http://localhost:9393/",
+  "debug":       false,
   "email": {
     "to":   "mouseportal@sanger.ac.uk",
     "from": "do2@sanger.ac.uk"
@@ -87,7 +87,7 @@
       }
     },
   "browsable_content": {
-    "marker_symbol": {
+    "marker-symbol": {
       "index_field":  "marker_symbol_str",
       "display_name": "Marker Symbol",
       "exact_search": false,

@@ -19,8 +19,8 @@
       <%
         # See if there is a joined kermits entry
         related_kermits_entry = nil
-        if result["colony_prefix"] && result_data["kermits"]
-          result_data["kermits"].each do |kerm|
+        if result["colony_prefix"] && result_data["sanger-kermits"]
+          result_data["sanger-kermits"].each do |kerm|
             if kerm["colony_prefix"] === result["colony_prefix"]
               related_kermits_entry = kerm
             end
@@ -29,8 +29,8 @@
         
         # See if there is a joined htgt_targ entry
         related_htgt_targ_entry = nil
-        if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["htgt_targ"]
-          result_data["htgt_targ"].each do |targ|
+        if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["sanger-htgt_targ"]
+          result_data["sanger-htgt_targ"].each do |targ|
             ["conditional_clones","nonconditional_clones"].each do |clone_type|
               if targ[clone_type]
                 targ[clone_type].each do |clone|
@@ -73,13 +73,9 @@
               
               escell_clone = result["marker_symbol"] + "-" + result["colony_prefix"]
               if related_kermits_entry && related_kermits_entry["escell_clone"]
-                related_kermits_entry["escell_clone"]
+                escell_clone = related_kermits_entry["escell_clone"]
               end
-              title_text << "<strong>ES Cell Clone Name:</strong> #{escell_clone}<br />"
-              
-              if related_kermits_entry
-                title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
-              end
+              title_text << "<strong>ES Cell Clone:</strong> #{escell_clone}<br />"
               
               if related_htgt_targ_entry && related_htgt_targ_entry["cassette"]
                 cassette = "Promotorless"
@@ -87,6 +83,10 @@
                   cassette = "Promotor Driven"
                 end
                 title_text << "<strong>Cassette Type:</strong> #{cassette}<br />"
+              end
+              
+              if related_kermits_entry
+                title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
               end
               
               title_text << "</div>"

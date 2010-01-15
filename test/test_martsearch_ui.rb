@@ -22,6 +22,10 @@ class MartsearchUiTest < Test::Unit::TestCase
       
       require "#{File.dirname(__FILE__)}/../martsearchr.rb"
       
+      # Create a 'noemail.txt' file in the /tmp dir so that we don't
+      # send a million and one emails during the tests...
+      system("touch #{File.dirname(__FILE__)}/../tmp/noemail.txt")
+      
       # Now instanciate our MartSearch app
       @browser = Rack::Test::Session.new( Rack::MockSession.new( Sinatra::Application ) )
     end
@@ -30,6 +34,9 @@ class MartsearchUiTest < Test::Unit::TestCase
       # Put our original conf file back
       File.delete(@@conf_file)
       system("mv #{@@conf_file}.orig #{@@conf_file}")
+      
+      # And clear the no email flag
+      system("rm #{File.dirname(__FILE__)}/../tmp/noemail.txt")
     end
 
     should "have the portal name in the header" do
@@ -139,6 +146,16 @@ class MartsearchUiTest < Test::Unit::TestCase
       @browser.get "/browse/wibble/a"
       assert( !@browser.last_response.ok?, "The URL '/browse/wibble/a' returned a good response?" )
       assert( @browser.last_response.status === 404, "The URL '/browse/wibble/a' did not return a 404 status." )
+    end
+    
+    should "check whether we're allowed to send emails correctly" do
+      system("touch #{File.dirname(__FILE__)}/../tmp/noemail.txt")
+      assert( okay_to_send_emails? === false, "okay_to_send_emails? returns true when a noemail.txt file is present." )
+      
+      system("rm #{File.dirname(__FILE__)}/../tmp/noemail.txt")
+      assert( okay_to_send_emails?, "okay_to_send_emails? returns false when there is not a noemail.txt file." )
+      
+      system("touch #{File.dirname(__FILE__)}/../tmp/noemail.txt")
     end
   end
   

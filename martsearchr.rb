@@ -30,22 +30,23 @@ PORTAL_VERSION = "0.0.5"
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
 BASE_URI = @@ms.base_uri()
 
-configure :production do
+configure do
   not_found do
     # Email if this is a broken link within the portal
     @martsearch_error = false
     if request.env["HTTP_REFERER"]
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
-        
-        template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
-        template = ERB.new(template_file.read)
-        template_file.close
-        
-        @@ms.send_email({
-          :subject => "[MartSearch 404] '#{request.env["REQUEST_URI"]}'",
-          :body    => template.result(binding)
-        })
+        if okay_to_send_emails?
+          template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
+          template = ERB.new(template_file.read)
+          template_file.close
+
+          @@ms.send_email({
+            :subject => "[MartSearch 404] '#{request.env["REQUEST_URI"]}'",
+            :body    => template.result(binding)
+          })
+        end
       end
     end
     
@@ -54,14 +55,16 @@ configure :production do
   end
 
   error do
-    template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
-    template = ERB.new(template_file.read)
-    template_file.close
-    
-    @@ms.send_email({
-     :subject => "[MartSearch Error] '#{request.env["sinatra.error"].message}'",
-     :body    => template.result(binding)
-    })
+    if okay_to_send_emails?
+      template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
+      template = ERB.new(template_file.read)
+      template_file.close
+
+      @@ms.send_email({
+       :subject => "[MartSearch Error] '#{request.env["sinatra.error"].message}'",
+       :body    => template.result(binding)
+      })
+    end
     
     @request = request
     erb :error
@@ -352,6 +355,16 @@ def check_for_messages
       md.close
     end
   end
+end
+
+def okay_to_send_emails?
+  okay_to_send_emails = true
+  Dir[ "#{File.dirname(__FILE__)}/tmp/*" ].each do |file|
+    if file =~ /noemail/
+      okay_to_send_emails = false
+    end
+  end
+  return okay_to_send_emails
 end
 
 # Load in any custom (per dataset) routes

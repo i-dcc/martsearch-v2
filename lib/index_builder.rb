@@ -57,30 +57,22 @@ class IndexBuilder
       end
       
       # Extract all of the needed index mapping data from "attribute_map"
-      mapping_data = process_attribute_map( dataset_conf )
-      
-      attribute_map      = mapping_data[:attribute_map]
-      primary_attribute  = mapping_data[:primary_attribute]
-      map_to_index_field = mapping_data[:map_to_index_field]
+      map_data = process_attribute_map( dataset_conf )
       
       # Do we need to cache lookup data?
-      unless map_to_index_field == @index_conf["schema"]["unique_key"].to_sym
-        cache_documents_by( map_to_index_field )
+      unless map_data[:map_to_index_field] == @index_conf["schema"]["unique_key"].to_sym
+        cache_documents_by( map_data[:map_to_index_field] )
       end
       
       # Grab a Biomart::Dataset object and search and retrieve all the data it holds
       mart    = biomart_dataset( dataset_conf )
-      results = mart.search( :attributes => attribute_map.keys )
-      
-      # Also cache all of the "Display Names" for the biomart attributes
-      # as we want to index those if we're indexing an attribute name.
-      biomart_attributes = mart.attributes()
+      results = mart.search( :attributes => map_data[:attribute_map].keys )
       
       # Now loop through the results building up document structures
       unless @test_environment
         puts "Processing #{results[:data].size} rows of Biomart results"
       end
-      process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, biomart_attributes )
+      process_dataset_results( dataset_conf, results, map_data[:attribute_map], map_data[:map_to_index_field], map_data[:primary_attribute], mart.attributes() )
     end
     
     # Finally, remove duplicates from our documents

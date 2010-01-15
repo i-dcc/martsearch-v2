@@ -6,12 +6,7 @@
 <table>
   <thead>
     <tr>
-      <th>Pipeline</th>
-      <th>Comparison Type</th>
-      <th>ES Cell Clone Name</th>
       <th>Allele Name</th>
-      <th>Allele Type</th>
-      <th>Cassette Type</th>
       <% ds.attributes.each do |attrib| %>
         <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
           <th></th>
@@ -24,8 +19,8 @@
       <%
         # See if there is a joined kermits entry
         related_kermits_entry = nil
-        if result["colony_prefix"] && result_data["kermits"]
-          result_data["kermits"].each do |kerm|
+        if result["colony_prefix"] && result_data["sanger-kermits"]
+          result_data["sanger-kermits"].each do |kerm|
             if kerm["colony_prefix"] === result["colony_prefix"]
               related_kermits_entry = kerm
             end
@@ -34,8 +29,8 @@
         
         # See if there is a joined htgt_targ entry
         related_htgt_targ_entry = nil
-        if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["htgt_targ"]
-          result_data["htgt_targ"].each do |targ|
+        if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["sanger-htgt_targ"]
+          result_data["sanger-htgt_targ"].each do |targ|
             ["conditional_clones","nonconditional_clones"].each do |clone_type|
               if targ[clone_type]
                 targ[clone_type].each do |clone|
@@ -52,15 +47,6 @@
         detail_links = pheno_links(result["colony_prefix"])
       %>
       <tr>
-        <td><%= result["pipeline"] %></td>
-        <td><%= result["comparison"] %></td>
-        <td>
-          <% if related_kermits_entry && related_kermits_entry["escell_clone"] %>
-            <%= related_kermits_entry["escell_clone"] %>
-          <% else %>
-            <%= result["marker_symbol"] + "-" + result["colony_prefix"] %>
-          <% end %>
-        </td>
         <td>
           <%
             allele_name = result["allele_name"]
@@ -70,29 +56,40 @@
           %>
           <%= allele_name %>
         </td>
-        <td>
-          <% if related_kermits_entry %>
-            <%= related_kermits_entry["allele_type"] %>
-          <% end %>
-        </td>
-        <td>
-          <% if related_htgt_targ_entry && related_htgt_targ_entry["cassette"] %>
-            <% if related_htgt_targ_entry["cassette"].match("_P") %>
-              Promotor Driven
-            <% else %>
-              Promotorless
-            <% end %>
-          <% end %>
-        </td>
         <% ds.attributes.each do |attrib| %>
           <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
             <%
               title_text = "<h6>#{ds_attrib_objects[attrib].display_name}</h6>"
-              title_text += "<p><strong>Result:</strong> #{result[attrib]}"
+              
+              title_text << "<div>"
+              title_text << "<strong>Result:</strong><br />#{result[attrib]}<br /><br />"
+              
               if result["#{attrib}_comments"]
-                title_text += "<br /><br /><strong>Comments:</strong> #{result["#{attrib}_comments"]}"
+                title_text << "<strong>Comments:</strong><br />#{result["#{attrib}_comments"]}<br /><br />"
               end
-              title_text += "</p>"
+              
+              title_text << "<strong>Pipeline:</strong> #{result["pipeline"]}<br />"
+              title_text << "<strong>Comparison Type:</strong> #{result["comparison"]}<br />"
+              
+              escell_clone = result["marker_symbol"] + "-" + result["colony_prefix"]
+              if related_kermits_entry && related_kermits_entry["escell_clone"]
+                escell_clone = related_kermits_entry["escell_clone"]
+              end
+              title_text << "<strong>ES Cell Clone:</strong> #{escell_clone}<br />"
+              
+              if related_htgt_targ_entry && related_htgt_targ_entry["cassette"]
+                cassette = "Promotorless"
+                if related_htgt_targ_entry["cassette"].match("_P")
+                  cassette = "Promotor Driven"
+                end
+                title_text << "<strong>Cassette Type:</strong> #{cassette}<br />"
+              end
+              
+              if related_kermits_entry
+                title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
+              end
+              
+              title_text << "</div>"
               
               link_text = ""
               if attrib === "abr"

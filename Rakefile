@@ -26,4 +26,4 @@ task :install_deps do
 end
 
 # Load rake tasks from the tasks directory
-Dir["tasks/*.task"].each { |t| load t }
+Dir["#{File.dirname(__FILE__)}/tasks/*.task"].each { |t| load t }

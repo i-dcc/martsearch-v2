@@ -24,28 +24,29 @@ require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.2"
+PORTAL_VERSION = "0.0.5"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
 BASE_URI = @@ms.base_uri()
 
-configure :production do
+configure do
   not_found do
     # Email if this is a broken link within the portal
     @martsearch_error = false
     if request.env["HTTP_REFERER"]
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
-        
-        template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
-        template = ERB.new(template_file.read)
-        template_file.close
-        
-        @@ms.send_email({
-          :subject => "[MartSearch 404] '#{request.env["REQUEST_URI"]}'",
-          :body    => template.result(binding)
-        })
+        if okay_to_send_emails?
+          template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
+          template = ERB.new(template_file.read)
+          template_file.close
+
+          @@ms.send_email({
+            :subject => "[MartSearch 404] '#{request.env["REQUEST_URI"]}'",
+            :body    => template.result(binding)
+          })
+        end
       end
     end
     
@@ -54,14 +55,16 @@ configure :production do
   end
 
   error do
-    template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
-    template = ERB.new(template_file.read)
-    template_file.close
-    
-    @@ms.send_email({
-     :subject => "[MartSearch Error] '#{request.env["sinatra.error"].message}'",
-     :body    => template.result(binding)
-    })
+    if okay_to_send_emails?
+      template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
+      template = ERB.new(template_file.read)
+      template_file.close
+
+      @@ms.send_email({
+       :subject => "[MartSearch Error] '#{request.env["sinatra.error"].message}'",
+       :body    => template.result(binding)
+      })
+    end
     
     @request = request
     erb :error
@@ -216,66 +219,72 @@ end
 
 ["/browse/:field/:query/?", "/browse/:field/:query/:page?"].each do |path|
   get path do
-    @current    = "browse"
-    
-    browser     = @@ms.config["browsable_content"][params[:field]]
-    @page_title = "Browsing Data by '#{browser["display_name"]}'"
-    
-    # Extract our query parameter(s) for the browser...
-    @solr_query = ""
-    @browsing_by = {
-      :field => browser["display_name"],
-      :query => nil
-    }
-    browser["options"].each do |option|
-      unless @browsing_by[:query]
-        
-        @solr_query  = nil
-        exact_search = false
-        search_term  = nil
-        
-        if option.is_a?(Array)
-          if option[0].downcase === params[:query].downcase
-            @browsing_by[:query] = option[0]
-            @solr_query          = "#{browser["index_field"]}:#{option[1]}"
-            search_term          = option[1]
-          end
-        elsif option.is_a?(Hash)
-          if option["slug"].downcase == params[:query].downcase
-            @browsing_by[:query] = option["text"]
-            @solr_query          = "#{browser["index_field"]}:#{option["query"]}"
-            search_term          = option["query"]
-          end
-        else
-          if option.downcase === params[:query].downcase
-            @browsing_by[:query] = option
-            @solr_query          = "#{browser["index_field"]}:#{option}"
-            search_term          = option
-          end
-        end
-        
-        # if the configuration doesnt already contain a grouped query 
-        # make the search case insensitive (as we assume we are searching
-        # on a solr string field - i.e. not interpreted in any way...)
-        unless @solr_query.nil?
-          unless @solr_query.match(/\)$/)
-            if browser["exact_search"]
-              @solr_query = "(#{browser["index_field"]}:#{search_term.downcase} OR #{browser["index_field"]}:#{search_term.upcase})"
-            else
-              @solr_query = "(#{browser["index_field"]}:#{search_term.downcase}* OR #{browser["index_field"]}:#{search_term.upcase}*)"
+    @current = "browse"
+    browser  = @@ms.config["browsable_content"][params[:field]]
+    if browser.nil?
+      status 404
+      erb :not_found
+    else
+      
+      @page_title = "Browsing Data by '#{browser["display_name"]}'"
+      
+      # Extract our query parameter(s) for the browser...
+      @solr_query = ""
+      @browsing_by = {
+        :field => browser["display_name"],
+        :query => nil
+      }
+      
+      browser["options"].each do |option|
+        unless @browsing_by[:query]
+          
+          @solr_query  = nil
+          exact_search = false
+          search_term  = nil
+          
+          if option.is_a?(Array)
+            if option[0].downcase === params[:query].downcase
+              @browsing_by[:query] = option[0]
+              @solr_query          = "#{browser["index_field"]}:#{option[1]}"
+              search_term          = option[1]
+            end
+          elsif option.is_a?(Hash)
+            if option["slug"].downcase == params[:query].downcase
+              @browsing_by[:query] = option["text"]
+              @solr_query          = "#{browser["index_field"]}:#{option["query"]}"
+              search_term          = option["query"]
+            end
+          else
+            if option.downcase === params[:query].downcase
+              @browsing_by[:query] = option
+              @solr_query          = "#{browser["index_field"]}:#{option}"
+              search_term          = option
             end
           end
+          
+          # if the configuration doesnt already contain a grouped query 
+          # make the search case insensitive (as we assume we are searching
+          # on a solr string field - i.e. not interpreted in any way...)
+          unless @solr_query.nil?
+            unless @solr_query.match(/\)$/)
+              if browser["exact_search"]
+                @solr_query = "(#{browser["index_field"]}:#{search_term.downcase} OR #{browser["index_field"]}:#{search_term.upcase})"
+              else
+                @solr_query = "(#{browser["index_field"]}:#{search_term.downcase}* OR #{browser["index_field"]}:#{search_term.upcase}*)"
+              end
+            end
+          end
+          
         end
-        
       end
+      
+      # Perform our search...
+      @results    = @@ms.search( @solr_query, params[:page] )
+      @data       = @@ms.search_data
+      check_for_errors
+      
+      erb :browse
     end
-    
-    # Perform our search...
-    @results    = @@ms.search( @solr_query, params[:page] )
-    @data       = @@ms.search_data
-    check_for_errors
-    
-    erb :browse
   end
 end
 
@@ -363,6 +372,16 @@ def check_for_messages
       md.close
     end
   end
+end
+
+def okay_to_send_emails?
+  okay_to_send_emails = true
+  Dir[ "#{File.dirname(__FILE__)}/tmp/*" ].each do |file|
+    if file =~ /noemail/
+      okay_to_send_emails = false
+    end
+  end
+  return okay_to_send_emails
 end
 
 # Load in any custom (per dataset) routes

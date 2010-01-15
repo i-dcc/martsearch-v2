@@ -9,8 +9,8 @@ jQuery(document).ready(function() {
        content:  jQuery(this).attr("tooltip"),
        show:     "mouseover",
        hide:     "mouseout",
-       style:    { name: "dark" },
-       position: { corner: { target: "topLeft", tooltip: "bottomRight" } }
+       style:    { tip: "topMiddle", border: { radius: 5 }, name: "dark" },
+       position: { corner: { target: "bottomMiddle", tooltip: "topMiddle" } }
     });
   });
 });

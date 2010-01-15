@@ -134,6 +134,12 @@ class MartsearchUiTest < Test::Unit::TestCase
         end
       end
     end
+    
+    should "reply to bad browse urls with 404s" do
+      @browser.get "/browse/wibble/a"
+      assert( !@browser.last_response.ok?, "The URL '/browse/wibble/a' returned a good response?" )
+      assert( @browser.last_response.status === 404, "The URL '/browse/wibble/a' did not return a 404 status." )
+    end
   end
   
   def search_with_params( browser, search_conf )

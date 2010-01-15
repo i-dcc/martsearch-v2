@@ -24,7 +24,7 @@ require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.2"
+PORTAL_VERSION = "0.0.5"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )

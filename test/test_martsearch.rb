@@ -80,7 +80,7 @@ class MartsearchTest < Test::Unit::TestCase
       assert_nothing_raised(Exception) {
         @@ms.send_email({
           :to      => "do2@sanger.ac.uk",
-          :from    => "martsearch_testsuite@test.com",
+          :from    => "martsearch_testsuite@sanger.ac.uk",
           :subject => "MartSearch Test Suite Email",
           :body    => "Did it work?"
         })

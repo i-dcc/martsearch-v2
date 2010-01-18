@@ -16,7 +16,7 @@
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "marker_symbol", "idx": "marker_symbol", "use_to_map": true },
+      { "attr": "colony_prefix", "idx": "colony_prefix", "use_to_map": true },
       { "attr": "adult_expression", "idx": "phenotype", "if_attr_equals": ["Considered interesting."], "index_attr_name": true },
       { "attr": "adult_expression_comments", "idx": "phenotype_comments", "if_other_attr_indexed": "adult_expression", "extract": { "idx": "mp_term", "regexp": "MP\\:\\d+" } },
       { "attr": "abr", "idx": "phenotype", "if_attr_equals": ["Considered interesting."], "index_attr_name": true },

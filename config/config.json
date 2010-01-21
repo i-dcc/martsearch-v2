@@ -36,6 +36,7 @@
         "ncbi_gene_id":               { "type": "sint", "indexed": true, "stored": true, "multi_valued": true },
         "ccds_id":                    { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "omim_id":                    { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "omim_desc":                  { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "design_plate":               { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "design_well":                { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "intermediate_vector_plate":  { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
@@ -44,16 +45,19 @@
         "targeting_vector_well":      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "allele":                     { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "escell":                     { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "colony_prefix":              { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype":                  { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype_comment":          { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
-        "mp_term":                    { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "mp_id":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "mp_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "MP":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "mp":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
-        "colony_prefix":              { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "go_id":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "go_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "GO":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
-        "go":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true }
+        "go":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "interpro_id":                { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "interpro_desc":              { "type": "text", "indexed": true, "stored": false, "multi_valued": true }
       },
       "copy_fields": [
         { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
@@ -64,6 +68,8 @@
         { "source": "secondary_mgi_accession_id", "dest": "mgi" },
         { "source": "marker_symbol",              "dest": "marker_symbol_str" },
         { "source": "marker_symbol",              "dest": "symbol" },
+        { "source": "mp_id",                      "dest": "MP" },
+        { "source": "mp_id",                      "dest": "mp" },
         { "source": "mp_term",                    "dest": "MP" },
         { "source": "mp_term",                    "dest": "mp" },
         { "source": "go_id",                      "dest": "GO" },
@@ -82,17 +88,37 @@
         { "source": "ncbi_gene_id",               "dest": "text" },
         { "source": "ccds_id",                    "dest": "text" },
         { "source": "omim_id",                    "dest": "text" },
+        { "source": "omim_desc",                  "dest": "text" },
         { "source": "intermediate_vector_plate",  "dest": "text" },
         { "source": "targeting_vector_plate",     "dest": "text" },
         { "source": "escell",                     "dest": "text" },
+        { "source": "colony_prefix",              "dest": "text" },
         { "source": "phenotype",                  "dest": "text" },
         { "source": "phenotype_comment",          "dest": "text" },
+        { "source": "mp_id",                      "dest": "text" },
         { "source": "mp_term",                    "dest": "text" },
-        { "source": "colony_prefix",              "dest": "text" },
         { "source": "go_id",                      "dest": "text" },
-        { "source": "go_term",                    "dest": "text" }
+        { "source": "go_term",                    "dest": "text" },
+        { "source": "interpro_id",                "dest": "text" },
+        { "source": "interpro_desc",              "dest": "text" }
       ]
-    }
+    },
+    "datasets_to_index": [
+      "ikmc-dcc-gene_details",
+      "mgi-markers",
+      "ikmc-dcc-knockout_attempts",
+      "sanger-htgt_targ",
+      "sanger-kermits",
+      "sanger-phenotyping",
+      "sanger-bacs",
+      "eurexpress-template",
+      "sanger-htgt_trap",
+      "ensembl-mouse-homologs",
+      "ensembl-mouse-interpro_features",
+      "ensembl-mouse-go_bio_process",
+      "ensembl-mouse-go_cell_component",
+      "ensembl-mouse-go_mol_function"
+    ]
   },
   "browsable_content": {
     "marker-symbol": {
@@ -123,15 +149,19 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "ensembl-mouse-homologs",
     "ikmc-dcc-gene_details",
-    "ikmc-dcc-knockout_attempts",
     "mgi-markers",
-    "sanger-bacs",
+    "ikmc-dcc-knockout_attempts",
     "sanger-htgt_targ",
-    "sanger-htgt_trap",
     "sanger-kermits",
     "sanger-phenotyping",
-    "eurexpress-template"
+    "sanger-bacs",
+    "eurexpress-template",
+    "sanger-htgt_trap",
+    "ensembl-mouse-homologs",
+    "ensembl-mouse-interpro_features",
+    "ensembl-mouse-go_bio_process",
+    "ensembl-mouse-go_cell_component",
+    "ensembl-mouse-go_mol_function"
   ]
 }

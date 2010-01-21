@@ -161,11 +161,11 @@ class IndexBuilder
   # the datasets to be added into our @index_conf.
   def dataset_index_conf
     dataset_conf = []
-    @martsearch.datasets.each do |ds|
-      if ds.config["index"] and !ds.config["indexing"].nil?
-        conf_to_hold = ds.config.clone
-        conf_to_hold["internal_name"] = ds.internal_name
-        dataset_conf.push( conf_to_hold )
+    @index_conf["datasets_to_index"].each do |ds_name|
+      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
+      if ds_conf["index"] and !ds_conf["indexing"].nil?
+        ds_conf["internal_name"] = ds_name
+        dataset_conf.push( ds_conf )
       end
     end
     return dataset_conf

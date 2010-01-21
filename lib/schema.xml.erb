@@ -426,16 +426,12 @@
        when adding a document.
    -->
 
-   <% @index_conf["schema"]["fields"].each do |name, details| %>
-      <field 
-        name="<%= name %>" 
-        type="<%= details["type"] %>"
-        <% if details["indexed"] %>indexed="<%= details["indexed"] %>"<% end %>
-        <% if details["stored"] %>stored="<%= details["stored"] %>"<% end %>
-        <% if details["required"] %>required="<%= details["required"] %>"<% end %>
-        <% if details["multi_valued"] %>multiValued="<%= details["multi_valued"] %>"<% end %>
-      />
-    <% end %>
+   <%- @index_conf["schema"]["fields"].each do |name, details| -%>
+   <field name="<%= name %>" type="<%= details["type"] %>" <%- if details["indexed"] -%>indexed="<%= details["indexed"] %>" <%- end -%>
+   <%- if details["stored"] -%>stored="<%= details["stored"] %>" <%- end -%>
+   <%- if details["required"] -%>required="<%= details["required"] %>" <%- end -%>
+   <%- if details["multi_valued"] -%>multiValued="<%= details["multi_valued"] %>" <%- end -%>/>
+    <%- end -%>
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
@@ -503,12 +499,12 @@
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-  <% @index_conf["schema"]["copy_fields"].each do |field| %>
-    <copyField source="<%= field["source"] %>" dest="<%= field["dest"] %>" />
-    <% if field["dest"] === "text" %>
-      <copyField source="<%= field["source"] %>" dest="text_rev" />
-    <% end %>
-  <% end %>
+  <%- @index_conf["schema"]["copy_fields"].each do |field| -%>
+  <copyField source="<%= field["source"] %>" dest="<%= field["dest"] %>" />
+    <%- if field["dest"] === "text" -%>
+  <copyField source="<%= field["source"] %>" dest="text_rev" />
+    <%- end -%>
+  <%- end -%>
 
    <!-- Above, multiple source fields are copied to the [text] field. 
 	  Another way to map multiple source fields to the same 

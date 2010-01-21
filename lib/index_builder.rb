@@ -41,7 +41,7 @@ class IndexBuilder
   # how our search engine is structured
   def solr_schema_xml
     template = File.open( "#{File.dirname(__FILE__)}/schema.xml.erb", 'r' )
-    erb      = ERB.new( template.read )
+    erb      = ERB.new( template.read, nil, "-" )
     schema   = erb.result( binding )
     return schema
   end

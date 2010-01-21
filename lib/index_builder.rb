@@ -27,7 +27,7 @@ class IndexBuilder
     @index_conf["datasets"] = dataset_index_conf()
     
     @solr       = RSolr.connect :url => @index_conf["url"]
-    @batch_size = 1000
+    @batch_size = 500
     
     # Create a placeholder variable to store docs in (and a cache variable 
     # for faster lookups if required...)
@@ -53,7 +53,7 @@ class IndexBuilder
   def build_documents
     @index_conf["datasets"].each do |dataset_conf|
       unless @test_environment
-        puts "Fetching data from dataset: '#{dataset_conf["display_name"]}'"
+        puts "Building documents for dataset: '#{dataset_conf["display_name"]}'"
       end
       
       # Extract all of the needed index mapping data from "attribute_map"
@@ -65,12 +65,15 @@ class IndexBuilder
       end
       
       # Grab a Biomart::Dataset object and search and retrieve all the data it holds
+      unless @test_environment
+        puts "  - retrieving data from the biomart."
+      end
       mart    = biomart_dataset( dataset_conf )
-      results = mart.search( :attributes => map_data[:attribute_map].keys )
+      results = mart.search( :attributes => map_data[:attribute_map].keys, :timeout => 240 )
       
       # Now loop through the results building up document structures
       unless @test_environment
-        puts "Processing #{results[:data].size} rows of Biomart results"
+        puts "  - processing #{results[:data].size} rows of Biomart results"
       end
       process_dataset_results( dataset_conf, results, map_data[:attribute_map], map_data[:map_to_index_field], map_data[:primary_attribute], mart.attributes() )
     end
@@ -263,7 +266,7 @@ class IndexBuilder
     
     if build_cache
       unless @test_environment
-        puts "caching documents by '#{field}'"
+        puts "  - caching documents by '#{field}'"
       end
       @documents_by[field] = {}
       @documents.each do |key,values|

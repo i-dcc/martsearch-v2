@@ -27,7 +27,7 @@ class IndexBuilder
     @index_conf["datasets"] = dataset_index_conf()
     
     @solr       = RSolr.connect :url => @index_conf["url"]
-    @batch_size = 1000
+    @batch_size = 500
     
     # Create a placeholder variable to store docs in (and a cache variable 
     # for faster lookups if required...)
@@ -41,7 +41,7 @@ class IndexBuilder
   # how our search engine is structured
   def solr_schema_xml
     template = File.open( "#{File.dirname(__FILE__)}/schema.xml.erb", 'r' )
-    erb      = ERB.new( template.read )
+    erb      = ERB.new( template.read, nil, "-" )
     schema   = erb.result( binding )
     return schema
   end
@@ -53,7 +53,7 @@ class IndexBuilder
   def build_documents
     @index_conf["datasets"].each do |dataset_conf|
       unless @test_environment
-        puts "Fetching data from dataset: '#{dataset_conf["display_name"]}'"
+        puts "Building documents for dataset: '#{dataset_conf["display_name"]}'"
       end
       
       # Extract all of the needed index mapping data from "attribute_map"
@@ -65,12 +65,15 @@ class IndexBuilder
       end
       
       # Grab a Biomart::Dataset object and search and retrieve all the data it holds
+      unless @test_environment
+        puts "  - retrieving data from the biomart."
+      end
       mart    = biomart_dataset( dataset_conf )
-      results = mart.search( :attributes => map_data[:attribute_map].keys )
+      results = mart.search( :attributes => map_data[:attribute_map].keys, :timeout => 240 )
       
       # Now loop through the results building up document structures
       unless @test_environment
-        puts "Processing #{results[:data].size} rows of Biomart results"
+        puts "  - processing #{results[:data].size} rows of Biomart results"
       end
       process_dataset_results( dataset_conf, results, map_data[:attribute_map], map_data[:map_to_index_field], map_data[:primary_attribute], mart.attributes() )
     end
@@ -158,11 +161,11 @@ class IndexBuilder
   # the datasets to be added into our @index_conf.
   def dataset_index_conf
     dataset_conf = []
-    @martsearch.datasets.each do |ds|
-      if ds.config["index"] and !ds.config["indexing"].nil?
-        conf_to_hold = ds.config.clone
-        conf_to_hold["internal_name"] = ds.internal_name
-        dataset_conf.push( conf_to_hold )
+    @index_conf["datasets_to_index"].each do |ds_name|
+      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
+      if ds_conf["index"] and !ds_conf["indexing"].nil?
+        ds_conf["internal_name"] = ds_name
+        dataset_conf.push( ds_conf )
       end
     end
     return dataset_conf
@@ -263,7 +266,7 @@ class IndexBuilder
     
     if build_cache
       unless @test_environment
-        puts "caching documents by '#{field}'"
+        puts "  - caching documents by '#{field}'"
       end
       @documents_by[field] = {}
       @documents.each do |key,values|

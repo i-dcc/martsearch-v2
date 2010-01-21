@@ -14,7 +14,7 @@
   "attribution_link":     "http://www.eurexpress.org/",
   "description":          "",
   "indexing": {
-    "allow_document_creation": true,
+    "allow_document_creation": false,
     "attribute_map": [
       { "attr": "tmp_gene_symbol", "idx": "marker_symbol", "use_to_map": true }
     ]

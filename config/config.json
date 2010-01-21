@@ -156,12 +156,6 @@
     "sanger-kermits",
     "sanger-phenotyping",
     "sanger-bacs",
-    "eurexpress-template",
-    "sanger-htgt_trap",
-    "ensembl-mouse-homologs",
-    "ensembl-mouse-interpro_features",
-    "ensembl-mouse-go_bio_process",
-    "ensembl-mouse-go_cell_component",
-    "ensembl-mouse-go_mol_function"
+    "eurexpress-template"
   ]
 }

@@ -173,7 +173,7 @@ class IndexBuilder
   
   # Utility function to either find or create a Biomart::Dataset object
   def biomart_dataset( ds_conf )
-    if @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
+    if @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ]
       return @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
     else
       return Biomart::Dataset.new( ds_conf["url"], { :name => ds_conf["dataset_name"] } )

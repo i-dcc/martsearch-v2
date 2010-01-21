@@ -30,7 +30,7 @@ PORTAL_VERSION = "0.0.5"
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
 BASE_URI = @@ms.base_uri()
 
-configure do
+configure :production do
   not_found do
     # Email if this is a broken link within the portal
     @martsearch_error = false

@@ -144,7 +144,7 @@
     }
   },
   "test": {
-    "single_return_search": "cbx7",
+    "single_return_search": "Mysm1",
     "large_search":         "chromosome:1",
     "bad_search":           "chromosome:!"
   },

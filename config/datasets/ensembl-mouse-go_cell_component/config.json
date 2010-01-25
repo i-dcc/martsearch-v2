@@ -16,9 +16,15 @@
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "ensembl_gene_id",                            "idx": "ensembl_gene_id", "use_to_map": true },
-      { "attr": "go_cellular_component_id",                   "idx": "go_id" },
-      { "attr": "go_cellular_component__dm_name_1006",        "idx": "go_term" }
+      { "attr": "ensembl_gene_id",                     "idx": "ensembl_gene_id", "use_to_map": true },
+      { "attr": "go_cellular_component_id",            "idx": "go_id" },
+      { "attr": "go_cellular_component__dm_name_1006", "idx": "go_term" }
+    ],
+    "grouped_attributes": [
+      {
+        "attrs": ["go_cellular_component_id","go_cellular_component__dm_name_1006"],
+        "idx":   "go_cellular_component"
+      }
     ]
   }
 }

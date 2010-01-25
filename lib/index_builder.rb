@@ -347,6 +347,20 @@ class IndexBuilder
               end
             end
           end
+          
+          # Finally - do we have any attributes that we need to group together?
+          if dataset_conf["indexing"]["grouped_attributes"]
+            dataset_conf["indexing"]["grouped_attributes"].each do |group|
+              attrs = []
+              group["attrs"].each do |attribute|
+                attrs.push(data_row_obj[attribute])
+              end
+              
+              unless attrs.empty?
+                doc[ group["idx"].to_sym ].push( attrs.join("||") )
+              end
+            end
+          end
         end
       end
     end
@@ -387,6 +401,14 @@ class IndexBuilder
     doc.each do |key,value|
       if value.size > 0
         doc[key] = value.uniq
+      end
+      
+      # If we have multiple value entries in what should be a single valued 
+      # field, not the best solution, but just arbitrarily pick the first entry.
+      if !@index_conf["schema"]["fields"][key]["multi_valued"] and value.size > 1
+        new_array = []
+        new_array.push(value[0])
+        doc[key]  = new_array
       end
     end
   end

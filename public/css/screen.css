@@ -353,6 +353,11 @@ tr.odd td {
 	border: none;
 }
 
+table li {
+	margin-left: 0;
+	list-style-position: inside;
+}
+
 /* Martsearchr Search Form */
 
 form#martsearchr {

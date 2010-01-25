@@ -16,12 +16,16 @@
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "ensembl_gene_id",                            "idx": "ensembl_gene_id", "use_to_map": true },
-      { "attr": "canonical_transcript_stable_id",             "idx": "ensembl_transcript_id" },
-      { "attr": "description",                                "idx": "marker_name" },
-      { "attr": "interpro",                                   "idx": "interpro_id" },
-      { "attr": "interpro_short_description",                 "idx": "interpro_desc" },
-      { "attr": "interpro_description",                       "idx": "interpro_desc" }
+      { "attr": "ensembl_gene_id",                "idx": "ensembl_gene_id", "use_to_map": true },
+      { "attr": "interpro",                       "idx": "interpro_id" },
+      { "attr": "interpro_short_description",     "idx": "interpro_desc" },
+      { "attr": "interpro_description",           "idx": "interpro_desc" }
+    ],
+    "grouped_attributes": [
+      {
+        "attrs": ["interpro","interpro_short_description","interpro_description"],
+        "idx":   "interpro"
+      }
     ]
   }
 }

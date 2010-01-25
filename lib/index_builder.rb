@@ -405,7 +405,7 @@ class IndexBuilder
       
       # If we have multiple value entries in what should be a single valued 
       # field, not the best solution, but just arbitrarily pick the first entry.
-      if !@index_conf["schema"]["fields"][key]["multi_valued"] and value.size > 1
+      if !@index_conf["schema"]["fields"][key.to_s]["multi_valued"] and value.size > 1
         new_array = []
         new_array.push(value[0])
         doc[key]  = new_array

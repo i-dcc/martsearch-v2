@@ -36,7 +36,7 @@
 </table>
 
 <div>
-  <h5 class="mgi-markers_toggle">Other Mouse IDs</h5>
+  <h5 class="mgi-markers_toggle">Other IDs</h5>
   <div class="mgi-markers_content">
     <table>
       <tr>
@@ -101,14 +101,8 @@
       <% end %>
     <% end %>
     
-    <% if result_data["mgi-markers"]["go_entries"].size > 0 %>
-      <h6>Gene Ontology</h6>
-      <ul>
-        <% result_data["mgi-markers"]["go_entries"].each do |go| %>
-          <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go["id"] %>"><%= "#{go["term"]} (#{go["id"]})" %></a></li>
-        <% end %>
-      </ul>
-    <% end %>
+    <%= partial( "datasets/index/gene_ontology", :locals => { :result_data => result_data } ) %>
+    <%= partial( "datasets/index/interpro",      :locals => { :result_data => result_data } ) %>
   </div>
 </div>
 

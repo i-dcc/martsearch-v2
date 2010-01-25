@@ -52,15 +52,19 @@
         "phenotype":                  { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype_comment":          { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "mp_id":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
-        "mp_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "MP":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "mp":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "mp_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "go_id":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
-        "go_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "GO":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "go":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "go_term":                    { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
+        "go_biological_process":      { "type": "text", "indexed": false, "stored": true, "multi_valued": true },
+        "go_cellular_component":      { "type": "text", "indexed": false, "stored": true, "multi_valued": true },
+        "go_molecular_function":      { "type": "text", "indexed": false, "stored": true, "multi_valued": true },
         "interpro_id":                { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
-        "interpro_desc":              { "type": "text", "indexed": true, "stored": false, "multi_valued": true }
+        "interpro_desc":              { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
+        "interpro":                   { "type": "text", "indexed": false, "stored": true, "multi_valued": true }
       },
       "copy_fields": [
         { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
@@ -193,7 +197,7 @@
     }
   },
   "test": {
-    "single_return_search": "cbx7",
+    "single_return_search": "Mysm1",
     "large_search":         "chromosome:1",
     "bad_search":           "chromosome:!"
   },

@@ -8,7 +8,7 @@ sorted_results = {}
   
   if !result["ikmc_project_id"].nil?
     if result["status_sequence"] and result["status_sequence"].to_i >= 95
-      if result["is_komp_regeneron"] != "1" and result["is_norcomm"] != 1
+      if result["is_komp_regeneron"] != "1" and result["is_norcomm"] != "1"
         process_result = true
       end
     end

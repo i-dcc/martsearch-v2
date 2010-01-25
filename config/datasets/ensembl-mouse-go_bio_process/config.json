@@ -16,9 +16,15 @@
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "ensembl_gene_id",                            "idx": "ensembl_gene_id", "use_to_map": true },
-      { "attr": "go_biological_process_id",                   "idx": "go_id" },
-      { "attr": "name_1006",                                  "idx": "go_term" }
+      { "attr": "ensembl_gene_id",          "idx": "ensembl_gene_id", "use_to_map": true },
+      { "attr": "go_biological_process_id", "idx": "go_id" },
+      { "attr": "name_1006",                "idx": "go_term" }
+    ],
+    "grouped_attributes": [
+      {
+        "attrs": ["go_biological_process_id","name_1006"],
+        "idx":   "go_biological_process"
+      }
     ]
   }
 }

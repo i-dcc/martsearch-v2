@@ -76,7 +76,8 @@ class Dataset
       search_params  = {
         :attributes      => [],
         :filters         => { @joined_biomart_filter => query.join(",") },
-        :process_results => true
+        :process_results => true,
+        :timeout         => 5
       }
     
       @filters.each do |name,value|

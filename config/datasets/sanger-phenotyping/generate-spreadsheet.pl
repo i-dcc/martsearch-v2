@@ -36,7 +36,7 @@ my $pheno_data = query_biomart(
   }
 );
 
-generate_spreadsheet( "./$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data );
+generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data );
 
 ##
 ## Subroutines

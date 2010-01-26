@@ -25,6 +25,18 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/pheno_abr #{release_path}/tmp/pheno_abr"
   end
   
+  desc "Regenerate the Sanger Phenotyping heatmap upon release."
+  task :generate_heatmap do
+    brave_new_world_env = {
+      :PATH     => "/software/team87/brave_new_world/bin:/software/perl-5.8.8/bin:/usr/local/lsf/7.0/linux2.6-glibc2.3-x86_64/bin:/usr/bin:$PATH",
+      :PERL5LIB => "/software/team87/brave_new_world/lib/perl5:/software/team87/brave_new_world/lib/perl5/x86_64-linux-thread-multi",
+      :CONF_DIR => "/software/team87/brave_new_world/conf",
+      :LOG_DIR  => "/software/team87/brave_new_world/logs/cron"
+    }
+    
+    run "htgt-env.pl --live perl #{release_path}/config/datasets/sanger-phenotyping/generate-spreadsheet.pl", :env => brave_new_world_env
+  end
+  
   desc "Set the permissions of the filesystem so that others in the team can deploy"
   task :fix_perms do
     run "chgrp team87 #{release_path}/tmp"
@@ -33,4 +45,4 @@ namespace :deploy do
 end
 
 after "deploy:update_code", "deploy:symlink_shared"
-after "deploy:symlink", "deploy:fix_perms"
+after "deploy:symlink", "deploy:generate_heatmap", "deploy:fix_perms"

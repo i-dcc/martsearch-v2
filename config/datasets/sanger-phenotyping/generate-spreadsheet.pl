@@ -13,10 +13,9 @@ use Spreadsheet::WriteExcel;
 ##
 
 my $SCRIPT_DIR = dirname(__FILE__);
-print $SCRIPT_DIR . "\n";
 
 my $config_string = "";
-open( CONFIG, "./$SCRIPT_DIR/config.json" );
+open( CONFIG, "$SCRIPT_DIR/config.json" );
 while (<CONFIG>) { $config_string .= $_; }
 close(CONFIG);
 

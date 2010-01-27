@@ -35,6 +35,8 @@ namespace :deploy do
     }
     
     run "htgt-env.pl --live perl #{release_path}/config/datasets/sanger-phenotyping/generate-spreadsheet.pl", :env => brave_new_world_env
+    run "chgrp team87 #{release_path}/public/pheno_overview.xls"
+    run "chmod g+w #{release_path}/public/pheno_overview.xls"
   end
   
   desc "Set the permissions of the filesystem so that others in the team can deploy"

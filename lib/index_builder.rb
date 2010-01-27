@@ -27,7 +27,7 @@ class IndexBuilder
     @index_conf["datasets"] = dataset_index_conf()
     
     @solr       = RSolr.connect :url => @index_conf["url"]
-    @batch_size = 500
+    @batch_size = 1000
     
     # Create a placeholder variable to store docs in (and a cache variable 
     # for faster lookups if required...)

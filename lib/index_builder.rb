@@ -356,7 +356,7 @@ class IndexBuilder
                 attrs.push(data_row_obj[attribute])
               end
               
-              unless attrs.empty?
+              unless attrs.join("").gsub(" ","").empty?
                 doc[ group["idx"].to_sym ].push( attrs.join("||") )
               end
             end

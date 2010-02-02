@@ -2,10 +2,12 @@
   <h6>Interpro Families</h6>
   <ul>
     <% result_data["index"]["interpro"].sort.each do |index_string| %>
-      <% interpro = index_string.split("||") %>
-      <li>
-        <a href="http://www.ebi.ac.uk/interpro/IEntry?ac=<%= interpro[0] %>"><%= interpro[2] %> (<%= interpro[0] %>)</a>
-      </li>
+      <% unless index_string.gsub(" ","") === "||||" %>
+        <% interpro = index_string.split("||") %>
+        <li>
+          <a href="http://www.ebi.ac.uk/interpro/IEntry?ac=<%= interpro[0] %>"><%= "#{interpro[2].titlecase} (#{interpro[0]})" %></a>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 <% end %>

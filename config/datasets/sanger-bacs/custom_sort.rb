@@ -90,12 +90,12 @@ sorted_results.each do |key,data|
   ensembl_link += "contigviewbottom=#{settings.join(",")}"
   
   # Remove un-needed data from the sorted_results hash
-  sorted_results_to_return[key] = [{
+  sorted_results_to_return[key] = {
     "s7_count"     => data["s7_count"],
     "b6_count"     => data["b6_count"],
     "micer_count"  => data["micer_count"],
     "ensembl_link" => ensembl_link
-  }]
+  }
 end
 
 return sorted_results_to_return

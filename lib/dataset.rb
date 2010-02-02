@@ -166,12 +166,18 @@ class Dataset
       
       biomart_results.each do |biomart_key,biomart_data|
         if lookup[biomart_key] && stash[ lookup[biomart_key] ]
-          unless stash[ lookup[biomart_key] ][@internal_name]
-            stash[ lookup[biomart_key] ][@internal_name] = []
-          end
-          
-          biomart_data.each do |data|
-            stash[ lookup[biomart_key] ][@internal_name].push(data)
+          if @custom_sort
+            # If someone uses a custom sort- we assume they're taking care
+            # of grouping all of thier data together correctly...
+            stash[ lookup[biomart_key] ][@internal_name] = biomart_data
+          else
+            unless stash[ lookup[biomart_key] ][@internal_name]
+              stash[ lookup[biomart_key] ][@internal_name] = []
+            end
+            
+            biomart_data.each do |data|
+              stash[ lookup[biomart_key] ][@internal_name].push(data)
+            end
           end
         end
       end

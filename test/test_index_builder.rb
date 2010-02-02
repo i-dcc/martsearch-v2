@@ -125,7 +125,7 @@ class IndexBuilderTest < Test::Unit::TestCase
       Dir.chdir( present_dir )
       assert( xml_files.size > 0, "@index_builder.build_document_xmls() did not produce any XML files." )
       
-      puts "Index docs in: #{@index_builder.xml_dir}"
+      #puts "Index docs in: #{@index_builder.xml_dir}"
       
       # Upload XML to Solr
       #@index_builder.send_documents_to_solr()

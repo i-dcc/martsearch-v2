@@ -295,7 +295,7 @@ get "/css/martsearch*.css" do
   css_files = [
     "reset.css",
     "jquery.prettyPhoto.css",
-    "jquery-ui-1.7.2.cupertino.css",
+    "jquery-ui-1.7.2.redmond.css",
     "screen.css"
   ]
   

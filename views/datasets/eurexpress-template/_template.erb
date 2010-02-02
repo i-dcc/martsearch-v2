@@ -16,28 +16,32 @@
     </h6>
     <div>
       <p>
-        <a href="<%= "http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{result["assay_id"]}#top" %>" class="ext_link">View full Eurexpress report page</a>
+        <a href="<%= "http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{result["assay_id"]}#top" %>" class="ext_link" target="_blank">View full Eurexpress report page</a>
       </p>
       <% if result["annotations"].size > 0 %>
-        <table width="100%">
-          <tr>
-            <th>EMAP ID</th>
-            <th>EMAP Term</th>
-            <th>Pattern</th>
-            <th>Strength</th>
-            <th>Theiler Stage</th>
-            <th>Annotation Comments</th>
-          </tr>
-          <% result["annotations"].each do |ann| %>
+        <table class="tablesorter" width="100%">
+          <thead>
             <tr>
-              <td><%= ann["emap_id"] %></td>
-              <td><%= ann["emap_term"] %></td>
-              <td><%= ann["ann_pattern"] %></td>
-              <td><%= ann["ann_strength"] %></td>
-              <td><%= ann["ann_stage"] %></td>
-              <td><%= ann["ann_comments"] %></td>
+              <th>EMAP ID</th>
+              <th>EMAP Term</th>
+              <th>Pattern</th>
+              <th>Strength</th>
+              <th>Theiler Stage</th>
+              <th>Annotation Comments</th>
             </tr>
-          <% end %>
+          </thead>
+          <tbody>
+            <% result["annotations"].each do |ann| %>
+              <tr>
+                <td><%= ann["emap_id"] %></td>
+                <td><%= ann["emap_term"] %></td>
+                <td><%= ann["ann_pattern"] %></td>
+                <td><%= ann["ann_strength"] %></td>
+                <td><%= ann["ann_stage"] %></td>
+                <td><%= ann["ann_comments"] %></td>
+              </tr>
+            <% end %>
+          </tbody>
         </table>
       <% end %>
     </div>

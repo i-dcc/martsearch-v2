@@ -472,3 +472,26 @@ table#welcome table#summary_statistics th {
 	margin-bottom: 20px;
 }
 
+/* jQuery TableSorter Overrides */
+
+table.tablesorter thead tr th {
+	border: 1px solid #999;
+	text-align: left;
+	padding: 6px 6px;
+	background-color: #ccc;
+	color: #333;
+}
+
+table.tablesorter thead tr th.header.headerSortDown {
+	background-color: #6998cb;
+	color: #fff;
+}
+
+table.tablesorter thead tr th.header.headerSortUp {
+	background-color: #376598;
+	color: #fff;
+}
+
+table.tablesorter tbody tr.odd td {
+	background-color: #f1f1f1;
+}

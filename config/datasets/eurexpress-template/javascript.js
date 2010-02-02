@@ -2,6 +2,8 @@
 // eurexpress-template custom javascript
 
 jQuery(document).ready(function() {
+  jQuery(".eurexpress-template table").tablesorter({ widgets: ['zebra'] });
+  
   jQuery(".eurexpress-template .accordion").accordion({
     collapsible: true,
     active: false,

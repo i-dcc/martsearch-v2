@@ -27,9 +27,7 @@
       { "attr": "ensembl_gene_id",  "idx": "ensembl_gene_id" },
       { "attr": "vega_gene_id",     "idx": "vega_gene_id" },
       { "attr": "ncbi_gene_id",     "idx": "ncbi_gene_id" },
-      { "attr": "ccds_id",          "idx": "ccds_id" },
-      { "attr": "omim_id",          "idx": "omim_id" },
-      { "attr": "omim_description", "idx": "omim_desc" }
+      { "attr": "ccds_id",          "idx": "ccds_id" }
     ]
   },
   "searching": {
@@ -38,9 +36,6 @@
     "joined_biomart_attribute": "mgi_accession_id",
     "attributes": [
       "mgi_accession_id",
-      "ccds_id",
-      "omim_id",
-      "omim_description",
       "igtc",
       "imsr",
       "mgi_gene_traps",

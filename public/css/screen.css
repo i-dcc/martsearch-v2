@@ -103,6 +103,11 @@ a:active {
 	outline: none;
 }
 
+a.ext_link {
+	background: url(../images/bullet_go.png) no-repeat left center;
+	padding: 2px 0 2px 16px;
+}
+
 /* Ordering Buttons */
 
 .order {
@@ -452,3 +457,18 @@ table#welcome table#summary_statistics,
 table#welcome table#summary_statistics th {
 	text-align: center;
 }
+
+/* jQuery UI Overrides */
+
+.ui-widget {
+	font: 11px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.ui-widget-content {
+	background: transparent;
+}
+
+.ui-accordion {
+	margin-bottom: 20px;
+}
+

@@ -295,6 +295,7 @@ get "/css/martsearch*.css" do
   css_files = [
     "reset.css",
     "jquery.prettyPhoto.css",
+    "jquery-ui-1.7.2.cupertino.css",
     "screen.css"
   ]
   
@@ -316,6 +317,7 @@ get "/js/martsearch*.js" do
   js_text = ""
   js_files = [
     "jquery-plugins.min.js",
+    "jquery-ui-1.7.2.min.js",
     "martsearchr.js"
   ]
   

@@ -45,7 +45,7 @@
     that avoids logging every request
 -->
 
-<schema name="<%= @index_conf["schema_name"] %>" version="1.2">
+<schema name="<%= @config["schema_name"] %>" version="1.2">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        Applications should change this to reflect the nature of the search collection.
        version="1.2" is Solr's version number for the schema syntax and semantics.  It should
@@ -426,7 +426,7 @@
        when adding a document.
    -->
 
-   <%- @index_conf["schema"]["fields"].each do |name, details| -%>
+   <%- @config["schema"]["fields"].each do |name, details| -%>
    <field name="<%= name %>" type="<%= details["type"] %>" <%- if details["indexed"] -%>indexed="<%= details["indexed"] %>" <%- end -%>
    <%- if details["stored"] -%>stored="<%= details["stored"] %>" <%- end -%>
    <%- if details["required"] -%>required="<%= details["required"] %>" <%- end -%>
@@ -487,7 +487,7 @@
  <!-- Field to use to determine and enforce document uniqueness. 
       Unless this field is marked with required="false", it will be a required field
    -->
- <uniqueKey><%= @index_conf["schema"]["unique_key"] %></uniqueKey>
+ <uniqueKey><%= @config["schema"]["unique_key"] %></uniqueKey>
 
  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
  <defaultSearchField>text</defaultSearchField>
@@ -499,7 +499,7 @@
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-  <%- @index_conf["schema"]["copy_fields"].each do |field| -%>
+  <%- @config["schema"]["copy_fields"].each do |field| -%>
   <copyField source="<%= field["source"] %>" dest="<%= field["dest"] %>" />
     <%- if field["dest"] === "text" -%>
   <copyField source="<%= field["source"] %>" dest="text_rev" />

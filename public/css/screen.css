@@ -85,21 +85,21 @@ p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset {
 
 /* Links */
 
-a {
+a, .ui-widget-content a {
 	color: #376598;
 	text-decoration: none;
 }
 
-a:hover {
+a:hover, .ui-widget-content a:hover {
 	color: #963534;
 }
 
-a:focus {
+a:focus, .ui-widget-content a:focus {
 	outline: none;
 	-moz-outline-style: none;
 }
 
-a:active {
+a:active, .ui-widget-content a:acitve {
 	outline: none;
 }
 

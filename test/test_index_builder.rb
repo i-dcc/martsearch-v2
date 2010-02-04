@@ -92,9 +92,10 @@ class IndexBuilderTest < Test::Unit::TestCase
         assert( mart.is_a?(Biomart::Dataset), "@index_builder.biomart_dataset does not return a Biomart::Dataset object." )
         
         # Biomart result processing
-        ["marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
+        #puts "#{dataset_conf["internal_name"]}:"
+        ["gene_symbol","marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
           begin
-            #puts "testing #{dataset_conf["internal_name"]} with #{filter_type}"
+            #puts "  - testing: #{filter_type}"
             results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1"] } )
             @index_builder.process_dataset_results_public( results )
             
@@ -102,7 +103,7 @@ class IndexBuilderTest < Test::Unit::TestCase
             assert( @index_builder.documents["MGI:104874"] != nil, "@index_builder.documents does not contain a data entry for Akt2." )
             assert( @index_builder.documents["MGI:1196439"] != nil, "@index_builder.documents does not contain a data entry for Cbx7." )
           rescue Biomart::FilterError => error
-            #puts "failed doing #{dataset_conf["internal_name"]} #{error}"
+            #puts "  - failed: #{error}"
             # This dataset does not have a "marker_symbol" or "tmp_gene_symbol" filter so we can't test 
             # it with this simple test... not too much of a worry...
           end

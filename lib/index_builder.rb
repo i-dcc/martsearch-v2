@@ -196,12 +196,6 @@ class IndexBuilder
       
       map[ mapping_obj["attr"] ]        = mapping_obj
       map[ mapping_obj["attr"] ]["idx"] = map[ mapping_obj["attr"] ]["idx"].to_sym
-      
-      ["attr_prepend","attr_append"].each do |extension|
-        if mapping_obj[extension]
-          map[ mapping_obj["attr"] ][extension] = mapping_obj[extension]
-        end
-      end
     end
     
     unless primary_attribute
@@ -274,7 +268,12 @@ class IndexBuilder
   def convert_array_to_hash( headers, data )
     converted_data = {}
     headers.each_index do |position|
-      converted_data[ headers[position] ] = data[position]
+      if data[position].nil? or data[position] === ""
+        converted_data[ headers[position] ] = nil
+      else
+        converted_data[ headers[position] ] = data[position]
+      end
+      
     end
     return converted_data
   end
@@ -286,40 +285,34 @@ class IndexBuilder
     # Extract all of the needed index mapping data from "attribute_map"
     map_data = process_attribute_map( @current[:dataset_conf] )
     
-    # Figure out the position of the map_data[:primary_attribute] in the results array
-    primary_attribute_pos = nil
-    results[:headers].each_index do |position|
-      if results[:headers][position] == map_data[:primary_attribute]
-        primary_attribute_pos = position
-      end
-    end
-    
     # Now loop through the result data...
     results[:data].each do |data_row|
+      # First, create a hash out of the data_row and get the primary_attr_value
+      data_row_obj       = convert_array_to_hash( results[:headers], data_row )
+      primary_attr_value = data_row_obj[ map_data[:primary_attribute] ]
+      
       # First check we have something to map back to the index with - if not, move along...
-      if data_row[primary_attribute_pos]
+      if primary_attr_value
         # Find us a doc object to map to...
-        doc = find_document( map_data[:map_to_index_field], data_row[primary_attribute_pos] )
+        value_to_look_up_doc_on = extract_value_to_index( map_data[:primary_attribute], primary_attr_value, map_data[:attribute_map], data_row_obj )
+        doc                     = find_document( map_data[:map_to_index_field], value_to_look_up_doc_on )
         
         # If we can't find one - see if we're allowed to create one
         unless doc
           if @current[:dataset_conf]["indexing"]["allow_document_creation"]
-            @documents[ data_row[primary_attribute_pos] ] = new_document()
-            doc = @documents[ data_row[primary_attribute_pos] ]
+            @documents[ value_to_look_up_doc_on ] = new_document()
+            doc = @documents[ value_to_look_up_doc_on ]
           end
         end
         
         # Okay, if we have a doc - process the biomart attributes
         if doc
-          # First, create a hash out of the data_row
-          data_row_obj = convert_array_to_hash( results[:headers], data_row )
-          
           # Now do the processing
           data_row_obj.each do |attr_name,attr_value|
             # Extract and index our initial data return
             value_to_index = extract_value_to_index( attr_name, attr_value, map_data[:attribute_map], data_row_obj )
             
-            if value_to_index && doc[ map_data[:attribute_map][attr_name]["idx"] ]
+            if value_to_index and doc[ map_data[:attribute_map][attr_name]["idx"] ]
               if value_to_index.is_a?(Array)
                 value_to_index.each do |value|
                   doc[ map_data[:attribute_map][attr_name]["idx"] ].push( value )
@@ -374,7 +367,6 @@ class IndexBuilder
   def extract_value_to_index( attr_name, attr_value, attr_options, mart_data )
     options         = attr_options[attr_name]
     value_to_index  = attr_value
-    mart_attributes = @current[:biomart].attributes()
 
     if options["if_attr_equals"]
       unless options["if_attr_equals"].include?( attr_value )
@@ -384,7 +376,8 @@ class IndexBuilder
 
     if options["index_attr_name"]
       if value_to_index
-        value_to_index = [ attr_name, mart_attributes[attr_name].display_name ]
+        mart_attributes = @current[:biomart].attributes()
+        value_to_index  = [ attr_name, mart_attributes[attr_name].display_name ]
       end
     end
 

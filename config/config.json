@@ -66,7 +66,13 @@
         "emap_term":                  { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "EMAP":                       { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "emap":                       { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
-        "emap_ontology":              { "type": "textTight", "indexed": false, "stored": true, "multi_valued": true }
+        "emap_ontology":              { "type": "textTight", "indexed": false, "stored": true, "multi_valued": true },
+        "emma_id":                    { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "EM":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "em":                         { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "pubmed_id":                  { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "PMID":                       { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "pmid":                       { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true }
       },
       "copy_fields": [
         { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
@@ -89,6 +95,10 @@
         { "source": "emap_term",                  "dest": "EMAP" },
         { "source": "emap_id",                    "dest": "emap" },
         { "source": "emap_term",                  "dest": "emap" },
+        { "source": "emma_id",                    "dest": "EM" },
+        { "source": "emma_id",                    "dest": "em" },
+        { "source": "pubmed_id",                  "dest": "PMID" },
+        { "source": "pubmed_id",                  "dest": "pmid" },
         { "source": "mgi_accession_id_key",       "dest": "text" },
         { "source": "marker_symbol",              "dest": "text" },
         { "source": "marker_name",                "dest": "text" },
@@ -113,7 +123,9 @@
         { "source": "go_id",                      "dest": "text" },
         { "source": "go_term",                    "dest": "text" },
         { "source": "interpro_id",                "dest": "text" },
-        { "source": "interpro_desc",              "dest": "text" }
+        { "source": "interpro_desc",              "dest": "text" },
+        { "source": "emma_id",                    "dest": "text" },
+        { "source": "pubmed_id",                  "dest": "text" }
       ]
     },
     "datasets_to_index": [
@@ -125,6 +137,7 @@
       "sanger-phenotyping",
       "sanger-bacs",
       "eurexpress-template",
+      "emma-strains",
       "sanger-htgt_trap",
       "ensembl-mouse-homologs",
       "ensembl-mouse-interpro_features",
@@ -169,6 +182,7 @@
     "sanger-kermits",
     "sanger-phenotyping",
     "sanger-bacs",
-    "eurexpress-template"
+    "eurexpress-template",
+    "emma-strains"
   ]
 }

@@ -363,6 +363,10 @@ table li {
 	list-style-position: inside;
 }
 
+table ul {
+	margin-bottom: 0;
+}
+
 /* Martsearchr Search Form */
 
 form#martsearchr {

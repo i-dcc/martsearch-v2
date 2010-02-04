@@ -19,7 +19,7 @@ require "active_support"
 require "will_paginate/array"
 require "will_paginate/view_helpers"
 
-gem "biomart", ">=0.1.4"
+gem "biomart", ">=0.1.5"
 require "biomart"
 
 require "#{File.dirname(__FILE__)}/../lib/mock.rb"

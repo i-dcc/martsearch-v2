@@ -29,11 +29,18 @@ class IndexBuilderTest < Test::Unit::TestCase
       def @index_builder.clean_document_public(*args)
         clean_document(*args)
       end
+      
+      def @index_builder.current_public__set(args)
+        @current = args
+      end
+      
+      def @index_builder.current_public__get
+        return @current
+      end
     end
 
     should "have basic attributes" do
-      assert( @index_builder.martsearch.is_a?(Martsearch), "@index_builder.martsearch is not a Martsearch object." )
-      assert( @index_builder.index_conf.is_a?(Hash), "@index_builder.index_conf is not a config hash." )
+      assert( @index_builder.config.is_a?(Hash), "@index_builder.config is not a config hash." )
     end
     
     ##
@@ -52,7 +59,13 @@ class IndexBuilderTest < Test::Unit::TestCase
     ##
     
     should "act as expected when we simulate the document building process..." do
-      @index_builder.index_conf["datasets"].each do |dataset_conf|
+      @index_builder.config["datasets"].each do |dataset_conf|
+        # Store config and biomart objects
+        @index_builder.current_public__set({ 
+          :dataset_conf => dataset_conf,
+          :biomart      => @index_builder.biomart_dataset_pulic( dataset_conf )
+        })
+        
         # attribute_map processing
         mapping_data = @index_builder.process_attribute_map_public( dataset_conf )
         assert( mapping_data.is_a?(Hash), "@index_builder.process_attribute_map does not return a Hash." )
@@ -68,34 +81,39 @@ class IndexBuilderTest < Test::Unit::TestCase
         map_to_index_field = mapping_data[:map_to_index_field]
         
         # document caching
-        unless map_to_index_field == @index_builder.index_conf["schema"]["unique_key"].to_sym
+        unless map_to_index_field == @index_builder.config["schema"]["unique_key"].to_sym
           @index_builder.cache_documents_by_public( map_to_index_field )
           assert( !@index_builder.documents_by[map_to_index_field].nil?, "The document cache (made by cache_documents_by()) is nil." )
           assert( @index_builder.documents_by[map_to_index_field].is_a?(Hash), "The document cache (made by cache_documents_by()) is not a Hash." )
         end
         
         # Biomart::Dataset object creation
-        mart = @index_builder.biomart_dataset_pulic( dataset_conf )
+        mart = @index_builder.current_public__get[:biomart]
         assert( mart.is_a?(Biomart::Dataset), "@index_builder.biomart_dataset does not return a Biomart::Dataset object." )
         
         # Biomart result processing
-        begin
-          results = mart.search( :attributes => attribute_map.keys, :filters => { "marker_symbol" => ["Akt2","Cbx7"] } )
-          @index_builder.process_dataset_results_public( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, mart.attributes )
-          
-          assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )
-          assert( @index_builder.documents["MGI:104874"] != nil, "@index_builder.documents does not contain a data entry for Akt2." )
-          assert( @index_builder.documents["MGI:1196439"] != nil, "@index_builder.documents does not contain a data entry for Cbx7." )
-        rescue Biomart::FilterError => error
-          # This dataset does not have a "marker_symbol" filter so we can't test 
-          # it with this simple test... not too much of a worry...
+        #puts "#{dataset_conf["internal_name"]}:"
+        ["gene_symbol","marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
+          begin
+            #puts "  - testing: #{filter_type}"
+            results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1"] } )
+            @index_builder.process_dataset_results_public( results )
+            
+            assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )
+            assert( @index_builder.documents["MGI:104874"] != nil, "@index_builder.documents does not contain a data entry for Akt2." )
+            assert( @index_builder.documents["MGI:1196439"] != nil, "@index_builder.documents does not contain a data entry for Cbx7." )
+          rescue Biomart::FilterError => error
+            #puts "  - failed: #{error}"
+            # This dataset does not have a "marker_symbol" or "tmp_gene_symbol" filter so we can't test 
+            # it with this simple test... not too much of a worry...
+          end
         end
       end
       
       # Document cleaning...
       @index_builder.documents.values.each do |doc|
         @index_builder.clean_document_public(doc)
-        assert( doc[ @index_builder.index_conf["schema"]["unique_key"].to_sym ].size === 1, "@index_builder.clean_document has not removed duplicate entries." )
+        assert( doc[ @index_builder.config["schema"]["unique_key"].to_sym ].size === 1, "@index_builder.clean_document has not removed duplicate entries." )
       end
       
       # Saving the document XMLs
@@ -107,6 +125,8 @@ class IndexBuilderTest < Test::Unit::TestCase
       xml_files    = Dir.glob("solr-*.xml")
       Dir.chdir( present_dir )
       assert( xml_files.size > 0, "@index_builder.build_document_xmls() did not produce any XML files." )
+      
+      #puts "Index docs in: #{@index_builder.xml_dir}"
       
       # Upload XML to Solr
       #@index_builder.send_documents_to_solr()

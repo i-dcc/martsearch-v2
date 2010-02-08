@@ -13,10 +13,12 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
-gem "biomart", ">=0.1.4"
+gem "biomart", ">=0.1.5"
 require "biomart"
 
 require "#{File.dirname(__FILE__)}/lib/mock.rb"
+require "#{File.dirname(__FILE__)}/lib/string.rb"
+require "#{File.dirname(__FILE__)}/lib/array.rb"
 require "#{File.dirname(__FILE__)}/lib/dataset.rb"
 require "#{File.dirname(__FILE__)}/lib/index.rb"
 require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
@@ -24,7 +26,7 @@ require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.5"
+PORTAL_VERSION = "0.0.6"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
@@ -310,6 +312,8 @@ get "/css/martsearch*.css" do
   css_files = [
     "reset.css",
     "jquery.prettyPhoto.css",
+    "jquery.tablesorter.css",
+    "jquery-ui-1.7.2.redmond.css",
     "screen.css"
   ]
   
@@ -331,6 +335,7 @@ get "/js/martsearch*.js" do
   js_text = ""
   js_files = [
     "jquery-plugins.min.js",
+    "jquery-ui-1.7.2.min.js",
     "martsearchr.js"
   ]
   

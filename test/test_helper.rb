@@ -19,10 +19,12 @@ require "active_support"
 require "will_paginate/array"
 require "will_paginate/view_helpers"
 
-gem "biomart", ">=0.1.3"
+gem "biomart", ">=0.1.5"
 require "biomart"
 
 require "#{File.dirname(__FILE__)}/../lib/mock.rb"
+require "#{File.dirname(__FILE__)}/../lib/string.rb"
+require "#{File.dirname(__FILE__)}/../lib/array.rb"
 require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
 require "#{File.dirname(__FILE__)}/../lib/index.rb"
 require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"

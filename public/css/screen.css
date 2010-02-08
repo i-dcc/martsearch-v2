@@ -85,22 +85,27 @@ p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset {
 
 /* Links */
 
-a {
+a, .ui-widget-content a {
 	color: #376598;
 	text-decoration: none;
 }
 
-a:hover {
+a:hover, .ui-widget-content a:hover {
 	color: #963534;
 }
 
-a:focus {
+a:focus, .ui-widget-content a:focus {
 	outline: none;
 	-moz-outline-style: none;
 }
 
-a:active {
+a:active, .ui-widget-content a:acitve {
 	outline: none;
+}
+
+a.ext_link {
+	background: url(../images/bullet_go.png) no-repeat left center;
+	padding: 2px 0 2px 16px;
 }
 
 /* Ordering Buttons */
@@ -358,6 +363,10 @@ table li {
 	list-style-position: inside;
 }
 
+table ul {
+	margin-bottom: 0;
+}
+
 /* Martsearchr Search Form */
 
 form#martsearchr {
@@ -469,4 +478,42 @@ table#welcome table#summary_statistics th {
 	float: right;
 	margin-top: 41px;
 	margin-bottom: 0;
+}
+
+/* jQuery UI Overrides */
+
+.ui-widget {
+	font: 11px/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.ui-widget-content {
+	background: transparent;
+}
+
+.ui-accordion {
+	margin-bottom: 20px;
+}
+
+/* jQuery TableSorter Overrides */
+
+table.tablesorter thead tr th {
+	border: 1px solid #999;
+	text-align: left;
+	padding: 6px 6px;
+	background-color: #ccc;
+	color: #333;
+}
+
+table.tablesorter thead tr th.header.headerSortDown {
+	background-color: #6998cb;
+	color: #fff;
+}
+
+table.tablesorter thead tr th.header.headerSortUp {
+	background-color: #376598;
+	color: #fff;
+}
+
+table.tablesorter tbody tr.odd td {
+	background-color: #f1f1f1;
 }

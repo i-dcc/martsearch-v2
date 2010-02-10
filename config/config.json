@@ -128,7 +128,9 @@
         { "source": "interpro_id",                "dest": "text" },
         { "source": "interpro_desc",              "dest": "text" },
         { "source": "emma_id",                    "dest": "text" },
-        { "source": "pubmed_id",                  "dest": "text" }
+        { "source": "pubmed_id",                  "dest": "text" },
+        { "source": "emap_id",                    "dest": "text" },
+        { "source": "emap_term",                  "dest": "text" }
       ]
     },
     "datasets_to_index": [

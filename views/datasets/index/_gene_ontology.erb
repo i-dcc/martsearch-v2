@@ -1,0 +1,30 @@
+<% if !result_data["index"]["go_biological_process"].nil? or !result_data["index"]["go_cellular_component"].nil? or !result_data["index"]["go_molecular_function"].nil? %>
+  <h6>Gene Ontology</h6>
+  <table width="100%">
+    <thead>
+      <tr>
+        <th width="33%">Biological Process</th>
+        <th width="33%">Cellular Component</th>
+        <th width="33%">Molecular Function</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <% ["go_biological_process","go_cellular_component","go_molecular_function"].each do |go_type| %>
+          <td>
+            <% unless result_data["index"][go_type].nil? %>
+              <ul>
+                <% result_data["index"][go_type].sort.each do |index_string| %>
+                  <% unless index_string.gsub(" ","") === "||" %>
+                    <% go = index_string.split("||") %>
+                    <li><a href="http://www.informatics.jax.org/searches/GO.cgi?id=<%= go[0] %>"><%= "#{go[1].titlecase} (#{go[0]})" %></a></li>
+                  <% end %>
+                <% end %>
+              </ul>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

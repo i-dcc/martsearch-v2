@@ -1,22 +1,30 @@
 {
   "display":              true,
   "use_in_search":        true,
-  "index":                false,
-  "custom_sort":          false,
-  "custom_css":           false,
-  "custom_js":            false,
+  "index":                true,
+  "custom_sort":          true,
+  "custom_css":           true,
+  "custom_js":            true,
   "custom_view_helpers" : false,
   "custom_routes":        false,
-  "url":                  "http://biomart.eurexpress.org/biomart",
+  "url":                  "http://wwwdev.ebi.ac.uk/panda/damian/biomart",
   "dataset_name":         "template",
   "display_name":         "Eurexpress",
   "attribution":          "Eurexpress",
   "attribution_link":     "http://www.eurexpress.org/",
   "description":          "",
   "indexing": {
-    "allow_document_creation": true,
+    "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "tmp_gene_symbol", "idx": "marker_symbol", "use_to_map": true }
+      { "attr": "tmp_gene_symbol", "idx": "marker_symbol", "use_to_map": true },
+      { "attr": "emap_id", "attr_prepend": "EMAP:", "idx": "emap_id" },
+      { "attr": "emap_term", "idx": "emap_term" }
+    ],
+    "grouped_attributes": [
+      {
+        "attrs": ["emap_id","emap_term"],
+        "idx":   "emap_ontology"
+      }
     ]
   },
   "searching": {
@@ -26,7 +34,13 @@
     "attributes": [
       "tmp_gene_symbol",
       "ass_assay_id_key",
-      "ass_external_set_id"
+      "assay_image_count",
+      "emap_id",
+      "emap_term",
+      "ann_stage",
+      "ann_pattern",
+      "ann_strength",
+      "ann_comments"
     ],
     "filters": {},
     "required_attributes": [

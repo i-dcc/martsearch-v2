@@ -1,0 +1,30 @@
+{
+  "display":              false,
+  "use_in_search":        false,
+  "index":                true,
+  "custom_sort":          false,
+  "custom_css":           false,
+  "custom_js":            false,
+  "custom_view_helpers":  false,
+  "custom_routes":        false,
+  "url":                  "http://www.biomart.org/biomart",
+  "dataset_name":         "mmusculus_gene_ensembl",
+  "display_name":         "Ensembl Mouse - GO Molecular Function",
+  "attribution":          "Ensembl",
+  "attribution_link":     "http://www.ensembl.org/",
+  "description":          "",
+  "indexing": {
+    "allow_document_creation": false,
+    "attribute_map": [
+      { "attr": "ensembl_gene_id",                     "idx": "ensembl_gene_id", "use_to_map": true },
+      { "attr": "go_molecular_function_id",            "idx": "go_id" },
+      { "attr": "go_molecular_function__dm_name_1006", "idx": "go_term" }
+    ],
+    "grouped_attributes": [
+      {
+        "attrs": ["go_molecular_function_id","go_molecular_function__dm_name_1006"],
+        "idx":   "go_molecular_function"
+      }
+    ]
+  }
+}

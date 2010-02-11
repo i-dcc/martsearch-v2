@@ -1,12 +1,49 @@
-<table>
-  <tr>
-    <th>Assay ID</th>
-    <th>External Set ID</th>
-  </tr>
+<div class="accordion">
   <% result_data["eurexpress-template"].each do |result| %>
-    <tr>
-      <td><%= link_to( result["ass_assay_id_key"], "http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{result["ass_assay_id_key"]}#top" ) %></td>
-      <td><%= result["ass_external_set_id"] %></td>
-    </tr>
+    <h6>
+      <a href="#">
+        <%= result["assay_id"] %> - 
+        <span class="annotation_count">
+          <%= result["annotations"].size %> 
+          <% if result["annotations"].size === 1 %>
+            annotation 
+          <% else %>
+            annotations 
+          <% end %>
+          recorded
+        </span>
+      </a>
+    </h6>
+    <div>
+      <p>
+        <a href="<%= "http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{result["assay_id"]}#top" %>" class="ext_link" target="_blank">View full Eurexpress report page</a>
+      </p>
+      <% if result["annotations"].size > 0 %>
+        <table class="tablesorter" width="100%">
+          <thead>
+            <tr>
+              <th>EMAP ID</th>
+              <th>EMAP Term</th>
+              <th>Pattern</th>
+              <th>Strength</th>
+              <th>Theiler Stage</th>
+              <th>Annotation Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% result["annotations"].each do |ann| %>
+              <tr>
+                <td><%= ann["emap_id"] %></td>
+                <td><%= ann["emap_term"] %></td>
+                <td><%= ann["ann_pattern"] %></td>
+                <td><%= ann["ann_strength"] %></td>
+                <td><%= ann["ann_stage"] %></td>
+                <td><%= ann["ann_comments"] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
   <% end %>
-</table>
+</div>

@@ -1,0 +1,92 @@
+<table width="100%">
+  <tr>
+    <th>EMMA ID</th>
+    <th>Common Strain Name(s)</th>
+    <th>(International) Strain Designation</th>
+    <th>Allele Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% result_data["emma-strains"].each do |id,data| %>
+    <tr>
+      <td><%= link_to( data["emma_id"], "http://www.emmanet.org/mutant_types.php?keyword=#{data["emma_id"]}")%></td>
+      <td><%= data["synonym"] %></td>
+      <td><%= data["international_strain_name"] %></td>
+      <td><%= data["allele_name"] %></td>
+      <td><a href="#" id="<%= data["emma_id"].gsub(":","") %>-toggle" class="emma-strains-information-toggle">more information</a></td>
+      <td>
+        <% url_args = "?new=y&id=#{data["emma_id"]}&sname=#{data["international_strain_name"]}&cname=#{data["synonym"]}" %>
+        <a href="https://www.emmanet.org/apps/RegisterInterest/requestFormView.emma<%= CGI::escapeHTML(url_args) %>" class="order">order</a>
+      </td>
+    </tr>
+    <tr id="<%= data["emma_id"].gsub(":","") %>-content" class="emma-strains-information-content">
+      <td colspan="6">
+        <table width="100%">
+          <tr>
+            <th width="25%">Availabilities</th>
+            <td>
+              <% if data["availability"].size > 0 %>
+                <ul>
+                  <% data["availability"].each do |avail| %>
+                    <li><%= avail %></li>
+                  <% end %>
+                </ul>
+              <% else %>
+                -
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a href="http://www.emmanet.org/strains.php" target="_blank">View 
+              more detail on pricing and delivery times</a>. Please also check options for 
+              <a href="http://www.emmanet.org/projects/ta-activity.php" target="_blank">free 
+              of charge</a> access to EMMA mouse mutant resources (Transnational Access activity 
+              of the EMMAservice project).
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align:center;font-weight:bold;">Information from Provider</td>
+          </tr>
+          <tr>
+            <th>Strain Type</th>
+            <td><%= emma_strain_type( data["mutation_main_type"], data["mutation_sub_type"] ) %></td>
+          </tr>
+          <tr>
+            <th>Genetic Background</th>
+            <td><%= data["maintained_background"] %></td>
+          </tr>
+          <tr>
+            <th>Genetic Description</th>
+            <td><%= data["genetic_description"] %></td>
+          </tr>
+          <tr>
+            <th>Phenotype Description</th>
+            <td><%= data["phenotype_description"] %></td>
+          </tr>
+          <tr>
+            <th>References</th>
+            <td>
+              <% if data["references"].size > 0 %>
+                <ul>
+                  <% data["references"].each do |pmid,ref_data| %>
+                    <li>
+                      <%= ref_data["reference"] %> 
+                      (<%= link_to( "PMID:#{ref_data["pubmed_id"]}", "http://www.ncbi.nlm.nih.gov/pubmed/#{ref_data["pubmed_id"]}?dopt=Abstract" ) %>)
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                -
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Original Producer</th>
+            <td><%= data["owner"] %></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  <% end %>
+</table>

@@ -220,7 +220,13 @@ class Martsearch
               dataset.add_to_results_stash( @index.primary_field, @search_data, mart_results )
             rescue Biomart::BiomartError => error
               @errors.push({
-                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again.",
+                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again if you would like data from this source.",
+                :full_text => error
+              })
+              do_not_save_to_cache = true
+            rescue Timeout::Error => error
+              @errors.push({
+                :highlight => "The '#{dataset.display_name}' dataset did not respond quickly enough for this query.  Please try submitting your search again in about 15 minutes for a more complete search return.",
                 :full_text => error
               })
               do_not_save_to_cache = true

@@ -50,7 +50,7 @@
         <td>
           <%
             allele_name = result["allele_name"]
-            if related_kermits_entry && related_kermits_entry["allele_name"]
+            if related_kermits_entry and related_kermits_entry["allele_name"]
               allele_name = related_kermits_entry["allele_name"]
             end
           %>
@@ -72,12 +72,12 @@
               title_text << "<strong>Comparison Type:</strong> #{result["comparison"]}<br />"
               
               escell_clone = result["marker_symbol"] + "-" + result["colony_prefix"]
-              if related_kermits_entry && related_kermits_entry["escell_clone"]
+              if related_kermits_entry and related_kermits_entry["escell_clone"]
                 escell_clone = related_kermits_entry["escell_clone"]
               end
               title_text << "<strong>ES Cell Clone:</strong> #{escell_clone}<br />"
               
-              if related_htgt_targ_entry && related_htgt_targ_entry["cassette"]
+              if related_htgt_targ_entry and related_htgt_targ_entry["cassette"]
                 cassette = "Promotorless"
                 if related_htgt_targ_entry["cassette"].match("_P")
                   cassette = "Promotor Driven"
@@ -85,8 +85,10 @@
                 title_text << "<strong>Cassette Type:</strong> #{cassette}<br />"
               end
               
-              if related_kermits_entry
-                title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
+              if related_kermits_entry and related_kermits_entry["allele_type"]
+                unless related_kermits_entry["allele_type"].empty?
+                  title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
+                end
               end
               
               title_text << "</div>"

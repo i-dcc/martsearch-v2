@@ -9,7 +9,7 @@
   "custom_routes":        false,
   "url":                  "http://www.biomart.org/biomart",
   "dataset_name":         "mmusculus_gene_ensembl",
-  "display_name":         "Ensembl Mouse",
+  "display_name":         "Ensembl Mouse - Homologs",
   "attribution":          "Ensembl",
   "attribution_link":     "http://www.ensembl.org/",
   "description":          "",

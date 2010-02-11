@@ -3,9 +3,7 @@ sorted_results = {}
 @current_search_results.each do |result|
   unless sorted_results[ result[ @joined_biomart_attribute ] ]
     sorted_results[ result[ @joined_biomart_attribute ] ] = {
-      "projects"        => {},
-      "ccds_ids"        => [],
-      "omim_ids"        => []
+      "projects"        => {}
     }
   end
 
@@ -18,14 +16,6 @@ sorted_results = {}
   result_data["mgi_gene_traps"]     = result["mgi_gene_traps"]
   result_data["targeted_mutations"] = result["targeted_mutations"]
   result_data["other_mutations"]    = result["other_mutations"]
-  
-  unless result["ccds_id"].nil?
-    result_data["ccds_ids"].push( result["ccds_id"] )
-  end
-  
-  unless result["omim_id"].nil? and result["omim_description"].nil?
-    result_data["omim_ids"].push({ "id" => result["omim_id"], "desc" => result["omim_description"] })
-  end
   
   # Now project information...
   
@@ -59,9 +49,6 @@ sorted_results.each do |key,result_data|
     entries_to_delete.push(key)
   else
     # TODO: write a sort function so that the more advanced products go at the top - see Jeremy's 'details.php' page for ideas!
-    
-    result_data["ccds_ids"].uniq!
-    result_data["omim_ids"].uniq!
   end
 end
 

@@ -1,32 +1,21 @@
-# This is a small extension to the Array class to allow you 
-# to iterate over an array in chunks of a defined size.
-#
-# Taken from "Why's (Poignant) Guide to Ruby" (http://poignantguide.net/ruby).
-class Array
-  # Splits an array into an array-of-arrays of the defined length
-  def chunk( len )
-    a = []
-    each_with_index do |x,i|
-      a << [] if i % len == 0
-      a.last << x
-    end
-    a
-  end
-end
-
 # This class is responsible for the set-up, building and updating 
 # of a Solr search index for use with a MartSearchr application.
 class IndexBuilder
-  attr_reader :martsearch, :index_conf, :documents, :documents_by, :xml_dir
+  attr_reader :martsearch, :config, :documents, :documents_by, :xml_dir
   attr_accessor :test_environment
   
   def initialize( config_desc )
-    @test_environment       = false
-    @martsearch             = Martsearch.new(config_desc)
-    @index_conf             = @martsearch.config["index"]
-    @index_conf["datasets"] = dataset_index_conf()
+    @test_environment = false
     
-    @solr       = RSolr.connect :url => @index_conf["url"]
+    @config = nil
+    if config_desc.is_a?(String)
+      @config = JSON.load( File.new( config_desc, "r" ) )["index"]
+    else
+      @config = config_desc["index"]
+    end
+    @config["datasets"] = dataset_index_conf()
+    
+    @solr       = RSolr.connect :url => @config["url"]
     @batch_size = 1000
     
     # Create a placeholder variable to store docs in (and a cache variable 
@@ -34,6 +23,7 @@ class IndexBuilder
     @documents    = {}
     @documents_by = {}
     
+    @current = { :dataset_conf => nil, :biomart => nil }
     @xml_dir = nil
   end
   
@@ -41,7 +31,7 @@ class IndexBuilder
   # how our search engine is structured
   def solr_schema_xml
     template = File.open( "#{File.dirname(__FILE__)}/schema.xml.erb", 'r' )
-    erb      = ERB.new( template.read )
+    erb      = ERB.new( template.read, nil, "-" )
     schema   = erb.result( binding )
     return schema
   end
@@ -51,28 +41,31 @@ class IndexBuilder
   # and processing each returned result according to the "indexing" 
   # config defined on a per-dataset basis.
   def build_documents
-    @index_conf["datasets"].each do |dataset_conf|
-      unless @test_environment
-        puts "Fetching data from dataset: '#{dataset_conf["display_name"]}'"
-      end
+    @config["datasets"].each do |dataset_conf|
+      unless @test_environment then puts "Building documents for dataset: '#{dataset_conf["display_name"]}'" end
+      
+      # Store the 'current' target dataset and biomart conf
+      @current[:dataset_conf] = dataset_conf
+      @current[:biomart]      = biomart_dataset( dataset_conf )
       
       # Extract all of the needed index mapping data from "attribute_map"
       map_data = process_attribute_map( dataset_conf )
       
       # Do we need to cache lookup data?
-      unless map_data[:map_to_index_field] == @index_conf["schema"]["unique_key"].to_sym
+      unless map_data[:map_to_index_field].to_sym == @config["schema"]["unique_key"].to_sym
         cache_documents_by( map_data[:map_to_index_field] )
       end
       
       # Grab a Biomart::Dataset object and search and retrieve all the data it holds
-      mart    = biomart_dataset( dataset_conf )
-      results = mart.search( :attributes => map_data[:attribute_map].keys )
+      unless @test_environment then puts "  - retrieving data from the biomart." end
+      
+      results = @current[:biomart].search( :attributes => map_data[:attribute_map].keys, :timeout => 240 )
       
       # Now loop through the results building up document structures
       unless @test_environment
-        puts "Processing #{results[:data].size} rows of Biomart results"
+        puts "  - processing #{results[:data].size} rows of Biomart results"
       end
-      process_dataset_results( dataset_conf, results, map_data[:attribute_map], map_data[:map_to_index_field], map_data[:primary_attribute], mart.attributes() )
+      process_dataset_results( results )
     end
     
     # Finally, remove duplicates from our documents
@@ -155,14 +148,14 @@ class IndexBuilder
   ##
   
   # Utility function to grab the index configuration from each of 
-  # the datasets to be added into our @index_conf.
+  # the datasets to be added into our @config.
   def dataset_index_conf
     dataset_conf = []
-    @martsearch.datasets.each do |ds|
-      if ds.config["index"] and !ds.config["indexing"].nil?
-        conf_to_hold = ds.config.clone
-        conf_to_hold["internal_name"] = ds.internal_name
-        dataset_conf.push( conf_to_hold )
+    @config["datasets_to_index"].each do |ds_name|
+      ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
+      if ds_conf["index"] and !ds_conf["indexing"].nil?
+        ds_conf["internal_name"] = ds_name
+        dataset_conf.push( ds_conf )
       end
     end
     return dataset_conf
@@ -170,11 +163,7 @@ class IndexBuilder
   
   # Utility function to either find or create a Biomart::Dataset object
   def biomart_dataset( ds_conf )
-    if @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
-      return @martsearch.datasets_by_name[ ds_conf["internal_name"].to_sym ].dataset
-    else
-      return Biomart::Dataset.new( ds_conf["url"], { :name => ds_conf["dataset_name"] } )
-    end
+    return Biomart::Dataset.new( ds_conf["url"], { :name => ds_conf["dataset_name"] } )
   end
   
   ##
@@ -204,6 +193,7 @@ class IndexBuilder
           map_to_index_field = mapping_obj["idx"].to_sym
         end
       end
+      
       map[ mapping_obj["attr"] ]        = mapping_obj
       map[ mapping_obj["attr"] ]["idx"] = map[ mapping_obj["attr"] ]["idx"].to_sym
     end
@@ -223,12 +213,12 @@ class IndexBuilder
   def new_document()
     # Work out fields to ignore - these will be auto populated by Solr
     copy_fields = []
-    @index_conf["schema"]["copy_fields"].each do |copy_field|
+    @config["schema"]["copy_fields"].each do |copy_field|
       copy_fields.push( copy_field["dest"] )
     end
     
     doc = {}
-    @index_conf["schema"]["fields"].each do |key,detail|
+    @config["schema"]["fields"].each do |key,detail|
       unless copy_fields.include?(key)
         doc[ key.to_sym ] = []
       end
@@ -239,7 +229,7 @@ class IndexBuilder
   # Utility function to find a specific document (i.e. for a gene), arguments 
   # are the field to search on, and the term to find.
   def find_document( field, search_term )
-    if field == @index_conf["schema"]["unique_key"].to_sym
+    if field == @config["schema"]["unique_key"].to_sym
       return @documents[search_term]
     else
       if @documents_by[field][search_term]
@@ -263,7 +253,7 @@ class IndexBuilder
     
     if build_cache
       unless @test_environment
-        puts "caching documents by '#{field}'"
+        puts "  - caching documents by '#{field}'"
       end
       @documents_by[field] = {}
       @documents.each do |key,values|
@@ -274,59 +264,67 @@ class IndexBuilder
     end
   end
   
+  # Utility function to convert an array of data to a hash
+  def convert_array_to_hash( headers, data )
+    converted_data = {}
+    headers.each_index do |position|
+      if data[position].nil? or data[position] === ""
+        converted_data[ headers[position] ] = nil
+      else
+        converted_data[ headers[position] ] = data[position]
+      end
+      
+    end
+    return converted_data
+  end
+  
   # Utility function to run through all of the results returned from 
   # the dataset and either create document constructs or append data to 
   # existing document constructs.
-  def process_dataset_results( dataset_conf, results, attribute_map, map_to_index_field, primary_attribute, biomart_attributes )
-    # Figure out the position of the primary_attribute in the results array
-    primary_attribute_pos = nil
-    results[:headers].each_index do |position|
-      if results[:headers][position] == primary_attribute
-        primary_attribute_pos = position
-      end
-    end
+  def process_dataset_results( results )
+    # Extract all of the needed index mapping data from "attribute_map"
+    map_data = process_attribute_map( @current[:dataset_conf] )
     
     # Now loop through the result data...
     results[:data].each do |data_row|
+      # First, create a hash out of the data_row and get the primary_attr_value
+      data_row_obj       = convert_array_to_hash( results[:headers], data_row )
+      primary_attr_value = data_row_obj[ map_data[:primary_attribute] ]
+      
       # First check we have something to map back to the index with - if not, move along...
-      if data_row[primary_attribute_pos]
+      if primary_attr_value
         # Find us a doc object to map to...
-        doc = find_document( map_to_index_field, data_row[primary_attribute_pos] )
+        value_to_look_up_doc_on = extract_value_to_index( map_data[:primary_attribute], primary_attr_value, map_data[:attribute_map], data_row_obj )
+        doc                     = find_document( map_data[:map_to_index_field], value_to_look_up_doc_on )
         
         # If we can't find one - see if we're allowed to create one
         unless doc
-          if dataset_conf["indexing"]["allow_document_creation"]
-            @documents[ data_row[primary_attribute_pos] ] = new_document()
-            doc = @documents[ data_row[primary_attribute_pos] ]
+          if @current[:dataset_conf]["indexing"]["allow_document_creation"]
+            @documents[ value_to_look_up_doc_on ] = new_document()
+            doc = @documents[ value_to_look_up_doc_on ]
           end
         end
         
         # Okay, if we have a doc - process the biomart attributes
         if doc
-          # First, create a hash out of the data_row
-          data_row_obj = {}
-          results[:headers].each_index do |position|
-            data_row_obj[ results[:headers][position] ] = data_row[position]
-          end
-          
           # Now do the processing
           data_row_obj.each do |attr_name,attr_value|
             # Extract and index our initial data return
-            value_to_index = extract_value_to_index( attr_name, attr_value, attribute_map, data_row_obj, biomart_attributes )
+            value_to_index = extract_value_to_index( attr_name, attr_value, map_data[:attribute_map], data_row_obj )
             
-            if value_to_index && doc[ attribute_map[attr_name]["idx"] ]
+            if value_to_index and doc[ map_data[:attribute_map][attr_name]["idx"] ]
               if value_to_index.is_a?(Array)
                 value_to_index.each do |value|
-                  doc[ attribute_map[attr_name]["idx"] ].push( value )
+                  doc[ map_data[:attribute_map][attr_name]["idx"] ].push( value )
                 end
               else
-                doc[ attribute_map[attr_name]["idx"] ].push( value_to_index )
+                doc[ map_data[:attribute_map][attr_name]["idx"] ].push( value_to_index )
               end
             end
             
             # Any further metadata to be extracted from here? (i.e. MP terms in comments)
-            if value_to_index and attribute_map[attr_name]["extract"]
-              regexp  = Regexp.new( attribute_map[attr_name]["extract"]["regexp"] )
+            if value_to_index and map_data[:attribute_map][attr_name]["extract"]
+              regexp  = Regexp.new( map_data[:attribute_map][attr_name]["extract"]["regexp"] )
               matches = false
               
               if value_to_index.is_a?(Array)
@@ -340,7 +338,22 @@ class IndexBuilder
               end
               
               if matches
-                doc[ attribute_map[attr_name]["extract"]["idx"].to_sym ].push( matches[0] )
+                doc[ map_data[:attribute_map][attr_name]["extract"]["idx"].to_sym ].push( matches[0] )
+              end
+            end
+          end
+          
+          # Finally - do we have any attributes that we need to group together?
+          if @current[:dataset_conf]["indexing"]["grouped_attributes"]
+            @current[:dataset_conf]["indexing"]["grouped_attributes"].each do |group|
+              attrs = []
+              group["attrs"].each do |attribute|
+                value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
+                attrs.push(value_to_index)
+              end
+              
+              unless attrs.join("").gsub(" ","").empty?
+                doc[ group["idx"].to_sym ].push( attrs.join("||") )
               end
             end
           end
@@ -351,9 +364,9 @@ class IndexBuilder
   
   # Utility function to determine what data values we need to 
   # add to the index given the dataset configuration.
-  def extract_value_to_index( attr_name, attr_value, attr_options, mart_data, mart_attributes )
-    options        = attr_options[attr_name]
-    value_to_index = attr_value
+  def extract_value_to_index( attr_name, attr_value, attr_options, mart_data )
+    options         = attr_options[attr_name]
+    value_to_index  = attr_value
 
     if options["if_attr_equals"]
       unless options["if_attr_equals"].include?( attr_value )
@@ -363,7 +376,8 @@ class IndexBuilder
 
     if options["index_attr_name"]
       if value_to_index
-        value_to_index = [ attr_name, mart_attributes[attr_name].display_name ]
+        mart_attributes = @current[:biomart].attributes()
+        value_to_index  = [ attr_name, mart_attributes[attr_name].display_name ]
       end
     end
 
@@ -371,8 +385,17 @@ class IndexBuilder
       other_attr       = options["if_other_attr_indexed"]
       other_attr_value = mart_data[ other_attr ]
 
-      unless extract_value_to_index( other_attr, other_attr_value, attr_options, mart_data, mart_attributes )
+      unless extract_value_to_index( other_attr, other_attr_value, attr_options, mart_data )
         value_to_index = nil
+      end
+    end
+    
+    unless value_to_index.nil?
+      if options["attr_prepend"]
+        value_to_index = "#{options["attr_prepend"]}#{value_to_index}"
+      end
+      if options["attr_append"]
+        value_to_index = "#{value_to_index}#{options["attr_append"]}"
       end
     end
 
@@ -384,6 +407,14 @@ class IndexBuilder
     doc.each do |key,value|
       if value.size > 0
         doc[key] = value.uniq
+      end
+      
+      # If we have multiple value entries in what should be a single valued 
+      # field, not the best solution, but just arbitrarily pick the first entry.
+      if !@config["schema"]["fields"][key.to_s]["multi_valued"] and value.size > 1
+        new_array = []
+        new_array.push(value[0])
+        doc[key]  = new_array
       end
     end
   end

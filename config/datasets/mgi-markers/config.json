@@ -14,7 +14,7 @@
   "attribution_link":     "http://www.informatics.jax.org/",
   "description":          "",
   "indexing": {
-    "allow_document_creation": false,
+    "allow_document_creation": true,
     "attribute_map": [
       { "attr": "mgi_marker_id_att",        "idx": "mgi_accession_id_key", "use_to_map": true },
       { "attr": "marker_symbol_107",        "idx": "marker_symbol" },
@@ -29,7 +29,10 @@
       { "attr": "mouse_entrez_gene_id_108", "idx": "ncbi_gene_id" },
       { "attr": "go_id_104_att",            "idx": "go_id" },
       { "attr": "go_term_104",              "idx": "go_term" }
-    ]
+    ],
+    "filters": {
+      "marker_type_107": ["Gene","microRNA"]
+    }
   },
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",
@@ -55,8 +58,6 @@
       "rat_symbol_109",
       "rat_entrez_gene_id_109"
     ],
-    "filters": {
-      "marker_type_107": ["Gene"]
-    }
+    "filters": {}
   }
 }

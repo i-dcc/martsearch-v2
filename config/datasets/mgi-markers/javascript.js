@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
   
   jQuery(".mgi-markers_toggle").each( function (index) {
     jQuery(this).parent().find(".mgi-markers_content").hide();
-    jQuery(this).addClass("toggle-open");
-    jQuery(this).removeClass("toggle-close");
+    jQuery(this).addClass("toggle-close");
+    jQuery(this).removeClass("toggle-open");
   });
 });

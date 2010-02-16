@@ -19,6 +19,7 @@
       { "attr": "mgi_marker_id_att",        "idx": "mgi_accession_id_key", "use_to_map": true },
       { "attr": "marker_symbol_107",        "idx": "marker_symbol" },
       { "attr": "marker_name_107",          "idx": "marker_name" },
+      { "attr": "marker_type_107",          "idx": "marker_type" },
       { "attr": "chromosome_107",           "idx": "chromosome" },
       { "attr": "rep_genome_strand_102",    "idx": "strand" },
       { "attr": "rep_genome_start_102",     "idx": "coord_start" },

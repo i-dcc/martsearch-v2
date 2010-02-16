@@ -25,6 +25,10 @@
       { "attr": "targvec_well",      "idx": "targeting_vector_well" },
       { "attr": "allele_name",       "idx": "allele" },
       { "attr": "escell_clone",      "idx": "escell" }
+    ],
+    "grouped_attributes": [
+      { "attrs": ["intvec_plate","intvec_well"], "idx": "intermediate_vector", "using": "_" },
+      { "attrs": ["targvec_plate","targvec_well"], "idx": "targeting_vector", "using": "_" }
     ]
   },
   "searching": {

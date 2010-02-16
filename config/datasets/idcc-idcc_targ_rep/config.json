@@ -1,0 +1,37 @@
+{
+  "display":              false,
+  "use_in_search":        false,
+  "index":                true,
+  "custom_sort":          false,
+  "custom_css":           false,
+  "custom_js":            false,
+  "custom_view_helpers" : false,
+  "custom_routes":        false,
+  "url":                  "http://www.i-dcc.org/biomart",
+  "dataset_name":         "idcc_targ_rep",
+  "display_name":         "I-DCC Targeting Repository",
+  "attribution":          "The International Data Coordination Centre",
+  "attribution_link":     "http://www.i-dcc.org/",
+  "description":          "",
+  "indexing": {
+    "allow_document_creation": false,
+    "attribute_map": [
+      { "attr": "mgi_accession_id",    "idx": "mgi_accession_id_key", "use_to_map": true },
+      { "attr": "intermediate_vector", "idx": "intermediate_vector" },
+      { "attr": "targeting_vector",    "idx": "targeting_vector" },
+      { "attr": "escell_clone",        "idx": "escell" }
+    ]
+  },
+  "searching": {
+    "joined_index_field":       "mgi_accession_id_key",
+    "joined_biomart_filter":    "mgi_accession_id",
+    "joined_biomart_attribute": "mgi_accession_id",
+    "attributes": [
+      "mgi_accession_id",
+      "intermediate_vector",
+      "targeting_vector",
+      "escell_clone"
+    ],
+    "filters": {}
+  }
+}

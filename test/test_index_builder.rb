@@ -106,6 +106,9 @@ class IndexBuilderTest < Test::Unit::TestCase
             #puts "  - failed: #{error}"
             # This dataset does not have a "marker_symbol" or "tmp_gene_symbol" filter so we can't test 
             # it with this simple test... not too much of a worry...
+          rescue Timeout::Error => error
+            # We should not fail the test suite because one of the biomarts is having a 
+            # bad day - just ignore this mart and move along...
           end
         end
       end

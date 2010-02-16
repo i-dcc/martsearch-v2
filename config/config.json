@@ -229,7 +229,7 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "ikmc-dcc-gene_details",
+    "mgi-markers",
     "sanger-phenotyping",
     "sanger-kermits",
     "sanger-htgt_targ",

@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
   
   jQuery(".ikmc-dcc-gene_details_other_gene_ids_toggle").each( function (index) {
     jQuery(this).parent().find(".ikmc-dcc-gene_details_other_gene_ids_content").hide();
-    jQuery(this).addClass("toggle-open");
-    jQuery(this).removeClass("toggle-close");
+    jQuery(this).addClass("toggle-close");
+    jQuery(this).removeClass("toggle-open");
   });
 });

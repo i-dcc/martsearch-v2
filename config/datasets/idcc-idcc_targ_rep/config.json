@@ -1,6 +1,6 @@
 {
-  "display":              false,
-  "use_in_search":        false,
+  "display":              true,
+  "use_in_search":        true,
   "index":                true,
   "custom_sort":          false,
   "custom_css":           false,
@@ -30,7 +30,12 @@
       "mgi_accession_id",
       "intermediate_vector",
       "targeting_vector",
-      "escell_clone"
+      "escell_clone",
+      "design_type",
+      "design_id",
+      "mgi_accession_id",
+      "chromosome", "strand",
+      "cassette", "backbone"
     ],
     "filters": {}
   }

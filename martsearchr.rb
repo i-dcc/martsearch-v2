@@ -180,7 +180,7 @@ get "/?" do
           "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-CSD" } ),
           "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-Regeneron" } ),
           "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "NorCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
           "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "TIGM" } )
         }
       },
@@ -196,8 +196,8 @@ get "/?" do
           "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-CSD" } ),
           "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-Regeneron" } ),
           "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "project" => "TIGM" } )
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
+          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "TIGM" } )
         }
       },
       "Mice" => {
@@ -212,13 +212,28 @@ get "/?" do
           "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-CSD" } ),
           "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-Regeneron" } ),
           "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "NorCOMM" } ),
+          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
           "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "TIGM" } )
         }
       }
     }
     @@ms.cache.write( "ikmc_counts", @ikmc_counts.to_json, :expires_in => 3.hours )
   end
+  
+  @chart = {
+    :mouse_genes => 23928,
+    :targ_count  => 0, :trap_count  => 0, :all_count   => 0
+  }
+  
+  ["csd","reg","euc","nor"].each do |project|
+    @chart[:targ_count] += @ikmc_counts["ES Cells"]["Available"][project]
+  end
+  @chart[:trap_count] = @ikmc_counts["ES Cells"]["Available"]["tig"]
+  @chart[:all_count]  = @chart[:targ_count] + @chart[:trap_count]
+  
+  @chart[:targ_prog] = ( ( @chart[:targ_count].to_f / @chart[:mouse_genes].to_f ) * 100 ).round
+  @chart[:trap_prog] = ( ( @chart[:trap_count].to_f / @chart[:mouse_genes].to_f ) * 100 ).round
+  @chart[:all_prog]  = ( ( @chart[:all_count].to_f  / @chart[:mouse_genes].to_f ) * 100 ).round
   
   erb :main
 end

@@ -14,27 +14,53 @@
   
   <hr />
   
-  <h2>IKMC Gene Progress Summary</h2>
-  <table>
+  <table id="welcome">
     <tr>
-      <th>No. Genes</th>
-      <th>KOMP-CSD</th>
-      <th>KOMP-Regeneron</th>
-      <th>EUCOMM</th>
-      <th>NorCOMM</th>
-      <th>TIGM</th>
+      <td width="40%">
+        <h2>ES Cell Lines Progress</h2>
+        <div id="googlemeter_crop">
+          <%
+            chart_url =  "http://chart.apis.google.com/chart?"
+            chart_url << "chs=450x225" # size
+            chart_url << "&cht=gom"    # type
+            chart_url << "&chd=t:#{@chart[:targ_prog]},#{@chart[:trap_prog]}|#{@chart[:all_prog]}" # data (progress %)
+            chart_url << "&chxt=x,y" # print text labels
+            chart_url << "&chxl=0:|#{@chart[:targ_count]}+Targeted|#{@chart[:trap_count]}+Trapped|#{@chart[:all_count]}+Combined|1:|0|#{@chart[:mouse_genes]}" # labels
+            chart_url << "&chls=3,5,5|5|10|15" # styling for the arrows
+            chart_url << "&chma=0,0,0,10|0,0" # image padding
+          %>
+          <img src="<%= chart_url %>" alt="ES Cell Line Progress" />
+        </div>
+        <div style="text-align: center;">
+          Number of protein coding genes with mutant ES <br />
+          cell lines in the IKMC resource
+        </div>
+      </td>
+      <td width="60%">
+        <h2>IKMC Gene Progress Summary</h2>
+        <table id="summary_staistics">
+          <tr>
+            <th>No. Genes</th>
+            <th>KOMP-CSD</th>
+            <th>KOMP-Regeneron</th>
+            <th>EUCOMM</th>
+            <th>NorCOMM</th>
+            <th>TIGM</th>
+          </tr>
+          <% ["Vectors","ES Cells","Mice"].each do |product| %>
+            <% ["Generated","Available"].each do |status| %>
+              <tr>
+                <th><%= "#{product} #{status}" %></th>
+                <td><%= @ikmc_counts[product][status]["csd"] %></td>
+                <td><%= @ikmc_counts[product][status]["reg"] %></td>
+                <td><%= @ikmc_counts[product][status]["euc"] %></td>
+                <td><%= @ikmc_counts[product][status]["nor"] %></td>
+                <td><%= @ikmc_counts[product][status]["tig"] %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+      </td>
     </tr>
-    <% ["Vectors","ES Cells","Mice"].each do |product| %>
-      <% ["Generated","Available"].each do |status| %>
-        <tr>
-          <th><%= "#{product} #{status}" %></th>
-          <td><%= @ikmc_counts[product][status]["csd"] %></td>
-          <td><%= @ikmc_counts[product][status]["reg"] %></td>
-          <td><%= @ikmc_counts[product][status]["euc"] %></td>
-          <td><%= @ikmc_counts[product][status]["nor"] %></td>
-          <td><%= @ikmc_counts[product][status]["tig"] %></td>
-        </tr>
-      <% end %>
-    <% end %>
   </table>
 </div>

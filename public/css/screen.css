@@ -108,6 +108,10 @@ a.ext_link {
 	padding: 2px 0 2px 16px;
 }
 
+#header a h1 {
+	color: #000;
+}
+
 /* Ordering Buttons */
 
 .order {

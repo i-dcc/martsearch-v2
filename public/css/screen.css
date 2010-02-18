@@ -108,6 +108,11 @@ a.ext_link {
 	padding: 2px 0 2px 16px;
 }
 
+a.feed {
+	background: url(../images/feed.png) no-repeat left center;
+	padding: 4px 2px 4px 20px;
+}
+
 /* Ordering Buttons */
 
 .order {
@@ -502,19 +507,30 @@ table.tablesorter tbody tr.odd td {
 
 /* IKMC Welcome Page Specifics */
 
-table#welcome td {
+#header {
+	height: 92px;
+	background: url(../images/ikmc-logo.png) no-repeat;
+}
+
+#header a h1 {
+	color: #000;
+	margin-bottom: 0;
+	padding: 35px 0 40px 100px;
+}
+
+table.welcome td {
 	border: none;
 }
 
-table#welcome td td {
+table.welcome td td {
 	border: 1px solid #999;
 }
 
-table#welcome td td.noborder {
+table.welcome td td.noborder {
 	border: none;
 }
 
-table#welcome table.noborder td {
+table.welcome table.noborder td {
 	border: none;
 }
 

@@ -7,14 +7,43 @@
 <div class="clear"></div>
 
 <div>
-  <h2>About This Portal</h2>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </p>
+  <table class="welcome">
+    <tr>
+      <td width="55%" style="vertical-align:top;">
+        <h2>Welcome to the IKMC</h2>
+        <p>
+          The members of the International Knockout Mouse Consortium (IKMC) are working together to
+          mutate all protein-coding genes in the mouse using a combination of gene trapping and gene
+          targeting in C57BL/6 mouse embryonic stem (ES) cells. <a href="http://www.knockoutmouse.org/about" class="ext_link">read more</a>
+        </p>
+        <p>
+          <ul>
+            <li><a href="http://www.knockoutmouse.org/download">Download the IKMC Gene List</a></li>
+            <li><a href="http://www.knockoutmouse.org/about/targeting-strategies">View targeting strategies</a></li>
+            <li><a href="http://www.knockoutmouse.org/about/view-all-ikmc-allele-types">View all allele types</a></li>
+          </ul>
+        </p>
+        <p style="text-align:center;">
+          <a href="http://www.eucomm.org/"><img src="<%= BASE_URI %>/images/eucomm.png" alt="EUCOMM" /></a> 
+          <a href="http://www.norcomm.org/"><img src="<%= BASE_URI %>/images/norcomm.gif" alt="NorCOMM" /></a> 
+          <a href="http://www.knockoutmouse.org/about/komp"><img src="<%= BASE_URI %>/images/komp.png" alt="KOMP" /></a> 
+          <a href="http://www.tigm.org/"><img src="<%= BASE_URI %>/images/tigm.png" alt="TIGM" /></a>
+        </p>
+      </td>
+      <td width="45%">
+        <h2>News</h2>
+        <div id="newsfeed"></div>
+        <p>
+          <a href="http://www.knockoutmouse.org/blog/feed" class="feed">subscribe</a> | 
+          <a href="http://www.knockoutmouse.org/blog">more news...</a>
+        </p>
+      </td>
+    </tr>
+  </table>
   
   <hr />
   
-  <table id="welcome">
+  <table class="welcome">
     <tr>
       <td width="40%">
         <h2>ES Cell Lines Progress</h2>
@@ -63,4 +92,35 @@
       </td>
     </tr>
   </table>
+  
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  var month_to_txt = {
+    0:"January", 1:"February",  2:"March",
+    3:"April",   4:"May",       5:"June",
+    6:"July",    7:"August",    8:"September",
+    9:"October", 10:"November", 11:"December" 
+  };
+  
+  jQuery(document).ready(function() {
+    jQuery.jGFeed(
+      "http://www.knockoutmouse.org/blog/feed",
+      function (feeds) {
+        if (!feeds) {
+          jQuery("#newsfeed").html("<em>Sorry, unable to retrieve news.</em>")
+        } else {
+          jQuery("#newsfeed").html('<table class="noborder"></table>');
+          for ( var i=0; i<feeds.entries.length; i++ ) {
+            var entry = feeds.entries[i];
+            var date  = new Date(entry.publishedDate);
+            
+            jQuery("#newsfeed table").append('<tr><td>'+month_to_txt[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()+'</td><td><a href="'+entry.link+'">'+entry.title+'</a></td></tr>')
+          }
+        }
+      },
+      5,
+      "ABQIAAAA7F--kRP46lTBX0lb1do-GxS1qJBsjD6GCSxlVp8txPqYy_l09hSb_9oRKIWcA0V-SY8nilV2d-_7Rw"
+    );
+  });
+</script>

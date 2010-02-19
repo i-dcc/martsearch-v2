@@ -32,7 +32,17 @@
       </td>
       <td width="45%">
         <h2>News</h2>
-        <div id="newsfeed"></div>
+        <div id="news">
+          <table class="noborder">
+            <% (0..4).each do |i| %>
+              <% item = @news[i] %>
+              <tr>
+                <td><%= item["date"] %></td>
+                <td><a href="<%= item["link"] %>"><%= item["title"] %></a></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
         <p>
           <a href="http://www.knockoutmouse.org/blog/feed" class="feed">subscribe</a> | 
           <a href="http://www.knockoutmouse.org/blog">more news...</a>
@@ -52,9 +62,9 @@
             chart_url =  "http://chart.apis.google.com/chart?"
             chart_url << "chs=450x225" # size
             chart_url << "&cht=gom"    # type
-            chart_url << "&chd=t:#{@chart[:targ_prog]},#{@chart[:trap_prog]}|#{@chart[:all_prog]}" # data (progress %)
+            chart_url << "&chd=t:#{@chart["targ_prog"]},#{@chart["trap_prog"]}|#{@chart["all_prog"]}" # data (progress %)
             chart_url << "&chxt=x,y" # print text labels
-            chart_url << "&chxl=0:|#{@chart[:targ_count]}+Targeted|#{@chart[:trap_count]}+Trapped|#{@chart[:all_count]}+Combined|1:|0|#{@chart[:mouse_genes]}" # labels
+            chart_url << "&chxl=0:|#{@chart["targ_count"]}+Targeted|#{@chart["trap_count"]}+Trapped|#{@chart["all_count"]}+Combined|1:|0|#{@chart["mouse_genes"]}" # labels
             chart_url << "&chls=3,5,5|5|10|15" # styling for the arrows
             chart_url << "&chma=0,0,0,10|0,0" # image padding
           %>
@@ -80,11 +90,11 @@
             <% ["Generated","Available"].each do |status| %>
               <tr>
                 <th><%= "#{product} #{status}" %></th>
-                <td><%= @ikmc_counts[product][status]["csd"] %></td>
-                <td><%= @ikmc_counts[product][status]["reg"] %></td>
-                <td><%= @ikmc_counts[product][status]["euc"] %></td>
-                <td><%= @ikmc_counts[product][status]["nor"] %></td>
-                <td><%= @ikmc_counts[product][status]["tig"] %></td>
+                <td><%= @counts[product][status]["csd"] %></td>
+                <td><%= @counts[product][status]["reg"] %></td>
+                <td><%= @counts[product][status]["euc"] %></td>
+                <td><%= @counts[product][status]["nor"] %></td>
+                <td><%= @counts[product][status]["tig"] %></td>
               </tr>
             <% end %>
           <% end %>
@@ -94,33 +104,3 @@
   </table>
   
 </div>
-
-<script type="text/javascript" charset="utf-8">
-  var month_to_txt = {
-    0:"January", 1:"February",  2:"March",
-    3:"April",   4:"May",       5:"June",
-    6:"July",    7:"August",    8:"September",
-    9:"October", 10:"November", 11:"December" 
-  };
-  
-  jQuery(document).ready(function() {
-    jQuery.jGFeed(
-      "http://www.knockoutmouse.org/blog/feed",
-      function (feeds) {
-        if (!feeds) {
-          jQuery("#newsfeed").html("<em>Sorry, unable to retrieve news.</em>")
-        } else {
-          jQuery("#newsfeed").html('<table class="noborder"></table>');
-          for ( var i=0; i<feeds.entries.length; i++ ) {
-            var entry = feeds.entries[i];
-            var date  = new Date(entry.publishedDate);
-            
-            jQuery("#newsfeed table").append('<tr><td>'+month_to_txt[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()+'</td><td><a href="'+entry.link+'">'+entry.title+'</a></td></tr>')
-          }
-        }
-      },
-      5,
-      "ABQIAAAA7F--kRP46lTBX0lb1do-GxS1qJBsjD6GCSxlVp8txPqYy_l09hSb_9oRKIWcA0V-SY8nilV2d-_7Rw"
-    );
-  });
-</script>

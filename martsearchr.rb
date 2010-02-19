@@ -3,6 +3,7 @@
 require "uri"
 require "net/http"
 require "cgi"
+require "rss"
 
 require "rubygems"
 require "sinatra"
@@ -163,11 +164,15 @@ end
 get "/?" do
   @current = "home"
   
-  ikmc_counts_from_cache = @@ms.cache.fetch("ikmc_counts")
-  if ikmc_counts_from_cache
-    @ikmc_counts = JSON.parse(ikmc_counts_from_cache)
+  ikmc_front_page_data = @@ms.cache.fetch("ikmc_front_page_data")
+  if ikmc_front_page_data
+    ikmc_front_page_data = JSON.parse(ikmc_front_page_data)
+    @counts = ikmc_front_page_data["counts"]
+    @chart  = ikmc_front_page_data["chart"]
+    @news   = ikmc_front_page_data["news"]
   else
-    @ikmc_counts = {
+    # Counts for the Pipeline Progress Summary
+    @counts = {
       "Vectors" => {
         "Generated" => {
           "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-CSD" } ),
@@ -217,23 +222,45 @@ get "/?" do
         }
       }
     }
-    @@ms.cache.write( "ikmc_counts", @ikmc_counts.to_json, :expires_in => 3.hours )
+    
+    # Calculations and counts for the progress meter
+    @chart = {
+      "mouse_genes" => 23928,
+      "targ_count"  => 0, "trap_count"  => 0, "all_count"   => 0
+    }
+
+    ["csd","reg","euc","nor"].each do |project|
+      @chart["targ_count"] += @counts["ES Cells"]["Available"][project]
+    end
+    @chart["trap_count"] = @counts["ES Cells"]["Available"]["tig"]
+    @chart["all_count"]  = @chart["targ_count"] + @chart["trap_count"]
+    @chart["targ_prog"] = ( ( @chart["targ_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
+    @chart["trap_prog"] = ( ( @chart["trap_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
+    @chart["all_prog"]  = ( ( @chart["all_count"].to_f  / @chart["mouse_genes"].to_f ) * 100 ).round
+    
+    # Fetch the knockoutmouse.org RSS feed
+    @news = []
+    res = @ms.http_client.get_response( URI.parse("http://www.knockoutmouse.org/blog/feed") )
+    if res.code == "200"
+      rss = RSS::Parser.parse(res.body, false)
+      rss.items.each do |item|
+        @news.push({
+          "link"        => item.link,
+          "title"       => item.title,
+          "description" => item.description,
+          "date"        => item.date.strftime("%B %d, %Y")
+        })
+      end
+    end
+    
+    # Cache the content
+    data_to_store = {
+      "counts" => @counts,
+      "chart"  => @chart,
+      "news"   => @news
+    }
+    @@ms.cache.write( "ikmc_front_page_data", data_to_store.to_json, :expires_in => 3.hours )
   end
-  
-  @chart = {
-    :mouse_genes => 23928,
-    :targ_count  => 0, :trap_count  => 0, :all_count   => 0
-  }
-  
-  ["csd","reg","euc","nor"].each do |project|
-    @chart[:targ_count] += @ikmc_counts["ES Cells"]["Available"][project]
-  end
-  @chart[:trap_count] = @ikmc_counts["ES Cells"]["Available"]["tig"]
-  @chart[:all_count]  = @chart[:targ_count] + @chart[:trap_count]
-  
-  @chart[:targ_prog] = ( ( @chart[:targ_count].to_f / @chart[:mouse_genes].to_f ) * 100 ).round
-  @chart[:trap_prog] = ( ( @chart[:trap_count].to_f / @chart[:mouse_genes].to_f ) * 100 ).round
-  @chart[:all_prog]  = ( ( @chart[:all_count].to_f  / @chart[:mouse_genes].to_f ) * 100 ).round
   
   erb :main
 end

@@ -12,7 +12,6 @@ task :install_deps do
     "mail",
     "activesupport",
     "will_paginate",
-    "chronic",
     "shoulda",
     "test-unit",
     "rack-test",

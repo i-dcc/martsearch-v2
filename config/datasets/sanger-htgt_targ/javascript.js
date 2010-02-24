@@ -25,6 +25,4 @@ jQuery(document).ready(function() {
     jQuery(this).addClass("toggle-open");
     jQuery(this).removeClass("toggle-close");
   });
-  
-  jQuery(".sanger-htgt_targ").find("a[rel^='prettyPhoto']").prettyPhoto();
 });

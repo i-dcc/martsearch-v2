@@ -1,4 +1,5 @@
 begin
+  require "rubygems"
   require "metric_fu"
   MetricFu::Configuration.run do |config| 
     config.metrics  = [:churn, :saikuro, :flog, :flay, :reek, :roodi, :rcov]
@@ -20,4 +21,5 @@ begin
                       }
   end
 rescue LoadError
+  puts "[ERROR] Unable to load 'metric_fu' tasks - please run 'gem install metric_fu'"
 end

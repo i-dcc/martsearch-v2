@@ -5,27 +5,32 @@
 
 <hr />
 
-<h2>Powered by MartSearchr</h2>
+<h3>How This Portal Works</h3>
 <p>
   This portal is powered by software called 
   <a href="http://github.com/dazoakley/martsearchr/">MartSearchr</a>, 
   a server-side client written in Ruby used to pull together data from 
-  distributed data sources (housed in Biomarts) in a single unified view.
+  distributed data sources (housed in Biomarts) into a single unified view.
 </p>
 <p>
   MartSearchr works by first building an Apache Solr index of all of the 
   available search terms in the cloud of Biomarts (each collection of 
-  terms represents a gene).
+  terms represents a gene).  Here are some diagrams explaining how this is 
+  done and the relationships between the data:
+  <ul>
+    <li>
+      <a href="<%= BASE_URI %>/images/about-page/indexing-strategy.png" title="How the Index Is Built" rel="prettyPhoto">How the index is built</a>.
+    </li>
+    <li>
+      <a href="<%= BASE_URI %>/images/about-page/whats-in-a-doc.png" title="How the Biomarts Are Linked Into the Index" rel="prettyPhoto">How the biomarts are linked into the index</a>.
+    </li>
+  </ul>
 </p>
 <p>
   When a user performs a search, the query is first run against the index 
   which returns a paginated list of genes and associated meta data, this 
   meta data is then used to retrieve the information from the cloud of 
-  biomarts (data sources) available to the search interface.
+  biomarts (data sources) available to the search interface.  A graphical 
+  representation of this process is 
+  <a href="<%= BASE_URI %>/images/about-page/portal-b-search.png" title="I-DCC WP4: Portal B - The Search Process" rel="prettyPhoto">available here</a>.
 </p>
-<p>
-  A graphical representation of this process is shown below.
-</p>
-<div class="center">
-  <img src="/images/martsearch-design.png" alt="MartSearch Design" />
-</div>

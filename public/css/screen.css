@@ -113,6 +113,10 @@ a.feed {
 	padding: 4px 2px 4px 20px;
 }
 
+#header a h1 {
+	color: #000;
+}
+
 /* Ordering Buttons */
 
 .order {

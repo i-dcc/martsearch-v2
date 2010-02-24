@@ -1,0 +1,33 @@
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Design Type</th>
+      <th>Project Design ID</th>
+      <th>Chromosome</th>
+      <th>Strand</th>
+      <th>Cassette</th>
+      <th>Backbone</th>
+      <th>Intermediate Vector</th>
+      <th>Targeting Vector</th>
+      <th>ES Cell clone</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+  <% result_data['idcc-idcc_targ_rep'].each do |data| %>
+    <tr>
+      <td><%= data['mgi_accession_id'] %></td>
+      <td><%= data['design_type'] %></td>
+      <td><%= data['design_id'] %></td>
+      <td><%= data['chromosome'] %></td>
+      <td><%= data['strand'] %></td>
+      <td><%= data['cassette'] %></td>
+      <td><%= data['backbone'] %></td>
+      <td><%= data['intermediate_vector'] %></td>
+      <td><%= data['targeting_vector'] %></td>
+      <td><%= data['escell_clone'] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

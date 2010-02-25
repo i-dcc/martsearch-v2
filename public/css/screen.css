@@ -530,22 +530,6 @@ table.tablesorter tbody tr.odd td {
 	padding: 35px 0 40px 100px;
 }
 
-table.welcome td {
-	border: none;
-}
-
-table.welcome td td {
-	border: 1px solid #999;
-}
-
-table.welcome td td.noborder {
-	border: none;
-}
-
-table.welcome table.noborder td {
-	border: none;
-}
-
 div#googlemeter_crop {
 	height: 225px;
 	width: 375px;

@@ -16,17 +16,30 @@
     <td class="normal normal_normal"></td>
     <td class="normal normal_normal"></td>
     <td class="normal normal_normal"></td>
-    <td class="normal normal_incomp">
+    <% if project["mice"].size > 0 %>
+      <td class="normal normal_normal">
+    <% else %>
+      <td class="normal normal_incomp">
+    <% end %>
       <div style="margin-bottom:6px;">
-        <% if project.size === 1 %>
-          <%= project.size %> gene trap available
+        <% if project["cells"].size === 1 %>
+          <%= project["cells"].size %> Gene trap available
         <% else %>
-          <%= project.size %> gene traps available
+          <%= project["cells"].size %> Gene traps available
         <% end %>
       </div>
-      <a href="<%= tigm_order_url(project,result_data) %>" class="order">order</a>
+      <a href="<%= tigm_order_url(project["cells"],result_data) %>" class="order">order</a>
     </td>
-    <td class="end_incomp incomp"></td>
+    <% if project["mice"].size > 0 %>
+      <td class="end_normal normal">
+        <div style="margin-bottom:6px;">
+          Mice available
+        </div>
+        <a href="<%= tigm_order_url(project["mice"],result_data) %>" class="order">order</a>
+      </td>
+    <% else %>
+      <td class="end_incomp incomp"></td>
+    <% end %>
     <td class="nobg noborder">
       <a class="ikmc-dcc-knockout_attempts_allele_progress_details_toggle">view&nbsp;details</a>
     </td>
@@ -38,7 +51,7 @@
   <p>
     <%
       trap_links = []
-      project.each do |trap|
+      project["cells"].each do |trap|
         trap_links.push("<a href='#{tigm_ncbi_url(trap)}'>#{trap}</a>")
       end
     %>

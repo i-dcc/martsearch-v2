@@ -458,24 +458,24 @@ form#martsearchr {
 
 /* Welcome Page Specifics */
 
-table#welcome td {
+table.welcome td {
 	border: none;
 }
 
-table#welcome td td {
+table.welcome td td {
 	border: 1px solid #999;
 }
 
-table#welcome td td.noborder {
+table.welcome td td.noborder {
 	border: none;
 }
 
-table#welcome table.noborder td {
+table.welcome table.noborder td {
 	border: none;
 }
 
-table#welcome table#summary_statistics,
-table#welcome table#summary_statistics th {
+table.welcome table#summary_statistics,
+table.welcome table#summary_statistics th {
 	text-align: center;
 }
 

@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
   });
   
   jQuery(".doc_title").live("click", function () {
-    jQuery(this).parent().find(".doc_content").slideToggle("fast");
+    jQuery(this).parent().parent().parent().parent().parent().find(".doc_content").slideToggle("fast");
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
   });

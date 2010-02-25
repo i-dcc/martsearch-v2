@@ -2,15 +2,23 @@
 <% for result in @results %>
   <% result_data = @data[result] %>
   <div class="result">
-    <div class="doc_datasets_present">
-      Data returned from: 
-      <% for dataset in @ms.datasets %>
-        <% if dataset.display and result_data[ dataset.internal_name ] %>
-          <span class="dataset_present"><%= dataset.display_name.gsub( " ", "&nbsp;" ) %></span>
-        <% end %>
-      <% end %>
-    </div>
-    <h3 class="doc_title toggle-open"><%= result_data["index"]["marker_symbol"] %></h3>
+    <table class="noborder nocol result-header" width="100%">
+      <tr>
+        <td width="30%">
+          <h3 class="doc_title toggle-open"><%= result_data["index"]["marker_symbol"] %></h3>
+        </td>
+        <td>
+          <div class="doc_datasets_present">
+            Data returned from: 
+            <% for dataset in @ms.datasets %>
+              <% if dataset.display and result_data[ dataset.internal_name ] %>
+                <span class="dataset_present"><%= dataset.display_name.gsub( " ", "&nbsp;" ) %></span>
+              <% end %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    </table>
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
         <% if dataset.display and result_data[ dataset.internal_name ] %>
@@ -39,7 +47,7 @@
 <% if @ms.index.current_results_total > @ms.index.docs_per_page %>
   <script type="text/javascript" charset="utf-8">
     jQuery(".doc_title").each( function(index) {
-      jQuery(this).parent().find(".doc_content").hide();
+      jQuery(this).parent().parent().parent().parent().parent().find(".doc_content").hide();
       jQuery(this).addClass("toggle-close");
       jQuery(this).removeClass("toggle-open");
     });

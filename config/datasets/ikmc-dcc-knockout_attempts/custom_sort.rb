@@ -22,9 +22,14 @@ sorted_results = {}
   unless result["ikmc_project_id"].nil?
     if result["ikmc_project"] === "TIGM"
       unless result_data["projects"]["TIGM"]
-        result_data["projects"]["TIGM"] = []
+        result_data["projects"]["TIGM"] = { "cells" => [], "mice" => [] }
       end
-      result_data["projects"]["TIGM"].push( result["ikmc_project_id"] )
+      
+      if result["mouse_available"] and result["mouse_available"] == "1"
+        result_data["projects"]["TIGM"]["mice"].push( result["ikmc_project_id"] )
+      else
+        result_data["projects"]["TIGM"]["cells"].push( result["ikmc_project_id"] )
+      end
     else
       result_data["projects"][ result["ikmc_project_id"] ] = {
         "project"          => result["ikmc_project"],

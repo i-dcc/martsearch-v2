@@ -32,7 +32,7 @@ def pheno_images_for_colony( colony_prefix )
   
   if File.exists?(path) and File.directory?(path)
     Dir.foreach(path) do |test|
-      unless dirs_to_ignore.include?(test)
+      if File.directory?(test) and !dirs_to_ignore.include?(test)
         Dir.chdir("#{path}/#{test}")
         images_to_display = {}
         

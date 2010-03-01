@@ -6,7 +6,7 @@ get "/phenotyping/:colony_prefix/abr" do
 end
 
 get "/phenotyping/:colony_prefix/abr/" do
-  file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/index.shtml"
+  file = "#{PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/index.shtml"
   
   if File.exists?(file)
     html_text = ""
@@ -23,7 +23,7 @@ get "/phenotyping/:colony_prefix/abr/" do
 end
 
 get "/phenotyping/:colony_prefix/abr/*" do
-  file = "#{@@pheno_abr_loc}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
+  file = "#{PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
 
   if File.exists?(file)
     content = nil
@@ -62,17 +62,15 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   
   # Now fetch the test page renderer object.
   # If we still can't figure out the pipeline, we have to guess...
-  renderer_objects = Marshal.load( @@ms.cache.fetch("sanger-phenotyping-test_renders") )
+  test_conf = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   if pipeline.nil?
     # Try MGP-Pipeline 1/2 first
-    @test = renderer_objects["mgp-pipeline-1-2"][params[:pheno_test]]
+    @test = test_conf["mgp-pipeline-1-2"][params[:pheno_test]]
     
     # if that brings back nothing, try MouseGP
-    if @test.nil?
-      @test = renderer_objects["mouse-gp"][params[:pheno_test]]
-    end
+    if @test.nil? then @test = test_conf["mouse-gp"][params[:pheno_test]] end
   else
-    @test = renderer_objects[pipeline][params[:pheno_test]]
+    @test = test_conf[pipeline][params[:pheno_test]]
   end
   
   if @test_images.nil? or @test.nil?
@@ -81,9 +79,9 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
     erb :not_found
   else
     if @marker_symbol
-      @page_title = "#{@marker_symbol} (#{@colony_prefix}): #{@test.name}"
+      @page_title = "#{@marker_symbol} (#{@colony_prefix}): #{@test["name"]}"
     else
-      @page_title = "#{@colony_prefix}: #{@test.name}"
+      @page_title = "#{@colony_prefix}: #{@test["name"]}"
     end
     erb :"datasets/sanger-phenotyping/_test_details"
   end

@@ -17,7 +17,7 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       system("cp #{@@conf_file} #{@@conf_file}.orig")
       
       # Alter the conf_obj and save it in place of the original conf_file
-      conf_obj["base_uri"] = ""
+      conf_obj["portal_url"] = "http://example.org/"
       File.open( @@conf_file, "w" ) { |f| f.write( conf_obj.to_json ) }
       
       require "#{File.dirname(__FILE__)}/../martsearchr.rb"
@@ -28,7 +28,6 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     
     teardown do
       # Put our original conf file back
-      File.delete(@@conf_file)
       system("mv #{@@conf_file}.orig #{@@conf_file}")
     end
 
@@ -42,14 +41,15 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     end
     
     should "be able to render randomly selected phenotyping details pages" do
+      setup_pheno_configuration()
       colonies_with_images = find_pheno_images()
       assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
       
-      # Take a random sample of 3 colonies, and then request three
+      # Take a random sample of 10 colonies, and then request 5
       # tests at random from these colonies and view the details pages...
-      random_colonies = colonies_with_images.keys.sort_by { rand }[0..2]
+      random_colonies = colonies_with_images.keys.sort_by { rand }[0..10]
       random_colonies.each do |colony_prefix|
-        random_tests = colonies_with_images[colony_prefix].keys.sort_by { rand }[0..2]
+        random_tests = colonies_with_images[colony_prefix].keys.sort_by { rand }[0..5]
         random_tests.each do |test|
           view_pheno_details_page( @browser, colony_prefix, test )
         end

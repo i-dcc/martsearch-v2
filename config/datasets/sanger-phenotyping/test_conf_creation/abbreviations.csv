@@ -1,45 +1,6 @@
-MGP Pipeline 2,White Blood Cell Count,haematology,wbc
-MGP Pipeline 2,Red Blood Cell Count,haematology,rbc
-MGP Pipeline 2,Mean Corpuscular Volume,haematology,mcv
-MGP Pipeline 2,Haemoglobin,haematology,hglbin
-MGP Pipeline 2,Haematocrit,haematology,hcrit
-MGP Pipeline 2,Mean Corpuscular Haemoglobin,haematology,mch
-MGP Pipeline 2,Mean Corpuscular Haemoglobin Conc.,haematology,mchc
-MGP Pipeline 2,Red Blood Cell Distribution Width,haematology,rdw
-MGP Pipeline 2,Platelet Count,haematology,plat
-MGP Pipeline 2,Mean Platelet Volume,haematology,mpv
 MGP Pipeline 1,Heart Rate,blood-pressure,hr
 MGP Pipeline 1,Diastolic Pressure,blood-pressure,dia
 MGP Pipeline 1,Systolic Pressure,blood-pressure,sys
-Mouse GP,Cumulative Food Intake,indirect-calorimetry,food
-Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer
-Mouse GP,VCO2,indirect-calorimetry,co2
-Mouse GP,VO2,indirect-calorimetry,o2
-Mouse GP,Energy Expenditure,indirect-calorimetry,ee
-Mouse GP,Energy Expenditure/Animal,indirect-calorimetry,eeanimal
-Mouse GP,X-Activity Total,indirect-calorimetry,xactivity
-Mouse GP,X-Activity Ambulatory,indirect-calorimetry,xactivityambul
-Mouse GP,CO2,indirect-calorimetry,co2
-Mouse GP,Reference CO2,indirect-calorimetry,refco2
-Mouse GP,O2,indirect-calorimetry,o2
-Mouse GP,Reference O2,indirect-calorimetry,refo2
-Mouse GP,CO2 Difference,indirect-calorimetry,co2diff
-Mouse GP,O2 Difference,indirect-calorimetry,o2diff
-Mouse GP,Temperature,indirect-calorimetry,temp
-Mouse GP,Y-Activity Total,indirect-calorimetry,yactivity
-Mouse GP,Y-Activity Ambulatory,indirect-calorimetry,yactivityambul
-Mouse GP,Basal Body Temperature,core-temperature,basaltemp
-Mouse GP,Post Stress Temperature,core-temperature,stresstemp
-Mouse GP,Change in Temperature,core-temperature,deltatemp
-Mouse GP,Body Weight,dexa,bodywt
-Mouse GP,Nose to Tailbase Length,dexa,bodylength
-Mouse GP,Bone Mineral Density,dexa,bmd
-Mouse GP,Bone Mineral Content,dexa,bmc
-Mouse GP,Bone Area,dexa,bonearea
-Mouse GP,Lean Mass,dexa,leanmass
-Mouse GP,Fat Mass,dexa,fatmass
-Mouse GP,Estimated Total Tissue Mass,dexa,tottissue
-Mouse GP,Fat Percentage Estimate,dexa,fatpercnt
 MGP Pipeline 1,Body Weight,dysmorphology,bodywt
 MGP Pipeline 1,Hyperactivity,dysmorphology,hyper
 MGP Pipeline 1,Respiration,dysmorphology,resp
@@ -73,6 +34,102 @@ MGP Pipeline 1,Genitalia Morpholgy,dysmorphology,genitalmorph
 MGP Pipeline 1,Genitalia Size,dysmorphology,genitalsize
 MGP Pipeline 1,Tail Length,dysmorphology,taillength
 MGP Pipeline 1,Tail Morphology,dysmorphology,tailmorph
+MGP Pipeline 1,Adiponectin,insulin,adipo
+MGP Pipeline 1,Insulin (MSD),insulin,ins
+MGP Pipeline 1,Insulin (ELISA),insulin,ins
+MGP Pipeline 1,Fasted Blood glucose,ip-gtt,fastedgluc
+MGP Pipeline 1,ip-GTT,ip-gtt,ipgtt
+MGP Pipeline 1,Weight Curve,ip-gtt,bodywt
+MGP Pipeline 1,Weight Curve,body-weight-curve-normal-chow,chow
+MGP Pipeline 1,Glucose,fasted-clinical-chemistry,glucose
+MGP Pipeline 1,Triglycerides,fasted-clinical-chemistry,trig
+MGP Pipeline 1,Cholesterol,fasted-clinical-chemistry,chol
+MGP Pipeline 1,High Density Lipoprotein,fasted-clinical-chemistry,hdl
+MGP Pipeline 1,Low Density Lipoprotein,fasted-clinical-chemistry,ldl
+MGP Pipeline 1,NEFAC,fasted-clinical-chemistry,nefac,
+MGP Pipeline 1,Glycerol,fasted-clinical-chemistry,glycerol,
+MGP Pipeline 1,Fructosamine,fasted-clinical-chemistry,fructos,
+MGP Pipeline 1,Cumulative Food Intake,indirect-calorimetry,food,
+MGP Pipeline 1,Respiratory Exchange Ratio,indirect-calorimetry,rer,
+MGP Pipeline 1,VCO2,indirect-calorimetry,co2,
+MGP Pipeline 1,VO2,indirect-calorimetry,o2,
+MGP Pipeline 1,Energy Expenditure,indirect-calorimetry,ee,
+MGP Pipeline 1,Energy Expenditure/Animal,indirect-calorimetry,eeanimal,
+MGP Pipeline 1,X-Activity Total,indirect-calorimetry,xactivity,
+MGP Pipeline 1,X-Activity Ambulatory,indirect-calorimetry,xactivityambul,
+MGP Pipeline 1,CO2,indirect-calorimetry,co2,
+MGP Pipeline 1,Reference CO2,indirect-calorimetry,refco2,
+MGP Pipeline 1,O2,indirect-calorimetry,o2,
+MGP Pipeline 1,Reference O2,indirect-calorimetry,refo2,
+MGP Pipeline 1,CO2 Difference,indirect-calorimetry,co2diff,
+MGP Pipeline 1,O2 Difference,indirect-calorimetry,o2diff,
+MGP Pipeline 1,Temperature,indirect-calorimetry,temp,
+MGP Pipeline 1,Y-Activity Total,indirect-calorimetry,yactivity,
+MGP Pipeline 1,Y-Activity Ambulatory,indirect-calorimetry,yactivityambul,
+MGP Pipeline 1,Basal Body Temperature,core-temperature,basaltemp,
+MGP Pipeline 1,Change in Temperature,core-temperature,deltatemp,
+MGP Pipeline 1,Body Weight,dexa,bodywt,
+MGP Pipeline 1,Nose to Tailbase Length,dexa,bodylength,
+MGP Pipeline 1,Bone Mineral Density,dexa,bmd,
+MGP Pipeline 1,Bone Mineral Content,dexa,bmc,
+MGP Pipeline 1,Bone Area,dexa,bonearea,
+MGP Pipeline 1,Lean Mass,dexa,leanmass,
+MGP Pipeline 1,Fat Mass,dexa,fatmass,
+MGP Pipeline 1,Estimated Total Tissue Mass,dexa,tottissue,
+MGP Pipeline 1,Fat Percentage Estimate,dexa,fatpercnt,
+MGP Pipeline 1,Heart Weight,heart-weight,heartwt,
+MGP Pipeline 1,Body Weight,heart-weight,bodywt,
+MGP Pipeline 1,Heart Weight / Body Weight,heart-weight,hrtwtbodywt,
+MGP Pipeline 1,Shape of Vertebrae,x-ray-imaging,vertshp,
+MGP Pipeline 1,Processes on Vertebrae,x-ray-imaging,vertprocess,
+MGP Pipeline 1,Ulna,x-ray-imaging,ulna,
+MGP Pipeline 1,Tibia,x-ray-imaging,tibia,
+MGP Pipeline 1,Teeth,x-ray-imaging,teeth,
+MGP Pipeline 1,Skull Shape,x-ray-imaging,skullshp,
+MGP Pipeline 1,Scapula,x-ray-imaging,scapula,
+MGP Pipeline 1,Shape of Ribs,x-ray-imaging,ribshp,
+MGP Pipeline 1,Radius,x-ray-imaging,radius,
+MGP Pipeline 1,Pelvis,x-ray-imaging,pervis,
+MGP Pipeline 1,Zygomatic Bone,x-ray-imaging,zygomatic,
+MGP Pipeline 1,Maxilla,x-ray-imaging,maxilla,
+MGP Pipeline 1,Mandible,x-ray-imaging,mandible,
+MGP Pipeline 1,Joints,x-ray-imaging,joint,
+MGP Pipeline 1,Humerus,x-ray-imaging,humerus,
+MGP Pipeline 1,Fibula,x-ray-imaging,fibula,
+MGP Pipeline 1,Femur,x-ray-imaging,femur,
+MGP Pipeline 1,Clavicle,x-ray-imaging,clavicle,
+MGP Pipeline 1,Number of Thoracic Vertebrae,x-ray-imaging,thoracic,
+MGP Pipeline 1,Number of Pelvic Vertebrae,x-ray-imaging,pelvic,
+MGP Pipeline 1,Number of Lumbar Vertebrae,x-ray-imaging,lumber,
+MGP Pipeline 1,Number of Cervical Vertebrae,x-ray-imaging,cervical,
+MGP Pipeline 1,Number of Ribs Right,x-ray-imaging,ribright,
+MGP Pipeline 1,Number of Ribs Left,x-ray-imaging,ribleft,
+MGP Pipeline 1,Number of Digits,x-ray-imaging,digit,
+MGP Pipeline 1,Polydactylism,x-ray-imaging,polydact,
+MGP Pipeline 1,Fusion of Vertebrae,x-ray-imaging,vertfusion,
+MGP Pipeline 1,Syndactylism,x-ray-imaging,syndact,
+MGP Pipeline 1,Fusion of Ribs,x-ray-imaging,ribfusion,
+MGP Pipeline 1,Digit Integrity,x-ray-imaging,digitinteg,
+MGP Pipeline 1,Brachydactylism,x-ray-imaging,brachydact,
+MGP Pipeline 1,Number of Caudal Vertebrae,x-ray-imaging,caudal,
+MGP Pipeline 1,Shape of Ribcage,x-ray-imaging,ribcage,
+MGP Pipeline 1,Transitional Vertebrae,x-ray-imaging,transitionalvert,
+MGP Pipeline 1,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
+MGP Pipeline 1,Shape Of Spine,x-ray-imaging,spnshp,
+MGP Pipeline 1,Kyphosis,x-ray-imaging,kypho,
+MGP Pipeline 1,Lordosis,x-ray-imaging,lordo,
+MGP Pipeline 1,Scoliosis,x-ray-imaging,scolio,
+MGP Pipeline 1,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
+MGP Pipeline 2,White Blood Cell Count,haematology,wbc,
+MGP Pipeline 2,Red Blood Cell Count,haematology,rbc,
+MGP Pipeline 2,Mean Corpuscular Volume,haematology,mcv,
+MGP Pipeline 2,Haemoglobin,haematology,hglbin,
+MGP Pipeline 2,Haematocrit,haematology,hcrit,
+MGP Pipeline 2,Mean Corpuscular Haemoglobin,haematology,mch,
+MGP Pipeline 2,Mean Corpuscular Haemoglobin Conc.,haematology,mchc
+MGP Pipeline 2,Red Blood Cell Distribution Width,haematology,rdw
+MGP Pipeline 2,Platelet Count,haematology,plat
+MGP Pipeline 2,Mean Platelet Volume,haematology,mpv
 MGP Pipeline 2,Grip Strength Fore Paws Trial 1,grip-strength,forepaw1
 MGP Pipeline 2,Grip Strength Fore Paws Trial 2,grip-strength,forepaw2
 MGP Pipeline 2,Grip Strength Fore Paws Trial 3,grip-strength,forepaw3
@@ -80,6 +137,169 @@ MGP Pipeline 2,Grip Strength All Paws Trial 1,grip-strength,allpaw1
 MGP Pipeline 2,Grip Strength All Paws Trial 2,grip-strength,allpaw2
 MGP Pipeline 2,Grip Strength All Paws Trial 3,grip-strength,allpaw3
 MGP Pipeline 2,Body Weight,grip-strength,bodywt
+MGP Pipeline 2,Weight Curve,body-weight-curve-high-fat-diet,hfd
+MGP Pipeline 2,Latency to Fall Trial 1,rotarod,latency1
+MGP Pipeline 2,Reason for Test End 1,rotarod,rrend1
+MGP Pipeline 2,Latency to Fall Trial 2,rotarod,latency2
+MGP Pipeline 2,Reason for Test End 2,rotarod,rrend2
+MGP Pipeline 2,Latency to Fall Trial 3,rotarod,latency3,
+MGP Pipeline 2,Reason for Test End 3,rotarod,rrend3,
+MGP Pipeline 2,Body Weight,rotarod,bodywt,
+MGP Pipeline 2,Guard Hairs,modified-shirpa,guard,
+MGP Pipeline 2,Dorsal Coat,modified-shirpa,dorcoat,
+MGP Pipeline 2,Dorsal Coat Long,modified-shirpa,dorcoatlong,
+MGP Pipeline 2,Dorsal Coat Short,modified-shirpa,dorcoatshort,
+MGP Pipeline 2,Dorsal Coat Rough,modified-shirpa,dorcoatrough,
+MGP Pipeline 2,Dorsal Coat Sparse,modified-shirpa,dorcoatsparse,
+MGP Pipeline 2,Dorsal Coat Coarse,modified-shirpa,dorcoatcoarse,
+MGP Pipeline 2,Dorsal Coat Fine,modified-shirpa,dorcoatfine,
+MGP Pipeline 2,Dorsal Coat Skin Visible,modified-shirpa,dorcoatskin,
+MGP Pipeline 2,Ventral Coat Long,modified-shirpa,vencoatlong,
+MGP Pipeline 2,Ventral Coat Short,modified-shirpa,vencoatshort,
+MGP Pipeline 2,Ventral Coat Rough,modified-shirpa,vencoatrough,
+MGP Pipeline 2,Ventral Coat Sparse,modified-shirpa,vencoatsparse,
+MGP Pipeline 2,Ventral Coat Coarse,modified-shirpa,vencoatcoarse,
+MGP Pipeline 2,Ventral Coat Fine,modified-shirpa,vencoatfine,
+MGP Pipeline 2,Ventral Coat Skin Visible,modified-shirpa,vencoatskin,
+MGP Pipeline 2,Hair Behind Ears,modified-shirpa,earhair,
+MGP Pipeline 2,Hair On Tail,modified-shirpa,tailhair,
+MGP Pipeline 2,Tail Tip Hairs,modified-shirpa,tiphair,
+MGP Pipeline 2,Vibrissae,modified-shirpa,vib,
+MGP Pipeline 2,Vibrissae Short,modified-shirpa,vibshort,
+MGP Pipeline 2,Vibrissae Long,modified-shirpa,viblong,
+MGP Pipeline 2,Vibrissae Curly,modified-shirpa,vibcurl,
+MGP Pipeline 2,Vibrissae Disorientated,modified-shirpa,vibdisor,
+MGP Pipeline 2,Vibrissae Absent,modified-shirpa,vibabsent,
+MGP Pipeline 2,Latency to respond,hot-plate,latency,
+MGP Pipeline 2,Hot Plate Endpoint,hot-plate,hpend,
+MGP Pipeline 2,Sodium,full-clinical-chemistry,na,
+MGP Pipeline 2,Potassium,full-clinical-chemistry,pot,
+MGP Pipeline 2,Chloride,full-clinical-chemistry,cl,
+MGP Pipeline 2,Glucose,full-clinical-chemistry,glucose,
+MGP Pipeline 2,Triglycerides,full-clinical-chemistry,trig,
+MGP Pipeline 2,Cholesterol,full-clinical-chemistry,chol,
+MGP Pipeline 2,High Density Lipoprotein,full-clinical-chemistry,hdl,
+MGP Pipeline 2,Low Density Lipoprotein,full-clinical-chemistry,ldl,
+MGP Pipeline 2,NEFAC,full-clinical-chemistry,nefac,
+MGP Pipeline 2,Glycerol,full-clinical-chemistry,glycerol,
+MGP Pipeline 2,Fructosamine,full-clinical-chemistry,fructos,
+MGP Pipeline 2,Amylase,full-clinical-chemistry,amy,
+MGP Pipeline 2,Alanine Aminotransferase,full-clinical-chemistry,ala,
+MGP Pipeline 2,Alkaline Phosphatase,full-clinical-chemistry,alp,
+MGP Pipeline 2,Creatine Kinase,full-clinical-chemistry,ck,
+MGP Pipeline 2,Aspartate Aminotransferase,full-clinical-chemistry,ast,
+MGP Pipeline 2,Total Bilirubin,full-clinical-chemistry,totbili,
+MGP Pipeline 2,Lactate Dehydrogenase,full-clinical-chemistry,ldh,
+MGP Pipeline 2,Total Protein,full-clinical-chemistry,totprot,
+MGP Pipeline 2,Albumin,full-clinical-chemistry,alb,
+MGP Pipeline 2,Creatinine,full-clinical-chemistry,creat,
+MGP Pipeline 2,Urea,full-clinical-chemistry,urea,
+MGP Pipeline 2,Uric Acid,full-clinical-chemistry,uric,
+MGP Pipeline 2,Calcium,full-clinical-chemistry,ca,
+MGP Pipeline 2,Magnesium,full-clinical-chemistry,mg,
+MGP Pipeline 2,Iron,full-clinical-chemistry,fe,
+MGP Pipeline 2,Phosphate,full-clinical-chemistry,phos,
+MGP Pipeline 2,Total Distance Travelled Whole Arena,open-field,totdiswhole,
+MGP Pipeline 2,Whole Arena Resting Time,open-field,totrestwhole,
+MGP Pipeline 2,Whole Arena Average Speed,open-field,avespdwhole,
+MGP Pipeline 2,Total Distance Travelled - Periphery,open-field,totdisper,
+MGP Pipeline 2,Total Rest Time at Periphery,open-field,totrestper,
+MGP Pipeline 2,Total Time at Periphery,open-field,tottimper,
+MGP Pipeline 2,Average Speed at Periphery,open-field,avespdper,
+MGP Pipeline 2,Total Distance Travelled - Centre,open-field,totdiscen,
+MGP Pipeline 2,Total Resting Time in Centre,open-field,totrestcen,
+MGP Pipeline 2,Total Time in Centre,open-field,tottimcen,
+MGP Pipeline 2,Average Speed at Centre,open-field,avespdcen,
+MGP Pipeline 2,Latency To Enter Centre,open-field,latencycen,
+MGP Pipeline 2,Number Entries to Centre,open-field,totentrycen,
+MGP Pipeline 2,Coat Appearance,modified-shirpa,coatapp,
+MGP Pipeline 2,Skin Colour,modified-shirpa,skincolour,
+MGP Pipeline 2,Whiskers,modified-shirpa,whisker,
+MGP Pipeline 2,Body Position,modified-shirpa,bodyposition,
+MGP Pipeline 2,Palpebral Closure,modified-shirpa,palpclose,
+MGP Pipeline 2,Lacrimation,modified-shirpa,lacrimation,
+MGP Pipeline 2,Tremor,modified-shirpa,tremor,
+MGP Pipeline 2,Urination,modified-shirpa,urination,
+MGP Pipeline 2,Defecation,modified-shirpa,defecation,
+MGP Pipeline 2,Transfer Arousal,modified-shirpa,transarousal,
+MGP Pipeline 2,Gait (inc. Ataxia),modified-shirpa,gait,
+MGP Pipeline 2,Pelvic Elevation,modified-shirpa,pelvicele,
+MGP Pipeline 2,Tail Elevation,modified-shirpa,tailele,
+MGP Pipeline 2,Locomotor Activity,modified-shirpa,locoactivity,
+MGP Pipeline 2,Touch Escape,modified-shirpa,touchesc,
+MGP Pipeline 2,Startle Response,modified-shirpa,startle,
+MGP Pipeline 2,Positional Passivity,modified-shirpa,pospas,
+MGP Pipeline 2,Trunk Curl,modified-shirpa,trunkcurl,
+MGP Pipeline 2,Limb Grasping,modified-shirpa,limbgrasp,
+MGP Pipeline 2,Evidence of Biting,modified-shirpa,biting,
+MGP Pipeline 2,Vocalisation,modified-shirpa,vocal,
+MGP Pipeline 2,Pinna touch reflex,modified-shirpa,pinnatouch,
+MGP Pipeline 2,Corneal touch reflex,modified-shirpa,cornealtouch,
+MGP Pipeline 2,Contact Righting Reflex,modified-shirpa,contactrighting,
+MGP Pipeline 2,Left Eye Blood Vessel Pattern,eye-morphology,bloodvesselpatleft,
+MGP Pipeline 2,Right Eye Blood Vessel Pattern,eye-morphology,bloodvesselpatright,
+MGP Pipeline 2,Left Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucleft,
+MGP Pipeline 2,Right Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucright,
+MGP Pipeline 2,Left Eye Blood Vessels,eye-morphology,bloodvesselleft,
+MGP Pipeline 2,Right Eye Blood Vessels,eye-morphology,bloodvesselright,
+MGP Pipeline 2,General Morphology,eye-morphology,genmorph,
+MGP Pipeline 2,Left Optic Disk,eye-morphology,opticleft,
+MGP Pipeline 2,Right Optic Disk,eye-morphology,opticright,
+MGP Pipeline 2,Left Retina,eye-morphology,retleft,
+MGP Pipeline 2,Right Retina,eye-morphology,retright,
+MGP Pipeline 2,Left Retina Pigmentation,eye-morphology,retpigleft,
+MGP Pipeline 2,Right Retina Pigmentation,eye-morphology,retpigright,
+MGP Pipeline 2,Left Retina Structure,eye-morphology,retstructleft,
+MGP Pipeline 2,Right Retina Structure,eye-morphology,retstructright,
+MGP Pipeline 2,Cornea,eye-morphology,corn,
+MGP Pipeline 2,Cornea Opacity,eye-morphology,cornopacity,
+MGP Pipeline 2,Cornea Vascularization,eye-morphology,cornvasc,
+MGP Pipeline 2,General Morphology,eye-morphology,genmorph,
+MGP Pipeline 2,Eye Size,eye-morphology,eyesize,
+MGP Pipeline 2,Blood Presence,eye-morphology,bloodpres,
+MGP Pipeline 2,Eyelid Closure,eye-morphology,eyelidclose,
+MGP Pipeline 2,Iris Pigment,eye-morphology,irispig,
+MGP Pipeline 2,Lens,eye-morphology,lens,
+MGP Pipeline 2,Lens Opacity (non suture),eye-morphology,lensopacity,
+MGP Pipeline 2,Pupil,eye-morphology,pup,
+MGP Pipeline 2,Pupil Position,eye-morphology,puppos,
+MGP Pipeline 2,Pupil Shape,eye-morphology,pupshape,
+MGP Pipeline 2,Pupil Light Response,eye-morphology,pupresp,
+MGP Pipeline 2,Suture Cataract,eye-morphology,suture,
+MGP Pipeline 2,Cataract visible using ophtalmoscope,eye-morphology,cat,
+MGP Pipeline 2,Left eye Bergmeister's papilla,eye-morphology,bergleft,
+MGP Pipeline 2,Right eye Bergmeister's papilla,eye-morphology,bergright,
+MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,
+MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,or het or hom
+Mouse GP,Cumulative Food Intake,indirect-calorimetry,food,
+Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer,
+Mouse GP,VCO2,indirect-calorimetry,co2,
+Mouse GP,VO2,indirect-calorimetry,o2,
+Mouse GP,Energy Expenditure,indirect-calorimetry,ee,
+Mouse GP,Energy Expenditure/Animal,indirect-calorimetry,eeanimal,
+Mouse GP,X-Activity Total,indirect-calorimetry,xactivity,
+Mouse GP,X-Activity Ambulatory,indirect-calorimetry,xactivityambul,
+Mouse GP,CO2,indirect-calorimetry,co2,
+Mouse GP,Reference CO2,indirect-calorimetry,refco2,
+Mouse GP,O2,indirect-calorimetry,o2,
+Mouse GP,Reference O2,indirect-calorimetry,refo2,
+Mouse GP,CO2 Difference,indirect-calorimetry,co2diff,
+Mouse GP,O2 Difference,indirect-calorimetry,o2diff,
+Mouse GP,Temperature,indirect-calorimetry,temp,
+Mouse GP,Y-Activity Total,indirect-calorimetry,yactivity
+Mouse GP,Y-Activity Ambulatory,indirect-calorimetry,yactivityambul
+Mouse GP,Basal Body Temperature,core-temperature,basaltemp
+Mouse GP,Post Stress Temperature,core-temperature,stresstemp
+Mouse GP,Change in Temperature,core-temperature,deltatemp
+Mouse GP,Body Weight,dexa,bodywt
+Mouse GP,Nose to Tailbase Length,dexa,bodylength
+Mouse GP,Bone Mineral Density,dexa,bmd
+Mouse GP,Bone Mineral Content,dexa,bmc
+Mouse GP,Bone Area,dexa,bonearea
+Mouse GP,Lean Mass,dexa,leanmass
+Mouse GP,Fat Mass,dexa,fatmass
+Mouse GP,Estimated Total Tissue Mass,dexa,tottissue
+Mouse GP,Fat Percentage Estimate,dexa,fatpercnt
 Mouse GP,Guard Hairs,dysmorphology,guard
 Mouse GP,Dorsal Coat,dysmorphology,dorcoat
 Mouse GP,Dorsal Coat Long,dysmorphology,dorcoatlong
@@ -108,14 +328,6 @@ Mouse GP,Vibrissae Absent,dysmorphology,vibabsent
 Mouse GP,Anagen Phase,hair-follicle,anagen
 Mouse GP,Latency to respond,hot-plate,latency
 Mouse GP,Hot Plate Endpoint,hot-plate,hpend
-MGP Pipeline 1,Adiponectin,insulin,adipo
-MGP Pipeline 1,Insulin (MSD),insulin,ins
-MGP Pipeline 1,Insulin (ELISA),insulin,ins
-MGP Pipeline 1,Fasted Blood glucose,ip-gtt,fastedgluc
-MGP Pipeline 1,ip-GTT,ip-gtt,ipgtt
-MGP Pipeline 1,Weight Curve,ip-gtt,bodywt
-MGP Pipeline 1,Weight Curve,body-weight-curve-normal-chow,chow
-MGP Pipeline 2,Weight Curve,body-weight-curve-high-fat-diet,hfd
 Mouse GP,Sodium,full-clinical-chemistry,na
 Mouse GP,Potassium,full-clinical-chemistry,pot
 Mouse GP,Chloride,full-clinical-chemistry,cl
@@ -138,26 +350,18 @@ Mouse GP,Total Protein,full-clinical-chemistry,totprot
 Mouse GP,Albumin,full-clinical-chemistry,alb
 Mouse GP,Creatinine,full-clinical-chemistry,creat
 Mouse GP,Urea,full-clinical-chemistry,urea
-Mouse GP,Uric Acid,full-clinical-chemistry,uric
-Mouse GP,Calcium,full-clinical-chemistry,ca
-Mouse GP,Magnesium,full-clinical-chemistry,mg
-Mouse GP,Iron,full-clinical-chemistry,fe
-Mouse GP,Phosphate,full-clinical-chemistry,phos
-MGP Pipeline 1,Glucose,fasted-clinical-chemistry,glucose
-MGP Pipeline 1,Triglycerides,fasted-clinical-chemistry,trig
-MGP Pipeline 1,Cholesterol,fasted-clinical-chemistry,chol
-MGP Pipeline 1,High Density Lipoprotein,fasted-clinical-chemistry,hdl
-MGP Pipeline 1,Low Density Lipoprotein,fasted-clinical-chemistry,ldl
-MGP Pipeline 1,NEFAC,fasted-clinical-chemistry,nefac
-MGP Pipeline 1,Glycerol,fasted-clinical-chemistry,glycerol
-MGP Pipeline 1,Fructosamine,fasted-clinical-chemistry,fructos
-Mouse GP,Total Distance Travelled Whole Arena,open-field,totdiswhole
-Mouse GP,Whole Arena Resting Time,open-field,totrestwhole
-Mouse GP,Whole Arena Average Speed,open-field,avespdwhole
-Mouse GP,Total Distance Travelled - Periphery,open-field,totdisper
-Mouse GP,Total Rest Time at Periphery,open-field,totrestper
-Mouse GP,Total Time at Periphery,open-field,tottimper
-Mouse GP,Average Speed at Periphery,open-field,avespdper
+Mouse GP,Uric Acid,full-clinical-chemistry,uric,
+Mouse GP,Calcium,full-clinical-chemistry,ca,
+Mouse GP,Magnesium,full-clinical-chemistry,mg,
+Mouse GP,Iron,full-clinical-chemistry,fe,
+Mouse GP,Phosphate,full-clinical-chemistry,phos,
+Mouse GP,Total Distance Travelled Whole Arena,open-field,totdiswhole,
+Mouse GP,Whole Arena Resting Time,open-field,totrestwhole,
+Mouse GP,Whole Arena Average Speed,open-field,avespdwhole,
+Mouse GP,Total Distance Travelled - Periphery,open-field,totdisper,
+Mouse GP,Total Rest Time at Periphery,open-field,totrestper,
+Mouse GP,Total Time at Periphery,open-field,tottimper,
+Mouse GP,Average Speed at Periphery,open-field,avespdper,
 Mouse GP,Total Distance Travelled - Centre,open-field,totdiscen,
 Mouse GP,Total Resting Time in Centre,open-field,totrestcen,
 Mouse GP,Total Time in Centre,open-field,tottimcen,
@@ -167,24 +371,17 @@ Mouse GP,Number Entries to Centre,open-field,totentrycen,
 Mouse GP,Heart Weight,heart-weight,heartwt,
 Mouse GP,Body Weight,heart-weight,bodywt,
 Mouse GP,Heart Weight / Body Weight,heart-weight,hrtwtbodywt,
-MGP Pipeline 2,Latency to Fall Trial 1,rotarod,latency1,
-MGP Pipeline 2,Reason for Test End 1,rotarod,rrend1,
-MGP Pipeline 2,Latency to Fall Trial 2,rotarod,latency2,
-MGP Pipeline 2,Reason for Test End 2,rotarod,rrend2,
-MGP Pipeline 2,Latency to Fall Trial 3,rotarod,latency3,
-MGP Pipeline 2,Reason for Test End 3,rotarod,rrend3,
-MGP Pipeline 2,Body Weight,rotarod,bodywt,
-Mouse GP,Coat Appearance,modified-shirpa,coatapp
-Mouse GP,Skin Colour,modified-shirpa,skincolour
-Mouse GP,Whiskers,modified-shirpa,whisker
-Mouse GP,Body Position,modified-shirpa,bodyposition
-Mouse GP,Palpebral Closure,modified-shirpa,palpclose
-Mouse GP,Lacrimation,modified-shirpa,lacrimation
-Mouse GP,Tremor,modified-shirpa,tremor
-Mouse GP,Urination,modified-shirpa,urination
-Mouse GP,Defecation,modified-shirpa,defecation
-Mouse GP,Transfer Arousal,modified-shirpa,transarousal
-Mouse GP,Gait (inc. Ataxia),modified-shirpa,gait
+Mouse GP,Coat Appearance,modified-shirpa,coatapp,
+Mouse GP,Skin Colour,modified-shirpa,skincolour,
+Mouse GP,Whiskers,modified-shirpa,whisker,
+Mouse GP,Body Position,modified-shirpa,bodyposition,
+Mouse GP,Palpebral Closure,modified-shirpa,palpclose,
+Mouse GP,Lacrimation,modified-shirpa,lacrimation,
+Mouse GP,Tremor,modified-shirpa,tremor,
+Mouse GP,Urination,modified-shirpa,urination,
+Mouse GP,Defecation,modified-shirpa,defecation,
+Mouse GP,Transfer Arousal,modified-shirpa,transarousal,
+Mouse GP,Gait (inc. Ataxia),modified-shirpa,gait,
 Mouse GP,Pelvic Elevation,modified-shirpa,pelvicele
 Mouse GP,Tail Elevation,modified-shirpa,tailele
 Mouse GP,Locomotor Activity,modified-shirpa,locoactivity
@@ -254,23 +451,78 @@ Mouse GP,Number of Thoracic Vertebrae,x-ray-imaging,thoracic
 Mouse GP,Number of Pelvic Vertebrae,x-ray-imaging,pelvic
 Mouse GP,Number of Lumbar Vertebrae,x-ray-imaging,lumber
 Mouse GP,Number of Cervical Vertebrae,x-ray-imaging,cervical
-Mouse GP,Number of Ribs Right,x-ray-imaging,ribright,
-Mouse GP,Number of Ribs Left,x-ray-imaging,ribleft,
-Mouse GP,Number of Digits,x-ray-imaging,digit,
-Mouse GP,Polydactylism,x-ray-imaging,polydact,
-Mouse GP,Fusion of Vertebrae,x-ray-imaging,vertfusion,
-Mouse GP,Syndactylism,x-ray-imaging,syndact,
-Mouse GP,Fusion of Ribs,x-ray-imaging,ribfusion,
-Mouse GP,Digit Integrity,x-ray-imaging,digitinteg,
-Mouse GP,Brachydactylism,x-ray-imaging,brachydact,
-Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal,
-Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage,
+Mouse GP,Number of Ribs Right,x-ray-imaging,ribright
+Mouse GP,Number of Ribs Left,x-ray-imaging,ribleft
+Mouse GP,Number of Digits,x-ray-imaging,digit
+Mouse GP,Polydactylism,x-ray-imaging,polydact
+Mouse GP,Fusion of Vertebrae,x-ray-imaging,vertfusion
+Mouse GP,Syndactylism,x-ray-imaging,syndact
+Mouse GP,Fusion of Ribs,x-ray-imaging,ribfusion
+Mouse GP,Digit Integrity,x-ray-imaging,digitinteg
+Mouse GP,Brachydactylism,x-ray-imaging,brachydact
+Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal
+Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage
 Mouse GP,Transitional Vertebrae,x-ray-imaging,transitionalvert,
-Mouse GP,Images - miscellaneous 1,x-ray-imaging,carpalfusionwt,or het or hom
+Mouse GP,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
 Mouse GP,Shape Of Spine,x-ray-imaging,spnshp,
 Mouse GP,Kyphosis,x-ray-imaging,kypho,
 Mouse GP,Lordosis,x-ray-imaging,lordo,
 Mouse GP,Scoliosis,x-ray-imaging,scolio,
 Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
+Mouse GP,Body Weight,dysmorphology,bodywt,
+Mouse GP,Hyperactivity,dysmorphology,hyper,
+Mouse GP,Respiration,dysmorphology,resp,
+Mouse GP,Grooming,dysmorphology,groom,
+Mouse GP,Coat Intact,dysmorphology,coatintact,
+Mouse GP,Coat Colouration,dysmorphology,coatcolour,
+Mouse GP,Coat Texture,dysmorphology,coattxt,
+Mouse GP,Skin Condition,dysmorphology,skincond,
+Mouse GP,Skin Pigmentation,dysmorphology,skinpig,
+Mouse GP,Head Size,dysmorphology,headsize,
+Mouse GP,Head Morphology,dysmorphology,headmorph,
+Mouse GP,Mouth Morphology,dysmorphology,mouthmorph,
+Mouse GP,Snout Morphology,dysmorphology,snoutmorph,
+Mouse GP,Incisor,dysmorphology,incisor,
+Mouse GP,Whiskers,dysmorphology,whisker,
+Mouse GP,Ear Morphology,dysmorphology,earmorph,
+Mouse GP,Ear Size,dysmorphology,earsize,
+Mouse GP,Eyes,dysmorphology,eye,
+Mouse GP,Eye Size,dysmorphology,eyesize,
+Mouse GP,Eye Colouration,dysmorphology,eyecolour,
+Mouse GP,Forelimb Size,dysmorphology,forelimsize,
+Mouse GP,Forepaw Size,dysmorphology,forepawsize,
+Mouse GP,Forepaw Foot Pads,dysmorphology,forepawpads,
+Mouse GP,Forepaw Nails,dysmorphology,forepawnail,
+Mouse GP,Hindlimb Size,dysmorphology,hindlimsize,
+Mouse GP,Hind Paw Size,dysmorphology,hindpawsize,
+Mouse GP,Hindlimb Foot Pads,dysmorphology,hindlimpads,
+Mouse GP,Hindlimb Nails,dysmorphology,hindlimnails,
+Mouse GP,Genitalia,dysmorphology,genitals,
+Mouse GP,Genitalia Morpholgy,dysmorphology,genitalmorph,
+Mouse GP,Genitalia Size,dysmorphology,genitalsize,
+Mouse GP,Tail Length,dysmorphology,taillength,
+Mouse GP,Tail Morphology,dysmorphology,tailmorph,
+Mouse GP,Fasted Blood glucose,ip-gtt,fastedgluc,
+Mouse GP,ip-GTT,ip-gtt,ipgtt,
+Mouse GP,Weight Curve,ip-gtt,bodywt,
+Mouse GP,White Blood Cell Count,haematology,wbc,
+Mouse GP,Red Blood Cell Count,haematology,rbc,
+Mouse GP,Mean Corpuscular Volume,haematology,mcv,
+Mouse GP,Haemoglobin,haematology,hglbin,
+Mouse GP,Haematocrit,haematology,hcrit,
+Mouse GP,Mean Corpuscular Haemoglobin,haematology,mch,
+Mouse GP,Mean Corpuscular Haemoglobin Conc.,haematology,mchc,
+Mouse GP,Red Blood Cell Distribution Width,haematology,rdw,
+Mouse GP,Platelet Count,haematology,plat,
+Mouse GP,Mean Platelet Volume,haematology,mpv,
+Mouse GP,Grip Strength Fore Paws Trial 1,grip-strength,forepaw1,
+Mouse GP,Grip Strength Fore Paws Trial 2,grip-strength,forepaw2,
+Mouse GP,Grip Strength Fore Paws Trial 3,grip-strength,forepaw3,
+Mouse GP,Grip Strength All Paws Trial 1,grip-strength,allpaw1,
+Mouse GP,Grip Strength All Paws Trial 2,grip-strength,allpaw2,
+Mouse GP,Grip Strength All Paws Trial 3,grip-strength,allpaw3,
+Mouse GP,Body Weight,grip-strength,bodywt,
+Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,
+Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 ,Txt - miscellaneous 1,homviable,homviable,

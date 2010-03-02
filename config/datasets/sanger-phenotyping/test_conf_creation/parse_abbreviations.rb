@@ -11,11 +11,13 @@ require "csv"
 require "json"
 require "pp"
 
+require "#{File.dirname(__FILE__)}/../../../../lib/string.rb"
+
 ##
 ## Read in the test_conf.json and wipe out the image sections
 ##
 
-test_conf = JSON.load( File.new( "../test_conf.json", "r" ) )
+test_conf = JSON.load( File.new( "test_conf.json", "r" ) )
 
 test_conf.each do |pipeline,pipeline_tests|
   pipeline_tests.each do |test,test_data|
@@ -57,7 +59,7 @@ abbreviations.each do |row|
     end
     
     test         = row[2]
-    variable     = row[1]
+    variable     = row[1].titlecase
     abbreviation = row[3]
     
     # Catch a common fook-up...
@@ -75,10 +77,9 @@ abbreviations.each do |row|
         end
       end
     rescue NoMethodError => error
-      #puts "Found an error with this line in the CSV!!!!"
-      #require "pp"
-      #pp row
-      #exit(1)
+      puts "Found an error with this line in the CSV!!!!"
+      require "pp"
+      pp row
     end
   end
 end
@@ -89,7 +90,7 @@ end
 ## edit this...
 ##
 
-File.open("test_conf_new.json","w") do |f|
+File.open("test_conf_with_images.json","w") do |f|
   
   f.write "{\n"
   pipelines = test_conf.keys.sort

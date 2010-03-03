@@ -1,6 +1,9 @@
 
-# Static routes for ABR data - this allows us to pull in the static 
-# data generated for the ABR tests.
+##
+## Static routes for ABR data - this allows us to pull in the static 
+## data generated for the ABR tests.
+##
+
 get "/phenotyping/:colony_prefix/abr" do
   redirect "#{BASE_URI}/phenotyping/#{params[:colony_prefix]}/abr/"
 end
@@ -38,6 +41,30 @@ get "/phenotyping/:colony_prefix/abr/*" do
     erb :not_found
   end
 end
+
+##
+## Static route for homozygote-viability - uses different template from 
+## other tests, so needs to be handled differently.
+##
+
+get "/phenotyping/:colony_prefix/homozygote-viability/?" do
+  setup_pheno_configuration
+  
+  @marker_symbol = nil
+  @colony_prefix = params[:colony_prefix]
+  @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[@colony_prefix]
+  
+  search_data = search_mart_by_colony_prefix(@colony_prefix)
+  if search_data
+    @marker_symbol = search_data[0]["marker_symbol"]
+  end
+  
+  erb :"datasets/sanger-phenotyping/homviable_test_details"
+end
+
+##
+## Routes for everything else
+##
 
 get "/phenotyping/:colony_prefix/:pheno_test/?" do
   setup_pheno_configuration
@@ -83,7 +110,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
     else
       @page_title = "#{@colony_prefix}: #{@test["name"]}"
     end
-    erb :"datasets/sanger-phenotyping/_test_details"
+    erb :"datasets/sanger-phenotyping/test_details"
   end
 end
 

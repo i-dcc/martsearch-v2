@@ -178,6 +178,23 @@ a.order:hover {
 	font-family: Verdana, sans-serif;
 }
 
+.help {
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 15px;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	background-color: #f1f1f1;
+}
+
+.help h4, .help h5, .help h6 {
+	background: url(../images/help.png) no-repeat 0 center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 20px;
+}
+
 /* Toggle Controls */
 
 .toggle-open, .toggle-close {

@@ -1,7 +1,16 @@
 
+# Constants defining where our static data lives...
 PHENO_IMG_LOC        = "#{Dir.pwd}/public/images/pheno_images"
-PHENO_TEST_DESC_FILE = "#{Dir.pwd}/config/datasets/sanger-phenotyping/test_conf.json"
 PHENO_ABR_LOC        = "#{Dir.pwd}/tmp/pheno_abr"
+PHENO_TEST_DESC_FILE = "#{Dir.pwd}/config/datasets/sanger-phenotyping/test_conf.json"
+
+# Constants for connecting to MIG
+ORACLE_USER     = "eucomm_vector"
+ORACLE_PASSWORD = "eucomm_vector"
+ORACLE_DB       = "migp_ha.world"
+
+require "oci8"
+@@mig_dbh = OCI8.new(ORACLE_USER, ORACLE_PASSWORD, ORACLE_DB)
 
 # Function to run through the pheno test images directory (supplied by Jacqui) 
 # and returns a hash like so:
@@ -23,7 +32,6 @@ end
 # Utility function for find_pheno_images to do the actual work
 # of listing all of the images found for each pheno test.
 def pheno_images_for_colony( colony_prefix )
-  orig_dir    = Dir.pwd
   path        = "#{PHENO_IMG_LOC}/#{colony_prefix}"
   test_conf   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   test_images = {}
@@ -33,31 +41,31 @@ def pheno_images_for_colony( colony_prefix )
   if File.exists?(path) and File.directory?(path)
     Dir.foreach(path) do |test|
       if File.directory?(test) and !dirs_to_ignore.include?(test)
-        Dir.chdir("#{path}/#{test}")
-        images_to_display = {}
+        Dir.chdir("#{path}/#{test}") do |test_dir|
+          images_to_display = {}
         
-        # Now to see if these images have been listed as for display...
-        Dir.glob("*.{png,jpg,jpeg}").each do |found_image|
-          # First, strip the file extension and strip off any 
-          # prepended colony prefix...
-          image_match  = found_image.match(/^(.+)\.\w+$/)[1]
-          prefix_match = image_match.match(/^\w{4}-(\w+)$/)
-          if prefix_match then image_match = prefix_match[1] end
+          # Now to see if these images have been listed as for display...
+          Dir.glob("*.{png,jpg,jpeg}").each do |found_image|
+            # First, strip the file extension and strip off any 
+            # prepended colony prefix...
+            image_match  = found_image.match(/^(.+)\.\w+$/)[1]
+            prefix_match = image_match.match(/^\w{4}-(\w+)$/)
+            if prefix_match then image_match = prefix_match[1] end
           
-          test_conf.keys.each do |pipeline|
-            if test_conf[pipeline][test] and test_conf[pipeline][test]["image_lookup"][image_match]
-              images_to_display[image_match] = {
-                "file" => found_image,
-                "desc" => test_conf[pipeline][test]["image_lookup"][image_match]
-              }
+            test_conf.keys.each do |pipeline|
+              if test_conf[pipeline][test] and test_conf[pipeline][test]["image_lookup"][image_match]
+                images_to_display[image_match] = {
+                  "file" => found_image,
+                  "desc" => test_conf[pipeline][test]["image_lookup"][image_match]
+                }
+              end
             end
           end
-        end
         
-        test_images[ test ] = images_to_display
+          test_images[ test ] = images_to_display
+        end
       end
     end
-    Dir.chdir(orig_dir)
   end
 
   return test_images
@@ -79,6 +87,39 @@ def find_pheno_abr_results
   end
   
   return colonies_with_data
+end
+
+# Utility function to grab/dump all of the data from a given table 
+# in an Oracle database and return it as either:
+# - an array of hashes (keyed by column name)
+# - a hash of hashes, keyed by the value defined in the 'group_by' column
+def dump_oracle_table( dbh, table, group_by=nil )
+  data    = []
+  columns = []
+  
+  dbh.describe_table(table).columns.each do |column|
+    columns.push(column.name)
+  end
+  
+  cursor = dbh.exec("select #{columns.join(", ")} from #{table}")
+  cursor.fetch do |row|
+    data_row = {}
+    columns.each_index do |i|
+      if columns[i] == "ID"          then data_row[ columns[i] ] = row[i].to_int
+      elsif row[i].is_a?(BigDecimal) then data_row[ columns[i] ] = row[i].to_f
+      else                                data_row[ columns[i] ] = row[i]
+      end
+    end
+    data.push(data_row)
+  end
+  
+  if group_by
+    grouped_data = {}
+    data.each do |hash| grouped_data[ hash[ group_by ] ] = hash end
+    data = grouped_data
+  end
+  
+  return data
 end
 
 # Function to set-up and @@ms.cache all of the required pheno data so that we 
@@ -115,6 +156,11 @@ def setup_pheno_configuration
     @@ms.cache.write( "sanger-phenotyping-test_images", find_pheno_images.to_json, :expires_in => 12.hours )
   end
   
+  unless @@ms.cache.fetch("sanger-phenotyping-homviable_results")
+    homviable_results = dump_oracle_table( @@mig_dbh, "mig.rep_hom_lethality_vw", "COLONY_PREFIX" )
+    @@ms.cache.write( "sanger-phenotyping-homviable_results", homviable_results.to_json, :expires_in => 12.hours )
+  end
+  
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
     @@ms.cache.write( "sanger-phenotyping-abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
@@ -134,8 +180,9 @@ def pheno_links( colony_prefix )
   setup_pheno_configuration
   
   tests_to_link = []
-  image_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[colony_prefix]
-  abr_info   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
+  image_info     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[colony_prefix]
+  abr_info       = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
+  homviable_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[colony_prefix]
   
   unless image_info.nil?
     tests_to_link = image_info.keys
@@ -143,6 +190,10 @@ def pheno_links( colony_prefix )
   
   if abr_info.include?(colony_prefix)
     tests_to_link.push("abr")
+  end
+  
+  unless homviable_info.nil?
+    tests_to_link.push("homozygote-viability")
   end
   
   return tests_to_link

@@ -80,6 +80,14 @@
 	padding: 10px;
 }
 
+.test-parameter-group table td {
+	background-color: #fff;
+}
+
+.test-parameter-group .help {
+	background-color: #fff;
+}
+
 #test-parameter-groups div.test-parameter-group div.pheno_result {
 	text-align: center;
 	margin-bottom: 7px;

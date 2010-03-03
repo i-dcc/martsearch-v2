@@ -377,11 +377,11 @@ tr.odd td {
 }
 
 .nobg, table.nobg th, table.nobg td {
-	background: none;
+	background: none !important;
 }
 
 .noborder, table.noborder th, table.noborder td {
-	border: none;
+	border: none !important;
 }
 
 table li {

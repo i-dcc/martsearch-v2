@@ -43,8 +43,8 @@ get "/phenotyping/:colony_prefix/abr/*" do
 end
 
 ##
-## Static route for homozygote-viability - uses different template from 
-## other tests, so needs to be handled differently.
+## Static route for homozygote-viability / fertility - they use different 
+## templates so need to be handled differently.
 ##
 
 get "/phenotyping/:colony_prefix/homozygote-viability/?" do
@@ -52,7 +52,7 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   
   @marker_symbol = nil
   @colony_prefix = params[:colony_prefix]
-  @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[@colony_prefix]
+  @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[@colony_prefix][0]
   
   search_data = search_mart_by_colony_prefix(@colony_prefix)
   if search_data
@@ -60,6 +60,21 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   end
   
   erb :"datasets/sanger-phenotyping/homviable_test_details"
+end
+
+get "/phenotyping/:colony_prefix/fertility/?" do
+  setup_pheno_configuration
+  
+  @marker_symbol = nil
+  @colony_prefix = params[:colony_prefix]
+  @mating_data   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results") )[@colony_prefix]
+  
+  search_data = search_mart_by_colony_prefix(@colony_prefix)
+  if search_data
+    @marker_symbol = search_data[0]["marker_symbol"]
+  end
+  
+  erb :"datasets/sanger-phenotyping/fertility_test_details"
 end
 
 ##

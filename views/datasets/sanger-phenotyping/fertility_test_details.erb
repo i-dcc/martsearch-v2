@@ -1,0 +1,52 @@
+<h2>
+  <% if @marker_symbol %>
+    Fertility Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+  <% else %>
+    Fertility Data for <%= @colony_prefix %>
+  <% end %>
+</h2>
+
+<div id="test-parameter-groups">
+  <div class="test-parameter-group">
+    <table class="tablesorter" width="100%">
+      <thead>
+        <tr>
+          <th>Father Genotype Status</th>
+          <th>Mother Genotype Status</th>
+          <th>Father Age at Setup</th>
+          <th>Mother Age at Setup</th>
+          <th>Setup Date</th>
+          <th>End Date</th>
+          <th>Length of Mating (weeks)</th>
+          <th># Pups Born</th>
+          <th># Pups Weaned</th>
+          <th>Total # Litters Born</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @mating_data.each do |mating| %>
+          <tr>
+            <td><%= mating["FATHER_GENOTYPE_STATUS"] %></td>
+            <td><%= mating["MOTHER_GENOTYPE_STATUS"] %></td>
+            <td><%= mating["FATHER_AGE_AT_SETUP"].to_i %></td>
+            <td><%= mating["MOTHER_AGE_AT_SETUP"].to_i %></td>
+            <td>
+              <% if mating["SETUP_DATE"] %>
+                <%= DateTime.strptime( str=mating["SETUP_DATE"], fmt="%Y/%m/%d %H:%M:%S").strftime( fmt="%d/%m/%Y" ) %>
+              <% end %>
+            </td>
+            <td>
+              <% if mating["SEPARATION_DATE"] %>
+                <%= DateTime.strptime( str=mating["SEPARATION_DATE"], fmt="%Y/%m/%d %H:%M:%S").strftime( fmt="%d/%m/%Y" ).to_s %>
+              <% end %>
+            </td>
+            <td><%= mating["LENGTH_OF_MATING_WEEKS"] %></td>
+            <td><%= mating["NUMBER_OF_PUPS_BORN"].to_i %></td>
+            <td><%= mating["NUMBER_OF_PUPS_WEANED"].to_i %></td>
+            <td><%= mating["TOTAL_NUMBER_OF_LITTERS_BORN"].to_i %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

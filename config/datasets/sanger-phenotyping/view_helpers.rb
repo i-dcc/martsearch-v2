@@ -115,7 +115,12 @@ def dump_oracle_table( dbh, table, group_by=nil )
   
   if group_by
     grouped_data = {}
-    data.each do |hash| grouped_data[ hash[ group_by ] ] = hash end
+    data.each do |hash|
+      if grouped_data[ hash[ group_by ] ] === nil
+        grouped_data[ hash[ group_by ] ] = []
+      end
+      grouped_data[ hash[ group_by ] ].push( hash )
+    end
     data = grouped_data
   end
   
@@ -161,6 +166,27 @@ def setup_pheno_configuration
     @@ms.cache.write( "sanger-phenotyping-homviable_results", homviable_results.to_json, :expires_in => 12.hours )
   end
   
+  unless @@ms.cache.fetch("sanger-phenotyping-fertility_results")
+    raw_results = dump_oracle_table( @@mig_dbh, "mig.rep_mating_summary_vw", "COLONY_PREFIX" )
+    fertility_results = {}
+    
+    raw_results.each do |colony,data|
+      hom_parent = false
+      
+      data.each do |result|
+        if result["FATHER_GENOTYPE_STATUS"] === "Homozygous"
+          hom_parent = true
+        end
+      end
+      
+      if hom_parent
+        fertility_results[colony] = data
+      end
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-fertility_results", fertility_results.to_json, :expires_in => 12.hours )
+  end
+  
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
     @@ms.cache.write( "sanger-phenotyping-abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
@@ -183,6 +209,7 @@ def pheno_links( colony_prefix )
   image_info     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[colony_prefix]
   abr_info       = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
   homviable_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[colony_prefix]
+  fertility_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results") )[colony_prefix]
   
   unless image_info.nil?
     tests_to_link = image_info.keys
@@ -194,6 +221,10 @@ def pheno_links( colony_prefix )
   
   unless homviable_info.nil?
     tests_to_link.push("homozygote-viability")
+  end
+  
+  unless fertility_info.nil?
+    tests_to_link.push("fertility")
   end
   
   return tests_to_link

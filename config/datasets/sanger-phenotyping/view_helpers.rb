@@ -39,30 +39,32 @@ def pheno_images_for_colony( colony_prefix )
   dirs_to_ignore = [".","..","homviable"]
   
   if File.exists?(path) and File.directory?(path)
-    Dir.foreach(path) do |test|
-      if File.directory?(test) and !dirs_to_ignore.include?(test)
-        Dir.chdir("#{path}/#{test}") do |test_dir|
-          images_to_display = {}
-        
-          # Now to see if these images have been listed as for display...
-          Dir.glob("*.{png,jpg,jpeg}").each do |found_image|
-            # First, strip the file extension and strip off any 
-            # prepended colony prefix...
-            image_match  = found_image.match(/^(.+)\.\w+$/)[1]
-            prefix_match = image_match.match(/^\w{4}-(\w+)$/)
-            if prefix_match then image_match = prefix_match[1] end
-          
-            test_conf.keys.each do |pipeline|
-              if test_conf[pipeline][test] and test_conf[pipeline][test]["image_lookup"][image_match]
-                images_to_display[image_match] = {
-                  "file" => found_image,
-                  "desc" => test_conf[pipeline][test]["image_lookup"][image_match]
-                }
+    Dir.chdir(path) do |colony_dir|
+      Dir.foreach(".") do |test|
+        if File.directory?(test) and !dirs_to_ignore.include?(test)
+          Dir.chdir("#{path}/#{test}") do |test_dir|
+            images_to_display = {}
+            
+            # Now to see if these images have been listed as for display...
+            Dir.glob("*.{png,jpg,jpeg}").each do |found_image|
+              # First, strip the file extension and strip off any 
+              # prepended colony prefix...
+              image_match  = found_image.match(/^(.+)\.\w+$/)[1]
+              prefix_match = image_match.match(/^\w{4}-(\w+)$/)
+              if prefix_match then image_match = prefix_match[1] end
+              
+              test_conf.keys.each do |pipeline|
+                if test_conf[pipeline][test] and test_conf[pipeline][test]["image_lookup"][image_match]
+                  images_to_display[image_match] = {
+                    "file" => found_image,
+                    "desc" => test_conf[pipeline][test]["image_lookup"][image_match]
+                  }
+                end
               end
             end
+            
+            test_images[ test ] = images_to_display
           end
-        
-          test_images[ test ] = images_to_display
         end
       end
     end

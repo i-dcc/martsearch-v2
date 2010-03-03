@@ -56,6 +56,42 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       end
     end
     
+    should "be able to render homozygote-viability details pages" do
+      setup_pheno_configuration()
+      colonies_with_images = find_pheno_images()
+      assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
+      
+      # Randomly sample 5 colonies
+      colonies_checked = 0
+      randomised_colonies = colonies_with_images.keys.sort_by { rand }
+      randomised_colonies.each do |colony_prefix|
+        if colonies_checked < 6
+          if colonies_with_images[colony_prefix]["homozygote-viability"]
+            view_pheno_details_page( @browser, colony_prefix, "homozygote-viability", false )
+            colonies_checked += 1
+          end
+        end
+      end
+    end
+    
+    should "be able to render fertility details pages" do
+      setup_pheno_configuration()
+      colonies_with_images = find_pheno_images()
+      assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
+      
+      # Randomly sample 5 colonies
+      colonies_checked = 0
+      randomised_colonies = colonies_with_images.keys.sort_by { rand }
+      randomised_colonies.each do |colony_prefix|
+        if colonies_checked < 6
+          if colonies_with_images[colony_prefix]["fertility"]
+            view_pheno_details_page( @browser, colony_prefix, "fertility", false )
+            colonies_checked += 1
+          end
+        end
+      end
+    end
+    
     should "be able to render ABR phenotyping details pages" do
       colonies_with_data = find_pheno_abr_results()
       assert( colonies_with_data.is_a?(Array), "Function find_pheno_abr_results() is not returning an array." )
@@ -91,10 +127,12 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     end
   end
   
-  def view_pheno_details_page( browser, colony_prefix, test )
+  def view_pheno_details_page( browser, colony_prefix, test, chk_img=true )
     browser.get "/phenotyping/#{colony_prefix}/#{test}/"
     assert( browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/#{test}/'." )
-    assert( browser.last_response.body.include?("<img"), "Phenotyping details page (/phenotyping/#{colony_prefix}/#{test}/) does not have any images." )
+    if chk_img
+      assert( browser.last_response.body.include?("<img"), "Phenotyping details page (/phenotyping/#{colony_prefix}/#{test}/) does not have any images." )
+    end
   end
   
   def check_abr_redirect( browser, colony_prefix )

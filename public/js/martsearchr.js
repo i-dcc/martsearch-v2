@@ -30,4 +30,7 @@ jQuery(document).ready(function() {
   
   // Add prettyPhoto to anything with the property 'rel="prettyPhoto"'
   jQuery("a[rel^='prettyPhoto']").prettyPhoto({ theme: 'facebook' });
+  
+  // Add tablesorter to anything with the class 'tablesorter'
+  jQuery("table.tablesorter").tablesorter({ widgets: ['zebra'], dateFormat: "uk" });
 });

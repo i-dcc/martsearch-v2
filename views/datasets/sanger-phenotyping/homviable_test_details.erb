@@ -1,0 +1,88 @@
+<h2>
+  <% if @marker_symbol %>
+    Homozygote Viability Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+  <% else %>
+    Homozygote Viability Data for <%= @colony_prefix %>
+  <% end %>
+</h2>
+
+<div id="test-parameter-groups">
+  <div class="test-parameter-group">
+    <table>
+      <tr>
+        <th># Mice</th>
+        <th># Wild Type</th>
+        <th># Heterozygotes</th>
+        <th># Homozygotes</th>
+        <th>Wild Type Ratio</th>
+        <th>Heterozygote Ratio</th>
+        <th>Homozygote Ratio</th>
+        <th>Homozygous Lethality</th>
+      </tr>
+      <tr>
+        <td><%= @test_data["TOTAL_WT_HET_HOM"].to_i %></td>
+        <td><%= @test_data["TOTAL_WT"].to_i %></td>
+        <td><%= @test_data["TOTAL_HET"].to_i %></td>
+        <td><%= @test_data["TOTAL_HOM"].to_i %></td>
+        <td><%= (@test_data["WT_RATIO"] * 100).round %>&#37;</td>
+        <td><%= (@test_data["HET_RATIO"] * 100).round %>&#37;</td>
+        <td><%= (@test_data["HOM_RATIO"] * 100).round %>&#37;</td>
+        <td>
+          <%
+            lethality_text = ""
+            hom_ratio      = (@test_data["HOM_RATIO"] * 100).round
+            
+            if @test_data["TOTAL_WT_HET_HOM"].to_i > 28
+              if hom_ratio > 13
+                lethality_text = "Viable"
+              elsif hom_ratio > 0
+                lethality_text = "Subviable"
+              else
+                lethality_text = "Lethal"
+              end
+            else
+              lethality_text = "Insufficient mice to determine results"
+            end
+          %>
+          <%= lethality_text %>
+        </td>
+      </tr>
+    </table>
+    
+    <table class="nobg noborder" width="100%">
+      <tr>
+        <td width="40%" style="text-align:center; vertical-align:top;">
+          <%= 
+            gchart_pie(
+              :data => [
+                (@test_data["WT_RATIO"] * 100).round,
+                (@test_data["HET_RATIO"] * 100).round,
+                (@test_data["HOM_RATIO"] * 100).round
+              ],
+              :labels => [ "WT", "Het", "Hom" ],
+              :alt => "Breeding Breakdown",
+              :format => 'image_tag',
+              :class => 'gchart'
+            )
+          %>
+          <div>
+            Breakdown of genotyped mice.
+          </div>
+        </td>
+        <td width="60%" style="vertical-align:top;">
+          <div class="help">
+            <h6>Homozygous Lethality - How Is This Calculated?</h6>
+            <p>
+              For each allele in the colony, all the genotyped mice from het x het matings are considered.  If there are at least 28 mice, the proportion of homozygous mice is calculated.
+            </p>
+            <ul>
+              <li>&gt;13&#37; Homozygous = Viable</li>
+              <li>&gt;0&#37; and &lt;13&#37; = Subviable</li>
+              <li>0&#37; = Lethal</li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

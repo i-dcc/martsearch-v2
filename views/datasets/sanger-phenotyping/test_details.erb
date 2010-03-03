@@ -1,0 +1,30 @@
+<h2>
+  <% if @marker_symbol %>
+    <%= @test["name"] %> Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+  <% else %>
+    <%= @test["name"] %> Data for <%= @colony_prefix %>
+  <% end %>
+</h2>
+
+<div id="test-description">
+  <%= @test["description"] %>
+</div>
+
+<div id="test-parameter-groups">
+  <div class="test-parameter-group">
+    <% if @test["second_description"] %>
+      <p><%= @test["second_description"] %></p>
+    <% end %>
+    
+    <% @test["ordered_images"].each do |img| %>
+      <% if @test_images[img] %>
+        <div class="pheno_result">
+          <img 
+            src="<%= "#{BASE_URI}/images/pheno_images/#{@colony_prefix}/#{@test["slug"]}/#{@test_images[img]["file"]}?v=#{PORTAL_VERSION}" %>"
+            alt="<%= @test_images[img]["desc"] %>"
+          />
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

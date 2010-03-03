@@ -13,6 +13,7 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
+require "gchart"
 gem "biomart", ">=0.1.5"
 require "biomart"
 
@@ -136,6 +137,22 @@ helpers do
         link_options
       end
     end
+  end
+  
+  def gchart_pie(*args)
+    Gchart.pie(*args)
+  end
+  
+  def gchart_line(*args)
+    Gchart.line(*args)
+  end
+  
+  def gchart_sparkline(*args)
+    Gchart.sparkline(*args)
+  end
+  
+  def gchart_meter(*args)
+    Gchart.meter(*args)
   end
   
   # Load in any custom (per dataset) helpers

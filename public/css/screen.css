@@ -384,7 +384,7 @@ tr.odd td {
 	border: none !important;
 }
 
-table li {
+table ul.noindent li {
 	margin-left: 0;
 	list-style-position: inside;
 }

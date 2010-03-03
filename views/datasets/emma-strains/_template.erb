@@ -26,7 +26,7 @@
             <th width="25%">Availabilities</th>
             <td>
               <% if data["availability"].size > 0 %>
-                <ul>
+                <ul class="noindent">
                   <% data["availability"].each do |avail| %>
                     <li><%= avail %></li>
                   <% end %>
@@ -68,7 +68,7 @@
             <th>References</th>
             <td>
               <% if data["references"].size > 0 %>
-                <ul>
+                <ul class="noindent">
                   <% data["references"].each do |pmid,ref_data| %>
                     <li>
                       <%= ref_data["reference"] %> 

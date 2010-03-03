@@ -13,7 +13,7 @@
         <% ["go_biological_process","go_cellular_component","go_molecular_function"].each do |go_type| %>
           <td>
             <% unless result_data["index"][go_type].nil? %>
-              <ul>
+              <ul class="noindent">
                 <% result_data["index"][go_type].sort.each do |index_string| %>
                   <% unless index_string.gsub(" ","") === "||" %>
                     <% go = index_string.split("||") %>

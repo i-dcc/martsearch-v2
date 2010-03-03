@@ -8,17 +8,17 @@ end
 require "uri"
 require "net/http"
 require "cgi"
-require "json"
+
+require "rubygems"
 require "sinatra"
+require "json"
 require "rdiscount"
 require "mail"
-require "builder"
-require "rsolr"
-
 require "active_support"
-require "will_paginate/array"
+require "will_paginate/collection"
 require "will_paginate/view_helpers"
-
+require "rack/utils"
+require "gchart"
 gem "biomart", ">=0.1.5"
 require "biomart"
 

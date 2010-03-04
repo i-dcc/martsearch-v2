@@ -65,9 +65,13 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       colonies_checked = 0
       randomised_colonies = colonies_with_images.keys.sort_by { rand }
       randomised_colonies.each do |colony_prefix|
+        puts "trying homozygote-viability for #{colony_prefix}"
         if colonies_checked < 6
+          puts "checking homozygote-viability for #{colony_prefix}"
           if colonies_with_images[colony_prefix]["homozygote-viability"]
-            view_pheno_details_page( @browser, colony_prefix, "homozygote-viability", false )
+            @browser.get "/phenotyping/#{colony_prefix}/homozygote-viability/"
+            assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/homozygote-viability/'." )
+            assert( @browser.last_response.body.include?("Homozygote Viability Data"), "Incorrect page found for '/phenotyping/#{colony_prefix}/homozygote-viability/'.")
             colonies_checked += 1
           end
         end
@@ -83,9 +87,13 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       colonies_checked = 0
       randomised_colonies = colonies_with_images.keys.sort_by { rand }
       randomised_colonies.each do |colony_prefix|
+        puts "trying fertility for #{colony_prefix}"
         if colonies_checked < 6
+          puts "checking fertility for #{colony_prefix}"
           if colonies_with_images[colony_prefix]["fertility"]
-            view_pheno_details_page( @browser, colony_prefix, "fertility", false )
+            @browser.get "/phenotyping/#{colony_prefix}/fertility/"
+            assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/fertility/'." )
+            assert( @browser.last_response.body.include?("Fertility Data"), "Incorrect page found for '/phenotyping/#{colony_prefix}/fertility/'.")
             colonies_checked += 1
           end
         end
@@ -127,12 +135,10 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     end
   end
   
-  def view_pheno_details_page( browser, colony_prefix, test, chk_img=true )
+  def view_pheno_details_page( browser, colony_prefix, test )
     browser.get "/phenotyping/#{colony_prefix}/#{test}/"
     assert( browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/#{test}/'." )
-    if chk_img
-      assert( browser.last_response.body.include?("<img"), "Phenotyping details page (/phenotyping/#{colony_prefix}/#{test}/) does not have any images." )
-    end
+    assert( browser.last_response.body.include?("<img"), "Phenotyping details page (/phenotyping/#{colony_prefix}/#{test}/) does not have any images." )
   end
   
   def check_abr_redirect( browser, colony_prefix )

@@ -29,7 +29,15 @@
       { "attr": "ncbi_gene_id",     "idx": "ncbi_gene_id" },
       { "attr": "ccds_id",          "idx": "ccds_id" },
       { "attr": "omim_id",          "idx": "omim_id" },
-      { "attr": "omim_description", "idx": "omim_desc" }
+      { "attr": "omim_description", "idx": "omim_desc" },
+      { "attr": "ikmc_project",     "idx": "ikmc_project" },
+      { "attr": "ikmc_project_id",  "idx": "ikmc_project_id" },
+      { "attr": "vector_generated", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
+      { "attr": "vector_available", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
+      { "attr": "escell_generated", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
+      { "attr": "escell_available", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
+      { "attr": "mouse_generated",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
+      { "attr": "mouse_available",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true }
     ]
   },
   "searching": {

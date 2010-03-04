@@ -6,29 +6,26 @@ begin
 
   @config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
 
-  # Determine the address of the portal
-  u = URI.parse( @config["portal_url"] )
-  @url = "#{u.scheme}://#{u.host}:#{u.port}"
-
-  if u.path =~ /\/$/
-    @url << "#{u.path}"
-  else
-    @url << "#{u.path}/"
+  unless @config["portal_url"] =~ /\/$/
+    @config["portal_url"] << "/"
   end
-
+  
+  # Determine the address of the portal
+  url = URI.parse( @config["portal_url"] )
+  
   # Set up a HTTP client
   @http_client = Net::HTTP
   if ENV['http_proxy'] or ENV['HTTP_PROXY']
     proxy = URI.parse( ENV['http_proxy'] ) || URI.parse( ENV['HTTP_PROXY'] )
     @http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
   end
-
+  
   namespace :cache do
   
     desc "Clears the search cache"
     task :clear do
       puts "Clearing cache..."
-      res = @http_client.get_response( URI.parse("#{@url}clear_cache") )
+      res = @http_client.get_response( URI.parse("#{@config["portal_url"]}clear_cache") )
     end
   
     desc "Primes the search cache"
@@ -39,41 +36,59 @@ begin
       # snappy for users...
     
       puts "Priming cache..."
-    
-      # Home page first
-      puts " - home page"
-      res = @http_client.get_response( URI.parse("#{@url}") )
-    
-      if res.code != "200"
-        raise "Unable to request #{@url}: #{res.body}"
-      end
-    
-      # Now the browsable content
-      @config["browsable_content"].each do |key,browser|
-        puts " - browsable_content: #{browser["display_name"]}"
       
-        browser["options"].each do |option|
-          query = nil
-          text  = nil
+      @http_client.start( url.host, url.port ) do |http|
+        http.read_timeout = 200
+        http.open_timeout = 200
         
-          if option.is_a?(Array)
-            query = option[0].downcase
-            text  = option[0]
-          elsif option.is_a?(Hash)
-            query = option["slug"].downcase
-            text  = option["text"]
-          else
-            query = option.downcase
-            text  = option
-          end
+        # Home page first
+        puts " - home page"
+        res = http.request( Net::HTTP::Get.new( url.path ) )
+
+        if res.code != "200"
+          raise "Unable to request #{url.path}: #{res.body}"
+        end
         
-          puts "   - #{text}"
-          res = @http_client.get_response( URI.parse("#{@url}browse/#{key}/#{query}/1") )
-        
-          if res.code != "200"
-            raise "Unable to request #{@url}browse/#{key}/#{query}/1: #{res.body}"
+        # Any extra URLs to prime?
+        if @config["cache"] and @config["cache"]["extra_urls_to_prime"]
+          @config["cache"]["extra_urls_to_prime"].each do |addr|
+            puts " - #{url.path}#{addr}"
+            res = http.request( Net::HTTP::Get.new( "#{url.path}#{addr}" ) )
+
+            if res.code != "200"
+              raise "Unable to request #{@url}#{addr}: #{res.body}"
+            end
           end
         end
+        
+        # Now the browsable content
+        @config["browsable_content"].each do |key,browser|
+          puts " - browsable_content: #{browser["display_name"]}"
+
+          browser["options"].each do |option|
+            query = nil
+            text  = nil
+
+            if option.is_a?(Array)
+              query = option[0].downcase
+              text  = option[0]
+            elsif option.is_a?(Hash)
+              query = option["slug"].downcase
+              text  = option["text"]
+            else
+              query = option.downcase
+              text  = option
+            end
+
+            puts "   - #{text}"
+            res = http.request( Net::HTTP::Get.new("#{url.path}browse/#{key}/#{query}/1") )
+
+            if res.code != "200"
+              raise "Unable to request #{@url}browse/#{key}/#{query}/1: #{res.body}"
+            end
+          end
+        end
+        
       end
     end
   

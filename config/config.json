@@ -7,7 +7,10 @@
     "from": "do2@sanger.ac.uk"
   },
   "cache": {
-    "type": "file"
+    "type":           "file",
+    "extra_urls_to_prime":  [
+      "phenotyping/heatmap"
+    ]
   },
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",

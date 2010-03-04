@@ -90,6 +90,8 @@
 
 .test-parameter-group .gchart {
 	border: 1px solid #ccc;
+	background-color: #fff;
+	padding: 0 10px;
 	margin-bottom: 15px;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;

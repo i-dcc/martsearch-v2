@@ -22,6 +22,8 @@ require "gchart"
 gem "biomart", ">=0.1.5"
 require "biomart"
 
+require "rsolr"
+
 require "#{File.dirname(__FILE__)}/../lib/mock.rb"
 require "#{File.dirname(__FILE__)}/../lib/string.rb"
 require "#{File.dirname(__FILE__)}/../lib/array.rb"

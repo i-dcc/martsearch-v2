@@ -95,7 +95,7 @@ end
 # in an Oracle database and return it as either:
 # - an array of hashes (keyed by column name)
 # - a hash of hashes, keyed by the value defined in the 'group_by' column
-def dump_oracle_table( dbh, table, group_by=nil )
+def dump_oracle_table( dbh, table, group_by=nil, where=nil )
   data    = []
   columns = []
   
@@ -103,7 +103,12 @@ def dump_oracle_table( dbh, table, group_by=nil )
     columns.push(column.name)
   end
   
-  cursor = dbh.exec("select #{columns.join(", ")} from #{table}")
+  sql = "select #{columns.join(", ")} from #{table}"
+  if where
+    sql << " #{where}"
+  end
+  
+  cursor = dbh.exec(sql)
   cursor.fetch do |row|
     data_row = {}
     columns.each_index do |i|
@@ -133,6 +138,8 @@ end
 # can easily build up links to and display pages from the images dumped 
 # by Jacqui, and the pages dumped by Neil.
 def setup_pheno_configuration
+  pheno_dataset = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
+  
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
     pheno_conf = JSON.load( File.new( PHENO_TEST_DESC_FILE, "r" ) )
     
@@ -168,25 +175,21 @@ def setup_pheno_configuration
     @@ms.cache.write( "sanger-phenotyping-homviable_results", homviable_results.to_json, :expires_in => 12.hours )
   end
   
-  unless @@ms.cache.fetch("sanger-phenotyping-fertility_results")
-    raw_results = dump_oracle_table( @@mig_dbh, "mig.rep_mating_summary_vw", "COLONY_PREFIX" )
+  unless @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup")
     fertility_results = {}
+    raw_results       = dump_oracle_table(
+      @@mig_dbh,
+      "mig.rep_mating_summary_vw",
+      "COLONY_PREFIX",
+      "where (FATHER_GENOTYPE_STATUS = 'Homozygous' or MOTHER_GENOTYPE_STATUS = 'Homozygous')"
+    )
     
     raw_results.each do |colony,data|
-      hom_parent = false
-      
-      data.each do |result|
-        if result["FATHER_GENOTYPE_STATUS"] === "Homozygous"
-          hom_parent = true
-        end
-      end
-      
-      if hom_parent
-        fertility_results[colony] = data
-      end
+      fertility_results[colony] = true
+      @@ms.cache.write( "sanger-phenotyping-fertility_results_#{colony}", data.to_json, :expires_in => 12.hours )
     end
     
-    @@ms.cache.write( "sanger-phenotyping-fertility_results", fertility_results.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-fertility_results_lookup", fertility_results.to_json, :expires_in => 12.hours )
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
@@ -195,10 +198,52 @@ def setup_pheno_configuration
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_names")
     attribute_map = {}
-    @@ms.datasets_by_name[:"sanger-phenotyping"].dataset.attributes.each do |name,attribute|
+    pheno_dataset.attributes.each do |name,attribute|
       attribute_map[name] = attribute.display_name
     end
     @@ms.cache.write( "sanger-phenotyping-test_names", attribute_map.to_json, :expires_in => 12.hours )
+  end
+  
+  unless @@ms.cache.fetch("sanger-phenotyping-heatmap")
+    attributes_to_fetch = @@ms.datasets_by_name[:"sanger-phenotyping"].attributes
+    attributes_to_fetch.push("marker_symbol")
+    
+    heat_map = []
+    results = pheno_dataset.search( :attributes => attributes_to_fetch, :process_results => true )
+    
+    results.sort_by { |r| r["marker_symbol"] }.each do |result|
+      result["allele_name"] = @@ms.datasets_by_name[:"sanger-phenotyping"].fix_superscript_text_in_attribute(result["allele_name"])
+      heat_map.push(result)
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-heatmap", heat_map.to_json, :expires_in => 12.hours )
+  end
+  
+  unless @@ms.cache.fetch("sanger-phenotyping-pheno_links")
+    pheno_links = {}
+    
+    image_info     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )
+    abr_info       = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
+    homviable_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )
+    fertility_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup") )
+    
+    results = pheno_dataset.search( :attributes => ["colony_prefix"], :process_results => true )
+    results.each do |result|
+      colony_prefix = result["colony_prefix"]
+      pheno_links[colony_prefix] = []
+      
+      unless image_info[colony_prefix].nil?
+        image_info[colony_prefix].keys.each do |test|
+          pheno_links[colony_prefix].push(test)
+        end
+      end
+      
+      if abr_info.include?(colony_prefix) then pheno_links[colony_prefix].push("abr") end
+      if homviable_info[colony_prefix]    then pheno_links[colony_prefix].push("homozygote-viability") end
+      if fertility_info[colony_prefix]    then pheno_links[colony_prefix].push("fertility") end
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-pheno_links", pheno_links.to_json, :expires_in => 12.hours )
   end
 end
 
@@ -206,30 +251,8 @@ end
 # that have a detailed phenotyping report page.
 def pheno_links( colony_prefix )
   setup_pheno_configuration
-  
-  tests_to_link = []
-  image_info     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[colony_prefix]
-  abr_info       = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
-  homviable_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[colony_prefix]
-  fertility_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results") )[colony_prefix]
-  
-  unless image_info.nil?
-    tests_to_link = image_info.keys
-  end
-  
-  if abr_info.include?(colony_prefix)
-    tests_to_link.push("abr")
-  end
-  
-  unless homviable_info.nil?
-    tests_to_link.push("homozygote-viability")
-  end
-  
-  unless fertility_info.nil?
-    tests_to_link.push("fertility")
-  end
-  
-  return tests_to_link
+  links = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-pheno_links") )[colony_prefix]
+  return links
 end
 
 # Template helper function to map the status descriptions retrived from MIG into 

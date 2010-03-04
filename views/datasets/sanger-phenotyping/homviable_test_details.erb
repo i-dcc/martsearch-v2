@@ -52,19 +52,19 @@
     <table class="nobg noborder" width="100%">
       <tr>
         <td width="40%" style="text-align:center; vertical-align:top;">
-          <%= 
-            gchart_pie(
+          <% 
+            chart_url = gchart_pie(
               :data => [
                 (@test_data["WT_RATIO"] * 100).round,
                 (@test_data["HET_RATIO"] * 100).round,
                 (@test_data["HOM_RATIO"] * 100).round
               ],
               :labels => [ "WT", "Het", "Hom" ],
-              :alt => "Breeding Breakdown",
-              :format => 'image_tag',
-              :class => 'gchart'
+              :theme => :pastel
             )
+            chart_url << "&chdl=WT|Het|Hom"
           %>
+          <img src="<%= chart_url %>" alt="Breeding Breakdown" class="gchart" />
           <div>
             Breakdown of genotyped mice.
           </div>

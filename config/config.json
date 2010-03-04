@@ -141,7 +141,6 @@
     "datasets_to_index": [
       "ikmc-dcc-gene_details",
       "mgi-markers",
-      "ikmc-dcc-knockout_attempts",
       "sanger-htgt_targ",
       "sanger-kermits",
       "sanger-phenotyping",

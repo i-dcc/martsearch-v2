@@ -1,7 +1,7 @@
 {
   "display":              true,
   "use_in_search":        true,
-  "index":                true,
+  "index":                false,
   "custom_sort":          true,
   "custom_css":           true,
   "custom_js":            true,
@@ -13,23 +13,7 @@
   "attribution":          "The International Knockout Mouse Consortium (IKMC)",
   "attribution_link":     "http://www.knockoutmouse.org/",
   "description":          "",
-  "indexing": {
-    "allow_document_creation": true,
-    "attribute_map": [
-      { "attr": "mgi_accession_id", "idx": "mgi_accession_id_key", "use_to_map": true },
-      { "attr": "marker_symbol",    "idx": "marker_symbol" },
-      { "attr": "marker_name",      "idx": "marker_name" },
-      { "attr": "chromosome",       "idx": "chromosome" },
-      { "attr": "strand",           "idx": "strand" },
-      { "attr": "start",            "idx": "coord_start" },
-      { "attr": "end",              "idx": "coord_end" },
-      { "attr": "synonym",          "idx": "synonym" },
-      { "attr": "ensembl_gene_id",  "idx": "ensembl_gene_id" },
-      { "attr": "vega_gene_id",     "idx": "vega_gene_id" },
-      { "attr": "ncbi_gene_id",     "idx": "ncbi_gene_id" },
-      { "attr": "ccds_id",          "idx": "ccds_id" }
-    ]
-  },
+  "indexing": {},
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",
     "joined_biomart_filter":    "mgi_accession_id",

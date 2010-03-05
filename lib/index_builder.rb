@@ -361,7 +361,8 @@ class IndexBuilder
                 attrs.push(value_to_index)
               end
               
-              unless attrs.join("").gsub(" ","").empty?
+              # Only index when we have values for ALL the grouped attributes
+              if attrs.size() === group["attrs"].size()
                 join_str = group["using"] ? group["using"] : "||"
                 doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
               end

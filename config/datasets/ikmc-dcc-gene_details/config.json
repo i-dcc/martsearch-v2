@@ -38,6 +38,14 @@
       { "attr": "escell_available", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
       { "attr": "mouse_generated",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true },
       { "attr": "mouse_available",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true }
+    ],
+    "grouped_attributes": [
+      { "attrs": ["ikmc_project","vector_generated"], "idx": "ikmc_project_product_status", "using": "_" },
+      { "attrs": ["ikmc_project","vector_available"], "idx": "ikmc_project_product_status", "using": "_" },
+      { "attrs": ["ikmc_project","escell_generated"], "idx": "ikmc_project_product_status", "using": "_" },
+      { "attrs": ["ikmc_project","escell_available"], "idx": "ikmc_project_product_status", "using": "_" },
+      { "attrs": ["ikmc_project","mouse_generated"],  "idx": "ikmc_project_product_status", "using": "_" },
+      { "attrs": ["ikmc_project","mouse_available"],  "idx": "ikmc_project_product_status", "using": "_" }
     ]
   },
   "searching": {

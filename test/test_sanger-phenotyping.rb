@@ -65,9 +65,7 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       colonies_checked = 0
       randomised_colonies = colonies_with_images.keys.sort_by { rand }
       randomised_colonies.each do |colony_prefix|
-        puts "trying homozygote-viability for #{colony_prefix}"
         if colonies_checked < 6
-          puts "checking homozygote-viability for #{colony_prefix}"
           if colonies_with_images[colony_prefix]["homozygote-viability"]
             @browser.get "/phenotyping/#{colony_prefix}/homozygote-viability/"
             assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/homozygote-viability/'." )
@@ -87,9 +85,7 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       colonies_checked = 0
       randomised_colonies = colonies_with_images.keys.sort_by { rand }
       randomised_colonies.each do |colony_prefix|
-        puts "trying fertility for #{colony_prefix}"
         if colonies_checked < 6
-          puts "checking fertility for #{colony_prefix}"
           if colonies_with_images[colony_prefix]["fertility"]
             @browser.get "/phenotyping/#{colony_prefix}/fertility/"
             assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/fertility/'." )

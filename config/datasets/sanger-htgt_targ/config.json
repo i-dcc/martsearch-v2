@@ -19,14 +19,15 @@
       { "attr": "mgi_accession_id",  "idx": "mgi_accession_id_key", "use_to_map": true },
       { "attr": "design_plate",      "idx": "design_plate" },
       { "attr": "design_well",       "idx": "design_well" },
-      { "attr": "intvec_plate",      "idx": "intermediate_vector_plate" },
-      { "attr": "intvec_well",       "idx": "intermediate_vector_well" },
-      { "attr": "targvec_plate",     "idx": "targeting_vector_plate" },
-      { "attr": "targvec_well",      "idx": "targeting_vector_well" },
+      { "attr": "intvec_plate",      "idx": "ignore_me" },
+      { "attr": "intvec_well",       "idx": "ignore_me" },
+      { "attr": "targvec_plate",     "idx": "ignore_me" },
+      { "attr": "targvec_well",      "idx": "ignore_me" },
       { "attr": "allele_name",       "idx": "allele" },
       { "attr": "escell_clone",      "idx": "escell" }
     ],
     "grouped_attributes": [
+      { "attrs": ["design_plate","design_well"], "idx": "targeting_design", "using": "_" },
       { "attrs": ["intvec_plate","intvec_well"], "idx": "intermediate_vector", "using": "_" },
       { "attrs": ["targvec_plate","targvec_well"], "idx": "targeting_vector", "using": "_" }
     ]

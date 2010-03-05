@@ -331,44 +331,51 @@ class IndexBuilder
               end
             end
             
-            # Any further metadata to be extracted from here? (i.e. MP terms in comments)
+            # Any further metadata to be extracted from here?
             if value_to_index and map_data[:attribute_map][attr_name]["extract"]
-              regexp  = Regexp.new( map_data[:attribute_map][attr_name]["extract"]["regexp"] )
-              matches = false
-              
-              if value_to_index.is_a?(Array)
-                value_to_index.each do |value|
-                  unless matches
-                    matches = regexp.match( value )
-                  end
-                end
-              else
-                matches = regexp.match( value_to_index )
-              end
-              
-              if matches
-                doc[ map_data[:attribute_map][attr_name]["extract"]["idx"].to_sym ].push( matches[0] )
-              end
+              index_extracted_attributes( map_data[:attribute_map][attr_name]["extract"], doc, value_to_index )
             end
           end
           
-          # Finally - do we have any attributes that we need to group together?
+          # Do we have any attributes that we need to group together?
           if @current[:dataset_conf]["indexing"]["grouped_attributes"]
-            @current[:dataset_conf]["indexing"]["grouped_attributes"].each do |group|
-              attrs = []
-              group["attrs"].each do |attribute|
-                value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
-                attrs.push(value_to_index)
-              end
-              
-              # Only index when we have values for ALL the grouped attributes
-              if attrs.size() === group["attrs"].size()
-                join_str = group["using"] ? group["using"] : "||"
-                doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
-              end
-            end
+            index_grouped_attributes( @current[:dataset_conf]["indexing"]["grouped_attributes"], doc, data_row_obj, map_data )
           end
         end
+      end
+    end
+  end
+  
+  # Utility function to handle the extraction of metadata from indexed values,
+  # (i.e. MP terms in comments)
+  def index_extracted_attributes( extract_conf, doc, value_to_index )
+    regexp  = Regexp.new( extract_conf["regexp"] )
+    matches = false
+    
+    if value_to_index.is_a?(Array)
+      value_to_index.each do |value|
+        matches = regexp.match( value )
+        if matches then doc[ extract_conf["idx"].to_sym ].push( matches[0] ) end
+      end
+    else
+      matches = regexp.match( value_to_index )
+      if matches then doc[ extract_conf["idx"].to_sym ].push( matches[0] ) end
+    end
+  end
+  
+  # Utility function to handle the indexing of grouped attributes
+  def index_grouped_attributes( grouped_attr_conf, doc, data_row_obj, map_data )
+    grouped_attr_conf.each do |group|
+      attrs = []
+      group["attrs"].each do |attribute|
+        value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
+        attrs.push(value_to_index)
+      end
+      
+      # Only index when we have values for ALL the grouped attributes
+      if attrs.size() === group["attrs"].size()
+        join_str = group["using"] ? group["using"] : "||"
+        doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
       end
     end
   end

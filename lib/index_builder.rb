@@ -226,7 +226,7 @@ class IndexBuilder
       copy_fields.push( copy_field["dest"] )
     end
     
-    doc = {}
+    doc = { :datasets_with_data => [] }
     @config["schema"]["fields"].each do |key,detail|
       unless copy_fields.include?(key)
         doc[ key.to_sym ] = []
@@ -335,9 +335,16 @@ class IndexBuilder
             if value_to_index and map_data[:attribute_map][attr_name]["extract"]
               index_extracted_attributes( map_data[:attribute_map][attr_name]["extract"], doc, value_to_index )
             end
+            
+            # Stamp the dataset name onto this doc if we indexed something...
+            if value_to_index
+              unless doc[:datasets_with_data].include?( @current[:dataset_conf]["internal_name"] )
+                doc[:datasets_with_data].push( @current[:dataset_conf]["internal_name"] )
+              end
+            end
           end
           
-          # Do we have any attributes that we need to group together?
+          # Finally - do we have any attributes that we need to group together?
           if @current[:dataset_conf]["indexing"]["grouped_attributes"]
             index_grouped_attributes( @current[:dataset_conf]["indexing"]["grouped_attributes"], doc, data_row_obj, map_data )
           end
@@ -369,11 +376,19 @@ class IndexBuilder
       attrs = []
       group["attrs"].each do |attribute|
         value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
-        attrs.push(value_to_index)
+        
+        # When we have an attribute that we're indexing the attribute NAME 
+        # of, we get an array returned...  We can only pick one, so let's pick 
+        # the biomart display name...
+        if value_to_index.is_a?(Array) then value_to_index = value_to_index.pop() end
+        
+        if value_to_index and !value_to_index.gsub(" ","").empty?
+          attrs.push(value_to_index)
+        end
       end
       
       # Only index when we have values for ALL the grouped attributes
-      if attrs.size() === group["attrs"].size()
+      if !attrs.empty? and ( attrs.size() === group["attrs"].size() )
         join_str = group["using"] ? group["using"] : "||"
         doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
       end
@@ -395,7 +410,11 @@ class IndexBuilder
     if options["index_attr_name"]
       if value_to_index
         mart_attributes = @current[:biomart].attributes()
-        value_to_index  = [ attr_name, mart_attributes[attr_name].display_name ]
+        if options["index_attr_display_name_only"]
+          value_to_index  = mart_attributes[attr_name].display_name
+        else
+          value_to_index  = [ attr_name, mart_attributes[attr_name].display_name ]
+        end
       end
     end
 
@@ -422,17 +441,19 @@ class IndexBuilder
   
   # Utility function to remove any duplication from a document construct.
   def clean_document( doc )
-    doc.each do |key,value|
-      if value.size > 0
-        doc[key] = value.uniq
+    doc.each do |index_field,index_values|
+      if index_values.size > 0
+        doc[index_field] = index_values.uniq
       end
       
       # If we have multiple value entries in what should be a single valued 
       # field, not the best solution, but just arbitrarily pick the first entry.
-      if !@config["schema"]["fields"][key.to_s]["multi_valued"] and value.size > 1
-        new_array = []
-        new_array.push(value[0])
-        doc[key]  = new_array
+      unless index_field === :datasets_with_data
+        if !@config["schema"]["fields"][index_field.to_s]["multi_valued"] and index_values.size > 1
+          new_array = []
+          new_array.push(index_values[0])
+          doc[index_field]  = new_array
+        end
       end
     end
   end

@@ -431,7 +431,8 @@
    <%- if details["stored"] -%>stored="<%= details["stored"] %>" <%- end -%>
    <%- if details["required"] -%>required="<%= details["required"] %>" <%- end -%>
    <%- if details["multi_valued"] -%>multiValued="<%= details["multi_valued"] %>" <%- end -%>/>
-    <%- end -%>
+   <%- end -%>
+   <field name="datasets_with_data" type="string" indexed="true" stored="false" multiValued="true" />
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->

@@ -1,7 +1,7 @@
 {
   "display":              true,
   "use_in_search":        true,
-  "index":                false,
+  "index":                true,
   "custom_sort":          true,
   "custom_css":           true,
   "custom_js":            true,
@@ -13,7 +13,28 @@
   "attribution":          "The International Knockout Mouse Consortium (IKMC)",
   "attribution_link":     "http://www.knockoutmouse.org/",
   "description":          "",
-  "indexing": {},
+  "indexing": {
+    "allow_document_creation": true,
+    "attribute_map": [
+      { "attr": "mgi_accession_id", "idx": "mgi_accession_id_key", "use_to_map": true },
+      { "attr": "ikmc_project",     "idx": "ikmc_project" },
+      { "attr": "ikmc_project_id",  "idx": "ikmc_project_id" },
+      { "attr": "vector_generated", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true },
+      { "attr": "vector_available", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true },
+      { "attr": "escell_generated", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true },
+      { "attr": "escell_available", "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true },
+      { "attr": "mouse_generated",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true },
+      { "attr": "mouse_available",  "idx": "product_status", "if_attr_equals": ["1"], "index_attr_name": true, "index_attr_display_name_only": true }
+    ],
+    "grouped_attributes": [
+      { "attrs": ["ikmc_project","vector_generated"], "idx": "ikmc_project_product_status", "using": " " },
+      { "attrs": ["ikmc_project","vector_available"], "idx": "ikmc_project_product_status", "using": " " },
+      { "attrs": ["ikmc_project","escell_generated"], "idx": "ikmc_project_product_status", "using": " " },
+      { "attrs": ["ikmc_project","escell_available"], "idx": "ikmc_project_product_status", "using": " " },
+      { "attrs": ["ikmc_project","mouse_generated"],  "idx": "ikmc_project_product_status", "using": " " },
+      { "attrs": ["ikmc_project","mouse_available"],  "idx": "ikmc_project_product_status", "using": " " }
+    ]
+  },
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",
     "joined_biomart_filter":    "mgi_accession_id",

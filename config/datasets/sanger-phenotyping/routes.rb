@@ -119,7 +119,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   
   if search_data
     pipeline = case search_data[0]["pipeline"]
-    when "MouseGP" then "mouse-gp"
+    when "Mouse GP" then "mouse-gp"
     when "P1/2"    then "mgp-pipeline-1-2"
     end
     

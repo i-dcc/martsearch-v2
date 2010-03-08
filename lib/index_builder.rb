@@ -75,11 +75,11 @@ class IndexBuilder
         puts "  - processing #{results[:data].size} rows of Biomart results"
       end
       process_dataset_results( results )
-    end
-    
-    # Finally, remove duplicates from our documents
-    @documents.values.each do |doc|
-      clean_document(doc)
+      
+      # Finally, remove duplicates from our documents
+      @documents.values.each do |doc|
+        clean_document(doc)
+      end
     end
   end
   

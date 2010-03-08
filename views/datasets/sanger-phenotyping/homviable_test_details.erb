@@ -53,16 +53,13 @@
       <tr>
         <td width="40%" style="text-align:center; vertical-align:top;">
           <% 
-            chart_url = gchart_pie(
-              :data => [
-                (@test_data["WT_RATIO"] * 100).round,
-                (@test_data["HET_RATIO"] * 100).round,
-                (@test_data["HOM_RATIO"] * 100).round
-              ],
-              :labels => [ "WT", "Het", "Hom" ],
-              :theme => :pastel
-            )
-            chart_url << "&chdl=WT|Het|Hom"
+            chart_url =  "http://chart.apis.google.com/chart?"
+            chart_url << "chs=300x200" # size
+            chart_url << "&cht=p" # type
+            chart_url << "&chd=t:#{(@test_data["WT_RATIO"]*100).round},#{(@test_data["HET_RATIO"]*100).round},#{(@test_data["HOM_RATIO"]*100).round}" # data
+            chart_url << "&chl=WT|Het|Hom" # labels
+            chart_url << "&chdl=WT|Het|Hom" # legend
+            chart_url << "&chco=a9dada,aedaa9,daaea9,dadaa9,a9a9da" # colour scheme (pastel theme stolen from ruby googlecharts gem)
           %>
           <img src="<%= chart_url %>" alt="Breeding Breakdown" class="gchart" />
           <div>

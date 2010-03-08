@@ -45,13 +45,10 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       colonies_with_images = find_pheno_images()
       assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
       
-      # Take a random sample of 10 colonies, and then request 5
-      # tests at random from these colonies and view the details pages...
-      random_colonies = colonies_with_images.keys.sort_by { rand }[0..10]
-      random_colonies.each do |colony_prefix|
-        random_tests = colonies_with_images[colony_prefix].keys.sort_by { rand }[0..5]
-        random_tests.each do |test|
-          view_pheno_details_page( @browser, colony_prefix, test )
+      # Request the details pages of ALL of the colonies and tests...
+      colonies_with_images.each do |colony,test_data|
+        test_data.each do |test,image_data|
+          view_pheno_details_page( @browser, colony, test )
         end
       end
     end

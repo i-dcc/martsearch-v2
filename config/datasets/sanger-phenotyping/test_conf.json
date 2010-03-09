@@ -106,8 +106,8 @@
       "slug": "insulin"
     },
     "ip-gtt": {
-      "description": "ipGTT (week 13) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Mice are fasted overnight (maximum of 16 hours) before the glucose tolerance test. A fasting blood sample is taken before a bolus of glucose is administered by intra-peritoneal injection. Blood samples are tested for glucose concentration (Accu-Check Aviva, Roche) at 15, 30, 60 and 120 minutes following the glucose administration.",
-      "images": [{"fastedgluc":"Fasted Blood Glucose"},{"ipgtt":"ip-GTT"},{"bodywt":"Weight Curve"}],
+      "description": "ipGTT (week 13) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Mice are fasted overnight (maximum of 16 hours) before the glucose tolerance test. A fasting blood sample is taken before a bolus of glucose is administered by intra-peritoneal injection. Blood samples are tested for glucose concentration (Accu-Check Aviva, Roche) at 15, 30, 60 and 120 minutes following the glucose administration and reported as plasma glucose concentration (mmol/l).",
+      "images": [{"fastedgluc":"Fasted Plasma Glucose"},{"ipgtt":"ip-GTT"},{"bodywt":"Weight Curve"}],
       "name": "ip-GTT",
       "second_description": "The mean values obtained for mice of the same genotype are represented as symbols joined by a line on the graphs below. The standard deviation for each data point are shown as whiskers. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green.",
       "slug": "ip-gtt"
@@ -234,8 +234,8 @@
       "slug": "indirect-calorimetry"
     },
     "ip-gtt": {
-      "description": "ipGTT (week 13) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Mice are fasted overnight (maximum of 16 hours) before the glucose tolerance test. A fasting blood sample is taken before a bolus of glucose is administered by intra-peritoneal injection. Blood samples are tested for glucose concentration (Accu-Check Aviva, Roche) at 15, 30, 60 and 120 minutes following the glucose administration.",
-      "images": [{"fastedgluc":"Fasted Blood Glucose"},{"ipgtt":"ip-GTT"},{"bodywt":"Weight Curve"}],
+      "description": "ipGTT (week 13) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Mice are fasted overnight (maximum of 16 hours) before the glucose tolerance test. A fasting blood sample is taken before a bolus of glucose is administered by intra-peritoneal injection. Blood samples are tested for glucose concentration (Accu-Check Aviva, Roche) at 15, 30, 60 and 120 minutes following the glucose administration and reported as plasma glucose concentration (mmol/l).",
+      "images": [{"fastedgluc":"Fasted Plasma Glucose"},{"ipgtt":"ip-GTT"},{"bodywt":"Weight Curve"}],
       "name": "ip-GTT",
       "second_description": "The mean values obtained for mice of the same genotype are represented as symbols joined by a line on the graphs below. The standard deviation for each data point are shown as whiskers. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green.",
       "slug": "ip-gtt"

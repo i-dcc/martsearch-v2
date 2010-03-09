@@ -37,7 +37,7 @@ MGP Pipeline 1,Tail Morphology,dysmorphology,tailmorph
 MGP Pipeline 1,Adiponectin,insulin,adipo
 MGP Pipeline 1,Insulin (MSD),insulin,ins
 MGP Pipeline 1,Insulin (ELISA),insulin,ins
-MGP Pipeline 1,Fasted Blood glucose,ip-gtt,fastedgluc
+MGP Pipeline 1,Fasted Plasma glucose,ip-gtt,fastedgluc
 MGP Pipeline 1,ip-GTT,ip-gtt,ipgtt
 MGP Pipeline 1,Weight Curve,ip-gtt,bodywt
 MGP Pipeline 1,Weight Curve,body-weight-curve-normal-chow,chow
@@ -503,7 +503,7 @@ Mouse GP,Genitalia Morpholgy,dysmorphology,genitalmorph,
 Mouse GP,Genitalia Size,dysmorphology,genitalsize,
 Mouse GP,Tail Length,dysmorphology,taillength,
 Mouse GP,Tail Morphology,dysmorphology,tailmorph,
-Mouse GP,Fasted Blood glucose,ip-gtt,fastedgluc,
+Mouse GP,Fasted Plasma glucose,ip-gtt,fastedgluc,
 Mouse GP,ip-GTT,ip-gtt,ipgtt,
 Mouse GP,Weight Curve,ip-gtt,bodywt,
 Mouse GP,White Blood Cell Count,haematology,wbc,

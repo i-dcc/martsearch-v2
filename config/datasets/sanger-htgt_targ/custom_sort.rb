@@ -2,13 +2,13 @@ sorted_results = {}
 
 @current_search_results.each do |result|
   
-  # We're only interested in non NorCOMM/Regeneron projects, AND 
+  # We're only interested in non KOMP-CSD/EUCOMM projects, AND 
   # projects that have generated ES Cells...
   process_result = false
   
   if !result["ikmc_project_id"].nil?
     if result["status_sequence"] and result["status_sequence"].to_i >= 95
-      if result["is_komp_regeneron"] != "1" and result["is_norcomm"] != "1"
+      if result["is_komp_csd"] == "1" or result["is_eucomm"] == "1"
         process_result = true
       end
     end
@@ -90,7 +90,7 @@ sorted_results = {}
       unless project["conditional_clones"]    then project["conditional_clones"]    = [] end
       unless project["nonconditional_clones"] then project["nonconditional_clones"] = [] end
       
-      if result["targeted_trap"]
+      if result["targeted_trap"] or result["targvec_plate"] =~ /^D/
         project["nonconditional_clones"].push(clone)
       else
         project["conditional_clones"].push(clone)

@@ -32,7 +32,6 @@ class MartsearchUiTest < Test::Unit::TestCase
     
     teardown do
       # Put our original conf file back
-      File.delete(@@conf_file)
       system("mv #{@@conf_file}.orig #{@@conf_file}")
       
       # And clear the no email flag

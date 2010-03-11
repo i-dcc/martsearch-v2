@@ -5,7 +5,6 @@
       <th>ES Cell Strain</th>
       <th>ES Cell Line</th>
       <th>Allele</th>
-      <th class="nobg noborder"></th>
     </tr>
   </thead>
   <tbody>
@@ -27,9 +26,6 @@
         </td>
         <td><%= clone["escell_line"] %></td>
         <td><%= clone["allele_name"] %></td>
-        <td class="nobg noborder">
-          <%= partial( "datasets/sanger-htgt_targ/order_button", :locals => { :project => project, :order_type => 'clone' } ) %>
-        </td>
       </tr>
     <% end %>
   </tbody>

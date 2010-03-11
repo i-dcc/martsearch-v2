@@ -9,7 +9,7 @@
   "custom_routes":        false,
   "url":                  "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":         "htgt_targ",
-  "display_name":         "Sanger ES Cells",
+  "display_name":         "Knockout ES Cells",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
   "description":          "",

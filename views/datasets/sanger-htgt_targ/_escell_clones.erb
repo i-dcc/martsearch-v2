@@ -17,7 +17,7 @@
       </td>
       <td><%= project["conditional_clones"].length %></td>
       <td><%= project["nonconditional_clones"].length %></td>
-      <td><a href="http://www.sanger.ac.uk/htgt/qc/seq_view_file?design_id=<%= project["design_id"] %>&amp;cassette=<%= project["cassette"] %>" class="file">view</a></td>
+      <td><a href="http://www.sanger.ac.uk/htgt/qc/seq_view_file?design_id=<%= project["design_id"] %>&amp;cassette=<%= project["cassette"] %>" class="file ext_link">view</a></td>
       <td class="nobg noborder">
         <%= partial( "datasets/sanger-htgt_targ/order_button", :locals => { :project => project, :order_type => 'clone' } ) %>
       </td>

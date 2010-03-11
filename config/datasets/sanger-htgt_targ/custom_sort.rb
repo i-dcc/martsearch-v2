@@ -90,7 +90,7 @@ sorted_results = {}
       unless project["conditional_clones"]    then project["conditional_clones"]    = [] end
       unless project["nonconditional_clones"] then project["nonconditional_clones"] = [] end
       
-      if result["targeted_trap"]
+      if result["targeted_trap"] or result["targvec_plate"] =~ /^D/
         project["nonconditional_clones"].push(clone)
       else
         project["conditional_clones"].push(clone)

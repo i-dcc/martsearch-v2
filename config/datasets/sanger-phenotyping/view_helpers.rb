@@ -1,16 +1,17 @@
 
 # Constants defining where our static data lives...
-PHENO_IMG_LOC        = "#{Dir.pwd}/public/images/pheno_images"
-PHENO_ABR_LOC        = "#{Dir.pwd}/tmp/pheno_abr"
-PHENO_TEST_DESC_FILE = "#{Dir.pwd}/config/datasets/sanger-phenotyping/test_conf.json"
+file_path            = File.expand_path(File.dirname(__FILE__))
+PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
+PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
+PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
 
 # Constants for connecting to MIG
-ORACLE_USER     = "eucomm_vector"
-ORACLE_PASSWORD = "eucomm_vector"
-ORACLE_DB       = "migp_ha.world"
+MIG_ORACLE_USER     = "eucomm_vector"
+MIG_ORACLE_PASSWORD = "eucomm_vector"
+MIG_ORACLE_DB       = "migp_ha.world"
 
 require "oci8"
-@@mig_dbh = OCI8.new(ORACLE_USER, ORACLE_PASSWORD, ORACLE_DB)
+@@mig_dbh = OCI8.new(MIG_ORACLE_USER, MIG_ORACLE_PASSWORD, MIG_ORACLE_DB)
 
 # Function to run through the pheno test images directory (supplied by Jacqui) 
 # and returns a hash like so:

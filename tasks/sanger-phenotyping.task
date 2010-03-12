@@ -1,0 +1,46 @@
+begin
+  require "uri"
+  require "net/http"
+  require "cgi"
+
+  require "rubygems"
+  require "json"
+  require "sinatra"
+  require "rdiscount"
+  require "mail"
+  require "builder"
+  require "rsolr"
+
+  require "active_support"
+  require "will_paginate/array"
+  require "will_paginate/view_helpers"
+
+  gem "biomart", ">=0.1.5"
+  require "biomart"
+
+  require "#{File.dirname(__FILE__)}/../lib/mock.rb"
+  require "#{File.dirname(__FILE__)}/../lib/string.rb"
+  require "#{File.dirname(__FILE__)}/../lib/array.rb"
+  require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
+  require "#{File.dirname(__FILE__)}/../lib/index.rb"
+  require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
+  require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
+  
+  require "#{File.dirname(__FILE__)}/../config/datasets/sanger-phenotyping/view_helpers.rb"
+
+  @@ms = Martsearch.new( "#{File.dirname(__FILE__)}/../config/config.json" )
+
+  namespace :phenotyping do
+  
+    desc "Writes a JSON list of the mouse colonies with pheno details pages to the /tmp directory."
+    task :image_cache_json do
+      setup_pheno_configuration
+      File.open("/tmp/sanger-phenotyping-pheno_links.json","w") do |f|
+        f.write @@ms.cache.fetch("sanger-phenotyping-pheno_links")
+      end
+    end
+  
+  end
+rescue LoadError
+  puts "[ERROR] Unable to load 'phenotyping' tasks - please run 'rake install_deps'"
+end

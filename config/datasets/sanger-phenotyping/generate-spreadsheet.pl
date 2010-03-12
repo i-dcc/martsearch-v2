@@ -26,7 +26,8 @@ my $HTTP_AGENT = LWP::UserAgent->new();
 ## Get on with it...
 ##
 
-my $pheno_data = query_biomart(
+my $image_cache = get_test_images();
+my $pheno_data  = query_biomart(
   $HTTP_AGENT,
   {
     url        => $CONF->{"url"} . "/martservice",
@@ -36,7 +37,7 @@ my $pheno_data = query_biomart(
   }
 );
 
-generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data );
+generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data, $image_cache );
 
 ##
 ## Subroutines
@@ -45,7 +46,7 @@ generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_d
 # Function to print out our phenotyping spreadsheet given a biomart 
 # data return.
 sub generate_spreadsheet {
-  my ( $filename, $data ) = @_;
+  my ( $filename, $data, $colonies_with_details ) = @_;
   
   # Use this variable to set the number of columns of data we have 
   # per-row before we print out the test results...
@@ -61,18 +62,18 @@ sub generate_spreadsheet {
   # Cell formatting...
   
   my $general_format    = $workbook->add_format( bg_color => 'white', border => 1, border_color => 'gray' );
-  my $test_formats      = _xls_setup_result_formats( $workbook, { border => 1, border_color => 'gray' } );
+  my $test_formats      = _xls_setup_result_formats( $workbook, { border => 1, border_color => 'gray', bold => 1, align => 'center', valign => 'vcenter' } );
   my $title_format      = $workbook->add_format( bold => 1, size => 10, bg_color => 'white', border => 1, border_color => 'gray' );
   my $test_title_format = $workbook->add_format( bold => 1, size => 10, bg_color => 'white', align => 'center', border => 1, border_color => 'gray' ); $test_title_format->set_rotation(90);
   
-  # Column formatting...
+  # Column width formatting...
   my %alpha_nums;
   my $number = 1;
   foreach ('A'..'Z') { $alpha_nums{$number} = $_; $number++; }
   $worksheet->set_column( 'A:'.$alpha_nums{$number_of_leading_text_entries}, 20 );
   $worksheet->set_column( $alpha_nums{$number_of_leading_text_entries+1}.':IV', 3 );
   
-  # Row formatting...
+  # Row height formatting...
   for (my $n = 1; $n < scalar( @{$data->{data}} )+1; $n++) {
     $worksheet->set_row( $n, 15 );
   }
@@ -84,9 +85,12 @@ sub generate_spreadsheet {
   ## Print the header...
   ##
   
+  my $colony_prefix_pos = undef;
   my $i = 0;
+  
   foreach my $header ( @{ $data->{headers} } ) {
     if ( $i < $number_of_leading_text_entries ) {
+      if ( $header =~ /Colony Prefix/i ) { $colony_prefix_pos = $i; }
       $worksheet->write( 0, $i, $header, $title_format );
       $i++;
     }
@@ -105,45 +109,59 @@ sub generate_spreadsheet {
   
   my $number_of_columns = 0;
   
-  for ( my $i = 0 ; $i < scalar( @{ $data->{data} } ) ; $i++ ) {
+  for ( my $row = 0 ; $row < scalar( @{ $data->{data} } ) ; $row++ ) {
 
     # First process the line into plain text and test info buckets
     my @processed_data;
-    for ( my $j = 0 ; $j < scalar( @{ $data->{data}->[$i] } ) ; $j++ ) {
-      if ( $j < $number_of_leading_text_entries ) {
-        push( @processed_data, $data->{data}->[$i]->[$j] );
+    for ( my $col = 0 ; $col < scalar( @{ $data->{data}->[$row] } ) ; $col++ ) {
+      if ( $col < $number_of_leading_text_entries ) {
+        push( @processed_data, $data->{data}->[$row]->[$col] );
       }
       else {
+        my $test_name = $data->{attributes}->[$col];
+        $test_name =~ s/\_/\-/g;
+        
         push(
           @processed_data,
           {
-            value   => $data->{data}->[$i]->[$j],
-            comment => $data->{data}->[$i]->[ $j + 1 ]
+            value     => $data->{data}->[$row]->[$col],
+            comment   => $data->{data}->[$row]->[$col + 1],
+            test_name => $test_name
           }
         );
-        $j++;
+        $col++;
       }
     }
     
     $number_of_columns = scalar(@processed_data);
 
     # Now write the processed data
-    for ( my $k = 0 ; $k < scalar(@processed_data) ; $k++ ) {
-      if ( $k < $number_of_leading_text_entries ) {
+    for ( my $col = 0 ; $col < scalar(@processed_data) ; $col++ ) {
+      if ( $col < $number_of_leading_text_entries ) {
         # plain text
-        $worksheet->write( $i + 1, $k, $processed_data[$k], $general_format );
+        $worksheet->write( $row + 1, $col, $processed_data[$col], $general_format );
       }
       else {
         # test info
-        my $res = $processed_data[$k];
+        my $result = $processed_data[$col];
 
         # write the comments if we have any
-        if ( defined $res->{comment} && !( $res->{comment} =~ /^$/ ) ) {
-          $worksheet->write_comment( $i + 1, $k, $res->{comment} );
+        if ( defined $result->{comment} && !( $result->{comment} =~ /^$/ ) ) {
+          $worksheet->write_comment( $row + 1, $col, $result->{comment} );
         }
-
-        # Now write the result cell
-        $worksheet->write( $i + 1, $k, "", _xls_test_result_format( $test_formats, $res->{value} ) );
+        
+        # see if we have a test details page to link to...
+        my $colony_prefix = $processed_data[$colony_prefix_pos];
+        my $pheno_details_url = "http://www.sanger.ac.uk/mouseportal/phenotyping/$colony_prefix/" . $result->{test_name} . "/";
+        
+        if ( defined $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } and $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } ) {
+          # if we do, write a link to it...
+          $worksheet->write_url( $row + 1, $col, $pheno_details_url, ">", _xls_test_result_format( $test_formats, $result->{value} ) );
+        }
+        else {
+          # just write the plain results cell...
+          $worksheet->write( $row + 1, $col, "", _xls_test_result_format( $test_formats, $result->{value} ) );
+        }
       }
     }
   }
@@ -165,6 +183,8 @@ sub generate_spreadsheet {
   $worksheet->write( 8, $number_of_columns+2, "", $test_formats->{not_applicable} );
   $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
   $worksheet->write( 9, $number_of_columns+2, "", $test_formats->{test_not_done} );
+  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
+  $worksheet->write( 10, $number_of_columns+2, ">", $test_formats->{test_not_done} );
   
 }
 
@@ -207,6 +227,34 @@ sub _xls_test_result_format {
   return $form;
 }
 
+# Helper function to run the rake task 'phenotyping:image_cache_json' 
+# to generate, a JSON dump of all of the phenotyping images stored on 
+# disk and read it in.
+sub get_test_images {
+  my $SCRIPT_DIR = dirname(__FILE__);
+  
+  system("rake --rakefile $SCRIPT_DIR/../../../Rakefile phenotyping:image_cache_json > /dev/null");
+  my $image_cache = "";
+  open( IMAGEJSON, "/tmp/sanger-phenotyping-pheno_links.json" );
+  while (<IMAGEJSON>) { $image_cache .= $_; }
+  close(IMAGEJSON);
+  system("rm /tmp/sanger-phenotyping-pheno_links.json");
+
+  $image_cache = JSON->new->decode($image_cache) 
+    or die "Unable to read/find file sanger-phenotyping-pheno_links.json";
+  
+  # Now move through the colonies and convert the arrays of test 
+  # names to hashes for easy lookup later...
+  my $processed_image_cache = {};
+  foreach my $colony ( keys %{ $image_cache } ) {
+    foreach my $test ( @{ $image_cache->{$colony} } ) {
+      $processed_image_cache->{$colony}->{$test} = 1;
+    }
+  }
+  
+  return $processed_image_cache;
+}
+
 # Generic helper function to submit a query to a biomart and
 # return the processed results.
 sub query_biomart {
@@ -226,7 +274,8 @@ sub query_biomart {
 
   # Process the response
   if ( $response->is_success ) {
-    my $results = process_biomart_results( $response->content(), $params->{attributes} );
+    my $results = process_biomart_results( $response->content() );
+    $results->{attributes} = $params->{attributes};
     return $results;
   }
   else {
@@ -279,7 +328,7 @@ sub biomart_xml {
 # Helper function to convert a returned biomart (TSV) resultset
 # into an array of arrays for further processing.
 sub process_biomart_results {
-  my ( $tsv, $attributes ) = @_;
+  my ( $tsv ) = @_;
 
   my @array_of_arrays;
 
@@ -291,8 +340,6 @@ sub process_biomart_results {
   my $header_line = shift(@data_by_line);
   my @headers = split( "\t", $header_line );
 
-  # Create an array of hashes that contain the returned values,
-  # keyed by the attribute name
   for ( my $i = 0 ; $i < scalar(@data_by_line) ; $i++ ) {
     my @data_row = split( "\t", $data_by_line[$i] );
     push( @array_of_arrays, \@data_row );

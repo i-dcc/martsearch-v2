@@ -272,7 +272,7 @@ class Martsearch
       
       return ActiveSupport::Cache::MemCacheStore.new( servers, opts )
     when /file/
-      file_store = "#{Dir.pwd}/tmp/cache"
+      file_store = "#{File.dirname(__FILE__)}/../tmp/cache"
       if self.config["cache"]["file_store"]
         file_store = self.config["cache"]["file_store"]
       end

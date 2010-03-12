@@ -17,12 +17,13 @@ require "rack/utils"
 gem "biomart", ">=0.1.5"
 require "biomart"
 
-require "#{File.dirname(__FILE__)}/lib/mock.rb"
-require "#{File.dirname(__FILE__)}/lib/string.rb"
-require "#{File.dirname(__FILE__)}/lib/array.rb"
-require "#{File.dirname(__FILE__)}/lib/dataset.rb"
-require "#{File.dirname(__FILE__)}/lib/index.rb"
-require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
+MARTSEARCHR_PATH = File.expand_path(File.dirname(__FILE__))
+require "#{MARTSEARCHR_PATH}/lib/mock.rb"
+require "#{MARTSEARCHR_PATH}/lib/string.rb"
+require "#{MARTSEARCHR_PATH}/lib/array.rb"
+require "#{MARTSEARCHR_PATH}/lib/dataset.rb"
+require "#{MARTSEARCHR_PATH}/lib/index.rb"
+require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
@@ -30,7 +31,7 @@ require "#{File.dirname(__FILE__)}/lib/martsearch.rb"
 PORTAL_VERSION = "0.0.7"
 
 # Initialise the MartSearch object
-@@ms = Martsearch.new( "#{File.dirname(__FILE__)}/config/config.json" )
+@@ms = Martsearch.new( "#{MARTSEARCHR_PATH}/config/config.json" )
 BASE_URI = @@ms.base_uri()
 
 configure :production do
@@ -41,7 +42,7 @@ configure :production do
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
         if okay_to_send_emails?
-          template_file = File.new("#{File.dirname(__FILE__)}/views/not_found_email.erb","r")
+          template_file = File.new("#{MARTSEARCHR_PATH}/views/not_found_email.erb","r")
           template = ERB.new(template_file.read)
           template_file.close
 
@@ -59,7 +60,7 @@ configure :production do
 
   error do
     if okay_to_send_emails?
-      template_file = File.new("#{File.dirname(__FILE__)}/views/error_email.erb","r")
+      template_file = File.new("#{MARTSEARCHR_PATH}/views/error_email.erb","r")
       template = ERB.new(template_file.read)
       template_file.close
 
@@ -142,7 +143,7 @@ helpers do
   # Load in any custom (per dataset) helpers
   @@ms.datasets.each do |ds|
     if ds.use_custom_view_helpers
-      load "#{File.dirname(__FILE__)}/config/datasets/#{ds.internal_name}/view_helpers.rb"
+      load "#{MARTSEARCHR_PATH}/config/datasets/#{ds.internal_name}/view_helpers.rb"
     end
   end
 end
@@ -447,8 +448,7 @@ def check_for_errors
 end
 
 def check_for_messages
-  pwd = File.dirname(__FILE__)
-  Dir[ "#{pwd}/messages/*.html", "#{pwd}/messages/*.markdown" ].each do |file|
+  Dir[ "#{MARTSEARCHR_PATH}/messages/*.html", "#{MARTSEARCHR_PATH}/messages/*.markdown" ].each do |file|
     case file
     when /html/
       html = File.new( file, "r" )
@@ -464,7 +464,7 @@ end
 
 def okay_to_send_emails?
   okay_to_send_emails = true
-  Dir[ "#{File.dirname(__FILE__)}/tmp/*" ].each do |file|
+  Dir[ "#{MARTSEARCHR_PATH}/tmp/*" ].each do |file|
     if file =~ /noemail/
       okay_to_send_emails = false
     end
@@ -475,6 +475,6 @@ end
 # Load in any custom (per dataset) routes
 @@ms.datasets.each do |ds|
   if ds.use_custom_routes
-    load "#{File.dirname(__FILE__)}/config/datasets/#{ds.internal_name}/routes.rb"
+    load "#{MARTSEARCHR_PATH}/config/datasets/#{ds.internal_name}/routes.rb"
   end
 end

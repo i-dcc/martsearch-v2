@@ -235,10 +235,10 @@ sub get_test_images {
   
   system("rake --rakefile $SCRIPT_DIR/../../../Rakefile phenotyping:image_cache_json > /dev/null");
   my $image_cache = "";
-  open( IMAGEJSON, "$SCRIPT_DIR/sanger-phenotyping-pheno_links.json" );
+  open( IMAGEJSON, "/tmp/sanger-phenotyping-pheno_links.json" );
   while (<IMAGEJSON>) { $image_cache .= $_; }
   close(IMAGEJSON);
-  system("rm $SCRIPT_DIR/sanger-phenotyping-pheno_links.json");
+  system("rm /tmp/sanger-phenotyping-pheno_links.json");
 
   $image_cache = JSON->new->decode($image_cache) 
     or die "Unable to read/find file sanger-phenotyping-pheno_links.json";

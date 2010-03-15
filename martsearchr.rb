@@ -122,17 +122,17 @@ helpers do
         url  = "#"
         
         # Work out the url to use
-        if tmp[0].match("/search")
-          url = "#{BASE_URI}/search/#{params["query"]}"
-        elsif tmp[0].match("/browse")
-          url = "#{BASE_URI}/browse/#{params["field"]}/#{params["query"]}"
+        if request.path_info.match("/search")
+          url = "#{BASE_URI}/search/#{opts["query"]}"
+        elsif request.path_info.match("/browse")
+          url = "#{BASE_URI}/browse/#{opts["field"]}/#{opts["query"]}"
         end
         
         if opts["page"]
-          return "#{url}/#{opts["page"]}"
-        else
-          return url
+          url = "#{url}/#{opts["page"]}"
         end
+        
+        return CGI::escapeHTML(url).gsub(" ","+")
       else
         link_options
       end

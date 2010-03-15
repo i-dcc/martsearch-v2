@@ -173,56 +173,21 @@ get "/?" do
     @news   = ikmc_front_page_data["news"]
   else
     # Counts for the Pipeline Progress Summary
-    @counts = {
-      "Vectors" => {
-        "Generated" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "TIGM" } )
-        },
-        "Available" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "vector_available" => "1", "project" => "TIGM" } )
-        }
-      },
-      "ES Cells" => {
-        "Generated" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "TIGM" } )
-        },
-        "Available" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "escell_available" => "1", "project" => "TIGM" } )
-        }
-      },
-      "Mice" => {
-        "Generated" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "TIGM" } )
-        },
-        "Available" => {
-          "csd" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-CSD" } ),
-          "reg" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "KOMP-Regeneron" } ),
-          "euc" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "EUCOMM" } ),
-          "nor" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_generated" => "1", "project" => "NorCOMM" } ),
-          "tig" => @@ms.datasets_by_name[:"ikmc-dcc-knockout_attempts"].dataset.count( :filters => { "mouse_available" => "1", "project" => "TIGM" } )
-        }
-      }
-    }
+    @counts = {}
+    
+    products = ["Vector", "ES Cell", "Mouse"]
+    statuses = ["Generated", "Available"]
+    projects = ["KOMP-CSD", "KOMP-Regeneron", "EUCOMM", "NorCOMM", "TIGM"]
+    
+    products.each do |product|
+      unless @counts[product] then @counts[product] = {} end
+      statuses.each do |status|
+        unless @counts[product][status] then @counts[product][status] = {} end
+        projects.each do |project|
+          @counts[product][status][project] = @@ms.index.count("ikmc_project_product_status:\"#{project} #{product} #{status}\"")
+        end
+      end
+    end
     
     # Calculations and counts for the progress meter
     @chart = {
@@ -230,14 +195,16 @@ get "/?" do
       "targ_count"  => 0, "trap_count"  => 0, "all_count"   => 0
     }
 
-    ["csd","reg","euc","nor"].each do |project|
-      @chart["targ_count"] += @counts["ES Cells"]["Available"][project]
+    projects.each do |project|
+      unless project === "TIGM"
+        @chart["targ_count"] += @counts["ES Cell"]["Available"][project]
+      end
     end
-    @chart["trap_count"] = @counts["ES Cells"]["Available"]["tig"]
+    @chart["trap_count"] = @counts["ES Cell"]["Available"]["TIGM"]
     @chart["all_count"]  = @chart["targ_count"] + @chart["trap_count"]
-    @chart["targ_prog"] = ( ( @chart["targ_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
-    @chart["trap_prog"] = ( ( @chart["trap_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
-    @chart["all_prog"]  = ( ( @chart["all_count"].to_f  / @chart["mouse_genes"].to_f ) * 100 ).round
+    @chart["targ_prog"]  = ( ( @chart["targ_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
+    @chart["trap_prog"]  = ( ( @chart["trap_count"].to_f / @chart["mouse_genes"].to_f ) * 100 ).round
+    @chart["all_prog"]   = ( ( @chart["all_count"].to_f  / @chart["mouse_genes"].to_f ) * 100 ).round
     
     # Fetch the knockoutmouse.org RSS feed
     @news = []

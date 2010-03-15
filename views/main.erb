@@ -82,25 +82,26 @@
         </div>
       </td>
       <td width="60%">
+        <%
+          products = ["Vector", "ES Cell", "Mouse"]
+          statuses = ["Generated", "Available"]
+          projects = ["KOMP-CSD", "KOMP-Regeneron", "EUCOMM", "NorCOMM", "TIGM"]
+        %>
         <h2>IKMC Gene Progress Summary</h2>
         <table id="summary_staistics">
           <tr>
-            <th>No. Genes</th>
-            <th>KOMP-CSD</th>
-            <th>KOMP-Regeneron</th>
-            <th>EUCOMM</th>
-            <th>NorCOMM</th>
-            <th>TIGM</th>
+            <th></th>
+            <% projects.each do |project| %>
+            <th><%= project %></th>
+            <% end %>
           </tr>
-          <% ["Vectors","ES Cells","Mice"].each do |product| %>
-            <% ["Generated","Available"].each do |status| %>
+          <% products.each do |product| %>
+            <% statuses.each do |status| %>
               <tr>
                 <th><%= "#{product} #{status}" %></th>
-                <td><%= @counts[product][status]["csd"] %></td>
-                <td><%= @counts[product][status]["reg"] %></td>
-                <td><%= @counts[product][status]["euc"] %></td>
-                <td><%= @counts[product][status]["nor"] %></td>
-                <td><%= @counts[product][status]["tig"] %></td>
+                <% projects.each do |project| %>
+                <td><a href="<%= "#{BASE_URI}/search/ikmc_project_product_status:&quot;#{project} #{product} #{status}&quot;".gsub(" ","+") %>"><%= @counts[product][status][project] %></a></td>
+                <% end %>
               </tr>
             <% end %>
           <% end %>

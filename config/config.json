@@ -9,12 +9,6 @@
   "cache": {
     "type": "file"
   },
-  "cache": {
-    "type":           "file",
-    "extra_urls_to_prime":  [
-      "phenotyping/heatmap"
-    ]
-  },
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,

@@ -105,6 +105,19 @@ class Index
     return @current_results
   end
   
+  # Function to submit a query to the search index, and 
+  # return back the number of docs/results found.
+  def count( query )
+    res = @http_client.post_form( URI.parse("#{@url}/select"), { "wt" => "ruby", "q" => query } )
+    
+    if res.code != "200"
+      raise IndexSearchError, "Index Search Error: #{res.body}"
+    else
+      data = eval(res.body)
+      return data["response"]["numFound"]
+    end
+  end
+  
   private
   
     # Helper function to process the results of the JSON 

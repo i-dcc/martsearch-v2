@@ -61,6 +61,19 @@ class IndexTest < Test::Unit::TestCase
       assert_raise(IndexSearchError) { results = @@ms.index.search( @@ms.config["test"]["bad_search"] ) }
     end
     
+    should "correctly handle count() requests" do
+      single_result = @@ms.index.count( @@ms.config["test"]["single_return_search"] )
+      assert( single_result.is_a?(Integer), ".count() does not return an Integer.")
+      assert( single_result == 1, ".count() for #{@@ms.config["test"]["single_return_search"]} does not return 1.")
+      
+      multi_results = @@ms.index.count( @@ms.config["test"]["large_search"] )
+      assert( multi_results.is_a?(Integer), ".count() does not return an Integer.")
+      assert( multi_results > 1, ".count() for #{@@ms.config["test"]["large_search"]} does not return >1.")
+      
+      assert_raise(IndexSearchError) {
+        bad_results = @@ms.index.count( @@ms.config["test"]["bad_search"] )
+      }
+    end
   end
   
 end

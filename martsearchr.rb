@@ -6,6 +6,7 @@ require "cgi"
 
 require "rubygems"
 require "sinatra"
+require "newrelic_rpm"
 require "json"
 require "rdiscount"
 require "mail"

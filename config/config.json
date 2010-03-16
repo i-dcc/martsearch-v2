@@ -56,6 +56,10 @@
         "allele":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "escell":                      { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "colony_prefix":               { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
+        "microinjection_centre":       { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "microinjection_status":       { "type": "string", "indexed": true, "stored": false, "multi_valued": true },
+        "microinjection_centre_status":{ "type": "string", "indexed": true, "stored": false, "multi_valued": true },
+        "sanger_phenotype":            { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype":                   { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype_comment":           { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
         "mp_id":                       { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
@@ -82,7 +86,8 @@
         "em":                          { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "pubmed_id":                   { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "PMID":                        { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
-        "pmid":                        { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true }
+        "pmid":                        { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
+        "dna_library":                 { "type": "string", "indexed": true, "stored": false, "multi_valued": true }
       },
       "copy_fields": [
         { "source": "mgi_accession_id_key",       "dest": "mgi_accession_id" },
@@ -109,6 +114,7 @@
         { "source": "emma_id",                    "dest": "em" },
         { "source": "pubmed_id",                  "dest": "PMID" },
         { "source": "pubmed_id",                  "dest": "pmid" },
+        { "source": "sanger_phenotype",           "dest": "phenotype" },
         { "source": "mgi_accession_id_key",       "dest": "text" },
         { "source": "marker_symbol",              "dest": "text" },
         { "source": "marker_name",                "dest": "text" },
@@ -128,6 +134,7 @@
         { "source": "targeting_vector",           "dest": "text" },
         { "source": "escell",                     "dest": "text" },
         { "source": "colony_prefix",              "dest": "text" },
+        { "source": "sanger_phenotype",           "dest": "text" },
         { "source": "phenotype",                  "dest": "text" },
         { "source": "phenotype_comment",          "dest": "text" },
         { "source": "mp_id",                      "dest": "text" },

@@ -42,19 +42,19 @@
             <tr>
               <th class="nobg noborder">Funding:</th>
               <th>
-                <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a> 
+                <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a><br /> 
                 <a href="http://www.eumodic.org/">EUMODIC</a>
               </th>
               <th>
-                <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a> 
+                <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a><br /> 
                 <a href="http://www.eumodic.org/">EUMODIC</a>
               </th>
               <th>
-                <a href="http://www.knockoutmouse.org/">KOMP</a> 
+                <a href="http://www.knockoutmouse.org/">KOMP</a><br /> 
                 <a href="http://www.eucomm.org/">EUCOMM</a>
               </th>
               <th>
-                <a href="http://www.knockoutmouse.org/">KOMP</a> 
+                <a href="http://www.knockoutmouse.org/">KOMP</a><br /> 
                 <a href="http://www.eucomm.org/">EUCOMM</a>
               </th>
               <th>
@@ -81,13 +81,13 @@
           <tbody>
             <tr>
               <td class="nobg noborder"></td>
-              <td><%= @sanger_counts["phenotyping"] %></td>
-              <td><%= @sanger_counts["mice"] %></td>
-              <td><%= @sanger_counts["escells"] %></td>
-              <td><%= @sanger_counts["targ_vectors"] %></td>
-              <td><%= @sanger_counts["micer_clones"] %></td>
-              <td><%= @sanger_counts["c57_bacs"] %></td>
-              <td><%= @sanger_counts["one_two_nine_bacs"] %></td>
+              <td><%= link_to( @counts["phenotyping"]["count"], "#{BASE_URI}/search?query=#{@counts["phenotyping"]["query"]}") %></td>
+              <td><%= link_to( @counts["mice"]["count"], "#{BASE_URI}/search?query=#{@counts["mice"]["query"]}") %></td>
+              <td><%= link_to( @counts["escells"]["count"], "#{BASE_URI}/search?query=#{@counts["escells"]["query"]}") %></td>
+              <td><%= link_to( @counts["targ_vectors"]["count"], "#{BASE_URI}/search?query=#{@counts["targ_vectors"]["query"]}") %></td>
+              <td><%= link_to( @counts["micer_clones"]["count"], "#{BASE_URI}/search?query=#{@counts["micer_clones"]["query"]}") %></td>
+              <td><%= link_to( @counts["c57_bacs"]["count"], "#{BASE_URI}/search?query=#{@counts["c57_bacs"]["query"]}") %></td>
+              <td><%= link_to( @counts["one_two_nine_bacs"]["count"], "#{BASE_URI}/search?query=#{@counts["one_two_nine_bacs"]["query"]}") %></td>
             </tr>
           </tbody>
         </table>

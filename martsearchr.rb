@@ -6,7 +6,7 @@ require "cgi"
 
 require "rubygems"
 require "sinatra"
-require "newrelic_rpm"
+#require "newrelic_rpm"
 require "json"
 require "rdiscount"
 require "mail"
@@ -173,20 +173,25 @@ end
 get "/?" do
   @current = "home"
   
-  sanger_counts_from_cache = @@ms.cache.fetch("sanger_counts")
-  if sanger_counts_from_cache
-    @sanger_counts = JSON.parse(sanger_counts_from_cache)
+  counts_from_cache = @@ms.cache.fetch("sanger_front_page_counts")
+  if counts_from_cache
+    @counts = JSON.parse(counts_from_cache)
   else
-    @sanger_counts = {
-      "phenotyping"       => @@ms.datasets_by_name[:"sanger-phenotyping"].dataset.count(),
-      "mice"              => @@ms.datasets_by_name[:"sanger-kermits"].dataset.count( :filters => { :mi_centre => "WTSI", :status => "Genotype Confirmed" } ),
-      "escells"           => @@ms.datasets_by_name[:"sanger-htgt_targ"].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed"] } ),
-      "targ_vectors"      => @@ms.datasets_by_name[:"sanger-htgt_targ"].dataset.count( :filters => { :status => ["Mice - Genotype confirmed","Mice - Germline transmission","Mice - Microinjection in progress","ES Cells - Targeting Confirmed","ES Cells - No QC Positives","ES Cells - Electroporation Unsuccessful","ES Cells - Electroporation in Progress","Vector - DNA Not Suitable for Electroporation","Vector Complete"] } ),
-      "micer_clones"      => @@ms.datasets_by_name[:"sanger-bacs"].dataset.count( :filters => { :library => "MICER" } ),
-      "c57_bacs"          => @@ms.datasets_by_name[:"sanger-bacs"].dataset.count( :filters => { :library => "C57Bl/6J" } ),
-      "one_two_nine_bacs" => @@ms.datasets_by_name[:"sanger-bacs"].dataset.count( :filters => { :library => "129S7" } )
+    @counts = {
+      "phenotyping"       => { "query" => 'sanger_phenotype:*' },
+      "mice"              => { "query" => 'microinjection_centre_status:"WTSI - Genotype Confirmed"' },
+      "escells"           => { "query" => 'ikmc_project_product_status:"KOMP-CSD ES Cell Available" ikmc_project_product_status:"EUCOMM ES Cell Available"' },
+      "targ_vectors"      => { "query" => 'ikmc_project_product_status:"KOMP-CSD Vector Available" ikmc_project_product_status:"EUCOMM Vector Available"' },
+      "micer_clones"      => { "query" => 'dna_library:"MICER"' },
+      "c57_bacs"          => { "query" => 'dna_library:"C57Bl/6J"' },
+      "one_two_nine_bacs" => { "query" => 'dna_library:"129S7"' }
     }
-    @@ms.cache.write( "sanger_counts", @sanger_counts.to_json, :expires_in => 3.hours )
+
+    @counts.each do |param,details|
+      details["count"] = @@ms.index.count( details["query"] )
+    end
+    
+    @@ms.cache.write( "sanger_front_page_counts", @counts.to_json, :expires_in => 3.hours )
   end
   
   erb :main

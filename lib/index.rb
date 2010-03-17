@@ -51,7 +51,7 @@ class Index
   end
   
   # Function to submit a query to the search index and 
-  # return the processed JSON response object.
+  # return the processed response object.
   def search( query, page=nil )
     
     # Reset all of our stored variables
@@ -103,6 +103,38 @@ class Index
     @grouped_terms = grouped_query_terms( @current_results )
     
     return @current_results
+  end
+  
+  # Function to perform a query against the index and 
+  # return the processed results.  This is called quick_search 
+  # as it bypasses all of the default martsearch post-search 
+  # processing actions.
+  def quick_search( query, page=nil )
+    # Calculate the start page
+    start_doc = 0
+    if page and ( Integer(page) > 1 )
+      start_doc = ( Integer(page) - 1 ) * @docs_per_page
+    end
+    
+    # POST the request
+    res = @http_client.post_form(
+      URI.parse("#{@url}/select"),
+      {
+        "wt"    => "ruby",
+        "q"     => query,
+        "sort"  => @sort_results_by,
+        "start" => start_doc,
+        "rows"  => @docs_per_page
+      }
+    )
+    
+    # Process the response
+    if res.code != "200"
+      raise IndexSearchError, "Index Search Error: #{res.body}"
+    else
+      data = eval(res.body)
+      return data["response"]["docs"]
+    end
   end
   
   # Function to submit a query to the search index, and 

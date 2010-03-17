@@ -74,6 +74,21 @@ class IndexTest < Test::Unit::TestCase
         bad_results = @@ms.index.count( @@ms.config["test"]["bad_search"] )
       }
     end
+    
+    should "correctly handle quick_search() requests" do
+      single_result = @@ms.index.quick_search( @@ms.config["test"]["single_return_search"] )
+      assert( single_result.is_a?(Array), ".quick_search() does not return an Array.")
+      assert( single_result.size == 1, ".quick_search() for #{@@ms.config["test"]["single_return_search"]} does not return and array with 1 element.")
+      
+      multi_results = @@ms.index.quick_search( @@ms.config["test"]["large_search"] )
+      assert( multi_results.is_a?(Array), ".quick_search() does not return an Array.")
+      assert( multi_results.size > 1, ".quick_search() for #{@@ms.config["test"]["large_search"]} does not return an array with >1 element.")
+      
+      assert_raise(IndexSearchError) {
+        bad_results = @@ms.index.quick_search( @@ms.config["test"]["bad_search"] )
+      }
+    end
+    
   end
   
 end

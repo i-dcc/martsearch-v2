@@ -115,24 +115,32 @@ helpers do
       params.delete("captures")
       path + "?" + build_query(params.merge(link_options))
     else
-      if link_options =~ /\/search|\/browse/ and request.path_info =~ /\/search|\/browse/
-        # we've been given a pagination link
+      if link_options =~ /\/search|\/browse/
+        # we've been given a search/browse link
         tmp  = link_options.split("?")
         opts = parse_query(tmp[1])
-        url  = "#"
+        url  = ""
         
         # Work out the url to use
-        if request.path_info.match("/search")
+        if link_options.match("/search")
+          # First try RESTful style urls
           url = "#{BASE_URI}/search/#{opts["query"]}"
-        elsif request.path_info.match("/browse")
+          if opts["page"] then url = "#{url}/#{opts["page"]}" end
+          
+          begin
+            uri = URI.parse(url)
+          rescue URI::InvalidURIError
+            # If that goes pear shaped trying to do a weird query, 
+            # use the standard ? interface and CGI::escape...
+            url = "#{BASE_URI}/search?query=#{CGI::escape(opts["query"])}"
+            if opts["page"] then url = "#{url}&page=#{opts["page"]}" end
+          end
+        elsif link_options.match("/browse")
           url = "#{BASE_URI}/browse/#{opts["field"]}/#{opts["query"]}"
+          if opts["page"] then url = "#{url}/#{opts["page"]}" end
         end
         
-        if opts["page"]
-          url = "#{url}/#{opts["page"]}"
-        end
-        
-        return CGI::escapeHTML(url).gsub(" ","+")
+        return url
       else
         link_options
       end
@@ -166,22 +174,18 @@ get "/?" do
   erb :main
 end
 
-get "/search" do
-  # Catch out empty search parameters - would otherwise cause infinite redirects
-  if params[:query]
-    if params[:page]
-      redirect "#{BASE_URI}/search/#{params[:query]}/#{params[:page]}"
-    else
-      redirect "#{BASE_URI}/search/#{params[:query]}"
-    end
-  else
+get "/search/?" do
+  if params.empty?
     redirect "#{BASE_URI}/"
-  end
-end
+  else
+    @current    = "home"
+    @page_title = "Search Results for '#{params[:query]}'"
+    @results    = @@ms.search( params[:query], params[:page] )
+    @data       = @@ms.search_data
+    check_for_errors
 
-get "/search/" do
-  # Catch out empty search parameters - would otherwise cause infinite redirects
-  redirect "#{BASE_URI}/"
+    erb :search
+  end
 end
 
 ["/search/:query/?", "/search/:query/:page/?"].each do |path|

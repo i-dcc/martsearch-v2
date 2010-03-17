@@ -272,7 +272,7 @@ end
 # Utility function to retrieve all of the data from the mart for a 
 # given colony_prefix
 def search_mart_by_colony_prefix(colony_prefix)
-  search_data            = nil
+  search_data            = []
   search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{colony_prefix}")
   
   if search_data_from_cache

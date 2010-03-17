@@ -16,7 +16,7 @@ get "/phenotyping/:colony_prefix/abr/" do
     @page_title = "#{params[:colony_prefix]}: Auditory Brainstem Response (ABR)"
     
     search_data = search_mart_by_colony_prefix(@colony_prefix)
-    if search_data
+    unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{params[:colony_prefix]}): Auditory Brainstem Response (ABR)"
     end
@@ -65,7 +65,7 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
     @page_title    = "#{@colony_prefix}: Homozygote Viability"
 
     search_data = search_mart_by_colony_prefix(@colony_prefix)
-    if search_data
+    unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Homozygote Viability"
     end
@@ -88,7 +88,7 @@ get "/phenotyping/:colony_prefix/fertility/?" do
     @page_title    = "#{@colony_prefix}: Fertility"
 
     search_data = search_mart_by_colony_prefix(@colony_prefix)
-    if search_data
+    unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Fertility"
     end
@@ -117,7 +117,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   search_data    = search_mart_by_colony_prefix(@colony_prefix)
   pipeline       = nil
   
-  if search_data
+  unless search_data.empty?
     pipeline = case search_data[0]["pipeline"]
     when "Mouse GP" then "mouse-gp"
     when "P1/2"    then "mgp-pipeline-1-2"

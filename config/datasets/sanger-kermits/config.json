@@ -17,7 +17,12 @@
     "allow_document_creation": false,
     "attribute_map": [
       { "attr": "marker_symbol", "idx": "marker_symbol", "use_to_map": true },
-      { "attr": "colony_prefix", "idx": "colony_prefix" }
+      { "attr": "colony_prefix", "idx": "colony_prefix" },
+      { "attr": "mi_centre",     "idx": "microinjection_centre" },
+      { "attr": "status",        "idx": "microinjection_status" }
+    ],
+    "grouped_attributes": [
+      { "attrs": ["mi_centre","status"], "idx": "microinjection_centre_status", "using": " - " }
     ]
   },
   "searching": {

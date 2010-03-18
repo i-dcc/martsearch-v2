@@ -1,7 +1,7 @@
 {
   "display":              true,
   "use_in_search":        true,
-  "index":                false,
+  "index":                true,
   "custom_sort":          true,
   "custom_css":           false,
   "custom_js":            false,
@@ -13,7 +13,13 @@
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
   "description":          "",
-  "indexing": {},
+  "indexing": {
+    "allow_document_creation": false,
+    "attribute_map": [
+      { "attr": "marker_symbol",  "idx": "marker_symbol", "use_to_map": true },
+      { "attr": "library",        "idx": "dna_library" }
+    ]
+  },
   "searching": {
     "joined_index_field":       "marker_symbol",
     "joined_biomart_filter":    "marker_symbol",

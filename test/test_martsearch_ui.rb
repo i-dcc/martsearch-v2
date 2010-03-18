@@ -160,14 +160,10 @@ class MartsearchUiTest < Test::Unit::TestCase
   
   def search_with_params( browser, search_conf )
     browser.get "/search", :query => @@ms.config["test"][search_conf], :page => 1
-    browser.follow_redirect!
-    assert_equal( "http://example.org/search/#{@@ms.config["test"][search_conf]}/1", browser.last_request.url, "Simple search did not redirect to the search results page." )
     assert( browser.last_response.body.include?("Search Results for '#{@@ms.config["test"][search_conf]}'"), "Search template not rendering the search results header." )
     assert( browser.last_response.ok? )
     
     browser.get "/search", :query => @@ms.config["test"][search_conf]
-    browser.follow_redirect!
-    assert_equal( "http://example.org/search/#{@@ms.config["test"][search_conf]}", browser.last_request.url, "Simple search did not redirect to the search results page." )
     assert( browser.last_response.body.include?("Search Results for '#{@@ms.config["test"][search_conf]}'"), "Search template not rendering the search results header." )
     assert( browser.last_response.ok? )
   end

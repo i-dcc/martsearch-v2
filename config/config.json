@@ -7,7 +7,48 @@
     "from": "do2@sanger.ac.uk"
   },
   "cache": {
-    "type": "file"
+    "type": "file",
+    "extra_urls_to_prime":  [
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+Vector+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+Vector+Available%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+Mouse+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+Mouse+Available%22",
+      
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+Vector+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+Vector+Available%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+Mouse+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22KOMP-Regeneron+Mouse+Available%22",
+      
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+Vector+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+Vector+Available%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+Mouse+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22EUCOMM+Mouse+Available%22",
+      
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+Vector+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+Vector+Available%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+Mouse+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22NorCOMM+Mouse+Available%22",
+      
+      "search?query=ikmc_project_product_status%3A%22TIGM+Vector+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+Vector+Available%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+ES+Cell+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+Mouse+Generated%22",
+      "search?query=ikmc_project_product_status%3A%22TIGM+Mouse+Available%22"
+    ]
   },
   "index": {
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",

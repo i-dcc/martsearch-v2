@@ -100,7 +100,7 @@
               <tr>
                 <th><%= "#{product} #{status}" %></th>
                 <% projects.each do |project| %>
-                <td><a href="<%= "#{BASE_URI}/search/ikmc_project_product_status:&quot;#{project} #{product} #{status}&quot;".gsub(" ","+") %>"><%= @counts[product][status][project] %></a></td>
+                <td><%= link_to( @counts[product][status][project], "#{BASE_URI}/search?query=ikmc_project_product_status:\"#{project} #{product} #{status}\"" ) %></td>
                 <% end %>
               </tr>
             <% end %>

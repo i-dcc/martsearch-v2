@@ -5,7 +5,7 @@
     
     <div class="sanger-htgt_targ_allele_progress_details_content">
       <!-- Links -->
-      <%= partial( "datasets/sanger-htgt_targ/links", :locals => { :project => project } ) %>
+      <%= partial( "datasets/sanger-htgt_targ/links", :locals => { :project => project, :result_data => result_data } ) %>
       
       <!-- ES Cells -->
       <%= partial( "datasets/sanger-htgt_targ/escell_clones", :locals => { :project => project } ) %>

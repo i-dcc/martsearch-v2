@@ -40,6 +40,7 @@
       "is_eucomm",
       "is_komp_csd",
       "mgi_accession_id",
+      "ensembl_gene_id",
       "status",
       "status_type",
       "status_sequence",

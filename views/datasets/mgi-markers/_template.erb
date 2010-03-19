@@ -20,12 +20,15 @@
   <tr>
     <th>Synonyms:</th>
     <%
-      syns = result_data["mgi-markers"]["synonyms"]
-      result_data["index"]["synonym"].each do |syn|
-        syns.push(syn)
+      synonyms = []
+      [ result_data["mgi-markers"]["synonyms"], result_data["index"]["synonym"] ].each do |source|
+        if source and source.is_a?(Array)
+          source.each { |syn| synonyms.push(syn) unless syn.nil? }
+        end
       end
+      puts synonyms
     %>
-    <td><%= syns.uniq.sort.join(", ") %></td>
+    <td><%= synonyms.uniq.sort.join(", ") %></td>
   </tr>
   <tr>
     <%

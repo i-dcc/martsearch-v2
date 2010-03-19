@@ -28,7 +28,7 @@
               <%= partial( "datasets/#{dataset.internal_name}/template", :locals => { :result_data => result_data } ) %>
               <div class="attribution">
                 <div class="dataset_original_data">
-                  <a href="<%= dataset.data_origin_url( result_data["index"][ dataset.joined_index_field ] ) %>" target="_blank">view this data at its original source</a>
+                  <a href="<%= dataset.data_origin_url( result_data["index"][ dataset.joined_index_field ] ) %>" target="_blank">view this data as provided by biomart</a>
                 </div>
                 <% if dataset.config["attribution"] and dataset.config["attribution_link"] %>
                   Data provided by 

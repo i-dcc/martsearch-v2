@@ -7,6 +7,7 @@
   <thead>
     <tr>
       <th>Allele Name</th>
+      <th>Comparison</th>
       <% ds.attributes.each do |attrib| %>
         <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
           <th></th>
@@ -56,6 +57,7 @@
           %>
           <%= allele_name %>
         </td>
+        <td><%= result["comparison"] %></td>
         <% ds.attributes.each do |attrib| %>
           <% unless attrib =~ /comment|marker_symbol|pipeline|colony_prefix|comparison|allele_name/ %>
             <%

@@ -8,7 +8,10 @@
 <table>
   <tr>
     <th width="125px">Marker Name(s):</th>
-    <td><%= result_data["mgi-markers"]["marker_names"].join(", ") %></td>
+    <td>
+      <%= result_data["mgi-markers"]["marker_names"].join(", ") %><br />
+      <a href="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=markerDetail&id=<%= result_data["mgi-markers"]["mgi_accession_id"] %>" class="ext_link">view&nbsp;this&nbsp;gene&nbsp;in&nbsp;MGI</a>
+    </td>
   </tr>
   <tr>
     <th>Marker Type:</th>
@@ -16,7 +19,13 @@
   </tr>
   <tr>
     <th>Synonyms:</th>
-    <td><%= result_data["mgi-markers"]["synonyms"].join(", ") %></td>
+    <%
+      syns = result_data["mgi-markers"]["synonyms"]
+      result_data["index"]["synonym"].each do |syn|
+        syns.push(syn)
+      end
+    %>
+    <td><%= syns.uniq.sort.join(", ") %></td>
   </tr>
   <tr>
     <%

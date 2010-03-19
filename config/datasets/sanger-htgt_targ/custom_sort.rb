@@ -30,10 +30,8 @@ sorted_results = {}
     
     # Extract the singular (per project) values
     singular_attributes = [
-      "is_eucomm", "is_komp_csd", "is_komp_regeneron", "is_norcomm",
-      "is_mgp", "marker_symbol", "ensembl_gene_id", "status",
-      "status_code", "status_type", "status_description", "status_sequence",
-      "pipeline_stage", "ikmc_project_id", "bac", "design_id",
+      "is_eucomm", "is_komp_csd", "status", "status_type", "status_sequence",
+      "pipeline_stage", "ikmc_project_id", "design_id",
       "design_plate", "design_well", "backbone", "cassette", 
       "allele_name", "is_latest_for_gene"
     ]

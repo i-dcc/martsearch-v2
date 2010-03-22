@@ -5,7 +5,7 @@ require "net/http"
 require "cgi"
 
 require "rubygems"
-require "sinatra"
+require "erubis"
 require "json"
 require "rdiscount"
 require "mail"
@@ -13,6 +13,10 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
+
+gem "sinatra", "=1.0.b"
+require "sinatra"
+
 gem "biomart", ">=0.1.5"
 require "biomart"
 
@@ -41,8 +45,8 @@ configure :production do
       if request.env["HTTP_REFERER"].match(request.env["HTTP_HOST"])
         @martsearch_error = true
         if okay_to_send_emails?
-          template_file = File.new("#{MARTSEARCHR_PATH}/views/not_found_email.erb","r")
-          template = ERB.new(template_file.read)
+          template_file = File.new("#{MARTSEARCHR_PATH}/views/not_found_email.erubis","r")
+          template = Erubis::Eruby.new(template_file.read)
           template_file.close
 
           @@ms.send_email({
@@ -54,13 +58,13 @@ configure :production do
     end
     
     @request = request
-    erb :not_found
+    erubis :not_found
   end
 
   error do
     if okay_to_send_emails?
-      template_file = File.new("#{MARTSEARCHR_PATH}/views/error_email.erb","r")
-      template = ERB.new(template_file.read)
+      template_file = File.new("#{MARTSEARCHR_PATH}/views/error_email.erubis","r")
+      template = Erubis::Eruby.new(template_file.read)
       template_file.close
 
       @@ms.send_email({
@@ -70,7 +74,7 @@ configure :production do
     end
     
     @request = request
-    erb :error
+    erubis :error
   end
 end
 
@@ -84,11 +88,11 @@ helpers do
     options.merge!(:layout => false)
     if collection = options.delete(:collection) then
       collection.inject([]) do |buffer, member|
-        buffer << erb(:"#{template}", options.merge(:layout =>
+        buffer << erubis(:"#{template}", options.merge(:layout =>
         false, :locals => {template_array[-1].to_sym => member}))
       end.join("\n")
     else
-      erb(:"#{template}", options)
+      erubis(:"#{template}", options)
     end
   end
   
@@ -156,7 +160,8 @@ helpers do
 end
 
 before do
-  headers "Content-Type" => "text/html; charset=utf-8"
+  response["Content-Type"] = "text/html; charset=utf-8"
+  
   @ms              = @@ms
   @current         = nil
   @page_title      = nil
@@ -171,7 +176,7 @@ end
 
 get "/?" do
   @current = "home"
-  erb :main
+  erubis :main
 end
 
 get "/search/?" do
@@ -184,7 +189,7 @@ get "/search/?" do
     @data       = @@ms.search_data
     check_for_errors
 
-    erb :search
+    erubis :search
   end
 end
 
@@ -196,7 +201,7 @@ end
     @data       = @@ms.search_data
     check_for_errors
     
-    erb :search
+    erubis :search
   end
 end
 
@@ -204,7 +209,7 @@ get "/browse/?" do
   @current    = "browse"
   @page_title = "Browse"
   @results    = nil
-  erb :browse
+  erubis :browse
 end
 
 ["/browse/:field/:query/?", "/browse/:field/:query/:page?"].each do |path|
@@ -213,7 +218,7 @@ end
     browser  = @@ms.config["browsable_content"][params[:field]]
     if browser.nil?
       status 404
-      erb :not_found
+      erubis :not_found
     else
       
       @page_title = "Browsing Data by '#{browser["display_name"]}'"
@@ -273,7 +278,7 @@ end
       @data       = @@ms.search_data
       check_for_errors
       
-      erb :browse
+      erubis :browse
     end
   end
 end
@@ -281,13 +286,13 @@ end
 get "/about/?" do
   @current    = "about"
   @page_title = "About"
-  erb :about
+  erubis :about
 end
 
 get "/help/?" do
   @current    = "help"
   @page_title = "Help"
-  erb :help
+  erubis :help
 end
 
 get "/clear_cache/?" do

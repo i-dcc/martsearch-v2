@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby -w
 
 require "uri"
 require "net/http"
@@ -28,7 +28,7 @@ require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.7"
+PORTAL_VERSION = "0.0.8"
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{MARTSEARCHR_PATH}/config/config.json" )
@@ -368,6 +368,7 @@ get "/css/martsearch*.css" do
     "reset.css",
     "jquery.prettyPhoto.css",
     "jquery.tablesorter.css",
+    "jquery.fontresize.css",
     "jquery-ui-1.7.2.redmond.css",
     "screen.css"
   ]

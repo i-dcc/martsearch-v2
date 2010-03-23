@@ -9,7 +9,7 @@
 
 #content {
 	clear: both;
-	margin-top: 30px;
+	margin-top: 10px;
 	margin-bottom: 30px;
 }
 
@@ -324,10 +324,18 @@ a.order:hover {
 	background-color: #376598;
 }
 
-#navigation form {
+#navigation #resize_and_search {
 	float: right;
-	margin: 0 10px 0 0;
-	padding: 0 10px 4px;
+	text-align: right;
+}
+
+#navigation #fontresize {
+	float: right;
+	margin-top: 4px;
+	margin-right: 10px;
+}
+
+#navigation form {
 	background-color: #376598;
 	border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomleft: 5px;
@@ -335,6 +343,8 @@ a.order:hover {
 	border-bottom-right-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
+	margin: 0 10px 0 0;
+	padding: 2px 10px 4px;
 }
 
 /*

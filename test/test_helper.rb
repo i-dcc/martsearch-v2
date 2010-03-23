@@ -1,10 +1,3 @@
-begin
-  require "shoulda"
-rescue LoadError
-  require "rubygems" unless ENV["NO_RUBYGEMS"]
-  require "shoulda"
-end
-
 require "uri"
 require "net/http"
 require "cgi"
@@ -18,11 +11,12 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
-require "gchart"
+require "rsolr"
+
 gem "biomart", ">=0.1.5"
 require "biomart"
 
-require "rsolr"
+require "shoulda"
 
 require "#{File.dirname(__FILE__)}/../lib/mock.rb"
 require "#{File.dirname(__FILE__)}/../lib/string.rb"

@@ -33,4 +33,7 @@ jQuery(document).ready(function() {
   
   // Add tablesorter to anything with the class 'tablesorter'
   jQuery("table.tablesorter").tablesorter({ widgets: ['zebra'], dateFormat: "uk" });
+  
+  // Add font resizing buttons
+  jQuery("#fontresize").fontResize();
 });

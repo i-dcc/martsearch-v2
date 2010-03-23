@@ -26,7 +26,6 @@
           source.each { |syn| synonyms.push(syn) unless syn.nil? }
         end
       end
-      puts synonyms
     %>
     <td><%= synonyms.uniq.sort.join(", ") %></td>
   </tr>

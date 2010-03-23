@@ -9,7 +9,7 @@
     
     <% if (project["conditional_clones"] or project["nonconditional_clones"]) and (project["conditional_clones"].length > 0 or project["nonconditional_clones"].length > 0) %>
       <% 
-        allele_picture_text = "HTGT allele for " + project["marker_symbol"];
+        allele_picture_text = "HTGT allele for " + result_data["index"]["marker_symbol"];
         allele_picture_text += " - <a href='http://www.sanger.ac.uk/htgt/report/gene_report?project_id=" + project["ikmc_project_id"] + "' target='_blank'>view this in HTGT</a>";
       %>
       <li>

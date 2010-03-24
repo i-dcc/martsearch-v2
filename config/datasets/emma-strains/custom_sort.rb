@@ -1,6 +1,8 @@
 sorted_results = {}
 
 @current_search_results.each do |result|
+  next unless result["emma_id"]
+  
   unless sorted_results[ result[ @joined_biomart_attribute ] ]
     sorted_results[ result[ @joined_biomart_attribute ] ] = {}
   end

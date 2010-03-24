@@ -302,7 +302,7 @@ get "/css/martsearch*.css" do
     "jquery.prettyPhoto.css",
     "jquery.tablesorter.css",
     "jquery.fontresize.css",
-    "jquery-ui-1.7.2.redmond.css",
+    "jquery-ui-1.8.redmond.css",
     "screen.css"
   ]
   
@@ -324,7 +324,7 @@ get "/js/martsearch*.js" do
   js_text = ""
   js_files = [
     "jquery-plugins.min.js",
-    "jquery-ui-1.7.2.min.js",
+    "jquery-ui-1.8.min.js",
     "martsearchr.js"
   ]
   

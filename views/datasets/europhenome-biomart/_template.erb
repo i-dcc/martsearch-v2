@@ -1,0 +1,65 @@
+<div style="float:right;"><%= partial( "datasets/europhenome-biomart/legend" ) %></div>
+<div class="clear"></div>
+
+<div class="accordion">
+  <% EUROPHENOME_PIPELINES.keys.sort.each do |pipeline_name| %>
+    <% pipeline_parameter_chunks = EUROPHENOME_PIPELINES[pipeline_name].chunk(7) %>
+    <h6><a href=""><%= pipeline_name %></a></h6>
+    <div>
+      <table class="europhenome-data">
+        <% pipeline_parameter_chunks.each do |pipeline_parameters| %>
+          <thead>
+            <tr>
+              <th></th>
+              <% pipeline_parameters.each do |parameter_id| %>
+                <th colspan="2"><%= EUROPHENOME_TEST_MAPPING[parameter_id] %></th>
+              <% end %>
+            </tr>
+            <tr class="male-female">
+              <th></th>
+              <% pipeline_parameters.each do |parameter_id| %>
+                <th class="male">M</th>
+                <th class="female">F</th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% result_data["europhenome-biomart"].each do |europh_id_zyg,line_data| %>
+              <tr>
+                <td><%= line_data["line_name"] %>&nbsp;(<%= line_data['zygosity'] %>)</td>
+                <% pipeline_parameters.each do |parameter_id| %>
+                  <% ['is_male_signifigant','is_female_signifigant'].each do |male_female| %>
+                    <%
+                      cell_class = "no-data"
+                      if line_data['pipeline_data'][parameter_id]
+                        if line_data['pipeline_data'][parameter_id][male_female]
+                          cell_class = "significant"
+                        else
+                          cell_class = "not-significant"
+                        end
+                      end
+
+                      sex = case male_female
+                      when /female/ then "Female"
+                      when /male/   then "Male"
+                      end
+                    %>
+                    <% if cell_class == "significant" %>
+                      <td 
+                        class="pheno-result <%= cell_class %>"
+                        title="<%= partial( "datasets/europhenome-biomart/popup", :locals => { :line_data => line_data, :parameter_id => parameter_id, :sex => sex } ) %>"
+                        rel="qtip"
+                      ></td>
+                    <% else %>
+                      <td class="pheno-result <%= cell_class %>"></td>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>

@@ -4,6 +4,10 @@
 	background: #fff;
 }
 
+.europhenome-biomart table.europhenome-data th {
+  text-align: center;
+}
+
 .europhenome-biomart table.europhenome-data td.no-data {
 	background-color: #f1f1f1;
 }

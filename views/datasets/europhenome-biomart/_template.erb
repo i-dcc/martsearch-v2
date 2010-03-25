@@ -12,7 +12,11 @@
             <tr>
               <th></th>
               <% pipeline_parameters.each do |parameter_id| %>
-                <th colspan="2"><%= EUROPHENOME_TEST_MAPPING[parameter_id] %></th>
+                <th colspan="2">
+                  <a href="http://empress.har.mrc.ac.uk/viewempress/?pipelineprocedure=<%= pipeline_name.gsub(" ","+") %>~<%= EUROPHENOME_TEST_MAPPING[parameter_id].gsub(" ","+") %>" target="_blank">
+                    <%= EUROPHENOME_TEST_MAPPING[parameter_id] %>
+                  </a>
+                </th>
               <% end %>
             </tr>
             <tr class="male-female">

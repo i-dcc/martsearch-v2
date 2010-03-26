@@ -1,15 +1,15 @@
 
 def idcc_targ_rep_get_progressbar_info( mol_struct )
   if mol_struct['mouse_available']
-    return { "vectors" => "comp", "cells" => "comp", "mice" => "comp" }
+    return { "vectors" => "normal", "cells" => "normal", "mice" => "normal" }
   end
   
   if mol_struct['escell_available']
-    return { "vectors" => "comp", "cells" => "comp", "mice" => "incomp" }
+    return { "vectors" => "normal", "cells" => "normal", "mice" => "incomp" }
   end
   
   if mol_struct['vector_available']
-    return { "vectors" => "comp", "cells" => "incomp", "mice" => "incomp" }
+    return { "vectors" => "normal", "cells" => "incomp", "mice" => "incomp" }
   end
   
   # Nothing available - should not happen.

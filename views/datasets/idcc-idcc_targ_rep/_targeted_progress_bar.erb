@@ -3,13 +3,13 @@
   progress = idcc_targ_rep_get_progressbar_info( mol_struct )
 %>
 
-<table class="idcc-targ_rep_allele_progress" width="100%">
+<table class="ikmc-pipeline-progress-bar" width="100%">
   <thead>
     <tr>
-      <th width="15%"></th>
-      <th width="20%">Vectors</th>
-      <th width="20%">ES Cells</th>
-      <th width="20%">Mice</th>
+      <th width="15%" class="center"></th>
+      <th width="20%" class="center">Vectors</th>
+      <th width="20%" class="center">ES Cells</th>
+      <th width="20%" class="center">Mice</th>
       <th></th>
     </tr>
   </thead>
@@ -18,7 +18,7 @@
   <tbody>
     <tr>
       <!-- Pipeline Name with IKMC Project ID-->
-      <td class="start_comp">
+      <td class="start_normal">
         <strong><%= mol_struct["pipeline_name"] %></strong><br />
         
         <% if mol_struct["pipeline_name"] === "KOMP-Regeneron" %>

@@ -1,0 +1,32 @@
+<table>
+  <thead>
+    <tr>
+      <th>ES Cell Clone ID</th>
+      <th>ES Cell Strain</th>
+      <th>ES Cell Line</th>
+      <th>Allele</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% clones.sort_by{ |clone_hash| clone_hash['escell_clone'] }.each do |clone| %>
+      <tr>
+        <td><%= clone["escell_clone"] %></td>
+        <td>
+          <%
+            cell_strain = ""
+            if clone["parental_cell_line"]
+              case clone["parental_cell_line"]
+              when /JM8/   then cell_strain = "C57BL/6N"
+              when /C2/    then cell_strain = "C57BL/6N"
+              when /AB2.2/ then cell_strain = "129S7"
+              end
+            end
+          %>
+          <%= cell_strain %>
+        </td>
+        <td><%= clone["parental_cell_line"] %></td>
+        <td><%= clone["allele_symbol_superscript"] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

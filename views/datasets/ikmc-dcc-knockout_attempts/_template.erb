@@ -1,7 +1,11 @@
 <% result_data["ikmc-dcc-knockout_attempts"]['projects'].each do |ko_project| %>
   <div>
     <%
-      targ_rep_project = result_data[ "idcc-idcc_targ_rep" ][ ko_project['pipeline_name'] ]
+      if result_data[ "idcc-idcc_targ_rep" ]
+        targ_rep_project = result_data[ "idcc-idcc_targ_rep" ][ ko_project['pipeline_name'] ]
+      else
+        targ_rep_project = nil
+      end
       
       if ko_project['pipeline_name'] == "TIGM"
         progress_bar_template = "tigm_progress_bar"

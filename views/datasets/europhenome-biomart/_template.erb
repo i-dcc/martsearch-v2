@@ -1,11 +1,11 @@
 <div style="float:right;"><%= partial( "datasets/europhenome-biomart/legend" ) %></div>
 <div class="clear"></div>
 
-<% column_width = ( 85.to_f / (EUROPHENOME_TESTS_PER_ROW * 2).to_f ).round %>
+<% column_width = ( 85.to_f / (europhenome_tests_per_row() * 2).to_f ).round %>
 
 <div class="accordion">
-  <% EUROPHENOME_PIPELINES.keys.sort.each do |pipeline_name| %>
-    <% pipeline_parameter_chunks = EUROPHENOME_PIPELINES[pipeline_name].chunk(EUROPHENOME_TESTS_PER_ROW) %>
+  <% europhenome_pipelines().keys.sort.each do |pipeline_name| %>
+    <% pipeline_parameter_chunks = europhenome_pipelines()[pipeline_name].chunk(europhenome_tests_per_row()) %>
     <h6><a href=""><%= pipeline_name %></a></h6>
     <div>
       <table class="europhenome-data">
@@ -15,8 +15,8 @@
               <th></th>
               <% pipeline_parameters.each do |parameter_id| %>
                 <th colspan="2">
-                  <a href="http://empress.har.mrc.ac.uk/viewempress/?pipelineprocedure=<%= pipeline_name.gsub(" ","+") %>~<%= EUROPHENOME_TEST_MAPPING[parameter_id].gsub(" ","+") %>" target="_blank">
-                    <%= EUROPHENOME_TEST_MAPPING[parameter_id] %>
+                  <a href="http://empress.har.mrc.ac.uk/viewempress/?pipelineprocedure=<%= pipeline_name.gsub(" ","+") %>~<%= europhenome_test_mapping()[parameter_id].gsub(" ","+") %>" target="_blank">
+                    <%= europhenome_test_mapping()[parameter_id] %>
                   </a>
                 </th>
               <% end %>

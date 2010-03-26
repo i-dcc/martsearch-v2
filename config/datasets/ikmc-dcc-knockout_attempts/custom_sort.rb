@@ -1,64 +1,109 @@
 sorted_results = {}
 
 @current_search_results.each do |result|
+  # Skip empty results
+  next if result['ikmc_project'].nil? or result['ikmc_project_id'].nil?
+  
   unless sorted_results[ result[ @joined_biomart_attribute ] ]
-    sorted_results[ result[ @joined_biomart_attribute ] ] = {
-      "projects"        => {}
+    sorted_results[ result[ @joined_biomart_attribute ] ] = {}
+  end
+  result_data = sorted_results[ result[ @joined_biomart_attribute ] ]
+  
+  pipeline_name = result["ikmc_project"]
+  
+  # Only keep one result per pipeline
+  unless result_data[ pipeline_name ]
+    result_data[ pipeline_name ] = {
+      "pipeline_name"      => pipeline_name,
+      "mgi_accession_id"   => result["mgi_accession_id"],
+      "project_id"         => result["ikmc_project_id"],
+      "status"             => result["status"],
+      "marker_symbol"      => result["marker_symbol"],
+      "ensembl_gene_id"    => result["ensembl_gene_id"],
+      "igtc"               => result["igtc"],
+      "imsr"               => result["imsr"],
+      "mgi_gene_traps"     => result["mgi_gene_traps"],
+      "targeted_mutations" => result["targeted_mutations"],
+      "other_mutations"    => result["other_mutations"],
+      "vector_available"   => "0",
+      "escell_available"   => "0",
+      "mouse_available"    => "0",
     }
   end
-
-  result_data = sorted_results[ result[ @joined_biomart_attribute ] ]
-
-  # Gene level data first...
-  result_data["mgi_accession_id"]   = result["mgi_accession_id"]
-  result_data["igtc"]               = result["igtc"]
-  result_data["imsr"]               = result["imsr"]
-  result_data["mgi_gene_traps"]     = result["mgi_gene_traps"]
-  result_data["targeted_mutations"] = result["targeted_mutations"]
-  result_data["other_mutations"]    = result["other_mutations"]
   
-  # Now project information...
+  project = result_data[ pipeline_name ]
   
-  unless result["ikmc_project_id"].nil?
-    if result["ikmc_project"] === "TIGM"
-      unless result_data["projects"]["TIGM"]
-        result_data["projects"]["TIGM"] = { "cells" => [], "mice" => [] }
-      end
-      
-      if result["mouse_available"] and result["mouse_available"] == "1"
-        result_data["projects"]["TIGM"]["mice"].push( result["ikmc_project_id"] )
-      else
-        result_data["projects"]["TIGM"]["cells"].push( result["ikmc_project_id"] )
-      end
+  if pipeline_name == "TIGM"
+    unless project.include? "cells" and project.include? "mice"
+      project.update( { "cells" => [], "mice" => [] } )
+    end
+    
+    if result["mouse_available"] and result["mouse_available"] == "1"
+      project["mice"].push( result["ikmc_project_id"] )
     else
-      result_data["projects"][ result["ikmc_project_id"] ] = {
-        "project"          => result["ikmc_project"],
-        "project_id"       => result["ikmc_project_id"],
-        "status"           => result["status"],
-        "vector_available" => result["vector_available"],
-        "vector_generated" => result["vector_generated"],
-        "escell_available" => result["escell_available"],
-        "escell_generated" => result["escell_generated"],
-        "mouse_available"  => result["mouse_available"],
-        "mouse_generated"  => result["mouse_generated"]
-      }
+      project["cells"].push( result["ikmc_project_id"] )
+    end
+    
+  else
+    next if result['vector_available'] == '0'  \
+         and result['escell_available'] == '0' \
+         and result['mouse_available'] == 0
+    
+    if result['vector_available'] == '1'
+      project['vector_available'] = '1'
+      unless project['escell_available'] == '1' or project['mouse_available'] == '1'
+        project['project_id'] = result['ikmc_project_id']
+        project['status']     = result['status']
+      end
+    end
+    
+    if result['escell_available'] == '1'
+      project['escell_available'] = '1'
+      unless project['mouse_available'] == '1'
+        project['project_id'] = result['ikmc_project_id']
+        project['status']     = result['status']
+      end
+    end
+    
+    if result['mouse_available'] == '1'
+      project['mouse_available'] = '1'
+      project['project_id']      = result['ikmc_project_id']
+      project['status']          = result['status']
     end
   end
 end
 
-# Finally, ensure that the data in the arrays is unique 
-# and that we only return stuff when we have project info...
-entries_to_delete = []
-sorted_results.each do |key,result_data|
-  if result_data["projects"].empty?
-    entries_to_delete.push(key)
-  else
-    # TODO: write a sort function so that the more advanced products go at the top - see Jeremy's 'details.php' page for ideas!
-  end
-end
 
-entries_to_delete.each do |key|
-  sorted_results.delete(key)
+##
+##  Sort results: mice > cells > vectors
+##
+
+sorted_results.each do |key,sorted_result|
+  projects_with_mice, projects_with_cells, projects_with_vectors = [], [], []
+  
+  sorted_result.sort.each do |pipeline_name, project_data|
+    if pipeline_name == 'TIGM'
+      if project_data['mice'].length > 0
+        projects_with_mice.push( project_data )
+      elsif project_data['cells'].length > 0
+        projects_with_cells.push( project_data )
+      end
+    else
+      if project_data['mouse_available'] == '1'
+        projects_with_mice.push( project_data )
+      elsif project_data['escell_available'] == '1'
+        projects_with_cells.push( project_data )
+      elsif project_data['vector_available'] == '1'
+        projects_with_vectors.push( project_data )
+      else
+        sorted_result.delete( pipeline_name )
+      end
+    end
+  end
+  
+  sorted_results[key].update({
+    'projects' => (projects_with_mice + projects_with_cells + projects_with_vectors).freeze
+  })
 end
 
 return sorted_results

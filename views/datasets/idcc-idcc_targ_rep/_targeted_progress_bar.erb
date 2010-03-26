@@ -1,0 +1,67 @@
+<%
+  # Get the project_status info for this project entry
+  # and work out how to draw the progress bar...
+  
+  if result_data[ "ikmc-dcc-knockout_attempts" ]
+    ikmc_project = result_data[ "ikmc-dcc-knockout_attempts" ][ mol_struct['pipeline_name'] ]
+  else
+    ikmc_project = nil
+  end
+  
+  project_status = idcc_targ_rep_get_status_info( mol_struct, ikmc_project )
+  progress       = get_progressbar_info( project_status )
+%>
+
+<table class="ikmc-dcc-knockout_attempts_allele_progress" width="100%">
+  <thead>
+    <tr>
+      <th width="15%"></th>
+      <th width="20%" class="centre">Vectors</th>
+      <th width="20%" class="centre">ES Cells</th>
+      <th width="20%" class="centre">Mice</th>
+      <th class="nobg noborder"></th>
+    </tr>
+  </thead>
+  
+  <!-- Progress bar row -->
+  <tbody>
+    <tr>
+      <!-- Pipeline Name with IKMC Project ID-->
+      <td>
+        <strong><%= mol_struct["pipeline_name"] %></strong><br />
+        <% if mol_struct["pipeline_name"] === "KOMP-Regeneron" %>
+          <% velocigene_id = mol_struct['ikmc_project_id'].gsub("VG","") %>
+          (Project: <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank"><%= mol_struct['ikmc_project_id'] %></a>)
+        <% elsif mol_struct["pipeline_name"] === "mirKO" %>
+          <!-- don't print anything as mirKO products do not have any IKMC project id -->
+        <% else %>
+          (Project: <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= mol_struct['ikmc_project_id'] %>" target="_blank"><%= mol_struct['ikmc_project_id'] %></a>)
+        <% end %>
+      </td>
+      
+      <!-- Vectors -->
+      <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
+        <a href="<%= product_order_url( mol_struct, result_data, "vectors" ) %>" class="order" target="_blank">order</a>
+      </td>
+      
+      <!-- Cells -->
+      <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
+        <% unless mol_struct['conditional_clones'].empty? and mol_struct['nonconditional_clones'].empty? %>
+          <a href="<%= product_order_url( mol_struct, result_data, "cells" ) %>" class="order" target="_blank">order</a>
+        <% end %>
+      </td>
+      
+      <!-- Mice -->
+      <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
+        <% if ikmc_project and ikmc_project["mouse_available"] == "1" %>
+          <a href="<%= product_order_url( mol_struct, result_data, "mice" ) %>" class="order" target="_blank">order</a>
+        <% end %>
+      </td>
+      
+      <!-- Details -->
+      <td class="nobg noborder">
+        <a class="ikmc-dcc-knockout_attempts_allele_progress_details_toggle">view&nbsp;details</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

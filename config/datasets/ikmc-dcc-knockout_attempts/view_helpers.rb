@@ -1,8 +1,8 @@
 
 # This method defines the possible statuses for each project 
 # and returns a project_status hash for a given project entry.
-def get_status_info( project )
-  status_definitions = case project["project"]
+def knockout_attempts_get_status_info( project )
+  status_definitions = case project["pipeline_name"]
   when /EUCOMM|KOMP-CSD|NorCOMM/
     {
       "On Hold"                                                 => { :stage => "pre",     :type => "warn"   },
@@ -128,7 +128,7 @@ end
 def product_order_url( project, result_data, order_type )
   url = ""
   
-  if project["project"] === "KOMP-CSD"
+  if project["pipeline_name"] === "KOMP-CSD"
     case order_type
     when "vectors"
       url = "http://www.komp.org/vectorOrder.php?projectid=#{project["project_id"]}"
@@ -137,7 +137,7 @@ def product_order_url( project, result_data, order_type )
     else
       url = "http://www.komp.org/geneinfo.php?project=CSD#{project["project_id"]}"
     end
-  elsif project["project"] === "KOMP-Regeneron"
+  elsif project["pipeline_name"] === "KOMP-Regeneron"
     case order_type
     when "vectors"
       url = "http://www.komp.org/vectorOrder.php?projectid=#{project["project_id"]}"
@@ -146,15 +146,23 @@ def product_order_url( project, result_data, order_type )
     else
       url = "http://www.komp.org/geneinfo.php?project=#{project["project_id"]}"
     end
-  elsif project["project"] === "EUCOMM"
+  elsif project["pipeline_name"] === "EUCOMM"
+    mgi_id = project['mgi_accession_id'].split('MGI:')[1]
+    
     case order_type
+    when "vectors"
+      url = "http://www.eummcr.org/final_vectors.php?mgi_id=#{mgi_id}"
+    when "cells"
+      url = "http://www.eummcr.org/es_cells.php?mgi_id=#{mgi_id}"
     when "mice"
       url = "http://www.emmanet.org/mutant_types.php?keyword=#{result_data["index"]["marker_symbol"]}%25EUCOMM&select_by=InternationalStrainName&search=ok"
     else
       url = "http://www.eummcr.org/order.php"
     end
-  elsif project["project"] === "NorCOMM"
+  elsif project["pipeline_name"] === "NorCOMM"
     url = "http://www.phenogenomics.ca/services/cmmr/escell_services.html"
+  elsif project["pipeline_name"] === "MirKO"
+    url = "TO BE DEFINED"
   end
   
   return url

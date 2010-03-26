@@ -43,6 +43,8 @@
       "mgi_accession_id",
       "igtc",
       "imsr",
+      "ensembl_gene_id",
+      "marker_symbol",
       "mgi_gene_traps",
       "targeted_mutations",
       "other_mutations",

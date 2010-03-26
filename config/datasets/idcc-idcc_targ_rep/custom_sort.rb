@@ -48,6 +48,10 @@ sorted_results = {}
   next unless result['escell_clone']
   project['escell_available'] = true
   
+  # This project has cells, it might be more interesting than 
+  # the one set initially.
+  project['ikmc_project_id'] = result['ikmc_project_id']
+  
   es_cell = {
     'escell_clone'              => result['escell_clone'],
     'allele_symbol_superscript' => result['allele_symbol_superscript'],

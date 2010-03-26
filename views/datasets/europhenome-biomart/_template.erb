@@ -1,9 +1,11 @@
 <div style="float:right;"><%= partial( "datasets/europhenome-biomart/legend" ) %></div>
 <div class="clear"></div>
 
+<% column_width = ( 85.to_f / (EUROPHENOME_TESTS_PER_ROW * 2).to_f ).round %>
+
 <div class="accordion">
   <% EUROPHENOME_PIPELINES.keys.sort.each do |pipeline_name| %>
-    <% pipeline_parameter_chunks = EUROPHENOME_PIPELINES[pipeline_name].chunk(7) %>
+    <% pipeline_parameter_chunks = EUROPHENOME_PIPELINES[pipeline_name].chunk(EUROPHENOME_TESTS_PER_ROW) %>
     <h6><a href=""><%= pipeline_name %></a></h6>
     <div>
       <table class="europhenome-data">
@@ -22,8 +24,8 @@
             <tr class="male-female">
               <th></th>
               <% pipeline_parameters.each do |parameter_id| %>
-                <th class="male">M</th>
-                <th class="female">F</th>
+                <th class="male" width="<%= column_width %>%">M</th>
+                <th class="female" width="<%= column_width %>%">F</th>
               <% end %>
             </tr>
           </thead>

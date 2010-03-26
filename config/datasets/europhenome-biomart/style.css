@@ -30,7 +30,6 @@
 .europhenome-biomart table.europhenome-data tr.male-female th,
 .europhenome-biomart table.europhenome-data th.male,
 .europhenome-biomart table.europhenome-data th.female {
-	min-width: 8px;
 	text-align: center;
 	text-indent: -9999px;
 	background: #e8e8e8 none no-repeat center center;

@@ -1,6 +1,7 @@
 require "bigdecimal"
 
-EUROPHENOME_TEST_MAPPING = {
+EUROPHENOME_TESTS_PER_ROW = 7
+EUROPHENOME_TEST_MAPPING  = {
   "ESLIM_001_001" => "Dysmorphology",
   "ESLIM_022_001" => "Body Weight",
   "ESLIM_002_001" => "Non-Invasive Blood Pressure",
@@ -66,8 +67,7 @@ EUROPHENOME_TEST_MAPPING = {
   "M-G-P_008_001" => "Modified SHIRPA",
   "M-G-P_006_001" => "X-Ray"
 }
-
-EUROPHENOME_PIPELINES = {
+EUROPHENOME_PIPELINES     = {
   "EUMODIC Pipeline 1" => [
     "ESLIM_001_001",
     "ESLIM_022_001",

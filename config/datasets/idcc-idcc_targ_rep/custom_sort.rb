@@ -14,15 +14,23 @@ sorted_results = {}
       'pipeline_name'           => result['pipeline_name'],
       'mgi_accession_id'        => result['mgi_accession_id'],
       'design_id'               => result['design_id'],
+      'ikmc_project_id'         => result['ikmc_project_id'],
       'targeting_vectors'       => [],
       'conditional_clones'      => [],
-      'nonconditional_clones'   => []
+      'nonconditional_clones'   => [],
+      'vector_available'        => false,
+      'escell_available'        => false,
+      'mouse_available'         => false
     }
   end
   project = result_data[ result['pipeline_name'] ]
   
-  # Targeting Vector
-  targ_vec = { 
+  #
+  #   Targeting Vector
+  #
+  project['vector_available'] = true
+  
+  targ_vec = {
     'ikmc_project_id'     => result['ikmc_project_id'],
     'cassette'            => result['cassette'],
     'backbone'            => result['backbone'],
@@ -33,10 +41,12 @@ sorted_results = {}
     project['targeting_vectors'].push( targ_vec )
   end
   
-  # ES Cell
-  next unless result['escell_clone']
   
-  project['ikmc_project_id'] = result['ikmc_project_id']
+  #
+  #   ES Cell
+  #
+  next unless result['escell_clone']
+  project['escell_available'] = true
   
   es_cell = {
     'escell_clone'              => result['escell_clone'],

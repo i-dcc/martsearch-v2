@@ -1,4 +1,4 @@
-<div class="ikmc-dcc-knockout_attempts_allele_progress_links">
+<div class="idcc-idcc_targ_rep_allele_progress_links">
   <h4>Links</h4>
   
   <ul>
@@ -8,18 +8,20 @@
       </li>
     <% end %>
     
-    <% if conditional_clones or nonconditional_clones %>
+    <!-- Allele Image -->
+    <li>
+      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/allele-image" class="image" rel="prettyPhoto">
+        View a cartoon of this allele
+      </a>
+    </li>
+    
+    <!-- HTGT Gene Report -->
+    <% if ikmc_project_id %>
       <li>
-        <a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/allele-image" class="image" rel="prettyPhoto">
-          View a cartoon of this allele
+        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= ikmc_project_id %>" target="_blank">
+          View this allele in HTGT
         </a>
       </li>
     <% end %>
-    
-    <li>
-      <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= project_id %>" target="_blank">
-        View this allele in HTGT
-      </a>
-    </li>
   </ul>
 </div>

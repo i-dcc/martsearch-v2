@@ -27,7 +27,7 @@ sorted_results = {}
       "other_mutations"    => result["other_mutations"],
       "vector_available"   => "0",
       "escell_available"   => "0",
-      "mouse_available"    => "0",
+      "mouse_available"    => "0"
     }
   end
   

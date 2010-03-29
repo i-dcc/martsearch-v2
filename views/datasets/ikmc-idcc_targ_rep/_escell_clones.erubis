@@ -27,8 +27,8 @@
   <!-- Conditional and Non-Conditional clones -->
   
   <div>
-    <div><a class="idcc-idcc_targ_rep_allele_progress_clones_toggle">view all available ES cell clones</a></div>
-    <div class="idcc-idcc_targ_rep_allele_progress_clones_content">
+    <div><a class="ikmc-idcc_targ_rep_allele_progress_clones_toggle">view all available ES cell clones</a></div>
+    <div class="ikmc-idcc_targ_rep_allele_progress_clones_content">
       <table>
         <tr>
           
@@ -39,7 +39,7 @@
             
             <% unless conditional_clones.empty? %>
               <%=
-                partial( "datasets/idcc-idcc_targ_rep/escell_clone_details", 
+                partial( "datasets/ikmc-idcc_targ_rep/escell_clone_details", 
                 :locals => { :clones => conditional_clones })
               %>
             <% else %>
@@ -54,7 +54,7 @@
             
             <% unless nonconditional_clones.empty? %>
               <%=
-                partial( "datasets/idcc-idcc_targ_rep/escell_clone_details",
+                partial( "datasets/ikmc-idcc_targ_rep/escell_clone_details",
                 :locals => { :clones => nonconditional_clones })
               %>
             <% else %>

@@ -1,4 +1,4 @@
-<% result_data["idcc-idcc_targ_rep"].each do |pipeline_name, mol_struct| %>
+<% result_data["ikmc-idcc_targ_rep"].each do |pipeline_name, mol_struct| %>
   <%
     if result_data[ "ikmc-dcc-knockout_attempts" ]
       ikmc_project = result_data["ikmc-dcc-knockout_attempts"][mol_struct['pipeline_name']]
@@ -16,17 +16,17 @@
     
     <!-- Progress Bar -->
     <%=
-      partial( "datasets/idcc-idcc_targ_rep/targeted_progress_bar",
+      partial( "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
       :locals => { 
         :mol_struct   => mol_struct,
         :result_data  => result_data
       })
     %>
     
-    <div class="idcc-idcc_targ_rep_allele_progress_details_content">
+    <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
       <!-- Links -->
       <%=
-        partial( "datasets/idcc-idcc_targ_rep/links", 
+        partial( "datasets/ikmc-idcc_targ_rep/links", 
         :locals => {
           :molecular_structure_id => mol_struct['molecular_structure_id'],
           :ikmc_project_id        => mol_struct['ikmc_project_id'],
@@ -36,7 +36,7 @@
       
       <!-- ES Cells -->
       <%=
-        partial( "datasets/idcc-idcc_targ_rep/escell_clones",
+        partial( "datasets/ikmc-idcc_targ_rep/escell_clones",
         :locals => {
           :molecular_structure_id => mol_struct['molecular_structure_id'],
           :design_id              => mol_struct['design_id'],
@@ -48,7 +48,7 @@
       
       <!-- Targeting Vectors -->
       <%=
-        partial( "datasets/idcc-idcc_targ_rep/targeting_vectors", 
+        partial( "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
         :locals => {
           :molecular_structure_id => mol_struct['molecular_structure_id'],
           :targeting_vectors      => mol_struct['targeting_vectors'],

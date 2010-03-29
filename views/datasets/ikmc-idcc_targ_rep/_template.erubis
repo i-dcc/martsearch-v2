@@ -53,8 +53,7 @@
         partial(
           "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
           :locals => {
-            :molecular_structure_id => mol_struct['molecular_structure_id'],
-            :targeting_vectors      => mol_struct['targeting_vectors'],
+            :mol_struct => mol_struct
           }
         ) 
       %>

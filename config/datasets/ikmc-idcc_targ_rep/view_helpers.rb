@@ -2,18 +2,14 @@
 def idcc_targ_rep_get_progressbar_info( mol_struct )
   if mol_struct['mouse_available']
     return { "vectors" => "normal", "cells" => "normal", "mice" => "normal" }
-  end
-  
-  if mol_struct['escell_available']
+  elsif mol_struct['escell_available']
     return { "vectors" => "normal", "cells" => "normal", "mice" => "incomp" }
-  end
-  
-  if mol_struct['vector_available']
+  elsif mol_struct['vector_available']
     return { "vectors" => "normal", "cells" => "incomp", "mice" => "incomp" }
+  else
+    # Nothing available - should not happen.
+    return { "vectors" => "incomp", "cells" => "incomp", "mice" => "incomp" }
   end
-  
-  # Nothing available - should not happen.
-  return { "vectors" => "incomp", "cells" => "incomp", "mice" => "incomp" }
 end
 
 # Link URL generator for ordering products.
@@ -45,7 +41,7 @@ def idcc_targ_rep_product_order_url( mol_struct, result_data, order_type )
       url = "http://www.komp.org/geneinfo.php?project=#{project_id}"
     end
   
-  elsif pipeline_name === "EUCOMM"
+  elsif ( pipeline_name === "EUCOMM" or pipeline_name === "mirKO" )
     case order_type
     when "vectors"
       url = "http://www.eummcr.org/final_vectors.php?mgi_id=#{mgi_accession_id}"

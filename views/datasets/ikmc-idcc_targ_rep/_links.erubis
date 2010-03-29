@@ -8,17 +8,22 @@
       </li>
     <% end %>
     
-    <!-- Allele Image -->
+    <!-- I-DCC Targeting Repository -->
     <li>
-      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/allele-image" class="image" rel="prettyPhoto">
+      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= mol_struct['molecular_structure_id'] %>/allele-image" class="image" rel="prettyPhoto">
         View a cartoon of this allele
+      </a>
+    </li>
+    <li>
+      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= mol_struct['molecular_structure_id'] %>">
+        View this allele in the targeting repository
       </a>
     </li>
     
     <!-- HTGT Gene Report -->
-    <% if ikmc_project_id %>
+    <% if mol_struct['ikmc_project_id'] %>
       <li>
-        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= ikmc_project_id %>" target="_blank">
+        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= mol_struct['ikmc_project_id'] %>" target="_blank">
           View this allele in HTGT
         </a>
       </li>

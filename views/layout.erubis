@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <% if @page_title %>
+      <title><%= @page_title %> - <%= @ms.portal_name %></title>
+    <% else %>
+      <title><%= @ms.portal_name %></title>
+    <% end %>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <link type="text/css" href="<%= BASE_URI %>/css/martsearch-<%= PORTAL_VERSION %>.css" rel="stylesheet" media="screen, projection" />
+    <script type="text/javascript" src="<%= BASE_URI %>/js/jquery-1.4.2.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <a href="<%= BASE_URI %>/"><h1><%= @ms.portal_name %></h1></a>
+        <a id="sanger_link" href="http://www.sanger.ac.uk"><img height="60" width="200" alt="" src="<%= BASE_URI %>/images/blank.gif"/></a>
+      </div>
+      
+      <div id="navigation">
+        <span id="resize_and_search">
+          <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
+            <input type="text" class="textinput" name="query" value="" />
+            <input type="submit" class="submit" value="search" />
+          </form>
+          <div id="fontresize"></div>
+        </span>  
+        <ul>
+          <li<% if @current === "home" %> class="current"<% end %>><a href="<%= BASE_URI %>/">Home</a></li>
+          <li<% if @current === "browse" %> class="current"<% end %>><a href="<%= BASE_URI %>/browse">Browse</a></li>
+          <li<% if @current === "help" %> class="current"<% end %>><a href="<%= BASE_URI %>/help">Help</a></li>
+          <li<% if @current === "about" %> class="current"<% end %>><a href="<%= BASE_URI %>/about">About</a></li>
+        </ul>
+        <br style="clear: both;" />
+      </div>
+      
+      <div id="messages">
+        <% if @messages[:status].size > 0 %>
+          <div id="status_msgs" class="messages">
+            <ul>
+              <% @messages[:status].each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <% if @messages[:error].size > 0 %>
+          <div id="error_msgs" class="messages">
+            <h2>Sorry, an Error Has Occurred</h2>
+            <ul>
+              <% @messages[:error].each do |msg| %>
+                <li>
+                  <%= msg[:highlight] %>
+                  <% if msg[:full_text] %>
+                    <small><a class="error_msg_toggle">view the full error message</a></small>
+                    <div class="error_msg_content"><%= msg[:full_text] %></div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      
+      <div id="content">
+        <%= yield %>
+      </div>
+      
+      <div id="footer">
+        <p>
+          Powered by 
+          <a href="http://github.com/dazoakley/martsearchr">MartSearchr</a>, 
+          developed by the <a href="http://www.sanger.ac.uk/">Wellcome 
+          Trust Sanger Institute</a>
+          <br />
+          Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK  
+          Tel:+44 (0)1223 834244
+          <br />
+          Registered charity number 210183
+        </p>
+      </div>
+    </div>
+    
+    <% if @ms.config["debug"] %>
+      <div id="debug-config">
+        <h3>MartSearch Config (Debug Info)</h3>
+        <pre><%= @ms.config.to_yaml %></pre>
+      </div>
+    <% end %>
+    
+    <script type="text/javascript" src="<%= BASE_URI %>/js/martsearch-<%= PORTAL_VERSION %>.js" charset="utf-8"></script>
+    <script type="text/javascript" src="http://js.sanger.ac.uk/urchin.js" charset="utf-8"></script>
+    <script type="text/javascript">
+     _userv=0;
+     urchinTracker();
+    </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-317752-8");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>

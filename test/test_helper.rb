@@ -3,7 +3,7 @@ require "net/http"
 require "cgi"
 
 require "rubygems"
-require "sinatra"
+require "erubis"
 require "json"
 require "rdiscount"
 require "mail"
@@ -12,6 +12,9 @@ require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
 require "rsolr"
+
+gem "sinatra", ">=1.0"
+require "sinatra"
 
 gem "biomart", ">=0.1.5"
 require "biomart"

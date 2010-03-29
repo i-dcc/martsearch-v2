@@ -25,10 +25,10 @@ get "/phenotyping/:colony_prefix/abr/" do
       html_text = f.read
     end
     
-    erb html_text
+    erubis html_text
   else
     status 404
-    erb :not_found
+    erubis :not_found
   end
 end
 
@@ -45,7 +45,7 @@ get "/phenotyping/:colony_prefix/abr/*" do
     return content
   else
     status 404
-    erb :not_found
+    erubis :not_found
   end
 end
 
@@ -70,11 +70,11 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Homozygote Viability"
     end
 
-    erb :"datasets/sanger-phenotyping/homviable_test_details"
+    erubis :"datasets/sanger-phenotyping/homviable_test_details"
   else
     @messages[:error].push({ :highlight => "Sorry, we could not find any Homozygote Viability data for '#{params[:colony_prefix]}'." })
     status 404
-    erb :not_found
+    erubis :not_found
   end
 end
 
@@ -93,11 +93,11 @@ get "/phenotyping/:colony_prefix/fertility/?" do
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Fertility"
     end
     
-    erb :"datasets/sanger-phenotyping/fertility_test_details"
+    erubis :"datasets/sanger-phenotyping/fertility_test_details"
   else
     @messages[:error].push({ :highlight => "Sorry, we could not find any Fertility data for '#{params[:colony_prefix]}'." })
     status 404
-    erb :not_found
+    erubis :not_found
   end
 end
 
@@ -142,14 +142,14 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   if @test_images.nil? or @test.nil?
     @messages[:error].push({ :highlight => "Sorry, we could not find any phenotyping data for '#{params[:pheno_test]}' on '#{params[:colony_prefix]}'." })
     status 404
-    erb :not_found
+    erubis :not_found
   else
     if @marker_symbol
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): #{@test["name"]}"
     else
       @page_title = "#{@colony_prefix}: #{@test["name"]}"
     end
-    erb :"datasets/sanger-phenotyping/test_details"
+    erubis :"datasets/sanger-phenotyping/test_details"
   end
 end
 
@@ -160,5 +160,5 @@ get "/phenotyping/heatmap" do
   @heat_map            = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-heatmap") )
   @pheno_test_name_map = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_names") )
   
-  erb :"datasets/sanger-phenotyping/heatmap"
+  erubis :"datasets/sanger-phenotyping/heatmap"
 end

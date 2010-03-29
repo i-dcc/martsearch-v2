@@ -1,0 +1,81 @@
+<h4>ES Cell Clones</h4>
+
+<% if mol_struct['conditional_clones'] or mol_struct['nonconditional_clones'] %>
+
+  <!-- ES Cell clones summary -->
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Design ID</th>
+        <th>Design Type</th>
+        <th># Conditional Clones</th>
+        <th># Targeted Non-conditional Clones</th>
+        <th>Genbank File</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr>
+        <td><a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= mol_struct['design_id'] %>"><%= mol_struct['design_id'] %></a></td>
+        <td><%= mol_struct['design_type'] %></td>
+        <td><%= mol_struct['conditional_clones'].length %></td>
+        <td><%= mol_struct['nonconditional_clones'].length %></td>
+        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= mol_struct['molecular_structure_id'] %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <!-- Conditional and Non-Conditional clones -->
+  <div class="clear"></div>
+  <div>
+    <div><a class="ikmc-idcc_targ_rep_allele_progress_clones_toggle">view all available ES cell clones</a></div>
+    <div class="ikmc-idcc_targ_rep_allele_progress_clones_content">
+      <table>
+        <tr>
+          
+          <!-- Conditional Clones -->
+          
+          <td width="50%" class="noborder">
+            <h5>Conditional Clones</h5>
+            
+            <% unless mol_struct['conditional_clones'].empty? %>
+              <%=
+                partial(
+                  "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+                  :locals => {
+                    :clones => mol_struct['conditional_clones']
+                  }
+                )
+              %>
+            <% else %>
+              <em>No clones available.</em>
+            <% end %>
+          </td>
+          
+          <!-- Non-Conditional Clones -->
+          
+          <td width="50%" class="noborder">
+            <h5>Targeted Non-conditional Clones</h5>
+            
+            <% unless mol_struct['nonconditional_clones'].empty? %>
+              <%=
+                partial(
+                  "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+                  :locals => {
+                    :clones => mol_struct['nonconditional_clones']
+                  }
+                )
+              %>
+            <% else %>
+              <em>No clones available.</em>
+            <% end %>
+          </td>
+          
+        </tr>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <p>&nbsp;&nbsp;&nbsp;<em>No clones available.</em></p>
+<% end %>

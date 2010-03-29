@@ -1,0 +1,64 @@
+<% result_data["ikmc-idcc_targ_rep"].each do |pipeline_name, mol_struct| %>
+  <%
+    if result_data[ "ikmc-dcc-knockout_attempts" ]
+      ikmc_project = result_data["ikmc-dcc-knockout_attempts"][mol_struct['pipeline_name']]
+      
+      if ikmc_project
+        mol_struct['mouse_available'] = ikmc_project['mouse_available'] == "1"
+        ensembl_gene_id = ikmc_project['ensembl_gene_id']
+      else
+        ensembl_gene_id = nil
+      end
+    end
+  %>
+  
+  <div>
+    
+    <!-- Progress Bar -->
+    <%=
+      partial(
+        "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
+        :locals => { 
+          :mol_struct  => mol_struct,
+          :result_data => result_data
+        }
+      )
+    %>
+    
+    <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
+      <!-- Links -->
+      <%=
+        partial(
+          "datasets/ikmc-idcc_targ_rep/links", 
+          :locals => {
+            :mol_struct      => mol_struct,
+            :ensembl_gene_id => ensembl_gene_id
+          }
+        )
+      %>
+      
+      <!-- ES Cells -->
+      <%=
+        partial(
+          "datasets/ikmc-idcc_targ_rep/escell_clones",
+          :locals => { 
+            :mol_struct => mol_struct
+          }
+        )
+      %>
+      <div class="clear"></div>
+      
+      <!-- Targeting Vectors -->
+      <%=
+        partial(
+          "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
+          :locals => {
+            :mol_struct => mol_struct
+          }
+        ) 
+      %>
+    </div>
+    
+    <div class="clear"></div>
+  </div>
+<% end %>

@@ -1,0 +1,68 @@
+<%
+  # Make progress bar from products availability
+  progress = idcc_targ_rep_get_progressbar_info( mol_struct )
+%>
+
+<table class="ikmc-pipeline-progress-bar" width="100%">
+  <thead>
+    <tr>
+      <th width="15%" class="center"></th>
+      <th width="20%" class="center">Vectors</th>
+      <th width="20%" class="center">ES Cells</th>
+      <th width="20%" class="center">Mice</th>
+      <th></th>
+    </tr>
+  </thead>
+  
+  <!-- Progress bar row -->
+  <tbody>
+    <tr>
+      <!-- Pipeline Name with IKMC Project ID-->
+      <td class="start_normal">
+        <strong><%= mol_struct["pipeline_name"] %></strong><br />
+        
+        <% if mol_struct["pipeline_name"] === "KOMP-Regeneron" %>
+          <% velocigene_id = mol_struct['ikmc_project_id'].gsub("VG","") %>
+          (Project: 
+          <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank">
+            <%= mol_struct['ikmc_project_id'] %>
+          </a>)
+        <% elsif mol_struct['ikmc_project_id'] %>
+          (Project: 
+          <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= mol_struct['ikmc_project_id'] %>" target="_blank">
+            <%= mol_struct['ikmc_project_id'] %>
+          </a>)
+        <% else %>
+          <!-- Don't print anything if no ikmc_project_id -->
+        <% end %>
+      </td>
+      
+      <!-- Vectors -->
+      <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
+        <% if mol_struct['vector_available'] %>
+          <% url = idcc_targ_rep_product_order_url( mol_struct, result_data, "vectors" ) %>
+          <a href="<%= url %>" class="order" target="_blank">order</a>
+        <% end %>
+      </td>
+      
+      <!-- Cells -->
+      <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
+        <% if mol_struct['escell_available'] %>
+          <% url = idcc_targ_rep_product_order_url( mol_struct, result_data, "cells" ) %>
+          <a href="<%= url %>" class="order" target="_blank">order</a>
+        <% end %>
+      </td>
+      
+      <!-- Mice -->
+      <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
+        <% if mol_struct["mouse_available"] %>
+          <% url = idcc_targ_rep_product_order_url( mol_struct, result_data, "mice" ) %>
+          <a href="<%= url %>" class="order" target="_blank">order</a>
+        <% end %>
+      </td>
+      
+      <!-- Details -->
+      <td><a class="ikmc-idcc_targ_rep_allele_progress_details_toggle">view&nbsp;details</a></td>
+    </tr>
+  </tbody>
+</table>

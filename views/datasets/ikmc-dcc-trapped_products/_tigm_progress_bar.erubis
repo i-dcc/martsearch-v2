@@ -1,0 +1,36 @@
+<table class="ikmc-pipeline-progress-bar" width="100%">
+  <thead>
+    <tr>
+      <th width="15%"></th>
+      <th width="20%" class="centre">Vectors</th>
+      <th width="20%" class="centre">ES Cells</th>
+      <th width="20%" class="centre">Mice</th>
+      <th class="nobg noborder"></th>
+    </tr>
+  </thead>
+  
+  <!-- Progress bar row -->
+  <tbody>
+    <tr>
+      <td class="start_normal"><strong>TIGM</strong></td>
+      <td class="normal normal_normal"></td>
+      <% if project["mice"].size > 0 %>
+        <td class="normal normal_normal">
+      <% else %>
+        <td class="normal normal_incomp">
+      <% end %>
+        <a href="<%= trapped_products_tigm_order_url(project["cells"], result_data) %>" class="order">order</a>
+      </td>
+      <% if project["mice"].size > 0 %>
+        <td class="end_normal normal">
+          <a href="<%= trapped_products_tigm_order_url(project["mice"], result_data) %>" class="order">order</a>
+        </td>
+      <% else %>
+        <td class="end_incomp incomp"></td>
+      <% end %>
+      <td class="nobg noborder">
+        <a class="ikmc-dcc-trapped_products_toggle">view&nbsp;details</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,67 @@
+<% result_data["ikmc-dcc-knockout_attempts"]['projects'].each do |ko_project| %>
+  <div>
+    <%
+      if result_data[ "ikmc-idcc_targ_rep" ]
+        targ_rep_project = result_data[ "ikmc-idcc_targ_rep" ][ ko_project['pipeline_name'] ]
+      else
+        targ_rep_project = nil
+      end
+      
+      if ko_project['pipeline_name'] == "TIGM"
+        progress_bar_template = "tigm_progress_bar"
+      else
+        progress_bar_template = "targeted_progress_bar"
+      end
+    %>
+    
+    <%=
+      partial( "datasets/ikmc-dcc-knockout_attempts/#{progress_bar_template}",
+      :locals => { 
+        :project      => ko_project,
+        :result_data  => result_data
+      })
+    %>
+    
+    <% unless targ_rep_project.nil? %>
+      <div class="ikmc-dcc-knockout_attempts_allele_progress_details_content">
+        
+        <!-- Links -->
+        <%=
+          partial( "datasets/ikmc-dcc-knockout_attempts/links", 
+          :locals => {
+            :ensembl_gene_id        => ko_project['ensembl_gene_id'],
+            :marker_symbol          => ko_project['marker_symbol'],
+            :project_id             => ko_project['project_id'],
+            :molecular_structure_id => targ_rep_project['molecular_structure_id'],
+            :conditional_clones     => targ_rep_project['conditional_clones'],
+            :nonconditional_clones  => targ_rep_project['nonconditional_clones']
+          })
+        %>
+        
+        <!-- ES Cells -->
+        <%=
+          partial( "datasets/ikmc-dcc-knockout_attempts/escell_clones",
+          :locals => {
+            :molecular_structure_id => targ_rep_project['molecular_structure_id'],
+            :design_id              => targ_rep_project['design_id'],
+            :conditional_clones     => targ_rep_project['conditional_clones'],
+            :nonconditional_clones  => targ_rep_project['nonconditional_clones']
+          })
+        %>
+        <div class="clear"></div>
+        
+        <!-- Targeting Vectors -->
+        <%=
+          partial( "datasets/ikmc-dcc-knockout_attempts/targeting_vectors", 
+          :locals => {
+            :molecular_structure_id => targ_rep_project['molecular_structure_id'],
+            :targeting_vectors      => targ_rep_project['targeting_vectors'],
+          }) 
+        %>
+        
+      </div>
+    <% end %>
+    
+    <div class="clear"></div>
+  </div>
+<% end %>

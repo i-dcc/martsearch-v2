@@ -236,7 +236,8 @@
   },
   "datasets": [
     "mgi-markers",
-    "ikmc-dcc-knockout_attempts",
+    "idcc-idcc_targ_rep",
+    "ikmc-dcc-trapped_products",
     "eurexpress-template",
     "europhenome-biomart",
     "emma-strains"

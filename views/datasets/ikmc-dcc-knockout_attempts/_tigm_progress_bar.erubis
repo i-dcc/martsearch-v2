@@ -1,0 +1,55 @@
+<table class="ikmc-dcc-knockout_attempts_allele_progress" width="100%">
+  <thead>
+    <tr>
+      <th width="15%"></th>
+      <th width="20%" class="centre">Vectors</th>
+      <th width="20%" class="centre">ES Cells</th>
+      <th width="20%" class="centre">Mice</th>
+      <th class="nobg noborder"></th>
+    </tr>
+  </thead>
+  
+  <!-- Progress bar row -->
+  <tbody>
+    <tr>
+      <td class="start_normal"><strong>TIGM</strong></td>
+      <td class="normal normal_normal"></td>
+      <% if project["mice"].size > 0 %>
+        <td class="normal normal_normal">
+      <% else %>
+        <td class="normal normal_incomp">
+      <% end %>
+        <a href="<%= tigm_order_url(project["cells"], result_data) %>" class="order">order</a>
+      </td>
+      <% if project["mice"].size > 0 %>
+        <td class="end_normal normal">
+          <a href="<%= tigm_order_url(project["mice"], result_data) %>" class="order">order</a>
+        </td>
+      <% else %>
+        <td class="end_incomp incomp"></td>
+      <% end %>
+      <td class="nobg noborder">
+        <a class="ikmc-dcc-knockout_attempts_allele_progress_details_toggle">view&nbsp;details</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="ikmc-dcc-knockout_attempts_allele_progress_details_content">
+  <h5>All TIGM Gene Traps</h5>
+  <p>
+    <em><%= project['cells'].length %> ES Cells.</em>
+    <% unless project['mice'].empty? %>
+      <em><%= project['mice'].length %> mice.</em>
+    <% end %>
+  </p>
+  <p>
+    <%
+      trap_links = []
+      project["cells"].each do |trap|
+        trap_links.push("<a href='#{tigm_ncbi_url(trap)}'>#{trap}</a>")
+      end
+    %>
+    <%= trap_links.join(", ") %>
+  </p>
+</div>

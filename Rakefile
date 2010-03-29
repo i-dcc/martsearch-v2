@@ -7,6 +7,7 @@ task :install_deps do
     "sinatra",
     "rack-contrib",
     "json",
+    "erubis",
     "biomart",
     "rdiscount",
     "mail",

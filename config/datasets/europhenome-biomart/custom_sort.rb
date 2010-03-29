@@ -1,3 +1,5 @@
+require "#{File.expand_path(File.dirname(__FILE__))}/config/datasets/europhenome-biomart/view_helpers.rb"
+
 sorted_results = {}
 
 @current_search_results.each do |result|
@@ -33,7 +35,7 @@ sorted_results = {}
   pipeline_name = nil
   test_eslim_id = result["parameter_eslim_id"][0,( result["parameter_eslim_id"].size - 4 )]
   
-  EUROPHENOME_PIPELINES.each do |pipeline,ids|
+  europhenome_pipelines().each do |pipeline,ids|
     if ids.include?(test_eslim_id) then pipeline_name = pipeline end
   end
   

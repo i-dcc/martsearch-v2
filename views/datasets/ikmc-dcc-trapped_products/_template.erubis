@@ -1,0 +1,22 @@
+<% result_data["ikmc-dcc-trapped_products"].each do |project| %>
+  <div>
+    <%= 
+      partial( "datasets/ikmc-dcc-trapped_products/tigm_progress_bar", 
+        :locals => { :project => project, :result_data => result_data } 
+      )
+    %>
+    
+    <div class="ikmc-dcc-trapped_products_content">
+      <h5>All TIGM Gene Traps</h5>
+        <p>
+          <%
+            trap_links = []
+            project['cells'].each do |trap|
+              trap_links.push("<a href='#{trapped_products_tigm_ncbi_url(trap)}'>#{trap}</a>")
+            end
+          %>
+          <%= trap_links.join(", ") %>
+        </p>
+    </div>
+  </div>
+<% end %>

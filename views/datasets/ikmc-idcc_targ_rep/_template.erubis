@@ -16,43 +16,47 @@
     
     <!-- Progress Bar -->
     <%=
-      partial( "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
-      :locals => { 
-        :mol_struct   => mol_struct,
-        :result_data  => result_data
-      })
+      partial(
+        "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
+        :locals => { 
+          :mol_struct  => mol_struct,
+          :result_data => result_data
+        }
+      )
     %>
     
     <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
       <!-- Links -->
       <%=
-        partial( "datasets/ikmc-idcc_targ_rep/links", 
-        :locals => {
-          :molecular_structure_id => mol_struct['molecular_structure_id'],
-          :ikmc_project_id        => mol_struct['ikmc_project_id'],
-          :ensembl_gene_id        => ensembl_gene_id
-        })
+        partial(
+          "datasets/ikmc-idcc_targ_rep/links", 
+          :locals => {
+            :mol_struct      => mol_struct,
+            :ensembl_gene_id => ensembl_gene_id
+          }
+        )
       %>
       
       <!-- ES Cells -->
       <%=
-        partial( "datasets/ikmc-idcc_targ_rep/escell_clones",
-        :locals => {
-          :molecular_structure_id => mol_struct['molecular_structure_id'],
-          :design_id              => mol_struct['design_id'],
-          :conditional_clones     => mol_struct['conditional_clones'],
-          :nonconditional_clones  => mol_struct['nonconditional_clones']
-        })
+        partial(
+          "datasets/ikmc-idcc_targ_rep/escell_clones",
+          :locals => { 
+            :mol_struct => mol_struct
+          }
+        )
       %>
       <div class="clear"></div>
       
       <!-- Targeting Vectors -->
       <%=
-        partial( "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
-        :locals => {
-          :molecular_structure_id => mol_struct['molecular_structure_id'],
-          :targeting_vectors      => mol_struct['targeting_vectors'],
-        }) 
+        partial(
+          "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
+          :locals => {
+            :molecular_structure_id => mol_struct['molecular_structure_id'],
+            :targeting_vectors      => mol_struct['targeting_vectors'],
+          }
+        ) 
       %>
     </div>
     

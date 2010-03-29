@@ -14,6 +14,7 @@ sorted_results = {}
       'pipeline_name'           => result['pipeline_name'],
       'mgi_accession_id'        => result['mgi_accession_id'],
       'design_id'               => result['design_id'],
+      'design_type'             => result['design_type'],
       'ikmc_project_id'         => result['ikmc_project_id'],
       'targeting_vectors'       => [],
       'conditional_clones'      => [],

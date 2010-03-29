@@ -10,8 +10,8 @@
   "url":                  "http://www.i-dcc.org/biomart",
   "dataset_name":         "idcc_targ_rep",
   "display_name":         "IKMC Targeted Products",
-  "attribution":          "The International Data Coordination Centre",
-  "attribution_link":     "http://www.i-dcc.org/",
+  "attribution":          "The International Data Coordination Centre (I-DCC)",
+  "attribution_link":     "http://www.i-dcc.org/targ_rep",
   "description":          "",
   "indexing": {
     "allow_document_creation": false,

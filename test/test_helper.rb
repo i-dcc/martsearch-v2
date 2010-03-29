@@ -13,7 +13,7 @@ require "will_paginate/view_helpers"
 require "rack/utils"
 require "rsolr"
 
-gem "sinatra", "=1.0.b"
+gem "sinatra", ">=1.0"
 require "sinatra"
 
 gem "biomart", ">=0.1.5"

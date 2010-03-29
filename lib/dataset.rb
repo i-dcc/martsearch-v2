@@ -142,9 +142,7 @@ class Dataset
     if @joined_index_field === index_key
       
       stash.each do |stash_key,stash_data|
-        if biomart_results[stash_key]
-          stash_data[@internal_name] = biomart_results[stash_key]
-        end
+        stash_data[@internal_name] = biomart_results[stash_key]
       end
       
     else
@@ -165,18 +163,20 @@ class Dataset
       end
       
       biomart_results.each do |biomart_key,biomart_data|
-        if lookup[biomart_key] && stash[ lookup[biomart_key] ]
+        index_lookup_term = lookup[biomart_key]
+        
+        if index_lookup_term && stash[ index_lookup_term ]
           if @custom_sort
             # If someone uses a custom sort- we assume they're taking care
             # of grouping all of thier data together correctly...
-            stash[ lookup[biomart_key] ][@internal_name] = biomart_data
+            stash[ index_lookup_term ][@internal_name] = biomart_data
           else
-            unless stash[ lookup[biomart_key] ][@internal_name]
-              stash[ lookup[biomart_key] ][@internal_name] = []
+            unless stash[ index_lookup_term ][@internal_name]
+              stash[ index_lookup_term ][@internal_name] = []
             end
             
             biomart_data.each do |data|
-              stash[ lookup[biomart_key] ][@internal_name].push(data)
+              stash[ index_lookup_term ][@internal_name].push(data)
             end
           end
         end
@@ -215,16 +215,14 @@ class Dataset
     end
     
     url << "&ATTRIBUTES="
-    attr_string = attrs.join("|")
-    while ( url.length + attr_string.length ) > 2048
+    while ( url.length + attrs.join("|").length ) > 2048
       # This loop ensures that the URL we form is not more than 2048 characters 
       # long - the maximum length that IE can deal with.  We do the shortening by 
       # dropping attributes from the selection, it's a pain, but at least it'll be 
       # easy for the user to add the attribute back in MartView.
       attrs.pop
-      attr_string = attrs.join("|")
     end
-    url << attr_string
+    url << attrs.join("|")
     
     return url
   end

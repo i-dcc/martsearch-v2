@@ -1,6 +1,6 @@
 <h4>Targeting Vectors</h4>
 
-<% if targeting_vectors %>
+<% if mol_struct['targeting_vectors'] %>
   <table>
     <tr>
       <th>Targeting Vector</th>
@@ -9,21 +9,25 @@
       <th>Backbone</th>
       <th>Genbank File</th>
     </tr>
-    <% targeting_vectors.each do |targ_vec| %>
+    <% mol_struct['targeting_vectors'].each do |targ_vec| %>
       <tr>
         <td>
-          <% if targ_vec["targeting_vector"] %>
+          <% if targ_vec['targeting_vector'] and ( mol_struct['pipeline_name'] === 'EUCOMM' or mol_struct['pipeline_name'] === 'KOMP-CSD' ) %>
             <a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= targ_vec["targeting_vector"][0..-5] %>"><%= targ_vec["targeting_vector"] %></a>
+          <% else %>
+            <%= targ_vec['targeting_vector'] %>
           <% end %>
         </td>
         <td>
-          <% if targ_vec["intermediate_vector"] %>
+          <% if targ_vec['intermediate_vector'] and ( mol_struct['pipeline_name'] === 'EUCOMM' or mol_struct['pipeline_name'] === 'KOMP-CSD' ) %>
             <a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= targ_vec["intermediate_vector"][0..-5] %>"><%= targ_vec["intermediate_vector"] %></a>
+          <% else %>
+            <%= targ_vec['intermediate_vector'] %>
           <% end %>
         </td>
         <td><%= targ_vec["cassette"] %></td>
         <td><%= targ_vec["backbone"] %></td>
-        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/targeting-vector-genbank-file" class="file ext_link">view</a></td>
+        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= mol_struct['molecular_structure_id'] %>/targeting-vector-genbank-file" class="file ext_link">view</a></td>
       </tr>
     <% end %>
   </table>

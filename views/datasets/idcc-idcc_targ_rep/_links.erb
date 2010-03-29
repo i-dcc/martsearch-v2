@@ -1,0 +1,27 @@
+<div class="idcc-idcc_targ_rep_allele_progress_links">
+  <h4>Links</h4>
+  
+  <ul>
+    <% if ensembl_gene_id %>
+      <li>
+        <%= partial( "datasets/idcc-idcc_targ_rep/ensembl_link", :locals => { :ensembl_gene_id => ensembl_gene_id }) %>
+      </li>
+    <% end %>
+    
+    <!-- Allele Image -->
+    <li>
+      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/allele-image" class="image" rel="prettyPhoto">
+        View a cartoon of this allele
+      </a>
+    </li>
+    
+    <!-- HTGT Gene Report -->
+    <% if ikmc_project_id %>
+      <li>
+        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= ikmc_project_id %>" target="_blank">
+          View this allele in HTGT
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</div>

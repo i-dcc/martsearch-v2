@@ -1,0 +1,38 @@
+<%
+  result_ids = []
+  line_data['pipeline_data'][parameter_id]['parameters'].each do |id,parameter|
+    result_ids.push(parameter['parameter_eslim_id'])
+  end
+  
+  url = europhenome_link_url( line_data["line_name"], sex, parameter_id, result_ids )
+%>
+
+<a href='<%= url %>' class='ext_link' target='_blank'>View details at Europhenome</a><br /><br />
+
+<strong>Parameter Results</strong><br />
+<table class='pheno-result-details'>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Sex</th>
+      <th>P&nbsp;Value</th>
+      <th>Effect&nbsp;Size</th>
+      <th>MP&nbsp;Annotation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% line_data['pipeline_data'][parameter_id]['parameters'].sort_by { |k,v| v['parameter_name'] }.each do |id,parameter| %>
+      <% parameter['results'].each do |result| %>
+        <% if result['sex'] === sex %>
+          <tr>
+            <td><%= parameter['parameter_name'] %></td>
+            <td><%= result['sex'] %></td>
+            <td><%= BigDecimal.new(result['significance']).truncate(3).to_s('E').gsub('E','e') %></td>
+            <td><%= BigDecimal.new(result['effect_size']).truncate(3).to_s('E').gsub('E','e') %></td>
+            <td><%= result['mp_term_name'] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

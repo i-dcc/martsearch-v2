@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
     <link type="text/css" href="<%= BASE_URI %>/css/martsearch-<%= PORTAL_VERSION %>.css" rel="stylesheet" media="screen, projection" />
-    <script type="text/javascript" src="<%= BASE_URI %>/js/jquery-1.4.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="<%= BASE_URI %>/js/jquery-1.4.2.min.js" charset="utf-8"></script>
   </head>
   <body>
     <div id="wrapper">
@@ -20,10 +20,13 @@
       </div>
       
       <div id="navigation">
-        <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
-          <input type="text" class="textinput" name="query" value="" />
-          <input type="submit" class="submit" value="search" />
-        </form>
+        <span id="resize_and_search">
+          <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
+            <input type="text" class="textinput" name="query" value="" />
+            <input type="submit" class="submit" value="search" />
+          </form>
+          <div id="fontresize"></div>
+        </span>  
         <ul>
           <li<% if @current === "home" %> class="current"<% end %>><a href="<%= BASE_URI %>/">Home</a></li>
           <li<% if @current === "browse" %> class="current"<% end %>><a href="<%= BASE_URI %>/browse">Browse</a></li>

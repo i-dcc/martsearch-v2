@@ -1,33 +1,61 @@
-<table>
-  <thead>
-    <tr>
-      <th>MGI Accession ID</th>
-      <th>Design Type</th>
-      <th>Project Design ID</th>
-      <th>Chromosome</th>
-      <th>Strand</th>
-      <th>Cassette</th>
-      <th>Backbone</th>
-      <th>Intermediate Vector</th>
-      <th>Targeting Vector</th>
-      <th>ES Cell clone</th>
-    </tr>
-  </thead>
+<% result_data["idcc-idcc_targ_rep"].each do |pipeline_name, mol_struct| %>
+  <%
+    if result_data[ "ikmc-dcc-knockout_attempts" ]
+      ikmc_project = result_data["ikmc-dcc-knockout_attempts"][mol_struct['pipeline_name']]
+      
+      if ikmc_project
+        mol_struct['mouse_available'] = ikmc_project['mouse_available'] == "1"
+        ensembl_gene_id = ikmc_project['ensembl_gene_id']
+      else
+        ensembl_gene_id = nil
+      end
+    end
+  %>
   
-  <tbody>
-  <% result_data['idcc-idcc_targ_rep'].each do |data| %>
-    <tr>
-      <td><%= data['mgi_accession_id'] %></td>
-      <td><%= data['design_type'] %></td>
-      <td><%= data['design_id'] %></td>
-      <td><%= data['chromosome'] %></td>
-      <td><%= data['strand'] %></td>
-      <td><%= data['cassette'] %></td>
-      <td><%= data['backbone'] %></td>
-      <td><%= data['intermediate_vector'] %></td>
-      <td><%= data['targeting_vector'] %></td>
-      <td><%= data['escell_clone'] %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+  <div>
+    
+    <!-- Progress Bar -->
+    <%=
+      partial( "datasets/idcc-idcc_targ_rep/targeted_progress_bar",
+      :locals => { 
+        :mol_struct   => mol_struct,
+        :result_data  => result_data
+      })
+    %>
+    
+    <div class="idcc-idcc_targ_rep_allele_progress_details_content">
+      <!-- Links -->
+      <%=
+        partial( "datasets/idcc-idcc_targ_rep/links", 
+        :locals => {
+          :molecular_structure_id => mol_struct['molecular_structure_id'],
+          :ikmc_project_id        => mol_struct['ikmc_project_id'],
+          :ensembl_gene_id        => ensembl_gene_id
+        })
+      %>
+      
+      <!-- ES Cells -->
+      <%=
+        partial( "datasets/idcc-idcc_targ_rep/escell_clones",
+        :locals => {
+          :molecular_structure_id => mol_struct['molecular_structure_id'],
+          :design_id              => mol_struct['design_id'],
+          :conditional_clones     => mol_struct['conditional_clones'],
+          :nonconditional_clones  => mol_struct['nonconditional_clones']
+        })
+      %>
+      <div class="clear"></div>
+      
+      <!-- Targeting Vectors -->
+      <%=
+        partial( "datasets/idcc-idcc_targ_rep/targeting_vectors", 
+        :locals => {
+          :molecular_structure_id => mol_struct['molecular_structure_id'],
+          :targeting_vectors      => mol_struct['targeting_vectors'],
+        }) 
+      %>
+    </div>
+    
+    <div class="clear"></div>
+  </div>
+<% end %>

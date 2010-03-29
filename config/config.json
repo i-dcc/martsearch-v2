@@ -197,15 +197,16 @@
     "bad_search":           "chromosome:!"
   },
   "datasets": [
-    "ikmc-dcc-gene_details",
     "mgi-markers",
     "ikmc-dcc-knockout_attempts",
     "idcc-idcc_targ_rep",
+    "ikmc-dcc-trapped_products",
     "sanger-htgt_targ",
     "sanger-kermits",
     "sanger-phenotyping",
     "sanger-bacs",
     "eurexpress-template",
+    "europhenome-biomart",
     "emma-strains"
   ]
 }

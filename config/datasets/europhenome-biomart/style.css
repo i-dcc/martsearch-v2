@@ -1,0 +1,61 @@
+/* europhenome-biomart custom css */
+
+.europhenome-biomart table.europhenome-data td {
+	background: #fff;
+}
+
+.europhenome-biomart table.europhenome-data th {
+  text-align: center;
+}
+
+.europhenome-biomart table.europhenome-data td.no-data {
+	background-color: #f1f1f1;
+}
+
+.europhenome-biomart table.europhenome-data td.significant {
+	background-color: #de2920;
+	cursor: pointer;
+}
+
+.europhenome-biomart table.europhenome-data td.not-significant {
+	background-color: #6998cb;
+}
+
+.europhenome-biomart table.europhenome-data td.pheno-result {
+	text-align: center;
+	vertical-align: middle;
+	padding: 0;
+}
+
+.europhenome-biomart table.europhenome-data tr.male-female th,
+.europhenome-biomart table.europhenome-data th.male,
+.europhenome-biomart table.europhenome-data th.female {
+	text-align: center;
+	text-indent: -9999px;
+	background: #e8e8e8 none no-repeat center center;
+}
+
+.europhenome-biomart table.europhenome-data th.male {
+  background-image: url('../images/male.png') !important;
+}
+
+.europhenome-biomart table.europhenome-data th.female {
+  background-image: url('../images/female.png') !important;
+}
+
+.europhenome-biomart table.europhenome-data td.pheno-result a img {
+	border: none;
+	padding: 2px;
+}
+
+table.pheno-result-details {
+	font-size: 0.9em !important;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+table.pheno-result-details th,
+table.pheno-result-details td {
+	padding: 4px;
+}

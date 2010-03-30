@@ -4,12 +4,12 @@
 # Taken from "Why's (Poignant) Guide to Ruby" (http://poignantguide.net/ruby).
 class Array
   # Splits an array into an array-of-arrays of the defined length
-  def chunk( len )
-    a = []
-    each_with_index do |x,i|
-      a << [] if i % len == 0
-      a.last << x
+  def chunk( length )
+    chunks = []
+    each_with_index do |element,index|
+      chunks << [] if index % length == 0
+      chunks.last << element
     end
-    a
+    chunks
   end
 end

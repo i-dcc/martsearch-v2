@@ -122,10 +122,12 @@ class Dataset
   def sort_results
     sorted_results = {}
     @current_search_results.each do |result|
+      joined_result    = result[ @joined_biomart_attribute ]
+      required_attrs   = self.config["searching"]["required_attributes"]
       save_this_result = true
       
-      unless @config["searching"]["required_attributes"].nil?
-        @config["searching"]["required_attributes"].each do |req_attr|
+      unless required_attrs.nil?
+        required_attrs.each do |req_attr|
           if result[req_attr].nil?
             save_this_result = false
           end
@@ -133,11 +135,11 @@ class Dataset
       end
       
       if save_this_result
-        unless sorted_results[ result[ @joined_biomart_attribute ] ]
-          sorted_results[ result[ @joined_biomart_attribute ] ] = []
+        unless sorted_results[ joined_result ]
+          sorted_results[ joined_result ] = []
         end
         
-        sorted_results[ result[ @joined_biomart_attribute ] ].push( result )
+        sorted_results[ joined_result ].push( result )
       end
     end
     

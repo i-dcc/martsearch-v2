@@ -11,7 +11,7 @@
           <div class="doc_datasets_present">
             Data returned from: 
             <% for dataset in @ms.datasets %>
-              <% if dataset.display and result_data[ dataset.internal_name ] %>
+              <% if dataset.use_in_display? and result_data[ dataset.internal_name ] %>
                 <span class="dataset_present"><%= dataset.display_name.gsub( " ", "&nbsp;" ) %></span>
               <% end %>
             <% end %>
@@ -21,7 +21,7 @@
     </table>
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
-        <% if dataset.display and result_data[ dataset.internal_name ] %>
+        <% if dataset.use_in_display? and result_data[ dataset.internal_name ] %>
           <div class="dataset">
             <h4 class="dataset_title toggle-open"><%= dataset.display_name %></h4>
             <div class="dataset_content <%= dataset.internal_name %>">

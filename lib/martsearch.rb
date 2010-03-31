@@ -1,3 +1,7 @@
+# The main MartSearch class - this is responsible for reading in the 
+# configuration files and instanciating the Index and Dataset objects. 
+# It is also the main controller process when it comes to performing 
+# searches and processing the returned data.
 class Martsearch
   attr_reader :config, :search_data, :search_results, :portal_name, :cache
   attr_accessor :http_client, :index, :datasets, :datasets_by_name, :errors
@@ -212,7 +216,7 @@ class Martsearch
       threads = []
     
       @datasets.each do |ds|
-        if ds.use_in_search
+        if ds.use_in_search?
           threads << Thread.new(ds) do |dataset|
             begin
               search_terms = @index.grouped_terms[ dataset.joined_index_field ]

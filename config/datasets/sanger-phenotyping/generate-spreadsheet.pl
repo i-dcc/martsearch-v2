@@ -50,46 +50,79 @@ sub generate_spreadsheet {
   
   # Use this variable to set the number of columns of data we have 
   # per-row before we print out the test results...
-  my $number_of_leading_text_entries = 5;
+  my $no_of_leading_text_entries = 5;
   
   ##
   ## Set up the spreadsheet and apply some formatting...
   ##
   
-  my $workbook     = Spreadsheet::WriteExcel->new( $filename );
-  my $worksheet    = $workbook->add_worksheet('Phenotyping Overview');
+  my $workbook = Spreadsheet::WriteExcel->new( $filename );
   
   # Cell formatting...
   
-  my $general_format    = $workbook->add_format( bg_color => 'white', border => 1, border_color => 'gray' );
-  my $test_formats      = _xls_setup_result_formats( $workbook, { border => 1, border_color => 'gray', bold => 1, align => 'center', valign => 'vcenter' } );
-  my $title_format      = $workbook->add_format( bold => 1, size => 10, bg_color => 'white', border => 1, border_color => 'gray' );
-  my $test_title_format = $workbook->add_format( bold => 1, size => 10, bg_color => 'white', align => 'center', border => 1, border_color => 'gray' ); $test_title_format->set_rotation(90);
+  my $formats = {
+    general        => $workbook->add_format( bg_color => 'white', border => 1, border_color => 'gray' ),
+    unlinked_tests => _xls_setup_result_formats( $workbook, { border => 1, border_color => 'gray', align => 'center', valign => 'vcenter' } ),
+    linked_tests   => _xls_setup_result_formats( $workbook, { border => 1, border_color => 'gray', align => 'center', valign => 'vcenter', bold => 1, underline => 1 } ),
+    title          => $workbook->add_format( bold => 1, size => 10, bg_color => 'white', border => 1, border_color => 'gray' ),
+    test_title     => $workbook->add_format( bold => 1, size => 10, bg_color => 'white', align => 'center', border => 1, border_color => 'gray', rotation => 90 )
+  };
+  
+  ##
+  ## Add our worksheets and set them up
+  ##
+  
+  my $unsorted_worksheet = $workbook->add_worksheet('Overview');
+  my $sorted_worksheet   = $workbook->add_worksheet('Overview (Sortable)');
+  
+  _xls_setup_worksheet( $unsorted_worksheet, $no_of_leading_text_entries, scalar( @{$data->{data}} ) );
+  _xls_setup_worksheet( $sorted_worksheet, $no_of_leading_text_entries, scalar( @{$data->{data}} ) );
+  
+  _xls_print_headers( $unsorted_worksheet, $data->{headers}, $no_of_leading_text_entries, $formats );
+  _xls_print_headers( $sorted_worksheet, $data->{headers}, $no_of_leading_text_entries, $formats );
+
+  ##
+  ## Now print the data and legends...
+  ##
+  
+  my $number_of_columns = write_data( $unsorted_worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats );
+  write_data( $sorted_worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats );
+  
+  write_unsorted_legend( $unsorted_worksheet, $number_of_columns, $formats );
+  write_sorted_legend( $sorted_worksheet, $number_of_columns, $formats );
+  
+}
+
+# Helper function to setup a worksheet for the heatmap, i.e. set
+# the row/column height/width parameters, and freeze panes.
+sub _xls_setup_worksheet {
+  my ( $worksheet, $no_of_leading_text_entries, $no_of_rows ) = @_;
   
   # Column width formatting...
   my %alpha_nums;
   my $number = 1;
   foreach ('A'..'Z') { $alpha_nums{$number} = $_; $number++; }
-  $worksheet->set_column( 'A:'.$alpha_nums{$number_of_leading_text_entries}, 20 );
-  $worksheet->set_column( $alpha_nums{$number_of_leading_text_entries+1}.':IV', 3 );
+  $worksheet->set_column( 'A:'.$alpha_nums{$no_of_leading_text_entries}, 20 );
+  $worksheet->set_column( $alpha_nums{$no_of_leading_text_entries+1}.':IV', 3 );
   
   # Row height formatting...
-  for (my $n = 1; $n < scalar( @{$data->{data}} )+1; $n++) {
-    $worksheet->set_row( $n, 15 );
-  }
-  
+  for (my $n = 1; $n < $no_of_rows+1; $n++) { $worksheet->set_row( $n, 15 ); }
+
   # Freeze panes...
   $worksheet->freeze_panes(1, 0);
+}
+
+# Helper function to print the header row for a heatmap worksheet.
+sub _xls_print_headers {
+  my ( $worksheet, $header_data, $no_of_leading_text_entries, $formats ) = @_;
   
-  ##
-  ## Print the header...
-  ##
-  
+  my $title_format      = $formats->{title};
+  my $test_title_format = $formats->{test_title};
   my $colony_prefix_pos = undef;
   my $i = 0;
   
-  foreach my $header ( @{ $data->{headers} } ) {
-    if ( $i < $number_of_leading_text_entries ) {
+  foreach my $header ( @{ $header_data } ) {
+    if ( $i < $no_of_leading_text_entries ) {
       if ( $header =~ /Colony Prefix/i ) { $colony_prefix_pos = $i; }
       $worksheet->write( 0, $i, $header, $title_format );
       $i++;
@@ -102,90 +135,6 @@ sub generate_spreadsheet {
       $i++;
     }
   }
-
-  ##
-  ## Now print the data...
-  ##
-  
-  my $number_of_columns = 0;
-  
-  for ( my $row = 0 ; $row < scalar( @{ $data->{data} } ) ; $row++ ) {
-
-    # First process the line into plain text and test info buckets
-    my @processed_data;
-    for ( my $col = 0 ; $col < scalar( @{ $data->{data}->[$row] } ) ; $col++ ) {
-      if ( $col < $number_of_leading_text_entries ) {
-        push( @processed_data, $data->{data}->[$row]->[$col] );
-      }
-      else {
-        my $test_name = $data->{attributes}->[$col];
-        $test_name =~ s/\_/\-/g;
-        
-        push(
-          @processed_data,
-          {
-            value     => $data->{data}->[$row]->[$col],
-            comment   => $data->{data}->[$row]->[$col + 1],
-            test_name => $test_name
-          }
-        );
-        $col++;
-      }
-    }
-    
-    $number_of_columns = scalar(@processed_data);
-
-    # Now write the processed data
-    for ( my $col = 0 ; $col < scalar(@processed_data) ; $col++ ) {
-      if ( $col < $number_of_leading_text_entries ) {
-        # plain text
-        $worksheet->write( $row + 1, $col, $processed_data[$col], $general_format );
-      }
-      else {
-        # test info
-        my $result = $processed_data[$col];
-
-        # write the comments if we have any
-        if ( defined $result->{comment} && !( $result->{comment} =~ /^$/ ) ) {
-          $worksheet->write_comment( $row + 1, $col, $result->{comment} );
-        }
-        
-        # see if we have a test details page to link to...
-        my $colony_prefix = $processed_data[$colony_prefix_pos];
-        my $pheno_details_url = "http://www.sanger.ac.uk/mouseportal/phenotyping/$colony_prefix/" . $result->{test_name} . "/";
-        
-        if ( defined $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } and $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } ) {
-          # if we do, write a link to it...
-          $worksheet->write_url( $row + 1, $col, $pheno_details_url, ">", _xls_test_result_format( $test_formats, $result->{value} ) );
-        }
-        else {
-          # just write the plain results cell...
-          $worksheet->write( $row + 1, $col, "", _xls_test_result_format( $test_formats, $result->{value} ) );
-        }
-      }
-    }
-  }
-  
-  ##
-  ## Finally, print the legend...
-  ##
-  
-  $worksheet->write( 2, $number_of_columns+2, "LEGEND" );
-  $worksheet->write( 4, $number_of_columns+3, "test complete and data/resources available" );
-  $worksheet->write( 4, $number_of_columns+2, "", $test_formats->{completed_data_available} );
-  $worksheet->write( 5, $number_of_columns+3, "test considered interesting" );
-  $worksheet->write( 5, $number_of_columns+2, "", $test_formats->{significant_difference} );
-  $worksheet->write( 6, $number_of_columns+3, "early indication of possible phenotype" );
-  $worksheet->write( 6, $number_of_columns+2, "", $test_formats->{early_indication} );
-  $worksheet->write( 7, $number_of_columns+3, "test done but not considered interesting" );
-  $worksheet->write( 7, $number_of_columns+2, "", $test_formats->{no_significant_difference} );
-  $worksheet->write( 8, $number_of_columns+3, "test not applicable, e.g. no LacZ, therefore expression not possible" );
-  $worksheet->write( 8, $number_of_columns+2, "", $test_formats->{not_applicable} );
-  $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
-  $worksheet->write( 9, $number_of_columns+2, "", $test_formats->{test_not_done} );
-  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
-  $worksheet->write( 10, $number_of_columns+2, ">", $test_formats->{test_not_done} );
-  
 }
 
 # Helper function to set-up all of the formatting options for the
@@ -194,21 +143,39 @@ sub _xls_setup_result_formats {
   my ( $workbook, $default_props ) = @_;
 
   my $xls_formats = {
-    test_not_done             => 'white',
-    completed_data_available  => 'navy',
-    significant_difference    => 'red',
-    no_significant_difference => 44, # light blue
-    not_applicable            => 'silver',
-    early_indication          => 'yellow'
+    test_not_done             => { bg => 'white' },
+    completed_data_available  => { bg => 'navy', col => 'white' },
+    significant_difference    => { bg => 'red' },
+    no_significant_difference => { bg => 44 }, # light blue
+    not_applicable            => { bg => 'silver' },
+    early_indication          => { bg => 'yellow' }
   };
   
   foreach my $result ( keys %{$xls_formats} ) {
     my $format = $workbook->add_format( %{$default_props} );
-    $format->set_bg_color( $xls_formats->{$result} );
+    if ( defined $xls_formats->{$result}->{bg} ) {
+      $format->set_bg_color( $xls_formats->{$result}->{bg} );
+    }
+    if ( defined $xls_formats->{$result}->{col} ) {
+      $format->set_color( $xls_formats->{$result}->{col} );
+    }
+    
     $xls_formats->{$result} = $format;
   }
   
   return $xls_formats;
+}
+
+sub _xls_setup_test_result_code {
+  my $test_mapping = {
+    completed_data_available  => 1,
+    significant_difference    => 2,
+    early_indication          => 3,
+    no_significant_difference => 4,
+    not_applicable            => 5,
+    test_not_done             => 6
+  };
+  return $test_mapping;
 }
 
 # Helper function to choose which cell format should be used for a 
@@ -225,6 +192,178 @@ sub _xls_test_result_format {
   else                                                        { $form = $tf->{test_not_done}; }
   
   return $form;
+}
+
+# Helper function to sort the data row into buckets of title text 
+# and results data.
+sub prepare_data_for_writing {
+  my ( $data, $row, $no_of_leading_text_entries ) = @_;
+  
+  my @processed_data;
+  
+  for ( my $col = 0 ; $col < scalar( @{ $data->{data}->[$row] } ) ; $col++ ) {
+    if ( $col < $no_of_leading_text_entries ) {
+      push( @processed_data, $data->{data}->[$row]->[$col] );
+    }
+    else {
+      my $test_name = $data->{attributes}->[$col];
+      $test_name =~ s/\_/\-/g;
+      
+      push(
+        @processed_data,
+        {
+          value     => $data->{data}->[$row]->[$col],
+          comment   => $data->{data}->[$row]->[$col + 1],
+          test_name => $test_name
+        }
+      );
+      $col++;
+    }
+  }
+  
+  return \@processed_data;
+}
+
+# Helper function to write the data onto a worksheet.
+sub write_data {
+  my ( $worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats ) = @_;
+  
+  my $number_of_columns = undef;
+  my $colony_prefix_pos = undef;
+
+  for (my $i = 0; $i < scalar( @{$data->{headers}} ); $i++) {
+    my $header = $data->{headers}->[$i];
+    if ( $header =~ /Colony Prefix/i ) { $colony_prefix_pos = $i; }
+  }
+  
+  for ( my $row = 0 ; $row < scalar( @{ $data->{data} } ) ; $row++ ) {
+
+    # First process the line into plain text and test info buckets
+    my $processed_data_ref = prepare_data_for_writing( $data, $row, $no_of_leading_text_entries );
+    my @processed_data     = @{$processed_data_ref};
+    $number_of_columns     = scalar(@processed_data);
+
+    # Now write the processed data
+    for ( my $col = 0 ; $col < scalar(@processed_data) ; $col++ ) {
+      if ( $col < $no_of_leading_text_entries ) {
+        # plain text
+        $worksheet->write( $row + 1, $col, $processed_data[$col], $formats->{general} );
+      }
+      else {
+        # test info
+        if ( $worksheet->get_name() =~ /Sort/ ) {
+          write_sorted_results( $worksheet, $row, $col, \@processed_data, $colony_prefix_pos, $colonies_with_details, $formats );
+        } else {
+          write_unsorted_results( $worksheet, $row, $col, \@processed_data, $colony_prefix_pos, $colonies_with_details, $formats );
+        }
+      }
+    }
+  }
+  
+  return $number_of_columns;
+}
+
+# Helper function to write the data cells for the unsortable heatmap.
+sub write_unsorted_results {
+  my ( $worksheet, $row, $col, $processed_data, $colony_prefix_pos, $colonies_with_details, $formats ) = @_;
+  
+  my $result = $processed_data->[$col];
+  
+  # write the comments if we have any
+  if ( defined $result->{comment} && !( $result->{comment} =~ /^$/ ) ) {
+    $worksheet->write_comment( $row + 1, $col, $result->{comment} );
+  }
+  
+  # see if we have a test details page to link to...
+  my $colony_prefix     = $processed_data->[$colony_prefix_pos];
+  my $pheno_details_url = "http://www.sanger.ac.uk/mouseportal/phenotyping/$colony_prefix/" . $result->{test_name} . "/";
+  
+  if ( defined $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } and $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } ) {
+    # if we do, write a link to it...
+    $worksheet->write_url( $row + 1, $col, $pheno_details_url, ">", _xls_test_result_format( $formats->{linked_tests}, $result->{value} ) );
+  }
+  else {
+    # just write the plain results cell...
+    $worksheet->write( $row + 1, $col, "", _xls_test_result_format( $formats->{unlinked_tests}, $result->{value} ) );
+  }
+  
+}
+
+# Helper function to write the data cells for the sortable heatmap.
+sub write_sorted_results {
+  my ( $worksheet, $row, $col, $processed_data, $colony_prefix_pos, $colonies_with_details, $formats ) = @_;
+  
+  my $result    = $processed_data->[$col];
+  my $test_code = _xls_setup_test_result_code();
+  
+  # write the comments if we have any
+  if ( defined $result->{comment} && !( $result->{comment} =~ /^$/ ) ) {
+    $worksheet->write_comment( $row + 1, $col, $result->{comment} );
+  }
+  
+  # see if we have a test details page to link to...
+  my $colony_prefix     = $processed_data->[$colony_prefix_pos];
+  my $pheno_details_url = "http://www.sanger.ac.uk/mouseportal/phenotyping/$colony_prefix/" . $result->{test_name} . "/";
+  
+  if ( defined $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } and $colonies_with_details->{$colony_prefix}->{ $result->{test_name} } ) {
+    # if we do, write a link to it...
+    $worksheet->write_url( $row + 1, $col, $pheno_details_url, _xls_test_result_format( $test_code, $result->{value} ), _xls_test_result_format( $formats->{linked_tests}, $result->{value} ) );
+  }
+  else {
+    # just write the plain results cell...
+    $worksheet->write( $row + 1, $col, _xls_test_result_format( $test_code, $result->{value} ), _xls_test_result_format( $formats->{unlinked_tests}, $result->{value} ) );
+  }
+  
+}
+
+# Helper function to write the legend for the unsortable heatmap.
+sub write_unsorted_legend {
+  my ( $worksheet, $number_of_columns, $formats ) = @_;
+  
+  my $unlinked_formats = $formats->{unlinked_tests};
+  my $linked_formats   = $formats->{linked_tests};
+  
+  $worksheet->write( 2, $number_of_columns+2, "LEGEND" );
+  $worksheet->write( 4, $number_of_columns+3, "test complete and data/resources available" );
+  $worksheet->write( 4, $number_of_columns+2, "", $unlinked_formats->{completed_data_available} );
+  $worksheet->write( 5, $number_of_columns+3, "test considered interesting" );
+  $worksheet->write( 5, $number_of_columns+2, "", $unlinked_formats->{significant_difference} );
+  $worksheet->write( 6, $number_of_columns+3, "early indication of possible phenotype" );
+  $worksheet->write( 6, $number_of_columns+2, "", $unlinked_formats->{early_indication} );
+  $worksheet->write( 7, $number_of_columns+3, "test done but not considered interesting" );
+  $worksheet->write( 7, $number_of_columns+2, "", $unlinked_formats->{no_significant_difference} );
+  $worksheet->write( 8, $number_of_columns+3, "test not applicable, e.g. no LacZ, therefore expression not possible" );
+  $worksheet->write( 8, $number_of_columns+2, "", $unlinked_formats->{not_applicable} );
+  $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
+  $worksheet->write( 9, $number_of_columns+2, "", $unlinked_formats->{test_not_done} );
+  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
+  $worksheet->write( 10, $number_of_columns+2, ">", $linked_formats->{test_not_done} );
+}
+
+# Helper function to write the cells for the sortable heatmap.
+sub write_sorted_legend {
+  my ( $worksheet, $number_of_columns, $formats ) = @_;
+  
+  my $test_formats   = $formats->{unlinked_tests};
+  my $linked_formats = $formats->{linked_tests};
+  my $test_code      = _xls_setup_test_result_code();
+  
+  $worksheet->write( 2, $number_of_columns+2, "LEGEND" );
+  $worksheet->write( 4, $number_of_columns+3, "test complete and data/resources available" );
+  $worksheet->write( 4, $number_of_columns+2, $test_code->{completed_data_available}, $test_formats->{completed_data_available} );
+  $worksheet->write( 5, $number_of_columns+3, "test considered interesting" );
+  $worksheet->write( 5, $number_of_columns+2, $test_code->{significant_difference}, $test_formats->{significant_difference} );
+  $worksheet->write( 6, $number_of_columns+3, "early indication of possible phenotype" );
+  $worksheet->write( 6, $number_of_columns+2, $test_code->{early_indication}, $test_formats->{early_indication} );
+  $worksheet->write( 7, $number_of_columns+3, "test done but not considered interesting" );
+  $worksheet->write( 7, $number_of_columns+2, $test_code->{no_significant_difference}, $test_formats->{no_significant_difference} );
+  $worksheet->write( 8, $number_of_columns+3, "test not applicable, e.g. no LacZ, therefore expression not possible" );
+  $worksheet->write( 8, $number_of_columns+2, $test_code->{not_applicable}, $test_formats->{not_applicable} );
+  $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
+  $worksheet->write( 9, $number_of_columns+2, $test_code->{test_not_done}, $test_formats->{test_not_done} );
+  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
+  $worksheet->write( 10, $number_of_columns+2, "x", $linked_formats->{test_not_done} );
+  
 }
 
 # Helper function to run the rake task 'phenotyping:image_cache_json' 

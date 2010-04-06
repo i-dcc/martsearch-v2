@@ -174,7 +174,7 @@ class Dataset
             lookup[lookup_key] = stash_key
           end
         else
-          joined_index_field_data = stash_key
+          lookup[joined_index_field_data] = stash_key
         end
       end
       

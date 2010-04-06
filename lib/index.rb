@@ -67,11 +67,8 @@ class Index
       start_doc = ( Integer(page) - 1 ) * @docs_per_page
     end
     
-    # POST the request
-    res = @http_client.post_form(
-      URI.parse("#{@url}/select"),
+    data = index_request(
       {
-        "wt"    => "ruby",
         "q"     => query,
         "sort"  => @sort_results_by,
         "start" => start_doc,
@@ -79,24 +76,17 @@ class Index
       }
     )
     
-    # Process the response
-    if res.code != "200"
-      raise IndexSearchError, "Index Search Error: #{res.body}"
+    if start_doc === 0
+      @current_page = 1
     else
-      data = eval(res.body)
-      
-      if start_doc === 0
-        @current_page = 1
-      else
-        @current_page = ( start_doc / @docs_per_page ) + 1
-      end
-      
-      @current_results_total = data["response"]["numFound"]
-      
-      data["response"]["docs"].each do |doc|
-        @current_results[ doc[ @primary_field ] ] = { "index" => doc }
-        @ordered_results.push( doc[ @primary_field ] )
-      end
+      @current_page = ( start_doc / @docs_per_page ) + 1
+    end
+    
+    @current_results_total = data["response"]["numFound"]
+    
+    data["response"]["docs"].each do |doc|
+      @current_results[ doc[ @primary_field ] ] = { "index" => doc }
+      @ordered_results.push( doc[ @primary_field ] )
     end
     
     # Process and cache these results ready for searching the marts
@@ -116,38 +106,22 @@ class Index
       start_doc = ( Integer(page) - 1 ) * @docs_per_page
     end
     
-    # POST the request
-    res = @http_client.post_form(
-      URI.parse("#{@url}/select"),
+    data = index_request(
       {
-        "wt"    => "ruby",
         "q"     => query,
         "sort"  => @sort_results_by,
         "start" => start_doc,
         "rows"  => @docs_per_page
       }
     )
-    
-    # Process the response
-    if res.code != "200"
-      raise IndexSearchError, "Index Search Error: #{res.body}"
-    else
-      data = eval(res.body)
-      return data["response"]["docs"]
-    end
+    return data["response"]["docs"]
   end
   
   # Function to submit a query to the search index, and 
   # return back the number of docs/results found.
   def count( query )
-    res = @http_client.post_form( URI.parse("#{@url}/select"), { "wt" => "ruby", "q" => query } )
-    
-    if res.code != "200"
-      raise IndexSearchError, "Index Search Error: #{res.body}"
-    else
-      data = eval(res.body)
-      return data["response"]["numFound"]
-    end
+    data = index_request({ "q" => query })
+    return data["response"]["numFound"]
   end
   
   private
@@ -160,21 +134,21 @@ class Index
     
       unless results.empty?
         results.each do |primary_field,results_stash|
-          
           results_stash["index"].each do |field,value|
-            
-            unless grouped_terms[field]
-              grouped_terms[field] = []
+            grouped_terms_for_field = grouped_terms[field]
+
+            unless grouped_terms_for_field 
+              grouped_terms[field]    = []
+              grouped_terms_for_field = grouped_terms[field]
             end
             
             if value.is_a?(Array)
-              value.each do |v|
-                grouped_terms[field].push( v )
+              value.each do |val|
+                grouped_terms_for_field.push( val )
               end
             else
-              grouped_terms[field].push( value )
+              grouped_terms_for_field.push( value )
             end
-            
           end
         end
       
@@ -182,8 +156,20 @@ class Index
           grouped_terms[field] = values.uniq
         end
       end
-    
+      
       return grouped_terms
+    end
+    
+    # Utility function to handle the search/count requsets 
+    # to the index.
+    def index_request( params={} )
+      res = @http_client.post_form( URI.parse("#{self.url}/select"), params.update({ "wt" => "ruby" }) )
+
+      if res.code.to_i != 200
+        raise IndexSearchError, "Index Search Error: #{res.body}"
+      else
+        return eval(res.body)
+      end
     end
   
 end

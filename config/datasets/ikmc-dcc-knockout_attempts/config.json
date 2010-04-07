@@ -1,5 +1,5 @@
 {
-  "display":              true,
+  "display":              false,
   "use_in_search":        true,
   "index":                true,
   "custom_sort":          true,

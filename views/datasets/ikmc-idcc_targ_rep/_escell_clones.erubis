@@ -1,6 +1,6 @@
 <h4>ES Cell Clones</h4>
 
-<% if mol_struct['conditional_clones'] or mol_struct['nonconditional_clones'] %>
+<% if conditional_clones or nonconditional_clones %>
 
   <!-- ES Cell clones summary -->
   
@@ -8,7 +8,6 @@
     <thead>
       <tr>
         <th>Design ID</th>
-        <th>Design Type</th>
         <th># Conditional Clones</th>
         <th># Targeted Non-conditional Clones</th>
         <th>Genbank File</th>
@@ -17,11 +16,10 @@
     
     <tbody>
       <tr>
-        <td><a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= mol_struct['design_id'] %>"><%= mol_struct['design_id'] %></a></td>
-        <td><%= mol_struct['design_type'] %></td>
-        <td><%= mol_struct['conditional_clones'].length %></td>
-        <td><%= mol_struct['nonconditional_clones'].length %></td>
-        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= mol_struct['molecular_structure_id'] %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
+        <td><a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a></td>
+        <td><%= conditional_clones.length %></td>
+        <td><%= nonconditional_clones.length %></td>
+        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
       </tr>
     </tbody>
   </table>
@@ -39,13 +37,11 @@
           <td width="50%" class="noborder">
             <h5>Conditional Clones</h5>
             
-            <% unless mol_struct['conditional_clones'].empty? %>
+            <% unless conditional_clones.empty? %>
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-                  :locals => {
-                    :clones => mol_struct['conditional_clones']
-                  }
+                  :locals => { :clones => conditional_clones }
                 )
               %>
             <% else %>
@@ -58,13 +54,11 @@
           <td width="50%" class="noborder">
             <h5>Targeted Non-conditional Clones</h5>
             
-            <% unless mol_struct['nonconditional_clones'].empty? %>
+            <% unless nonconditional_clones.empty? %>
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-                  :locals => {
-                    :clones => mol_struct['nonconditional_clones']
-                  }
+                  :locals => { :clones => nonconditional_clones }
                 )
               %>
             <% else %>

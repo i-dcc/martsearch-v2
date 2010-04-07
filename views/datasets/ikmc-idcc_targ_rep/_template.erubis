@@ -1,26 +1,55 @@
-<% result_data["ikmc-idcc_targ_rep"].each do |pipeline_name, mol_struct| %>
-  <%
-    if result_data[ "ikmc-dcc-knockout_attempts" ]
-      ikmc_project = result_data["ikmc-dcc-knockout_attempts"][mol_struct['pipeline_name']]
+<%
+  # For now, mouse availability is unknown by targ_rep dataset.
+  # Sorting will be made here until targ_rep dataset can read KO attempts dataset
+  projects_with_mice, projects_with_clones, projects_with_vectors = [], [], []
+  
+  result_data['ikmc-idcc_targ_rep'].each do |pipeline_name, pipeline_projects|
+    displayed_project = nil
+    
+    pipeline_projects.each do |key, project|
+      # Get mouse availability from ``KO attempts`` dataset
+      if result_data['ikmc-dcc-knockout_attempts']
+        ikmc_project = result_data['ikmc-dcc-knockout_attempts'][pipeline_name]
+        ikmc_project_id = project['ikmc_project_id']
+        
+        if ikmc_project
+          project['mouse_available'] = ikmc_project[ikmc_project_id]['mouse_available'] == "1"
+          project['ensembl_gene_id'] = ikmc_project['ensembl_gene_id']
+        end
+      end
       
-      if ikmc_project
-        mol_struct['mouse_available'] = ikmc_project['mouse_available'] == "1"
-        ensembl_gene_id = ikmc_project['ensembl_gene_id']
-      else
-        ensembl_gene_id = nil
+      displayed_project = key if displayed_project.nil?
+      
+      # Push project to the right Array - for sorting.
+      if project['mouse_available']
+        projects_with_mice.push( project )
+        displayed_project = key unless pipeline_projects[displayed_project]['mouse_available']
+        
+      elsif project['escell_available']
+        projects_with_clones.push( project )
+        displayed_project = key unless pipeline_projects[displayed_project]['mouse_available']
+        
+      elsif project['vector_available']
+        projects_with_vectors.push( project )
       end
     end
-  %>
+    
+    pipeline_projects[displayed_project]['display'] = true
+  end
   
-  <div>
+  sorted_projects = (projects_with_mice + projects_with_clones + projects_with_vectors).freeze
+%>
+  
+<% sorted_projects.each do |project| %>
+  <div class="<% unless project['display'] %>ikmc-idcc_targ_rep_progress_bar_hidden<% end %>">
     
     <!-- Progress Bar -->
     <%=
       partial(
         "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
         :locals => { 
-          :mol_struct  => mol_struct,
-          :result_data => result_data
+          :project      => project,
+          :result_data  => result_data
         }
       )
     %>
@@ -31,8 +60,9 @@
         partial(
           "datasets/ikmc-idcc_targ_rep/links", 
           :locals => {
-            :mol_struct      => mol_struct,
-            :ensembl_gene_id => ensembl_gene_id
+            :molecular_structure_id => project['molecular_structure_id'],
+            :ikmc_project_id        => project['ikmc_project_id'],
+            :ensembl_gene_id        => project['ensembl_gene_id']
           }
         )
       %>
@@ -41,8 +71,11 @@
       <%=
         partial(
           "datasets/ikmc-idcc_targ_rep/escell_clones",
-          :locals => { 
-            :mol_struct => mol_struct
+          :locals => {
+            :molecular_structure_id => project['molecular_structure_id'],
+            :design_id              => project['design_id'],
+            :conditional_clones     => project['conditional_clones'],
+            :nonconditional_clones  => project['nonconditional_clones']
           }
         )
       %>
@@ -53,7 +86,9 @@
         partial(
           "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
           :locals => {
-            :mol_struct => mol_struct
+            :molecular_structure_id => project['molecular_structure_id'],
+            :pipeline_name          => project['pipeline_name'],
+            :targeting_vectors      => project['targeting_vectors']
           }
         ) 
       %>

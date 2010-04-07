@@ -1,16 +1,25 @@
+<%
+  sorted_clones =
+    clones.sort_by do |clone_hash|
+      [clone_hash['targeting_vector'], clone_hash['escell_clone']]
+    end
+%>
+
 <table>
   <thead>
     <tr>
-      <th>ES Cell Clone ID</th>
+      <th>ES Cell Clone</th>
+      <th>Targeting Vector</th>
       <th>ES Cell Strain</th>
       <th>ES Cell Line</th>
       <th>Allele</th>
     </tr>
   </thead>
   <tbody>
-    <% clones.sort_by{ |clone_hash| clone_hash['escell_clone'] }.each do |clone| %>
+    <% sorted_clones.each do |clone| %>
       <tr>
         <td><%= clone["escell_clone"] %></td>
+        <td><%= clone["targeting_vector"]%></td>
         <td>
           <%
             cell_strain = ""

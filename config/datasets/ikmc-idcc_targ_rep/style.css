@@ -8,3 +8,7 @@ div.ikmc-idcc_targ_rep_allele_progress_links {
   margin-right: 15px;
   background-color: #f4f4f4;
 }
+
+div.ikmc-idcc_targ_rep_progress_bar_hidden {
+  display: none;
+}

@@ -20,7 +20,7 @@
       
       displayed_project = key if displayed_project.nil?
       
-      # Push project to the right Array - for sorting.
+      # Push project to the right Array depending on product availability - for sorting.
       if project['mouse_available']
         projects_with_mice.push( project )
         displayed_project = key unless pipeline_projects[displayed_project]['mouse_available']

@@ -7,7 +7,7 @@
     "transcript_core_ensembl"                    => "transcript_label",
     "transcript_vega_otter"                      => "transcript_label",
     "alignment_compara_364_constrained"          => "compact",
-    "das:http://das.sanger.ac.uk/das/KO_vectors" => "normal",
+    "das:http://das.sanger.ac.uk/das/ikmc_products" => "normal",
     "alignment_compara_364_scores"               => "off",
     "chr_band_core"                              => "off",
     "dna_align_cdna_cDNA_update"                 => "off",

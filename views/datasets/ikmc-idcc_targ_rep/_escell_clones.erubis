@@ -19,7 +19,7 @@
         <td><a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a></td>
         <td><%= conditional_clones.length %></td>
         <td><%= nonconditional_clones.length %></td>
-        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= molecular_structure_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
+        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
       </tr>
     </tbody>
   </table>

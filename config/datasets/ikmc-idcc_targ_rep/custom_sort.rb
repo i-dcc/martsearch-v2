@@ -1,18 +1,18 @@
 sorted_results = {}
 
 @current_search_results.each do |result|
-  next if result['pipeline_name'].nil?
+  next if result['pipeline'].nil?
   
   unless sorted_results[ result[ @joined_biomart_attribute ] ]
     sorted_results[ result[ @joined_biomart_attribute ] ] = {}
   end
   result_data = sorted_results[ result[ @joined_biomart_attribute ] ]
   
-  unless result_data[ result['pipeline_name'] ]
-    result_data[ result['pipeline_name'] ] = {}
+  unless result_data[ result['pipeline'] ]
+    result_data[ result['pipeline'] ] = {}
   end
   
-  pipeline = result_data[ result['pipeline_name'] ]
+  pipeline = result_data[ result['pipeline'] ]
   key = [
     result['homology_arm_start'],
     result['homology_arm_end'],
@@ -23,8 +23,8 @@ sorted_results = {}
   ]
   unless pipeline[ key ]
     pipeline[ key ] = {
-      'molecular_structure_id'  => result['molecular_structure_id'],
-      'pipeline_name'           => result['pipeline_name'],
+      'allele_id'               => result['allele_id'],
+      'pipeline'                => result['pipeline'],
       'mgi_accession_id'        => result['mgi_accession_id'],
       'design_id'               => result['design_id'],
       'targeting_vectors'       => [],

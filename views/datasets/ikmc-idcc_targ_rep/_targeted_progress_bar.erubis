@@ -19,9 +19,9 @@
     <tr>
       <!-- Pipeline Name with IKMC Project ID-->
       <td class="start_normal">
-        <strong><%= project["pipeline_name"] %></strong><br />
+        <strong><%= project["pipeline"] %></strong><br />
         
-        <% if project["pipeline_name"] === "KOMP-Regeneron" %>
+        <% if project["pipeline"] === "KOMP-Regeneron" %>
           <% velocigene_id = project['ikmc_project_id'].gsub("VG","") %>
           (Project: 
           <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank">

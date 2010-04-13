@@ -27,8 +27,8 @@
     "joined_biomart_filter":    "mgi_accession_id",
     "joined_biomart_attribute": "mgi_accession_id",
     "attributes": [
-      "molecular_structure_id",
-      "pipeline_name",
+      "allele_id",
+      "pipeline",
       "mgi_accession_id",
       "design_id",
       "design_type",

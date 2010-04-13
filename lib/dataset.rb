@@ -1,9 +1,10 @@
+# Class for representing a biomart dataset and a defined query.  All 
+# aspects of this class/dataset/query can be configured via the 
+# configuration json.
 class Dataset
   attr_reader :dataset, :dataset_name, :stylesheet, :javascript, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
-  attr_reader :use_custom_view_helpers, :use_custom_routes, :config
-  attr_reader :internal_name, :use_in_search, :display
-  
+  attr_reader :use_custom_view_helpers, :use_custom_routes, :config, :internal_name
   attr_accessor :url, :attributes, :filters, :display_name
   
   def initialize( internal_name, conf )
@@ -14,16 +15,13 @@ class Dataset
     @dataset_name             = conf["dataset_name"]
     @display_name             = conf["display_name"]
     
-    @use_in_search            = conf["use_in_search"]
-    @display                  = conf["display"]
-    
     @joined_index_field       = nil
     @joined_biomart_filter    = nil
     @joined_biomart_attribute = nil
     @filters                  = nil
     @attributes               = nil
     
-    if @use_in_search
+    if self.use_in_search?
       @joined_index_field       = conf["searching"]["joined_index_field"]
       @joined_biomart_filter    = conf["searching"]["joined_biomart_filter"]
       @joined_biomart_attribute = conf["searching"]["joined_biomart_attribute"]
@@ -38,20 +36,34 @@ class Dataset
     @use_custom_view_helpers  = conf["custom_view_helpers"]
     @use_custom_routes        = conf["custom_routes"]
     
+    file_path = File.expand_path(File.dirname(__FILE__))
+    
     if conf["custom_sort"]
-      @custom_sort = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/custom_sort.rb")
+      @custom_sort = load_file("#{file_path}/../config/datasets/#{@internal_name}/custom_sort.rb")
     end
-    
+
     if conf["custom_css"]
-      @stylesheet = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/style.css")
+      @stylesheet = load_file("#{file_path}/../config/datasets/#{@internal_name}/style.css")
     end
-    
+
     if conf["custom_js"]
-      @javascript = load_file("#{File.dirname(__FILE__)}/../config/datasets/#{@internal_name}/javascript.js")
+      @javascript = load_file("#{file_path}/../config/datasets/#{@internal_name}/javascript.js")
     end
     
     @current_search_results = nil
     @current_sorted_results = nil
+  end
+  
+  # Function to return true/false for if a dataset is to be used in 
+  # the search functionallity.
+  def use_in_search?
+    self.config["use_in_search"] ? true : false
+  end
+  
+  # Function to return true/false for if a dataset is to be used 
+  # in the display after a search.
+  def use_in_display?
+    self.config["display"] ? true : false
   end
   
   # Simple heartbeat function - checks that the biomart 
@@ -110,10 +122,12 @@ class Dataset
   def sort_results
     sorted_results = {}
     @current_search_results.each do |result|
+      joined_result    = result[ @joined_biomart_attribute ]
+      required_attrs   = self.config["searching"]["required_attributes"]
       save_this_result = true
       
-      unless @config["searching"]["required_attributes"].nil?
-        @config["searching"]["required_attributes"].each do |req_attr|
+      unless required_attrs.nil?
+        required_attrs.each do |req_attr|
           if result[req_attr].nil?
             save_this_result = false
           end
@@ -121,11 +135,11 @@ class Dataset
       end
       
       if save_this_result
-        unless sorted_results[ result[ @joined_biomart_attribute ] ]
-          sorted_results[ result[ @joined_biomart_attribute ] ] = []
+        unless sorted_results[ joined_result ]
+          sorted_results[ joined_result ] = []
         end
         
-        sorted_results[ result[ @joined_biomart_attribute ] ].push( result )
+        sorted_results[ joined_result ].push( result )
       end
     end
     
@@ -142,9 +156,7 @@ class Dataset
     if @joined_index_field === index_key
       
       stash.each do |stash_key,stash_data|
-        if biomart_results[stash_key]
-          stash_data[@internal_name] = biomart_results[stash_key]
-        end
+        stash_data[@internal_name] = biomart_results[stash_key]
       end
       
     else
@@ -155,28 +167,32 @@ class Dataset
       lookup = {}
 
       stash.each do |stash_key,stash_data|
-        if stash_data["index"][@joined_index_field].is_a?(Array)
-          stash_data["index"][@joined_index_field].each do |lookup_key|
+        joined_index_field_data = stash_data["index"][@joined_index_field]
+        
+        if joined_index_field_data.is_a?(Array)
+          joined_index_field_data.each do |lookup_key|
             lookup[lookup_key] = stash_key
           end
         else
-          lookup[ stash_data["index"][@joined_index_field] ] = stash_key
+          lookup[joined_index_field_data] = stash_key
         end
       end
       
       biomart_results.each do |biomart_key,biomart_data|
-        if lookup[biomart_key] && stash[ lookup[biomart_key] ]
+        stash_to_append_to = stash[ lookup[biomart_key] ]
+        
+        if stash_to_append_to
           if @custom_sort
             # If someone uses a custom sort- we assume they're taking care
             # of grouping all of thier data together correctly...
-            stash[ lookup[biomart_key] ][@internal_name] = biomart_data
+            stash_to_append_to[@internal_name] = biomart_data
           else
-            unless stash[ lookup[biomart_key] ][@internal_name]
-              stash[ lookup[biomart_key] ][@internal_name] = []
+            unless stash_to_append_to[@internal_name]
+              stash_to_append_to[@internal_name] = []
             end
             
             biomart_data.each do |data|
-              stash[ lookup[biomart_key] ][@internal_name].push(data)
+              stash_to_append_to[@internal_name].push(data)
             end
           end
         end
@@ -205,26 +221,21 @@ class Dataset
       attrs.push("#{@dataset_name}.default.attributes.#{attribute}")
     end
     
-    url = @url + "/martview?VIRTUALSCHEMANAME=default"
-    url << "&VISIBLEPANEL=resultspanel"
-    url << "&FILTERS="
+    url = @url + "/martview?VIRTUALSCHEMANAME=default&VISIBLEPANEL=resultspanel&FILTERS="
     url << "#{@dataset_name}.default.filters.#{@joined_biomart_filter}.&quot;"
     
-    if query.is_a?(Array) then url << "#{CGI::escape(query.join(","))}&quot;"
-    else                       url << "#{CGI::escape(query)}&quot;"
+    if query.is_a?(Array) then url << "#{CGI::escape(query.join(","))}&quot;&ATTRIBUTES="
+    else                       url << "#{CGI::escape(query)}&quot;&ATTRIBUTES="
     end
     
-    url << "&ATTRIBUTES="
-    attr_string = attrs.join("|")
-    while ( url.length + attr_string.length ) > 2048
+    while ( url.length + attrs.join("|").length ) > 2048
       # This loop ensures that the URL we form is not more than 2048 characters 
       # long - the maximum length that IE can deal with.  We do the shortening by 
       # dropping attributes from the selection, it's a pain, but at least it'll be 
       # easy for the user to add the attribute back in MartView.
       attrs.pop
-      attr_string = attrs.join("|")
     end
-    url << attr_string
+    url << attrs.join("|")
     
     return url
   end

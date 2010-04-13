@@ -36,12 +36,21 @@ begin
       file.print @builder.solr_schema_xml()
       file.close
     end
+    
+    desc "Cleans up old Solr document XML directories"
+    task :clean_document_xmls do
+      Dir.chdir("#{File.dirname(__FILE__)}/../tmp/solr_document_xmls") do
+        directories = Dir.glob("*").sort
+        while directories.size > 4
+          system("/bin/rm -rf '#{directories.shift}'")
+        end
+      end
+    end
   
     desc "Generates the Solr document XMLs and saves them in the /tmp directory"
-    task :build_document_xmls do
-      pwd = Dir.pwd
+    task :build_document_xmls => :clean_document_xmls do
       dir = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
-    
+      
       begin
         Dir.mkdir( dir )
       rescue Errno::EEXIST => e

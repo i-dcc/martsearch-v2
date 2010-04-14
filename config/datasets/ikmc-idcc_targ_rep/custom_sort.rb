@@ -27,6 +27,7 @@ sorted_results = {}
       'pipeline'                => result['pipeline'],
       'mgi_accession_id'        => result['mgi_accession_id'],
       'design_id'               => result['design_id'],
+      'design_type'             => result['design_type'],
       'targeting_vectors'       => [],
       'conditional_clones'      => [],
       'nonconditional_clones'   => [],
@@ -62,7 +63,6 @@ sorted_results = {}
   unless project['targeting_vectors'].include? targ_vec
     project['targeting_vectors'].push( targ_vec )
   end
-  
   
   #
   #   ES Cell

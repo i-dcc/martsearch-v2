@@ -1,20 +1,20 @@
 
-// europhenome-biomart custom javascript
+// europhenome-europhenome custom javascript
 
 jQuery(document).ready(function() {
-  jQuery(".europhenome-biomart").find("td[rel^='qtip']").each( function() {
+  jQuery(".europhenome-europhenome").find("td[rel^='qtip']").each( function() {
     jQuery(this).attr( "tooltip", jQuery(this).attr("title") );
     jQuery(this).attr( "title", "" );
     jQuery(this).qtip({
        content:  jQuery(this).attr("tooltip"),
        show:     { when: { event: "mouseover" }, solo: true },
        hide:     { when: { event: "unfocus" } },
-       style:    { tip: "topMiddle", border: { radius: 5 }, width: 360, name: "light" },
+       style:    { tip: "topMiddle", border: { radius: 5 }, width: 400, name: "light" },
        position: { corner: { target: "bottomMiddle", tooltip: "topMiddle" } }
     });
   });
   
-  jQuery(".europhenome-biomart .accordion").accordion({
+  jQuery(".europhenome-europhenome .accordion").accordion({
     collapsible: true,
     autoHeight: false,
     icons: {

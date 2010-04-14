@@ -147,12 +147,12 @@ def europhenome_pipelines
   }
 end
 
-def europhenome_link_url( line, sex, parameter_id, result_ids )
+def europhenome_link_url( europhenome_id, sex, parameter_id, result_ids )
   url  = "http://www.europhenome.org/databrowser/viewer.jsp?"
   opts = {
     "set"          => "true",
     "m"            => "true",
-    "l"            => line,
+    "l"            => europhenome_id,
     "x"            => sex,
     "p"            => parameter_id,
     "compareLines" => "View+Data"

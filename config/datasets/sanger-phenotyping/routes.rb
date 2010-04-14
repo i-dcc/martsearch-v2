@@ -50,9 +50,36 @@ get "/phenotyping/:colony_prefix/abr/*" do
 end
 
 ##
-## Static route for homozygote-viability / fertility - they use different 
+## Static route for more tests that use different 
 ## templates so need to be handled differently.
 ##
+
+get "/phenotyping/:colony_prefix/adult-expression/?" do
+  setup_pheno_configuration
+  
+  if JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup") )[params[:colony_prefix]]
+    @marker_symbol   = nil
+    @colony_prefix   = params[:colony_prefix]
+    @expression_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}") )
+    @page_title      = "#{@colony_prefix}: Adult Expression"
+    
+    test_conf        = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
+    @test            = test_conf["expression"]["adult-expression"]
+    
+    search_data = search_mart_by_colony_prefix(@colony_prefix)
+    unless search_data.empty?
+      @marker_symbol = search_data[0]["marker_symbol"]
+      @page_title = "#{@marker_symbol} (#{@colony_prefix}): Adult Expression"
+    end
+    
+    erubis :"datasets/sanger-phenotyping/adult_expression_test_details"
+  else
+    @messages[:error].push({ :highlight => "Sorry, we could not find any Adult Expression data for '#{params[:colony_prefix]}'." })
+    status 404
+    erubis :not_found
+  end
+  
+end
 
 get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   setup_pheno_configuration

@@ -96,7 +96,7 @@ class IndexBuilderTest < Test::Unit::TestCase
         ["gene_symbol","marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
           begin
             #puts "  - testing: #{filter_type}"
-            results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1"] } )
+            results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1","Mysm1"] } )
             @index_builder.process_dataset_results_public( results )
             
             assert( !@index_builder.documents.empty?, "@index_builder.documents is empty! - Should have at least two entries..." )

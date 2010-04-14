@@ -1,9 +1,9 @@
-require "#{File.expand_path(File.dirname(__FILE__))}/config/datasets/europhenome-biomart/view_helpers.rb"
+require "#{File.expand_path(File.dirname(__FILE__))}/config/datasets/europhenome-europhenome/view_helpers.rb"
 
 sorted_results = {}
 
 @current_search_results.each do |result|
-  next unless result["gene_id"] and result["europhenome_id"]
+  next unless result["mgi_accession_id"] and result["europhenome_id"]
   
   if sorted_results[ result[ @joined_biomart_attribute ] ].nil?
     sorted_results[ result[ @joined_biomart_attribute ] ] = {}
@@ -22,7 +22,7 @@ sorted_results = {}
       "allele_id"      => result["allele_id"],
       "allele_name"    => result["allele_name"],
       "emma_id"        => result["emma_id"],
-      "escell_clone"   => result["epd_id"],
+      "escell_clone"   => result["escell_clone"],
       "stocklist_id"   => result["stocklist_id"],
       "pipeline_data"  => {}
     }
@@ -79,7 +79,7 @@ sorted_results.each do |mgi_accession_id,europhenome_data|
       pipeline_data["parameters"].each do |parameter_name,parameter|
         parameter["results"].each do |result|
           
-          if result["significance"].to_f > significance_cutoff 
+          if result["significance"].to_f < significance_cutoff 
             if result["sex"] == "Male"
               pipeline_data["is_male_signifigant"] = true
               parameter["is_male_signifigant"]     = true

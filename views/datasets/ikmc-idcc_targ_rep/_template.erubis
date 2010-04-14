@@ -1,7 +1,9 @@
 <%
   # For now, mouse availability is unknown by targ_rep dataset.
   # Sorting will be made here until targ_rep dataset can read KO attempts dataset
-  projects_with_mice, projects_with_clones, projects_with_vectors = [], [], []
+  projects_with_mice    = []
+  projects_with_clones  = []
+  projects_with_vectors = []
   
   result_data['ikmc-idcc_targ_rep'].each do |pipeline, pipeline_projects|
     displayed_project = nil
@@ -12,8 +14,8 @@
         ikmc_project = result_data['ikmc-dcc-knockout_attempts'][pipeline]
         ikmc_project_id = project['ikmc_project_id']
         
-        if ikmc_project
-          project['mouse_available'] = ikmc_project[ikmc_project_id]['mouse_available'] == "1"
+        if ikmc_project and ikmc_project[ikmc_project_id]
+          project['mouse_available'] = ikmc_project[ikmc_project_id]['mouse_available']
           project['ensembl_gene_id'] = ikmc_project['ensembl_gene_id']
         end
       end
@@ -41,59 +43,60 @@
 %>
   
 <% sorted_projects.each do |project| %>
-  <div class="<% unless project['display'] %>ikmc-idcc_targ_rep_progress_bar_hidden<% end %>">
-    
-    <!-- Progress Bar -->
-    <%=
-      partial(
-        "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
-        :locals => { 
-          :project      => project,
-          :result_data  => result_data
-        }
-      )
-    %>
-    
-    <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
-      <!-- Links -->
+  <% if project['display'] %>
+    <div>
+      <!-- Progress Bar -->
       <%=
         partial(
-          "datasets/ikmc-idcc_targ_rep/links", 
-          :locals => {
-            :allele_id       => project['allele_id'],
-            :ikmc_project_id => project['ikmc_project_id'],
-            :ensembl_gene_id => project['ensembl_gene_id']
+          "datasets/ikmc-idcc_targ_rep/targeted_progress_bar",
+          :locals => { 
+            :project      => project,
+            :result_data  => result_data
           }
         )
       %>
+    
+      <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
+        <!-- Links -->
+        <%=
+          partial(
+            "datasets/ikmc-idcc_targ_rep/links", 
+            :locals => {
+              :allele_id       => project['allele_id'],
+              :ikmc_project_id => project['ikmc_project_id'],
+              :ensembl_gene_id => project['ensembl_gene_id']
+            }
+          )
+        %>
       
-      <!-- ES Cells -->
-      <%=
-        partial(
-          "datasets/ikmc-idcc_targ_rep/escell_clones",
-          :locals => {
-            :allele_id             => project['allele_id'],
-            :design_id             => project['design_id'],
-            :conditional_clones    => project['conditional_clones'],
-            :nonconditional_clones => project['nonconditional_clones']
-          }
-        )
-      %>
+        <!-- ES Cells -->
+        <%=
+          partial(
+            "datasets/ikmc-idcc_targ_rep/escell_clones",
+            :locals => {
+              :allele_id             => project['allele_id'],
+              :design_id             => project['design_id'],
+              :conditional_clones    => project['conditional_clones'],
+              :nonconditional_clones => project['nonconditional_clones']
+            }
+          )
+        %>
+        <div class="clear"></div>
+      
+        <!-- Targeting Vectors -->
+        <%=
+          partial(
+            "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
+            :locals => {
+              :allele_id         => project['allele_id'],
+              :pipeline          => project['pipeline'],
+              :targeting_vectors => project['targeting_vectors']
+            }
+          ) 
+        %>
+      </div>
+    
       <div class="clear"></div>
-      
-      <!-- Targeting Vectors -->
-      <%=
-        partial(
-          "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
-          :locals => {
-            :allele_id         => project['allele_id'],
-            :pipeline          => project['pipeline'],
-            :targeting_vectors => project['targeting_vectors']
-          }
-        ) 
-      %>
     </div>
-    
-    <div class="clear"></div>
-  </div>
+  <% end %>
 <% end %>

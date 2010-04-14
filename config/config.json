@@ -100,6 +100,8 @@
         "sanger_phenotype":            { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype":                   { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "phenotype_comment":           { "type": "text", "indexed": true, "stored": false, "multi_valued": true },
+        "sanger_expression":           { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
+        "expression":                  { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "mp_id":                       { "type": "textTight", "indexed": true, "stored": true, "multi_valued": true },
         "MP":                          { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "mp":                          { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
@@ -153,6 +155,7 @@
         { "source": "pubmed_id",                  "dest": "PMID" },
         { "source": "pubmed_id",                  "dest": "pmid" },
         { "source": "sanger_phenotype",           "dest": "phenotype" },
+        { "source": "sanger_expression",          "dest": "expression" },
         { "source": "mgi_accession_id_key",       "dest": "text" },
         { "source": "marker_symbol",              "dest": "text" },
         { "source": "marker_name",                "dest": "text" },
@@ -175,6 +178,8 @@
         { "source": "sanger_phenotype",           "dest": "text" },
         { "source": "phenotype",                  "dest": "text" },
         { "source": "phenotype_comment",          "dest": "text" },
+        { "source": "sanger_expression",          "dest": "text" },
+        { "source": "expression",                 "dest": "text" },
         { "source": "mp_id",                      "dest": "text" },
         { "source": "mp_term",                    "dest": "text" },
         { "source": "go_id",                      "dest": "text" },
@@ -194,6 +199,7 @@
       "sanger-htgt_targ",
       "sanger-kermits",
       "sanger-phenotyping",
+      "sanger-wholemount_expression",
       "sanger-bacs",
       "eurexpress-template",
       "emma-strains",
@@ -240,7 +246,7 @@
     "ikmc-idcc_targ_rep",
     "ikmc-dcc-trapped_products",
     "eurexpress-template",
-    "europhenome-biomart",
+    "europhenome-europhenome",
     "emma-strains"
   ]
 }

@@ -120,3 +120,29 @@
 #abr-thresholds div.pheno-content table tbody tr td table td {
 	border: 1px solid #999;
 }
+
+/* Adult Expression Specific Code */
+
+table.expression_ticklist {
+	margin: 0 auto;
+}
+
+table.expression_ticklist td {
+	text-align: center;
+}
+
+table.expression_ticklist td.present {
+	text-indent: -9999px;
+	background: #fff url(../images/tick.png) no-repeat center center;
+}
+
+table.expression_ticklist td.absent {
+	text-indent: -9999px;
+	background: #fff url(../images/cross.png) no-repeat center center;
+}
+
+table.expression_ticklist td.no_data {
+	color: #999;
+	font-style: italic;
+	text-transform: lowercase;
+}

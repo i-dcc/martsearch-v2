@@ -1,4 +1,13 @@
 {
+  "expression": {
+    "adult-expression": {
+      "description": "Adult expression (week 6):  The lacZ reporter gene within the targeting vector was used to determine the wholemount expression profile of the targeted gene.  Mice were fixed by cardiac perfusion using 4% paraformaldehyde (PFA).  Following dissection, the tissues to be stained were fixed an additional 30 min in 4% PFA before being rinsed in phosphate buffered saline and transferred to lacZ staining solution, containing 0.1% X-gal, for up to 48 hours.  After an additional overnight post-staining fixation in 4% PFA, tissues were cleared with 50% glycerol then transferred to 70% glycerol for long-term storage.",
+      "images": [],
+      "name": "Adult Expression",
+      "second_description": "",
+      "slug": "adult-expression"
+    }
+  },
   "mgp-pipeline-1-2": {
     "blood-pressure": {
       "description": "Blood pressure and heart rate (week 11) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Measured using a tail cuff system (MC4000, Hatteras Instruments). To minimize discomfort of the mice during the procedure they are held in a darkened restrainer which is placed on a heated platform (38 degrees celsius), and a cuff is secured at the base of the tail. The procedure is spread over 5 days, including one training and 4 measurement days, each consisting of 5 acclimatisation and 15 measurement cycles.",

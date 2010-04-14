@@ -53,56 +53,11 @@ class PhenotypingPagesTest < Test::Unit::TestCase
       end
     end
     
-    should "be able to render homozygote-viability details pages" do
-      setup_pheno_configuration()
-      colonies_with_images = find_pheno_images()
-      assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
-      
-      # Randomly sample 5 colonies
-      colonies_checked = 0
-      randomised_colonies = colonies_with_images.keys.sort_by { rand }
-      randomised_colonies.each do |colony_prefix|
-        if colonies_checked < 6
-          if colonies_with_images[colony_prefix]["homozygote-viability"]
-            @browser.get "/phenotyping/#{colony_prefix}/homozygote-viability/"
-            assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/homozygote-viability/'." )
-            assert( @browser.last_response.body.include?("Homozygote Viability Data"), "Incorrect page found for '/phenotyping/#{colony_prefix}/homozygote-viability/'.")
-            colonies_checked += 1
-          end
-        end
-      end
-    end
-    
-    should "be able to render fertility details pages" do
-      setup_pheno_configuration()
-      colonies_with_images = find_pheno_images()
-      assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
-      
-      # Randomly sample 5 colonies
-      colonies_checked = 0
-      randomised_colonies = colonies_with_images.keys.sort_by { rand }
-      randomised_colonies.each do |colony_prefix|
-        if colonies_checked < 6
-          if colonies_with_images[colony_prefix]["fertility"]
-            @browser.get "/phenotyping/#{colony_prefix}/fertility/"
-            assert( @browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/fertility/'." )
-            assert( @browser.last_response.body.include?("Fertility Data"), "Incorrect page found for '/phenotyping/#{colony_prefix}/fertility/'.")
-            colonies_checked += 1
-          end
-        end
-      end
-    end
-    
-    should "be able to render ABR phenotyping details pages" do
-      colonies_with_data = find_pheno_abr_results()
-      assert( colonies_with_data.is_a?(Array), "Function find_pheno_abr_results() is not returning an array." )
-      
-      # Take a random sample of 3 colonies, and then request the pages
-      random_colonies = colonies_with_data.sort_by { rand }[0..2]
-      random_colonies.each do |colony_prefix|
-        check_abr_redirect( @browser, colony_prefix )
-        view_pheno_details_page( @browser, colony_prefix, "abr" )
-      end
+    should "be able to render the custom test details pages" do
+      test_specific_pheno_test_page( @browser, 'abr', 'Auditory Brainstem Response (ABR)' )
+      test_specific_pheno_test_page( @browser, 'adult-expression', 'Adult Expression Data' )      
+      test_specific_pheno_test_page( @browser, 'homozygote-viability', 'Homozygote Viability Data' )
+      test_specific_pheno_test_page( @browser, 'fertility', 'Fertility Data' )
     end
     
     should "be able to pass through images etc for the ABR pages" do
@@ -132,6 +87,27 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     browser.get "/phenotyping/#{colony_prefix}/#{test}/"
     assert( browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/#{test}/'." )
     assert( browser.last_response.body.include?("<img"), "Phenotyping details page (/phenotyping/#{colony_prefix}/#{test}/) does not have any images." )
+  end
+  
+  def test_specific_pheno_test_page( browser, test, page_title )
+    setup_pheno_configuration()
+    colonies_with_images = find_pheno_images()
+    assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
+    
+    # Randomly sample 5 colonies
+    colonies_checked    = 0
+    randomised_colonies = colonies_with_images.keys.sort_by { rand }
+    
+    randomised_colonies.each do |colony_prefix|
+      if colonies_checked < 6
+        if colonies_with_images[colony_prefix][test]
+          browser.get "/phenotyping/#{colony_prefix}/#{test}/"
+          assert( browser.last_response.ok?, "Unable to make request to '/phenotyping/#{colony_prefix}/#{test}/'." )
+          assert( browser.last_response.body.include?(page_title), "Incorrect page found for '/phenotyping/#{colony_prefix}/#{test}/'.")
+          colonies_checked += 1
+        end
+      end
+    end
   end
   
   def check_abr_redirect( browser, colony_prefix )

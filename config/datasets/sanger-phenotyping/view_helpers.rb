@@ -140,6 +140,7 @@ end
 # by Jacqui, and the pages dumped by Neil.
 def setup_pheno_configuration
   pheno_dataset = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
+  expre_dataset = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
     pheno_conf = JSON.load( File.new( PHENO_TEST_DESC_FILE, "r" ) )
@@ -193,6 +194,81 @@ def setup_pheno_configuration
     @@ms.cache.write( "sanger-phenotyping-fertility_results_lookup", fertility_results.to_json, :expires_in => 12.hours )
   end
   
+  unless @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup")
+    expression_results       = {}
+    expression_results_cache = {}
+    
+    raw_results = expre_dataset.search(
+      :process_results => true,
+      :attributes => [
+        "colony_prefix",
+        "colony_name",
+        "mouse_id",
+        "mouse_name",
+        "cohort_name",
+        "age_in_weeks",
+        "birth_date",
+        "gender",
+        "strain",
+        "genotype",
+        "pipeline",
+        "comments",
+        "anaesthetic",
+        "adrenal_gland",
+        "bone",
+        "brain",
+        "brown_adipose_tissue",
+        "cartilage",
+        "colon",
+        "eye",
+        "heart",
+        "kidney",
+        "large_intestine",
+        "liver",
+        "lung",
+        "mammary_gland",
+        "mesenteric_lymph_node",
+        "nasal_epithelia",
+        "oesophagus",
+        "oral_epithelia",
+        "ovaries",
+        "oviduct",
+        "pancreas",
+        "peripheral_nervous_system",
+        "peyers_patch",
+        "prostate",
+        "skeletal_muscle",
+        "skin",
+        "small_intestine",
+        "spinal_cord",
+        "spleen",
+        "stomach",
+        "testis",
+        "thymus",
+        "trachea",
+        "urinary_system",
+        "uterus",
+        "vas_deferens",
+        "vascular_system",
+        "white_adipose_tissue"
+      ]
+    )
+    
+    raw_results.each do |result|
+      expression_results[ result['colony_prefix'] ] = true
+      if expression_results_cache[ result['colony_prefix'] ].nil?
+        expression_results_cache[ result['colony_prefix'] ] = []
+      end
+      expression_results_cache[ result['colony_prefix'] ].push(result)
+    end
+    
+    expression_results_cache.each do |colony_prefix,data|
+      @@ms.cache.write( "sanger-phenotyping-wholemount_expression_results_#{colony_prefix}", data.to_json, :expires_in => 12.hours )
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-wholemount_expression_results_lookup", expression_results.to_json, :expires_in => 12.hours )
+  end
+  
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
     @@ms.cache.write( "sanger-phenotyping-abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
@@ -223,10 +299,11 @@ def setup_pheno_configuration
   unless @@ms.cache.fetch("sanger-phenotyping-pheno_links")
     pheno_links = {}
     
-    image_info     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )
-    abr_info       = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
-    homviable_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )
-    fertility_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup") )
+    image_info      = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )
+    abr_info        = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
+    homviable_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )
+    fertility_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup") )
+    wholemount_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup") )
     
     results = pheno_dataset.search( :attributes => ["colony_prefix"], :process_results => true )
     results.each do |result|
@@ -242,6 +319,7 @@ def setup_pheno_configuration
       if abr_info.include?(colony_prefix) then pheno_links[colony_prefix].push("abr") end
       if homviable_info[colony_prefix]    then pheno_links[colony_prefix].push("homozygote-viability") end
       if fertility_info[colony_prefix]    then pheno_links[colony_prefix].push("fertility") end
+      if wholemount_info[colony_prefix]   then pheno_links[colony_prefix].push("adult-expression") end
     end
     
     @@ms.cache.write( "sanger-phenotyping-pheno_links", pheno_links.to_json, :expires_in => 12.hours )
@@ -250,7 +328,7 @@ end
 
 # Function to return an array of pheno tests for a given colony_prefix 
 # that have a detailed phenotyping report page.
-def pheno_links( colony_prefix )
+def pheno_links( colony_prefix, result_data=nil )
   setup_pheno_configuration
   links = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-pheno_links") )[colony_prefix]
   return links

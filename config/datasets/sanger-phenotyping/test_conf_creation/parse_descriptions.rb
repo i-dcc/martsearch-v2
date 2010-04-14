@@ -17,6 +17,7 @@ require "#{File.dirname(__FILE__)}/../../../../lib/string.rb"
 
 # Used to map the spreadsheet descriptions to our objects...
 TEST_MAP = {
+  "Adult Expression"                      => "adult-expression",
   "Blood pressure"                        => "blood-pressure",
   "Body weight curve (HFD)"               => "body-weight-curve-high-fat-diet",
   "Body weight curve (normal chow)"       => "body-weight-curve-normal-chow",
@@ -79,7 +80,8 @@ end
 
 test_conf = {
   "mouse-gp"         => {},
-  "mgp-pipeline-1-2" => {}
+  "mgp-pipeline-1-2" => {},
+  "expression"       => {}
 }
 
 descriptions.each do |row|
@@ -102,6 +104,7 @@ descriptions.each do |row|
     test_pipeline = case row[1]
     when /Mouse GP/ then "mouse-gp"
     when /P1\/2/    then "mgp-pipeline-1-2"
+    when /Expre/    then "expression"
     end
     
     test_conf[test_pipeline][test_slug] = {

@@ -1,0 +1,97 @@
+<h2>
+  <% if @marker_symbol %>
+    Adult Expression Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+  <% else %>
+    Adult Expression Data for <%= @colony_prefix %>
+  <% end %>
+</h2>
+
+<div id="test-description">
+  <%= @test["description"] %>
+</div>
+
+<div id="test-parameter-groups">
+  <div class="test-parameter-group">
+    <%
+      headings_to_display = [
+        "colony_name",
+        "genotype",
+        "gender",
+        "age_in_weeks"
+      ]
+      
+      tests_to_display = [
+        "brain",
+        "spinal_cord",
+        "peripheral_nervous_system",
+        "skin",
+        "nasal_epithelia",
+        "oral_epithelia",
+        "eye",
+        "brown_adipose_tissue",
+        "skeletal_muscle",
+        "bone",
+        "cartilage",
+        "vascular_system",
+        "white_adipose_tissue",
+        "trachea",
+        "oesophagus",
+        "lung",
+        "heart",
+        "thymus",
+        "liver",
+        "stomach",
+        "small_intestine",
+        "large_intestine",
+        "colon",
+        "peyers_patch",
+        "spleen",
+        "mesenteric_lymph_node",
+        "pancreas",
+        "adrenal_gland",
+        "kidney",
+        "urinary_system",
+        "mammary_gland",
+        "ovaries",
+        "oviduct",
+        "uterus",
+        "testis",
+        "prostate",
+        "vas_deferens",
+      ]
+      
+      unused_headers = [
+        "mouse_id",
+        "mouse_name",
+        "cohort_name",
+        "birth_date",
+        "strain",
+        "pipeline",
+        "comments",
+        "anaesthetic"
+      ]
+    -%>
+    
+    <% unless @expression_data.nil? or @expression_data.empty? %>
+      <table class="expression_ticklist">
+        <% headings_to_display.each do |header| %>
+          <tr>
+            <th><%= header.gsub("_"," ").titlecase %></th>
+            <% @expression_data.each do |data| %>
+              <td><%= data[header] %></td>
+            <% end %>
+          </tr>
+        <% end %>
+        <% tests_to_display.each do |header| %>
+          <tr>
+            <th><%= header.gsub("_"," ").titlecase %></th>
+            <% @expression_data.each do |data| %>
+              <td class="<%= data[header].gsub(" ","_").downcase %>" title="<%= data[header] %>"><%= data[header] %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+    
+  </div>
+</div>

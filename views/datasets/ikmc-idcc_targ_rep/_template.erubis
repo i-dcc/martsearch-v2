@@ -76,6 +76,8 @@
             :locals => {
               :allele_id             => project['allele_id'],
               :design_id             => project['design_id'],
+              :design_type           => project['design_type'],
+              :pipeline              => project['pipeline'],
               :conditional_clones    => project['conditional_clones'],
               :nonconditional_clones => project['nonconditional_clones']
             }

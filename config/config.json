@@ -204,6 +204,7 @@
     "sanger-htgt_targ",
     "sanger-kermits",
     "sanger-phenotyping",
+    "sanger-wholemount_expression",
     "sanger-bacs",
     "eurexpress-template",
     "europhenome-biomart",

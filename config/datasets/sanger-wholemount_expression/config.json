@@ -1,0 +1,18 @@
+{
+  "display":              false,
+  "use_in_search":        false,
+  "index":                false,
+  "custom_sort":          false,
+  "custom_css":           false,
+  "custom_js":            false,
+  "custom_view_helpers":  false,
+  "custom_routes":        false,
+  "url":                  "http://www.sanger.ac.uk/htgt/biomart",
+  "dataset_name":         "wholemount_expression",
+  "display_name":         "Sanger Wholemount Expression",
+  "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
+  "attribution_link":     "http://www.sanger.ac.uk/",
+  "description":          "",
+  "indexing": {},
+  "searching": {}
+}

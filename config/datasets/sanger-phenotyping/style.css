@@ -30,20 +30,12 @@
 .sanger-phenotyping_heatmap th {
 	vertical-align:	bottom;
 	height: 280px;
+	min-width: 16px;
+	white-space: nowrap;
 }
 
 .sanger-phenotyping_heatmap .vertical_text {
-	white-space: nowrap;
-	display: block;
 	width: 16px;
-	-webkit-transform: rotate(-90deg);
-	-webkit-transform-origin: 50% 50%;
-	-moz-transform: rotate(-90deg);
-	-moz-transform-origin: 50% 50%;
-	-o-transform: rotate(-90deg);
-	-o-transform-origin: 50% 50%;
-	writing-mode: tb-rl;
-	filter: flipv fliph;
 }
 
 /* Phenotyping details pages */

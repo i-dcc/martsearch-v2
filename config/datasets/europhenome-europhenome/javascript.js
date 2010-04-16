@@ -13,13 +13,4 @@ jQuery(document).ready(function() {
        position: { corner: { target: "bottomMiddle", tooltip: "topMiddle" } }
     });
   });
-  
-  jQuery(".europhenome-europhenome .accordion").accordion({
-    collapsible: true,
-    autoHeight: false,
-    icons: {
-      header: "ui-icon-circle-arrow-e",
-      headerSelected: "ui-icon-circle-arrow-s"
-    }
-  });
 });

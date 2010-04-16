@@ -520,6 +520,11 @@ table.welcome table#summary_statistics th {
 	margin-bottom: 20px;
 }
 
+.ui-accordion .header_annotation {
+	font-style: italic;
+	color: #666;
+}
+
 /* jQuery TableSorter Overrides */
 
 table.tablesorter thead tr th {

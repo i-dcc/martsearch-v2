@@ -34,6 +34,16 @@ jQuery(document).ready(function() {
   // Add tablesorter to anything with the class 'tablesorter'
   jQuery("table.tablesorter").tablesorter({ widgets: ['zebra'], dateFormat: "uk" });
   
+  // Add the accordion effect to anything with the class 'accordion'
+  jQuery(".accordion").accordion({
+    collapsible: true,
+    autoHeight: false,
+    icons: {
+      header: "ui-icon-circle-arrow-e",
+      headerSelected: "ui-icon-circle-arrow-s"
+    }
+  });
+  
   // Add font resizing buttons
   jQuery("#fontresize").fontResize();
 });

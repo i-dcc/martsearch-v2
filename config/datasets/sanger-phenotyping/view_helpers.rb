@@ -366,3 +366,86 @@ def search_mart_by_colony_prefix(colony_prefix)
   
   return search_data
 end
+
+def sanger_phenotyping_test_groupings
+  {
+    "Independent Observations" => [
+      "homozygote_viability",
+      "recessive_lethal",
+      "fertility",
+      "adult_expression",
+      "embryo_expression",
+      "general_observations",
+      "citrobacter_challenge",
+      "salmonella_challenge",
+      "micronuclei_irradiated",
+      "skin_screen",
+      "brain_histology"
+    ],
+    "Cardiovascular and Metabolism" => [
+      "body_weight_curve_high_fat_diet",
+      "dysmorphology",
+      "blood_pressure",
+      "indirect_calorimetry",
+      "ip_gtt",
+      "dexa",
+      "x_ray_imaging",
+      "core_temperature",
+      "fasted_clinical_chemistry",
+      "heart_weight",
+      "heart_histology",
+      "insulin"
+    ],
+    "Behaviour and Sensory" => [
+      "body_weight_curve_normal_chow",
+      "open_field",
+      "modified_shirpa",
+      "grip_strength",
+      "rotarod",
+      "prepulse_inhibition",
+      "hot_plate",
+      "abr",
+      "eye_morphology",
+      "histology",
+      "full_clinical_chemistry",
+      "haematology",
+      "pheripheral_blood_lymphocytes",
+      "serum_immunoglobulins",
+      "micronuclei_naive"
+    ],
+    "Comprehensive Phenotyping Pipeline" => [
+      "body_weight_curve_high_fat_diet",
+      "tail_length",
+      "dysmorphology",
+      "hair_follicle",
+      "open_field",
+      "modified_shirpa",
+      "grip_strength",
+      "hot_plate",
+      "indirect_calorimetry",
+      "ip_gtt",
+      "abr",
+      "dexa",
+      "x_ray_imaging",
+      "core_temperature",
+      "eye_morphology",
+      "full_clinical_chemistry",
+      "haematology",
+      "pheripheral_blood_lymphocytes",
+      "serum_immunoglobulins",
+      "micronuclei_naive",
+      "heart_weight",
+      "heart_histology",
+      "histology"
+    ]
+  }
+end
+
+def sanger_phenotyping_test_groupings_order
+  [
+    "Independent Observations",
+    "Cardiovascular and Metabolism",
+    "Behaviour and Sensory",
+    "Comprehensive Phenotyping Pipeline"
+  ]
+end

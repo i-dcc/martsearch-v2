@@ -25,7 +25,7 @@
             <input type="text" class="textinput" name="query" value="" />
             <input type="submit" class="submit" value="search" />
           </form>
-          <div id="fontresize"></div>
+          <span id="fontresize"></span>
         </span>  
         <ul>
           <li<% if @current === "home" %> class="current"<% end %>><a href="<%= BASE_URI %>/">Home</a></li>

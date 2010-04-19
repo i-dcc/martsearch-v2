@@ -60,35 +60,50 @@ function check_browser_compatibility() {
   var add_warning        = false;
   var hide_vertical_text = false;
 
-  if ( jQuery.browser.msie && jQuery.browser.version < "8" ) {
-    browser     = "Internet Explorer (or are possibly using IE8 in compatibility mode)";
+  if ( jQuery.browser.msie && parseInt(jQuery.browser.version,10) < 7 ) {
+    browser     = "Internet Explorer";
     add_warning = true;
-  } else if ( jQuery.browser.opera && jQuery.browser.version < "10.50" ) {
-    browser            = "the Opera web browser";
-    add_warning        = true;
-    hide_vertical_text = true;
-  } else if ( jQuery.browser.mozilla && jQuery.browser.version < "1.9" ) {
-    browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
-    add_warning        = true;
-    hide_vertical_text = true;
-  } else if ( jQuery.browser.webkit && jQuery.browser.version < "525" ) {
-    browser            = "the Webkit rendering engine (used in Safari, Chrome and other browsers)";
-    add_warning        = true;
-    hide_vertical_text = true;
+  } else if ( jQuery.browser.mozilla ) {
+    var gecko_version        = jQuery.browser.version.split(".");
+    var major_gecko_revision = parseFloat(gecko_version[0] + "." + gecko_version[1]);
+    var minor_gecko_revision = parseInt(gecko_version[2],10);
+
+    if ( major_gecko_revision == 1.9 ) {
+      if ( minor_gecko_revision < 1 ) { hide_vertical_text = true; }
+    } else if ( major_gecko_revision <= 1.8 ) {
+      browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
+      add_warning        = true;
+      hide_vertical_text = true;
+    }
+  } else if ( jQuery.browser.webkit ) {
+    var webkit_version = parseInt(jQuery.browser.version.split(".")[0],10);
+
+    if ( webkit_version < 525 ) {
+      browser            = "the Webkit rendering engine (used in Safari, Chrome and other browsers)";
+      add_warning        = true;
+      hide_vertical_text = true;
+    }
+  } else if ( jQuery.browser.opera ) {
+    var opera_version       = jQuery.browser.version.split(".");
+    var major_opera_version = parseInt(opera_version[0],10);
+    var minor_opera_version = parseInt(opera_version[1],10);
+    
+    if ( major_opera_version == 10 ) {
+      if ( minor_opera_version < 50 ) { hide_vertical_text = true; }
+    } else if ( major_opera_version <= 9 ) {
+      browser            = "the Opera web browser";
+      add_warning        = true;
+      hide_vertical_text = true;
+    }
   }
   
   if ( add_warning && browser ) {
     var warning_string = 
       "<strong>WARNING:</strong> It appears that you are using an " +
-      "older version of " + browser + ".  This site has only been " +
+      "older version of " + browser + ".  This site has been " +
       "developed and tested on the most recent versions and may not work " +
-      "as expected.  Please consider upgrading your browser ";
-    
-    if ( jQuery.browser.msie && jQuery.browser.version < "8" ) {
-      warning_string += "(or turning off compatibilty mode if you are using IE8) ";
-    }
-    
-    warning_string += "for a more pleasant internet browsing experience.";
+      "as expected.  Please consider upgrading your browser for a better " +
+      "browsing experience.";
     
     jQuery("#browser_warnings").html( warning_string );
     jQuery("#browser_warnings").show();

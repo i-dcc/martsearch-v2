@@ -67,7 +67,7 @@ function check_browser_compatibility() {
     browser            = "the Opera web browser";
     add_warning        = true;
     hide_vertical_text = true;
-  } else if ( jQuery.browser.mozilla && jQuery.browser.version < "1.9" ) {
+  } else if ( jQuery.browser.mozilla && jQuery.browser.version < "1.9.1" ) {
     browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
     add_warning        = true;
     hide_vertical_text = true;
@@ -80,7 +80,7 @@ function check_browser_compatibility() {
   if ( add_warning && browser ) {
     var warning_string = 
       "<strong>WARNING:</strong> It appears that you are using an " +
-      "older version of " + browser + ".  This site has only been " +
+      "older version of " + browser + ".  This site has been " +
       "developed and tested on the most recent versions and may not work " +
       "as expected.  Please consider upgrading your browser ";
     
@@ -88,7 +88,7 @@ function check_browser_compatibility() {
       warning_string += "(or turning off compatibilty mode if you are using IE8) ";
     }
     
-    warning_string += "for a more pleasant internet browsing experience.";
+    warning_string += "for a better browsing experience.";
     
     jQuery("#browser_warnings").html( warning_string );
     jQuery("#browser_warnings").show();

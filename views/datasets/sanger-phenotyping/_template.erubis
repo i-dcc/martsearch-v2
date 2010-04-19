@@ -22,7 +22,10 @@
       <a href="">
         <%= group %> - 
         <span class="header_annotation">
-          <%= no_positive_tests %> positive phenotyping tests (performed on <%= no_subjects %> subjects)
+          <%= no_positive_tests %> positive phenotyping 
+          <% if no_positive_tests == 1 %>test<% else %>tests<% end %> 
+          (performed on <%= no_subjects %> 
+          <% if no_subjects == 1 %>subject<% else %>subjects<% end %>)
         </span>
       </a>
     </h6>

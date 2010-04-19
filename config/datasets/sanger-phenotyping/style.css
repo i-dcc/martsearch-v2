@@ -1,67 +1,41 @@
 /* sanger-phenotyping custom css */
 
-.sanger-phenotyping table td {
-	background: #fff;
-}
-
-.sanger-phenotyping table td.test_not_done {
-	background-color: #f1f1f1;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.completed_data_available {
-	background-color: #376598;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.significant_difference {
-	background-color: #de2920;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.no_significant_difference {
-	background-color: #6998cb;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.not_applicable {
-	background-color: #ccc;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.early_indication_of_possible_phenotype {
-	background-color: #fcfe66;
-	cursor: pointer;
-}
-
+.sanger-phenotyping table td { background: #fff; }
+.sanger-phenotyping table td.test_not_done {	background-color: #f1f1f1; }
+.sanger-phenotyping table td.completed_data_available {	background-color: #376598; }
+.sanger-phenotyping table td.significant_difference {	background-color: #de2920; }
+.sanger-phenotyping table td.no_significant_difference { background-color: #6998cb; }
+.sanger-phenotyping table td.not_applicable {	background-color: #ccc; }
+.sanger-phenotyping table td.early_indication_of_possible_phenotype {	background-color: #fcfe66; }
 .sanger-phenotyping table td.pheno_result {
 	text-align: center;
 	vertical-align: middle;
 	padding: 0;
-	min-width: 16px;
+	width: 22px;
 }
 
 .sanger-phenotyping table td.pheno_result a img {
-	border: none;
-	padding: 2px;
+  background-color: #fff;
+	border: 1px solid #999;
+	padding: 1px;
+}
+
+.sanger-phenotyping table td.pheno_result a img:hover {
+  background-color: transparent;
+  border: none;
 }
 
 /* Heatmap specific code */
 
-#sanger-phenotyping_heatmap th {
+.sanger-phenotyping_heatmap th {
 	vertical-align:	bottom;
 	height: 280px;
+	min-width: 16px;
+	white-space: nowrap;
 }
 
-#sanger-phenotyping_heatmap .vertical_text {
-	white-space: nowrap;
-	display: block;
+.sanger-phenotyping_heatmap .vertical_text {
 	width: 16px;
-	rotation: 90deg !important;
-	-webkit-transform: rotate(-90deg);
-	-moz-transform: rotate(-90deg);
-	-ms-writing-mode:tb-rl;
-	writing-mode:tb-rl;
 }
 
 /* Phenotyping details pages */
@@ -74,6 +48,7 @@
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 }
 
 .test-parameter-group {

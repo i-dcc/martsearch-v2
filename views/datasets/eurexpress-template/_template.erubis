@@ -3,7 +3,7 @@
     <h6>
       <a href="">
         <%= result["assay_id"] %> - 
-        <span class="annotation_count">
+        <span class="header_annotation">
           <%= result["annotations"].size %> 
           <% if result["annotations"].size === 1 %>
             annotation 

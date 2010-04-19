@@ -83,6 +83,18 @@ p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset {
 	margin-bottom: 20px
 }
 
+.vertical_text {
+	display: block;
+	-webkit-transform: rotate(-90deg);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform: rotate(-90deg);
+	-moz-transform-origin: 50% 50%;
+	-o-transform: rotate(-90deg);
+	-o-transform-origin: 50% 50%;
+	writing-mode: tb-rl;
+	filter: flipv fliph;
+}
+
 /* Links */
 
 a, .ui-widget-content a {
@@ -156,19 +168,19 @@ a.order:hover {
 	margin-bottom: 2px;
 }
 
-#status_msgs {
+.status_msgs {
 	color: #323200;
 	border-color: #cacb66;
 	background-color: #fdfecc;
 }
 
-#error_msgs {
+.error_msgs {
 	color: #640808;
 	border-color: #963534;
 	background-color: #fdcccc;
 }
 
-#error_msgs .error_msg_content {
+.error_msgs .error_msg_content {
 	color: #333;
 	border: 1px solid #999;
 	background-color: #f4f4f4;
@@ -330,7 +342,6 @@ a.order:hover {
 }
 
 #navigation #fontresize {
-	float: right;
 	margin-top: 4px;
 	margin-right: 10px;
 }
@@ -538,6 +549,11 @@ table.welcome table#summary_statistics th {
 	margin-bottom: 20px;
 }
 
+.ui-accordion .header_annotation {
+	font-style: italic;
+	color: #666;
+}
+
 /* jQuery TableSorter Overrides */
 
 table.tablesorter thead tr th {
@@ -585,7 +601,7 @@ table.ikmc-pipeline-progress-bar td {
   background-position: right center;
   text-align: center;
   padding: 5px 15px 5px 7px;
-  height: 32px;
+  height: 35px;
 }
 
 table.ikmc-pipeline-progress-bar table tr {

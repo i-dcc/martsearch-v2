@@ -1,7 +1,7 @@
 <%
   sorted_clones =
     clones.sort_by do |clone_hash|
-      [clone_hash['targeting_vector'], clone_hash['escell_clone']]
+      [ clone_hash['targeting_vector'] ? clone_hash['targeting_vector'] : "", clone_hash['escell_clone'] ]
     end
 %>
 
@@ -18,8 +18,20 @@
   <tbody>
     <% sorted_clones.each do |clone| %>
       <tr>
-        <td><%= clone["escell_clone"] %></td>
-        <td><%= clone["targeting_vector"]%></td>
+        <td>
+          <% if clone['escell_clone'] and ( pipeline === 'EUCOMM' or pipeline === 'KOMP-CSD' ) %>
+            <a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= clone["escell_clone"][0..-5] %>"><%= clone["escell_clone"] %></a>
+          <% else %>
+            <%= clone['escell_clone'] %>
+          <% end %>
+        </td>
+        <td>
+          <% if clone['targeting_vector'] and ( pipeline === 'EUCOMM' or pipeline === 'KOMP-CSD' ) %>
+            <a href="http://www.sanger.ac.uk/htgt/plate/view?plate_name=<%= clone["targeting_vector"][0..-5] %>"><%= clone["targeting_vector"] %></a>
+          <% else %>
+            <%= clone['targeting_vector'] %>
+          <% end %>
+        </td>
         <td>
           <%
             cell_strain = ""

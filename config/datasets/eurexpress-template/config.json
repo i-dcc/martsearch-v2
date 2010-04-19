@@ -3,7 +3,7 @@
   "use_in_search":        true,
   "index":                true,
   "custom_sort":          true,
-  "custom_css":           true,
+  "custom_css":           false,
   "custom_js":            true,
   "custom_view_helpers" : false,
   "custom_routes":        false,

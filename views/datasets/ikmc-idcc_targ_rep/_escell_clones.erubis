@@ -4,7 +4,7 @@
 
   <!-- ES Cell clones summary -->
   
-  <table>
+  <table style="margin-bottom:5px">
     <thead>
       <tr>
         <th>Design ID</th>
@@ -16,7 +16,10 @@
     
     <tbody>
       <tr>
-        <td><a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a></td>
+        <td>
+          <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a> 
+          (<%= design_type %>)
+        </td>
         <td><%= conditional_clones.length %></td>
         <td><%= nonconditional_clones.length %></td>
         <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
@@ -25,10 +28,10 @@
   </table>
   
   <!-- Conditional and Non-Conditional clones -->
-  <div class="clear"></div>
   <div>
     <div><a class="ikmc-idcc_targ_rep_allele_progress_clones_toggle">view all available ES cell clones</a></div>
-    <div class="ikmc-idcc_targ_rep_allele_progress_clones_content">
+    <div class="clear"></div>
+    <div class="ikmc-idcc_targ_rep_allele_progress_clones_content" style="clear:both;margin-top:10px">
       <table>
         <tr>
           
@@ -41,7 +44,11 @@
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+<<<<<<< HEAD
                   :locals => { :clones => conditional_clones }
+=======
+                  :locals => { :pipeline => pipeline, :clones => conditional_clones }
+>>>>>>> master
                 )
               %>
             <% else %>
@@ -58,7 +65,11 @@
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+<<<<<<< HEAD
                   :locals => { :clones => nonconditional_clones }
+=======
+                  :locals => { :pipeline => pipeline, :clones => nonconditional_clones }
+>>>>>>> master
                 )
               %>
             <% else %>

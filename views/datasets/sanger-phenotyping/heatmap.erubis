@@ -43,7 +43,7 @@
   
   <%= partial( "datasets/sanger-phenotyping/heatmap_legend" ) %>
   
-  <table id="sanger-phenotyping_heatmap">
+  <table class="sanger-phenotyping_heatmap">
     <tr>
       <th>Pipeline</th>
       <th>Colony Prefix</th>
@@ -77,11 +77,11 @@
             link_text = ""
             if test === "abr"
               if detail_links.include?("abr")
-                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/chart_bar.png' /></a>"
               end
             else
               if detail_links.include?( test.gsub("_","-") )
-                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/bullet_go.png' /></a>"
+                link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/chart_bar.png' /></a>"
               end
             end
           %>

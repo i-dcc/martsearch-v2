@@ -26,7 +26,7 @@
             <input type="text" class="textinput" name="query" value="" />
             <input type="submit" class="submit" value="search" />
           </form>
-          <div id="fontresize"></div>
+          <span id="fontresize"></span>
         </span>  
         <ul>
           <li<% if @current === "home" %> class="current"<% end %>><a href="<%= BASE_URI %>/">Home</a></li>
@@ -37,9 +37,22 @@
         <br style="clear: both;" />
       </div>
       
+      <noscript>
+        <div id="noscript_warning" class="error_msgs messages">
+          <strong>WARNING:</strong> It appears that you do not have javascript 
+          enabled in your browser.  This portal will still function correctly
+          without javascript enabled, but the experience will not be as good 
+          as it could be.  For a more complete experience, please
+          <a href="http://www.google.com/search?q=enable+javascript">enable 
+          javascript</a> in your browser and refresh the page.
+        </div>
+      </noscript>
+
+      <div id="browser_warnings" class="error_msgs messages" style="display:none;"></div>
+      
       <div id="messages">
         <% if @messages[:status].size > 0 %>
-          <div id="status_msgs" class="messages">
+          <div class="status_msgs messages">
             <ul>
               <% @messages[:status].each do |msg| %>
                 <li><%= msg %></li>
@@ -48,7 +61,7 @@
           </div>
         <% end %>
         <% if @messages[:error].size > 0 %>
-          <div id="error_msgs" class="messages">
+          <div class="error_msgs messages">
             <h2>Sorry, an Error Has Occurred</h2>
             <ul>
               <% @messages[:error].each do |msg| %>

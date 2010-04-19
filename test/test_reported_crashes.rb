@@ -34,7 +34,8 @@ class ReportedCrashesTest < Test::Unit::TestCase
     reported_bad_urls = [
       '/browse/chromosome/7/305',
       '/browse/marker-symbol/h/13',
-      '/browse/chromosome/11/249'
+      '/browse/chromosome/11/249',
+      '/search/cbx7'
     ]
     
     reported_bad_urls.each do |url|

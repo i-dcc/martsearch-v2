@@ -1,7 +1,7 @@
 <%
   sorted_clones =
     clones.sort_by do |clone_hash|
-      [clone_hash['targeting_vector'], clone_hash['escell_clone']]
+      [ clone_hash['targeting_vector'] ? clone_hash['targeting_vector'] : "", clone_hash['escell_clone'] ]
     end
 %>
 

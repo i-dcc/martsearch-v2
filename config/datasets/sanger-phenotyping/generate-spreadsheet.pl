@@ -484,5 +484,14 @@ sub process_biomart_results {
     push( @array_of_arrays, \@data_row );
   }
 
+  # Sort the results on 'Colony Prefix' and 'Comparison' columns
+  my( $colony_prefix_idx )= grep { $headers[$_] eq 'Colony Prefix' } 0..$#headers;
+  my( $comparison_idx )=    grep { $headers[$_] eq 'Comparison' } 0..$#headers;
+  
+  @array_of_arrays = sort {
+      $a->[$colony_prefix_idx] cmp $b->[$colony_prefix_idx]
+      or $a->[$comparison_idx] cmp $b->[$comparison_idx]
+  } @array_of_arrays;
+
   return { headers => \@headers, data => \@array_of_arrays };
 }

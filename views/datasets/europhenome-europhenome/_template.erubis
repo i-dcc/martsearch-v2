@@ -62,13 +62,26 @@
                       when /female/ then "Female"
                       when /male/   then "Male"
                       end
+                      
+                      # Make url for barchart img
+                      if cell_class == 'significant'
+                        result_ids = []
+                        line_data['pipeline_data'][parameter_id]['parameters'].each do |id,parameter|
+                          result_ids.push(parameter['parameter_eslim_id'])
+                        end
+                        url = europhenome_link_url( line_data["europhenome_id"], sex, parameter_id, result_ids )
+                      end
                     %>
                     <% if cell_class == "significant" %>
                       <td 
                         class="pheno-result <%= cell_class %>"
                         title="<%= partial( "datasets/europhenome-europhenome/popup", :locals => { :line_data => line_data, :parameter_id => parameter_id, :sex => sex } ) %>"
                         rel="qtip"
-                      ></td>
+                      >
+                        <a href="<%= url %>" target="_blank" title="View details at Europhenome">
+                          <img src="<%= BASE_URI %>/images/chart_bar.png" />
+                        </a>
+                      </td>
                     <% else %>
                       <td class="pheno-result <%= cell_class %>"></td>
                     <% end %>

@@ -1,15 +1,3 @@
-<%
-  result_ids = []
-  line_data['pipeline_data'][parameter_id]['parameters'].each do |id,parameter|
-    result_ids.push(parameter['parameter_eslim_id'])
-  end
-  
-  url = europhenome_link_url( line_data["europhenome_id"], sex, parameter_id, result_ids )
-%>
-
-<a href='<%= url %>' class='ext_link' target='_blank'>View details at Europhenome</a><br /><br />
-
-<strong>Parameter Results</strong><br />
 <table class='pheno-result-details'>
   <thead>
     <tr>

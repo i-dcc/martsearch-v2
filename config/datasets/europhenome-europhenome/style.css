@@ -44,18 +44,21 @@
 }
 
 .europhenome-europhenome table.europhenome-data td.pheno-result a img {
-	border: none;
-	padding: 2px;
+  background-color: #fff;
+  border: 1px solid #999;
+  padding: 1px;
 }
 
-.europhenome-europhenome table.pheno-result-details {
-	font-size: 0.9em !important;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+.qtip table.pheno-result-details {
+  background: #fff;
+  color: #535353;
+  font-size: 0.9em !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.europhenome-europhenome table.pheno-result-details th,
-.europhenome-europhenome table.pheno-result-details td {
-	padding: 4px;
+.qtip table.pheno-result-details th,
+.qtip table.pheno-result-details td {
+  padding: 4px;
 }

@@ -89,7 +89,7 @@ class Dataset
         :attributes      => [],
         :filters         => { @joined_biomart_filter => query.join(",") },
         :process_results => true,
-        :timeout         => 5
+        :timeout         => 20
       }
     
       @filters.each do |name,value|

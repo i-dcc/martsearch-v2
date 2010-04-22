@@ -283,7 +283,7 @@ def setup_pheno_configuration
       expression_results_cache[ result['colony_prefix'] ]["ticklist"].push(result)
     end
     
-    image_data.each do |result|
+    image_data.sort{ |a,b| "#{a['tissue']}-#{a['img_gender']}" <=> "#{b['tissue']}-#{b['img_gender']}" }.each do |result|
       unless expression_results_cache[ result['img_colony_prefix'] ].nil?
         expression_results_cache[ result['img_colony_prefix'] ]["images"].push(result)
       end

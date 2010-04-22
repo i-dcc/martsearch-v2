@@ -12,7 +12,7 @@
     <td class="pheno_result significant"></td>
     <td class="noborder">Significant Annotation Present</td>
     <td class="noborder"></td>
-    <td class="pheno-result noborder"><a href="#"><img src="<%= BASE_URI %>/images/chart_bar.png" /></a></td>
+    <td class="pheno-result noborder"><a href="#"><img src="<%= BASE_URI %>/images/silk/chart_bar.png" /></a></td>
     <td class="noborder">Link to Raw Phenotyping Data at Europhenome</td>
   </tr>
 </table>

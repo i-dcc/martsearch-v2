@@ -125,11 +125,11 @@
                   link_text = ""
                   if test === "abr"
                     if detail_links.include?("abr")
-                      link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/chart_bar.png' /></a>"
+                      link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/silk/chart_bar.png' /></a>"
                     end
                   else
                     if detail_links.include?( test.gsub("_","-") )
-                      link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/chart_bar.png' /></a>"
+                      link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/silk/chart_bar.png' /></a>"
                     end
                   end
                 %>

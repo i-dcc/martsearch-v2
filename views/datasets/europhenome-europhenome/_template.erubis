@@ -76,7 +76,7 @@
                         rel="qtip"
                       >
                         <a href="<%= url %>" target="_blank" title="View details at Europhenome">
-                          <img src="<%= BASE_URI %>/images/chart_bar.png" />
+                          <img src="<%= BASE_URI %>/images/silk/chart_bar.png" />
                         </a>
                       </td>
                     <% else %>

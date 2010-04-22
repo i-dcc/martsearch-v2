@@ -36,11 +36,11 @@
 }
 
 .europhenome-europhenome table.europhenome-data th.male {
-  background-image: url('../images/male.png') !important;
+  background-image: url('../images/silk/male.png') !important;
 }
 
 .europhenome-europhenome table.europhenome-data th.female {
-  background-image: url('../images/female.png') !important;
+  background-image: url('../images/silk/female.png') !important;
 }
 
 .europhenome-europhenome table.europhenome-data td.pheno-result a img {

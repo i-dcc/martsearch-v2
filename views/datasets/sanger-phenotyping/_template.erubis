@@ -144,4 +144,7 @@
   <% end %>
 </div>
 
+<a href="<%= BASE_URI %>/pheno_overview.xls" class="sanger-phenotyping-heatmap-link button">download a spreadsheet containing all WTSI phenotyping data</a>
+<div class="clear"></div>
+
 <%= partial( "datasets/sanger-phenotyping/heatmap_legend" ) %>

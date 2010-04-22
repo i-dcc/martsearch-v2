@@ -131,7 +131,7 @@ a.feed {
 
 /* Ordering Buttons */
 
-.order {
+.button, .order {
 	border: 1px solid #999;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -140,7 +140,7 @@ a.feed {
 	background: #f4f4f4 url(../images/cart.png) no-repeat 2px center;
 }
 
-a.order:hover {
+a.button:hover, a.order:hover {
 	background-color: #ccc;
 }
 

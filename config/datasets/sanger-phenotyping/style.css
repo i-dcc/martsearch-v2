@@ -20,8 +20,6 @@
 	padding: 1px;
 }
 
-/* Heatmap specific code */
-
 .sanger-phenotyping_heatmap th {
 	vertical-align:	bottom;
 	height: 280px;
@@ -31,6 +29,12 @@
 
 .sanger-phenotyping_heatmap .vertical_text {
 	width: 16px;
+}
+
+.sanger-phenotyping-heatmap-link {
+	background-image: url(../images/silk/page_white_excel.png);
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 /* Phenotyping details pages */

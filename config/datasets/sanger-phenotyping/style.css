@@ -20,11 +20,6 @@
 	padding: 1px;
 }
 
-.sanger-phenotyping table td.pheno_result a img:hover {
-  background-color: transparent;
-  border: none;
-}
-
 /* Heatmap specific code */
 
 .sanger-phenotyping_heatmap th {

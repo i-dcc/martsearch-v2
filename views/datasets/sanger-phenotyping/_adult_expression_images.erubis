@@ -1,0 +1,21 @@
+<ul id="sanger-phenotyping-adult-expression-image-list">
+  <% @expression_data['images'].each do |img| %>
+    <li>
+      <span class="gender <%= img['img_gender'].downcase %>"></span>
+      <div>
+        <strong>Tissue:</strong> <%= img['tissue'] %><br />
+        <strong>Description:</strong> <%= img['description'] %><br />
+        <strong>Genotype:</strong> <%= img['het_hom'] %><br />
+      </div>
+      <div style="text-align:center">
+        <a 
+          href="<%= img['full_image_url'] %>" 
+          title="<%= partial( "datasets/sanger-phenotyping/adult_expression_image_legend", :locals => { :img => img } ) %>" 
+          rel="prettyPhoto[adultexp_gal]"
+        >
+          <img src="<%= img['thumbnail_url'] %>" alt="<%= img['tissue'] %> (<%= img['img_gender'] %> / <%= img['het_hom'] %>)" />
+        </a>
+      </div>
+    </li>
+  <% end %>
+</ul>

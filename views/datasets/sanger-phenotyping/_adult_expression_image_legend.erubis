@@ -1,0 +1,19 @@
+<table class='nobg noborder nopadding'>
+  <tr>
+    <td colspan='2'>
+      <a href='<%= img['full_image_url'] %>' class='ext_link' target='_blank'>open image in a new tab/window</a>
+    </td>
+  </tr>
+  <tr>
+    <th>Sex</th><td><%= img['img_gender'] %></td>
+    <th>Tissue</th><td><%= img['tissue'] %></td>
+  </tr>
+  <tr>
+    <th>Genotype</th><td><%= img['het_hom'] %></td>
+    <th>Description</th><td><%= img['description'] %></td>
+  </tr>
+  <tr>
+    <th>Mouse ID</th><td><%= img['mouse_barcode'] %></td>
+    <th>Comments</th><td><%= img['img_comments'] %></td>
+  </tr>
+</table>

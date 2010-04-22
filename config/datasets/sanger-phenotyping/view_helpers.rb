@@ -198,7 +198,7 @@ def setup_pheno_configuration
     expression_results       = {}
     expression_results_cache = {}
     
-    raw_results = expre_dataset.search(
+    ticklist_data = expre_dataset.search(
       :process_results => true,
       :attributes => [
         "colony_prefix",
@@ -254,12 +254,39 @@ def setup_pheno_configuration
       ]
     )
     
-    raw_results.each do |result|
+    image_data = expre_dataset.search(
+      :process_results => true,
+      :attributes => [
+        "img_marker_symbol",
+        "img_colony_prefix",
+        "mouse_barcode",
+        "img_gender",
+        "het_hom",
+        "img_type",
+        "tissue",
+        "annotations",
+        "description",
+        "img_comments",
+        "thumbnail_url",
+        "full_image_url"
+      ]
+    )
+    
+    ticklist_data.each do |result|
       expression_results[ result['colony_prefix'] ] = true
       if expression_results_cache[ result['colony_prefix'] ].nil?
-        expression_results_cache[ result['colony_prefix'] ] = []
+        expression_results_cache[ result['colony_prefix'] ] = {
+          "ticklist" => [],
+          "images"   => []
+        }
       end
-      expression_results_cache[ result['colony_prefix'] ].push(result)
+      expression_results_cache[ result['colony_prefix'] ]["ticklist"].push(result)
+    end
+    
+    image_data.each do |result|
+      unless expression_results_cache[ result['img_colony_prefix'] ].nil?
+        expression_results_cache[ result['img_colony_prefix'] ]["images"].push(result)
+      end
     end
     
     expression_results_cache.each do |colony_prefix,data|

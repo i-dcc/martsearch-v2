@@ -121,3 +121,53 @@ table.expression_ticklist td.ambiguous {
 	font-style: italic;
 	text-transform: lowercase;
 }
+
+#sanger-phenotyping-adult-expression-images {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#sanger-phenotyping-adult-expression-image-list li {
+	list-style-type: none;
+	margin: 5px;
+	padding: 5px;
+	display: inline-block;
+	min-height: 190px;
+	width: 190px;
+	text-align: left;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	vertical-align: top;
+}
+
+#sanger-phenotyping-adult-expression-image-list li img {
+	padding: 2px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	margin-top: 5px;
+	width: 180px;
+}
+
+#sanger-phenotyping-adult-expression-image-list li img:hover {
+	background-color: #fcf9b2;
+}
+
+#sanger-phenotyping-adult-expression-image-list .gender {
+	width: 16px;
+	height: 16px;
+	float: right;
+}
+
+#sanger-phenotyping-adult-expression-image-list .male {
+	background-image: url(../images/silk/male.png);
+}
+
+#sanger-phenotyping-adult-expression-image-list .female {
+	background-image: url(../images/silk/female.png);
+}

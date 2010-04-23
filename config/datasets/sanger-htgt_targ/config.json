@@ -12,7 +12,7 @@
   "display_name":         "Knockout ES Cells",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
-  "description":          "",
+  "description":          "Gene targeted mutant ES cells and vectors produced by the KOMP and EUCOMM projects.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [

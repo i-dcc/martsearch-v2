@@ -12,7 +12,7 @@
   "display_name":         "Eurexpress",
   "attribution":          "Eurexpress",
   "attribution_link":     "http://www.eurexpress.org/",
-  "description":          "",
+  "description":          "Gene expression annotation supplied by the Eurexpress project.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [

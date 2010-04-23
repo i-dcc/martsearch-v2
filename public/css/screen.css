@@ -463,22 +463,35 @@ form#martsearchr {
 	margin-bottom: 0;
 }
 
-#search_results .result div.doc_datasets_present {
+#search_results .result div.doc_datasets_returned {
 	font-size: 0.8em;
 	text-align: right;
 }
 
-#search_results .result div.doc_datasets_present span.dataset_present {
-	display: inline-block;
+#search_results .doc_datasets_returned .dataset_returned,
+#search_results .doc_datasets_returned .dataset_no_return {
 	color: #fff;
-	font-weight: bold;
 	background-color: #fd9acd;
 	border: 1px solid #ca679a;
+	display: inline-block;
+	font-weight: bold;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	padding: 1px 3px;
 	margin: 1px 0 0;
+}
+
+#search_results .doc_datasets_returned .dataset_returned:hover {
+	background-color: #fff;
+	color: #ca679a;
+}
+
+#search_results .doc_datasets_returned .dataset_no_return {
+	color: #919191;
+	background-color: #eaeaea;
+	border: 1px solid #919191;
+	opacity: 0.5;
 }
 
 #search_results .result div.attribution {

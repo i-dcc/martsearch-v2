@@ -12,8 +12,11 @@ jQuery(document).ready(function() {
     if ( jQuery(target_id).parent().css("display") === "none" ) {
       jQuery(target_id).parent().show();
     }
+    jQuery.scrollTo( target_id, 800 );
+    return false;
   });
-
+  
+  // Add tooltips for the returned dataset links.
   jQuery(".dataset_link_bubble").each( function() {
     jQuery(this).attr( "tooltip", jQuery(this).attr("title") );
     jQuery(this).attr( "title", "" );

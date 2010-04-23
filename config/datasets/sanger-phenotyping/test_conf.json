@@ -8,7 +8,7 @@
       "slug": "adult-expression"
     }
   },
-  "mgp-pipeline-1-2": {
+  "eumodic-pipeline-1-2": {
     "blood-pressure": {
       "description": "Blood pressure and heart rate (week 11) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Measured using a tail cuff system (MC4000, Hatteras Instruments). To minimize discomfort of the mice during the procedure they are held in a darkened restrainer which is placed on a heated platform (38 degrees celsius), and a cuff is secured at the base of the tail. The procedure is spread over 5 days, including one training and 4 measurement days, each consisting of 5 acclimatisation and 15 measurement cycles.",
       "images": [{"hr":"Heart Rate"},{"dia":"Diastolic Pressure"},{"sys":"Systolic Pressure"}],
@@ -157,7 +157,7 @@
       "slug": "x-ray-imaging"
     }
   },
-  "mouse-gp": {
+  "sanger-mgp": {
     "body-weight-curve-high-fat-diet": {
       "description": "Weight Curves (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Mice of both genders are weighed at regular intervals between 4 and 16 weeks of age.",
       "images": [{"hfd":"Weight Curve"}],

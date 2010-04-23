@@ -146,8 +146,10 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   
   unless search_data.empty?
     pipeline = case search_data[0]["pipeline"]
-    when "Mouse GP" then "mouse-gp"
-    when "P1/2"    then "mgp-pipeline-1-2"
+      when "Mouse GP"     then "sanger-mgp"
+      when "Sanger MGP"   then "sanger-mgp"
+      when "EUMODIC P1/2" then "eumodic-pipeline-1-2"
+      when /P1\/2/        then "eumodic-pipeline-1-2"
     end
     
     @marker_symbol = search_data[0]["marker_symbol"]
@@ -158,10 +160,10 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   test_conf = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   if pipeline.nil?
     # Try MGP-Pipeline 1/2 first
-    @test = test_conf["mgp-pipeline-1-2"][params[:pheno_test]]
+    @test = test_conf["eumodic-pipeline-1-2"][params[:pheno_test]]
     
     # if that brings back nothing, try MouseGP
-    if @test.nil? then @test = test_conf["mouse-gp"][params[:pheno_test]] end
+    if @test.nil? then @test = test_conf["sanger-mgp"][params[:pheno_test]] end
   else
     @test = test_conf[pipeline][params[:pheno_test]]
   end

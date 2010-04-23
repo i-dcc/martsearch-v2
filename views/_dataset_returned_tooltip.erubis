@@ -1,0 +1,7 @@
+<h6 style='margin-bottom:5px'><%= dataset.display_name %></h6>
+<%= dataset.description %>
+
+<% unless data_return %>
+  <br /><br />
+  <strong><em>This dataset did NOT return any information for this gene.</em></strong>
+<% end %>

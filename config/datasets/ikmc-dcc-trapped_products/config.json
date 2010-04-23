@@ -12,7 +12,7 @@
   "display_name":         "IKMC Trapped Products",
   "attribution":          "The International Knockout Mouse Consortium (IKMC)",
   "attribution_link":     "http://www.knockoutmouse.org/",
-  "description":          "",
+  "description":          "Gene trapped mutant alleles produced by members of The International Knockout Mouse Consortium (IKMC).",
   "indexing": {},
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",

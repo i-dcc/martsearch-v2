@@ -79,9 +79,9 @@ end
 ##
 
 test_conf = {
-  "mouse-gp"         => {},
-  "mgp-pipeline-1-2" => {},
-  "expression"       => {}
+  "sanger-mgp"           => {},
+  "eumodic-pipeline-1-2" => {},
+  "expression"           => {}
 }
 
 descriptions.each do |row|
@@ -102,8 +102,8 @@ descriptions.each do |row|
     end
     
     test_pipeline = case row[1]
-    when /Mouse GP/ then "mouse-gp"
-    when /P1\/2/    then "mgp-pipeline-1-2"
+    when /Mouse GP/ then "sanger-mgp"
+    when /P1\/2/    then "eumodic-pipeline-1-2"
     when /Expre/    then "expression"
     end
     

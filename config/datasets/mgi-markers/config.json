@@ -12,7 +12,7 @@
   "display_name":         "Gene Details",
   "attribution":          "Mouse Genome Informatics (MGI)",
   "attribution_link":     "http://www.informatics.jax.org/",
-  "description":          "",
+  "description":          "Gene, Marker and Locus information provided by Mouse Genome Informatics (MGI).",
   "indexing": {
     "allow_document_creation": true,
     "attribute_map": [

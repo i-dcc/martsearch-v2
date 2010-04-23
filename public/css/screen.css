@@ -116,7 +116,7 @@ a:active, .ui-widget-content a:acitve {
 }
 
 a.ext_link {
-	background: url(../images/bullet_go.png) no-repeat left center;
+	background: url(../images/silk/bullet_go.png) no-repeat left center;
 	padding: 2px 0 2px 16px;
 }
 
@@ -131,22 +131,22 @@ a.feed {
 
 /* Ordering Buttons */
 
-.order {
+.button, .order {
 	border: 1px solid #999;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	padding: 4px 4px 4px 20px;
-	background: #f4f4f4 url(../images/cart.png) no-repeat 2px center;
+	background: #f4f4f4 url(../images/silk/cart.png) no-repeat 2px center;
 }
 
-a.order:hover {
+a.button:hover, a.order:hover {
 	background-color: #ccc;
 }
 
 .unavailable {
 	color: #999;
-	background-image: url(../images/cart_error.png);
+	background-image: url(../images/silk/cart_error.png);
 }
 
 /* User Messages */
@@ -201,7 +201,7 @@ a.order:hover {
 }
 
 .help h4, .help h5, .help h6 {
-	background: url(../images/help.png) no-repeat 0 center;
+	background: url(../images/silk/help.png) no-repeat 0 center;
 	padding-top: 2px;
 	padding-bottom: 2px;
 	padding-left: 20px;
@@ -210,14 +210,14 @@ a.order:hover {
 /* Toggle Controls */
 
 .toggle-open, .toggle-close {
-	background: url(../images/bullet_arrow_down.png) no-repeat 0 center;
+	background: url(../images/silk/bullet_arrow_down.png) no-repeat 0 center;
 	padding-left: 16px;
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
 
 .toggle-close {
-	background: url(../images/bullet_arrow_up.png) no-repeat 0 center;
+	background: url(../images/silk/bullet_arrow_up.png) no-repeat 0 center;
 }
 
 .toggle-open:hover, .toggle-close:hover {
@@ -405,6 +405,11 @@ tr.odd td {
 	border: none !important;
 }
 
+table.nopadding th, table.nopadding td {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
 table ul.noindent li {
 	margin-left: 0;
 	list-style-position: inside;
@@ -458,22 +463,35 @@ form#martsearchr {
 	margin-bottom: 0;
 }
 
-#search_results .result div.doc_datasets_present {
+#search_results .result div.doc_datasets_returned {
 	font-size: 0.8em;
 	text-align: right;
 }
 
-#search_results .result div.doc_datasets_present span.dataset_present {
-	display: inline-block;
+#search_results .doc_datasets_returned .dataset_returned,
+#search_results .doc_datasets_returned .dataset_no_return {
 	color: #fff;
-	font-weight: bold;
 	background-color: #fd9acd;
 	border: 1px solid #ca679a;
+	display: inline-block;
+	font-weight: bold;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	padding: 1px 3px;
 	margin: 1px 0 0;
+}
+
+#search_results .doc_datasets_returned .dataset_returned:hover {
+	background-color: #fff;
+	color: #ca679a;
+}
+
+#search_results .doc_datasets_returned .dataset_no_return {
+	color: #919191;
+	background-color: #eaeaea;
+	border: 1px solid #919191;
+	opacity: 0.5;
 }
 
 #search_results .result div.attribution {
@@ -490,7 +508,7 @@ form#martsearchr {
 }
 
 #search_results .result div.dataset_original_data a {
-	background: url(../images/bullet_go.png) no-repeat left center;
+	background: url(../images/silk/bullet_go.png) no-repeat left center;
 	padding: 2px 0 2px 16px;
 }
 

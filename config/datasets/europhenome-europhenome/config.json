@@ -12,7 +12,7 @@
   "display_name":         "Europhenome",
   "attribution":          "Europhenome",
   "attribution_link":     "http://www.europhenome.org",
-  "description":          "",
+  "description":          "Phenotyping assay data provided by the Europhenome project.",
   "indexing": {},
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",

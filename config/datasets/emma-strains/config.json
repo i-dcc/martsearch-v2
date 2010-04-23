@@ -12,7 +12,7 @@
   "display_name":         "EMMA Mice",
   "attribution":          "The European Mouse Mutant Archive (EMMA)",
   "attribution_link":     "http://www.emmanet.org/",
-  "description":          "",
+  "description":          "Details on mouse lines available to order from The European Mouse Mutant Archive (EMMA).",
   "indexing": {
     "allow_document_creation": true,
     "attribute_map": [

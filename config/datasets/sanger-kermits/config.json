@@ -12,7 +12,7 @@
   "display_name":         "Sanger Mice",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
-  "description":          "",
+  "description":          "Mouse breeding statistics from various centres around the world.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [

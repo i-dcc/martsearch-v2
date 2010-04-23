@@ -5,6 +5,25 @@ jQuery(document).ready(function() {
   setup_toggles();
   check_browser_compatibility();
   
+  // Add an observer for all the returned dataset links - this 
+  // will make sure that the target elment for the link is visible.
+  jQuery("a.dataset_returned").live("click", function () {
+    var target_id = jQuery(this).attr("href");
+    if ( jQuery(target_id).parent().css("display") === "none" ) {
+      jQuery(target_id).parent().show();
+    }
+  });
+
+  jQuery(".dataset_link_bubble").each( function() {
+    jQuery(this).attr( "tooltip", jQuery(this).attr("title") );
+    jQuery(this).attr( "title", "" );
+    jQuery(this).qtip({
+      content:  jQuery(this).attr("tooltip"),
+      style:    { tip: "topRight", border: { radius: 5 }, name: "light" },
+      position: { corner: { target: "bottomLeft", tooltip: "topRight" } }
+    });
+  });
+  
   // Add prettyPhoto to anything with the property 'rel="prettyPhoto"'
   jQuery("a[rel^='prettyPhoto']").prettyPhoto({ theme: 'facebook' });
   
@@ -114,4 +133,3 @@ function check_browser_compatibility() {
     jQuery(".sanger-phenotyping_heatmap th").css("height","auto");
   }
 }
-

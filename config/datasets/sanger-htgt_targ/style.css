@@ -6,6 +6,7 @@ div.sanger-htgt_targ_allele_progress_links {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 5px;
 	margin-right: 15px;
 	background-color: #f4f4f4;

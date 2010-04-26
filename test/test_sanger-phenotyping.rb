@@ -41,9 +41,9 @@ class PhenotypingPagesTest < Test::Unit::TestCase
     end
     
     should "be able to render randomly selected phenotyping details pages" do
-      setup_pheno_configuration()
-      colonies_with_images = find_pheno_images()
-      assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
+      sanger_phenotyping_setup()
+      colonies_with_images = sanger_phenotyping_pheno_images()
+      assert( colonies_with_images.is_a?(Hash), "Function sanger_phenotyping_pheno_images() is not returning a hash." )
       
       # Request the details pages of ALL of the colonies and tests...
       colonies_with_images.each do |colony,test_data|
@@ -90,9 +90,9 @@ class PhenotypingPagesTest < Test::Unit::TestCase
   end
   
   def test_specific_pheno_test_page( browser, test, page_title )
-    setup_pheno_configuration()
-    colonies_with_images = find_pheno_images()
-    assert( colonies_with_images.is_a?(Hash), "Function find_pheno_images() is not returning a hash." )
+    sanger_phenotyping_setup()
+    colonies_with_images = sanger_phenotyping_pheno_images()
+    assert( colonies_with_images.is_a?(Hash), "Function sanger_phenotyping_pheno_images() is not returning a hash." )
     
     # Randomly sample 5 colonies
     colonies_checked    = 0

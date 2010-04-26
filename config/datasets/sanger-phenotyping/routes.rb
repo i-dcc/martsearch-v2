@@ -9,13 +9,13 @@ get "/phenotyping/:colony_prefix/abr" do
 end
 
 get "/phenotyping/:colony_prefix/abr/" do
-  file = "#{PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/index.shtml"
+  file = "#{SANGER_PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/index.shtml"
   
   if File.exists?(file)
     html_text   = ""
     @page_title = "#{params[:colony_prefix]}: Auditory Brainstem Response (ABR)"
     
-    search_data = search_mart_by_colony_prefix(@colony_prefix)
+    search_data = sanger_phenotyping_search_by_colony(@colony_prefix)
     unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{params[:colony_prefix]}): Auditory Brainstem Response (ABR)"
@@ -33,7 +33,7 @@ get "/phenotyping/:colony_prefix/abr/" do
 end
 
 get "/phenotyping/:colony_prefix/abr/*" do
-  file = "#{PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
+  file = "#{SANGER_PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
 
   if File.exists?(file)
     content = nil
@@ -55,7 +55,7 @@ end
 ##
 
 get "/phenotyping/:colony_prefix/adult-expression/?" do
-  setup_pheno_configuration
+  sanger_phenotyping_setup
   
   @colony_prefix   = params[:colony_prefix]
   @expression_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}") )
@@ -67,7 +67,7 @@ get "/phenotyping/:colony_prefix/adult-expression/?" do
     test_conf        = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
     @test            = test_conf["expression"]["adult-expression"]
     
-    search_data = search_mart_by_colony_prefix(@colony_prefix)
+    search_data = sanger_phenotyping_search_by_colony(@colony_prefix)
     unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Adult Expression"
@@ -83,7 +83,7 @@ get "/phenotyping/:colony_prefix/adult-expression/?" do
 end
 
 get "/phenotyping/:colony_prefix/homozygote-viability/?" do
-  setup_pheno_configuration
+  sanger_phenotyping_setup
   
   @colony_prefix = params[:colony_prefix]
   @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results_#{@colony_prefix}") )
@@ -92,7 +92,7 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
     @marker_symbol = nil
     @page_title    = "#{@colony_prefix}: Homozygote Viability"
 
-    search_data = search_mart_by_colony_prefix(@colony_prefix)
+    search_data = sanger_phenotyping_search_by_colony(@colony_prefix)
     unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Homozygote Viability"
@@ -107,7 +107,7 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
 end
 
 get "/phenotyping/:colony_prefix/fertility/?" do
-  setup_pheno_configuration
+  sanger_phenotyping_setup
   
   @colony_prefix = params[:colony_prefix]
   @mating_data   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}") )
@@ -116,7 +116,7 @@ get "/phenotyping/:colony_prefix/fertility/?" do
     @marker_symbol = nil
     @page_title    = "#{@colony_prefix}: Fertility"
 
-    search_data = search_mart_by_colony_prefix(@colony_prefix)
+    search_data = sanger_phenotyping_search_by_colony(@colony_prefix)
     unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
       @page_title = "#{@marker_symbol} (#{@colony_prefix}): Fertility"
@@ -135,7 +135,7 @@ end
 ##
 
 get "/phenotyping/:colony_prefix/:pheno_test/?" do
-  setup_pheno_configuration
+  sanger_phenotyping_setup
   
   @marker_symbol = nil
   @colony_prefix = params[:colony_prefix]
@@ -143,7 +143,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   @test          = nil
   
   # Try to figure out our pipeline and marker_symbol
-  search_data    = search_mart_by_colony_prefix(@colony_prefix)
+  search_data    = sanger_phenotyping_search_by_colony(@colony_prefix)
   pipeline       = nil
   
   unless search_data.empty?
@@ -185,7 +185,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
 end
 
 get "/phenotyping/heatmap" do
-  setup_pheno_configuration
+  sanger_phenotyping_setup
   
   @page_title          = "Phenotyping Overview"
   @heat_map            = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-heatmap") )

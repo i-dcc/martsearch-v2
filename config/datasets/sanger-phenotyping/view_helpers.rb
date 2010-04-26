@@ -1,20 +1,20 @@
 
 # Constants defining where our static data lives...
-file_path            = File.expand_path(File.dirname(__FILE__))
-PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
-PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
-PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
+file_path                   = File.expand_path(File.dirname(__FILE__))
+SANGER_PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
+SANGER_PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
+SANGER_PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
 
 # Function to run through the pheno test images directory (supplied by Jacqui) 
 # and returns a hash like so:
 # colony_prefix => { pheno_test => {images to display} }
-def find_pheno_images
+def sanger_phenotyping_pheno_images
   pheno_test_images = {}
   
-  if File.exists?(PHENO_IMG_LOC) and File.directory?(PHENO_IMG_LOC)
-    Dir.foreach(PHENO_IMG_LOC) do |colony_prefix|
+  if File.exists?(SANGER_PHENO_IMG_LOC) and File.directory?(SANGER_PHENO_IMG_LOC)
+    Dir.foreach(SANGER_PHENO_IMG_LOC) do |colony_prefix|
       unless colony_prefix =~ /\.|\.\./
-        pheno_test_images[colony_prefix] = pheno_images_for_colony(colony_prefix)
+        pheno_test_images[colony_prefix] = sanger_phenotyping_pheno_images_for_colony(colony_prefix)
       end
     end
   end
@@ -22,10 +22,10 @@ def find_pheno_images
   return pheno_test_images
 end
 
-# Utility function for find_pheno_images to do the actual work
+# Utility function for sanger_phenotyping_pheno_images to do the actual work
 # of listing all of the images found for each pheno test.
-def pheno_images_for_colony( colony_prefix )
-  path        = "#{PHENO_IMG_LOC}/#{colony_prefix}"
+def sanger_phenotyping_pheno_images_for_colony( colony_prefix )
+  path        = "#{SANGER_PHENO_IMG_LOC}/#{colony_prefix}"
   test_conf   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   test_images = {}
   
@@ -68,13 +68,13 @@ end
 
 # Function to run through the ABR pheno test directory (supplied by Neil) and 
 # return a list of colonies with a webpage detailing thier phenotyping results.
-def find_pheno_abr_results
+def sanger_phenotyping_find_pheno_abr_results
   colonies_with_data = []
   
-  if File.exists?(PHENO_ABR_LOC) and File.directory?(PHENO_ABR_LOC)
-    Dir.foreach(PHENO_ABR_LOC) do |colony_prefix|
+  if File.exists?(SANGER_PHENO_ABR_LOC) and File.directory?(SANGER_PHENO_ABR_LOC)
+    Dir.foreach(SANGER_PHENO_ABR_LOC) do |colony_prefix|
       if ( colony_prefix =~ /^\w\w\w\w$/ )
-        if File.directory?("#{PHENO_ABR_LOC}/#{colony_prefix}") and File.exists?("#{PHENO_ABR_LOC}/#{colony_prefix}/ABR/index.shtml")
+        if File.directory?("#{SANGER_PHENO_ABR_LOC}/#{colony_prefix}") and File.exists?("#{SANGER_PHENO_ABR_LOC}/#{colony_prefix}/ABR/index.shtml")
           colonies_with_data.push(colony_prefix)
         end
       end
@@ -87,12 +87,12 @@ end
 # Function to set-up and @@ms.cache all of the required pheno data so that we 
 # can easily build up links to and display pages from the images dumped 
 # by Jacqui, and the pages dumped by Neil.
-def setup_pheno_configuration
+def sanger_phenotyping_setup
   pheno_dataset = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
   expre_dataset = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
-    pheno_conf = JSON.load( File.new( PHENO_TEST_DESC_FILE, "r" ) )
+    pheno_conf = JSON.load( File.new( SANGER_PHENO_TEST_DESC_FILE, "r" ) )
     
     # Seperate the "images" out into two data structures - an 
     # array to preserve the order to display the images in, and 
@@ -118,7 +118,7 @@ def setup_pheno_configuration
   end
 
   unless @@ms.cache.fetch("sanger-phenotyping-test_images")
-    @@ms.cache.write( "sanger-phenotyping-test_images", find_pheno_images.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-test_images", sanger_phenotyping_pheno_images.to_json, :expires_in => 12.hours )
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-homviable_lookup")
@@ -316,7 +316,7 @@ def setup_pheno_configuration
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
-    @@ms.cache.write( "sanger-phenotyping-abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-abr_results", sanger_phenotyping_find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_names")
@@ -374,15 +374,15 @@ end
 
 # Function to return an array of pheno tests for a given colony_prefix 
 # that have a detailed phenotyping report page.
-def pheno_links( colony_prefix, result_data=nil )
-  setup_pheno_configuration
+def sanger_phenotyping_details_links( colony_prefix, result_data=nil )
+  sanger_phenotyping_setup
   links = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-pheno_links") )[colony_prefix]
   return links
 end
 
 # Template helper function to map the status descriptions retrived from MIG into 
 # a CSS class that is used to draw the heat map
-def css_class_for_test(status_desc)
+def sanger_phenotyping_css_class_for_test(status_desc)
   case status_desc
   when /Done but not considered interesting/i then "no_significant_difference"
   when /Considered interesting/i              then "significant_difference"
@@ -395,7 +395,7 @@ end
 
 # Utility function to retrieve all of the data from the mart for a 
 # given colony_prefix
-def search_mart_by_colony_prefix(colony_prefix)
+def sanger_phenotyping_search_by_colony(colony_prefix)
   search_data            = []
   search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{colony_prefix}")
   

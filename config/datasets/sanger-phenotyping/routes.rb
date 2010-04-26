@@ -57,10 +57,11 @@ end
 get "/phenotyping/:colony_prefix/adult-expression/?" do
   setup_pheno_configuration
   
-  if JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup") )[params[:colony_prefix]]
+  @colony_prefix   = params[:colony_prefix]
+  @expression_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}") )
+  
+  if @expression_data
     @marker_symbol   = nil
-    @colony_prefix   = params[:colony_prefix]
-    @expression_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}") )
     @page_title      = "#{@colony_prefix}: Adult Expression"
     
     test_conf        = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
@@ -83,12 +84,12 @@ end
 
 get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   setup_pheno_configuration
-  @test_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )[params[:colony_prefix]]
   
+  @colony_prefix = params[:colony_prefix]
+  @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results_#{@colony_prefix}") )
+
   if @test_data
-    @test_data     = @test_data[0]
     @marker_symbol = nil
-    @colony_prefix = params[:colony_prefix]
     @page_title    = "#{@colony_prefix}: Homozygote Viability"
 
     search_data = search_mart_by_colony_prefix(@colony_prefix)
@@ -108,10 +109,11 @@ end
 get "/phenotyping/:colony_prefix/fertility/?" do
   setup_pheno_configuration
   
-  if JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup") )[params[:colony_prefix]]
+  @colony_prefix = params[:colony_prefix]
+  @mating_data   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}") )
+  
+  if @mating_data
     @marker_symbol = nil
-    @colony_prefix = params[:colony_prefix]
-    @mating_data   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}") )
     @page_title    = "#{@colony_prefix}: Fertility"
 
     search_data = search_mart_by_colony_prefix(@colony_prefix)

@@ -20,19 +20,19 @@
         <th>Homozygous Lethality</th>
       </tr>
       <tr>
-        <td><%= @test_data["TOTAL_WT_HET_HOM"].to_i %></td>
-        <td><%= @test_data["TOTAL_WT"].to_i %></td>
-        <td><%= @test_data["TOTAL_HET"].to_i %></td>
-        <td><%= @test_data["TOTAL_HOM"].to_i %></td>
-        <td><%= (@test_data["WT_RATIO"] * 100).round %>&#37;</td>
-        <td><%= (@test_data["HET_RATIO"] * 100).round %>&#37;</td>
-        <td><%= (@test_data["HOM_RATIO"] * 100).round %>&#37;</td>
+        <td><%= @test_data["total_wt_het_hom"].to_i %></td>
+        <td><%= @test_data["total_wt"].to_i %></td>
+        <td><%= @test_data["total_het"].to_i %></td>
+        <td><%= @test_data["total_hom"].to_i %></td>
+        <td><%= (@test_data["wt_ratio"].to_f * 100).round %>&#37;</td>
+        <td><%= (@test_data["het_ratio"].to_f * 100).round %>&#37;</td>
+        <td><%= (@test_data["hom_ratio"].to_f * 100).round %>&#37;</td>
         <td>
           <%
             lethality_text = ""
-            hom_ratio      = (@test_data["HOM_RATIO"] * 100).round
+            hom_ratio      = (@test_data["hom_ratio"].to_f * 100).round
             
-            if @test_data["TOTAL_WT_HET_HOM"].to_i > 28
+            if @test_data["total_wt_het_hom"].to_i > 28
               if hom_ratio > 13
                 lethality_text = "Viable"
               elsif hom_ratio > 0
@@ -56,7 +56,7 @@
             chart_url =  "http://chart.apis.google.com/chart?"
             chart_url << "chs=300x200" # size
             chart_url << "&cht=p" # type
-            chart_url << "&chd=t:#{(@test_data["WT_RATIO"]*100).round},#{(@test_data["HET_RATIO"]*100).round},#{(@test_data["HOM_RATIO"]*100).round}" # data
+            chart_url << "&chd=t:#{(@test_data["wt_ratio"].to_f*100).round},#{(@test_data["het_ratio"].to_f*100).round},#{(@test_data["hom_ratio"].to_f*100).round}" # data
             chart_url << "&chl=WT|Het|Hom" # labels
             chart_url << "&chdl=WT|Het|Hom" # legend
             chart_url << "&chco=a9dada,aedaa9,daaea9,dadaa9,a9a9da" # colour scheme (pastel theme stolen from ruby googlecharts gem)

@@ -79,7 +79,7 @@ sorted_results.each do |mgi_accession_id,europhenome_data|
       pipeline_data["parameters"].each do |parameter_name,parameter|
         parameter["results"].each do |result|
           
-          if result["significance"].to_f < significance_cutoff 
+          if BigDecimal.new(result['significance']).to_f < significance_cutoff 
             if result["sex"] == "Male"
               pipeline_data["is_male_signifigant"] = true
               parameter["is_male_signifigant"]     = true

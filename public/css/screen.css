@@ -136,6 +136,7 @@ a.feed {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 4px 4px 4px 20px;
 	background: #f4f4f4 url(../images/silk/cart.png) no-repeat 2px center;
 }
@@ -156,6 +157,7 @@ a.button:hover, a.order:hover {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 10px;
 	margin: 10px;
 }
@@ -197,6 +199,7 @@ a.button:hover, a.order:hover {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	background-color: #f1f1f1;
 }
 
@@ -237,6 +240,7 @@ a.button:hover, a.order:hover {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 3px;
 }
 
@@ -253,6 +257,7 @@ a.button:hover, a.order:hover {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 5px;
 }
 
@@ -275,6 +280,7 @@ a.button:hover, a.order:hover {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	background-color: #ccc;
 	color: #333;
 	margin-bottom: 2px;
@@ -323,11 +329,13 @@ a.button:hover, a.order:hover {
 	padding: 5px 10px;
 	background-color: #fff;
 	border-bottom-left-radius: 5px;
-	-moz-border-radius-bottomleft: 5px;
 	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-o-border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
-	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-o-border-radius-bottomright: 5px;
 }
 
 #navigation li.current a,
@@ -349,11 +357,13 @@ a.button:hover, a.order:hover {
 #navigation form {
 	background-color: #376598;
 	border-bottom-left-radius: 5px;
-	-moz-border-radius-bottomleft: 5px;
 	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-o-border-radius-bottomleft: 5px;
 	border-bottom-right-radius: 5px;
-	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-o-border-radius-bottomright: 5px;
 	margin: 0 10px 0 0;
 	padding: 2px 10px 4px;
 }
@@ -441,8 +451,9 @@ form#martsearchr {
 #search_results .result .dataset {
 	border: 1px solid #6998cb;
 	border-radius: 5px;
-	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
 	padding: 7px 7px 0;
 	margin-bottom: 7px;
 }
@@ -478,6 +489,7 @@ form#martsearchr {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 	padding: 1px 3px;
 	margin: 1px 0 0;
 }

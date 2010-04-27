@@ -1,28 +1,20 @@
 
 # Constants defining where our static data lives...
-file_path            = File.expand_path(File.dirname(__FILE__))
-PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
-PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
-PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
-
-# Constants for connecting to MIG
-MIG_ORACLE_USER     = "eucomm_vector"
-MIG_ORACLE_PASSWORD = "eucomm_vector"
-MIG_ORACLE_DB       = "migp_ha.world"
-
-require "oci8"
-@@mig_dbh = OCI8.new(MIG_ORACLE_USER, MIG_ORACLE_PASSWORD, MIG_ORACLE_DB)
+file_path                   = File.expand_path(File.dirname(__FILE__))
+SANGER_PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
+SANGER_PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
+SANGER_PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
 
 # Function to run through the pheno test images directory (supplied by Jacqui) 
 # and returns a hash like so:
 # colony_prefix => { pheno_test => {images to display} }
-def find_pheno_images
+def sanger_phenotyping_pheno_images
   pheno_test_images = {}
   
-  if File.exists?(PHENO_IMG_LOC) and File.directory?(PHENO_IMG_LOC)
-    Dir.foreach(PHENO_IMG_LOC) do |colony_prefix|
+  if File.exists?(SANGER_PHENO_IMG_LOC) and File.directory?(SANGER_PHENO_IMG_LOC)
+    Dir.foreach(SANGER_PHENO_IMG_LOC) do |colony_prefix|
       unless colony_prefix =~ /\.|\.\./
-        pheno_test_images[colony_prefix] = pheno_images_for_colony(colony_prefix)
+        pheno_test_images[colony_prefix] = sanger_phenotyping_pheno_images_for_colony(colony_prefix)
       end
     end
   end
@@ -30,10 +22,10 @@ def find_pheno_images
   return pheno_test_images
 end
 
-# Utility function for find_pheno_images to do the actual work
+# Utility function for sanger_phenotyping_pheno_images to do the actual work
 # of listing all of the images found for each pheno test.
-def pheno_images_for_colony( colony_prefix )
-  path        = "#{PHENO_IMG_LOC}/#{colony_prefix}"
+def sanger_phenotyping_pheno_images_for_colony( colony_prefix )
+  path        = "#{SANGER_PHENO_IMG_LOC}/#{colony_prefix}"
   test_conf   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   test_images = {}
   
@@ -76,13 +68,13 @@ end
 
 # Function to run through the ABR pheno test directory (supplied by Neil) and 
 # return a list of colonies with a webpage detailing thier phenotyping results.
-def find_pheno_abr_results
+def sanger_phenotyping_find_pheno_abr_results
   colonies_with_data = []
   
-  if File.exists?(PHENO_ABR_LOC) and File.directory?(PHENO_ABR_LOC)
-    Dir.foreach(PHENO_ABR_LOC) do |colony_prefix|
+  if File.exists?(SANGER_PHENO_ABR_LOC) and File.directory?(SANGER_PHENO_ABR_LOC)
+    Dir.foreach(SANGER_PHENO_ABR_LOC) do |colony_prefix|
       if ( colony_prefix =~ /^\w\w\w\w$/ )
-        if File.directory?("#{PHENO_ABR_LOC}/#{colony_prefix}") and File.exists?("#{PHENO_ABR_LOC}/#{colony_prefix}/ABR/index.shtml")
+        if File.directory?("#{SANGER_PHENO_ABR_LOC}/#{colony_prefix}") and File.exists?("#{SANGER_PHENO_ABR_LOC}/#{colony_prefix}/ABR/index.shtml")
           colonies_with_data.push(colony_prefix)
         end
       end
@@ -92,58 +84,15 @@ def find_pheno_abr_results
   return colonies_with_data
 end
 
-# Utility function to grab/dump all of the data from a given table 
-# in an Oracle database and return it as either:
-# - an array of hashes (keyed by column name)
-# - a hash of hashes, keyed by the value defined in the 'group_by' column
-def dump_oracle_table( dbh, table, group_by=nil, where=nil )
-  data    = []
-  columns = []
-  
-  dbh.describe_table(table).columns.each do |column|
-    columns.push(column.name)
-  end
-  
-  sql = "select #{columns.join(", ")} from #{table}"
-  if where
-    sql << " #{where}"
-  end
-  
-  cursor = dbh.exec(sql)
-  cursor.fetch do |row|
-    data_row = {}
-    columns.each_index do |i|
-      if columns[i] == "ID"          then data_row[ columns[i] ] = row[i].to_int
-      elsif row[i].is_a?(BigDecimal) then data_row[ columns[i] ] = row[i].to_f
-      else                                data_row[ columns[i] ] = row[i]
-      end
-    end
-    data.push(data_row)
-  end
-  
-  if group_by
-    grouped_data = {}
-    data.each do |hash|
-      if grouped_data[ hash[ group_by ] ] === nil
-        grouped_data[ hash[ group_by ] ] = []
-      end
-      grouped_data[ hash[ group_by ] ].push( hash )
-    end
-    data = grouped_data
-  end
-  
-  return data
-end
-
 # Function to set-up and @@ms.cache all of the required pheno data so that we 
 # can easily build up links to and display pages from the images dumped 
 # by Jacqui, and the pages dumped by Neil.
-def setup_pheno_configuration
+def sanger_phenotyping_setup
   pheno_dataset = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
   expre_dataset = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
-    pheno_conf = JSON.load( File.new( PHENO_TEST_DESC_FILE, "r" ) )
+    pheno_conf = JSON.load( File.new( SANGER_PHENO_TEST_DESC_FILE, "r" ) )
     
     # Seperate the "images" out into two data structures - an 
     # array to preserve the order to display the images in, and 
@@ -169,34 +118,104 @@ def setup_pheno_configuration
   end
 
   unless @@ms.cache.fetch("sanger-phenotyping-test_images")
-    @@ms.cache.write( "sanger-phenotyping-test_images", find_pheno_images.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-test_images", sanger_phenotyping_pheno_images.to_json, :expires_in => 12.hours )
   end
   
-  unless @@ms.cache.fetch("sanger-phenotyping-homviable_results")
-    homviable_results = dump_oracle_table( @@mig_dbh, "mig.rep_hom_lethality_vw", "COLONY_PREFIX" )
-    @@ms.cache.write( "sanger-phenotyping-homviable_results", homviable_results.to_json, :expires_in => 12.hours )
-  end
-  
-  unless @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup")
-    fertility_results = {}
-    raw_results       = dump_oracle_table(
-      @@mig_dbh,
-      "mig.rep_mating_summary_vw",
-      "COLONY_PREFIX",
-      "where (FATHER_GENOTYPE_STATUS = 'Homozygous' or MOTHER_GENOTYPE_STATUS = 'Homozygous')"
+  unless @@ms.cache.fetch("sanger-phenotyping-homviable_lookup")
+    homviable_results = {}
+    homviable_lookup  = {}
+    homviable_data    = pheno_dataset.search(
+      :process_results => true,
+      :attributes => [
+        "hom_viability_colony_prefix",
+        "genetic_background",
+        "colony_ppl",
+        "female_wt",
+        "male_wt",
+        "female_het",
+        "male_het",
+        "female_hom",
+        "male_hom",
+        "wt_ratio",
+        "het_ratio",
+        "hom_ratio",
+        "total_untested",
+        "total_failed",
+        "total_wt",
+        "total_het",
+        "total_hom",
+        "total_wt_het_hom",
+        "wt_expected",
+        "het_expected",
+        "hom_expected",
+        "chi_sqred",
+        "p_value",
+        "significant"
+      ]
     )
     
-    raw_results.each do |colony,data|
-      fertility_results[colony] = true
+    homviable_data.each do |result|
+      unless result['hom_viability_colony_prefix'].nil?
+        homviable_results[ result['hom_viability_colony_prefix'] ] = result
+      end
+    end
+    
+    homviable_results.each do |colony,data|
+      homviable_lookup[colony] = true
+      @@ms.cache.write( "sanger-phenotyping-homviable_results_#{colony}", data.to_json, :expires_in => 12.hours )
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-homviable_lookup", homviable_lookup.to_json, :expires_in => 12.hours )
+  end
+  
+  unless @@ms.cache.fetch("sanger-phenotyping-fertility_lookup")
+    fertility_results = {}
+    fertility_lookup  = {}
+    
+    fertility_data    = pheno_dataset.search(
+      :process_results => true,
+      :attributes => [
+        "fertility_colony_prefix",
+        "mir_project_licence",
+        "breeding_name",
+        "breeding_category",
+        "father",
+        "father_age_at_setup",
+        "mother",
+        "mother_age_at_setup",
+        "father_genotype",
+        "mother_genotype",
+        "setup_date",
+        "separation_date",
+        "length_of_mating_weeks",
+        "number_of_pups_born",
+        "number_of_pups_weaned",
+        "total_number_of_litters_born",
+        "number_prewean_deaths",
+        "number_prewean_culls"
+      ]
+    )
+    
+    fertility_data.each do |result|
+      unless result['fertility_colony_prefix'].nil?
+        if fertility_results[ result['fertility_colony_prefix'] ].nil?
+          fertility_results[ result['fertility_colony_prefix'] ] = []
+        end
+        fertility_results[ result['fertility_colony_prefix'] ].push(result)
+      end
+    end
+    
+    fertility_results.each do |colony,data|
+      fertility_lookup[colony] = true
       @@ms.cache.write( "sanger-phenotyping-fertility_results_#{colony}", data.to_json, :expires_in => 12.hours )
     end
     
-    @@ms.cache.write( "sanger-phenotyping-fertility_results_lookup", fertility_results.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-fertility_lookup", fertility_lookup.to_json, :expires_in => 12.hours )
   end
   
-  unless @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup")
-    expression_results       = {}
-    expression_results_cache = {}
+  unless @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_lookup")
+    expression_results = {}
+    expression_lookup  = {}
     
     ticklist_data = expre_dataset.search(
       :process_results => true,
@@ -273,31 +292,31 @@ def setup_pheno_configuration
     )
     
     ticklist_data.each do |result|
-      expression_results[ result['colony_prefix'] ] = true
-      if expression_results_cache[ result['colony_prefix'] ].nil?
-        expression_results_cache[ result['colony_prefix'] ] = {
+      expression_lookup[ result['colony_prefix'] ] = true
+      if expression_results[ result['colony_prefix'] ].nil?
+        expression_results[ result['colony_prefix'] ] = {
           "ticklist" => [],
           "images"   => []
         }
       end
-      expression_results_cache[ result['colony_prefix'] ]["ticklist"].push(result)
+      expression_results[ result['colony_prefix'] ]["ticklist"].push(result)
     end
     
     image_data.sort{ |a,b| "#{a['tissue']}-#{a['img_gender']}" <=> "#{b['tissue']}-#{b['img_gender']}" }.each do |result|
-      unless expression_results_cache[ result['img_colony_prefix'] ].nil?
-        expression_results_cache[ result['img_colony_prefix'] ]["images"].push(result)
+      unless expression_results[ result['img_colony_prefix'] ].nil?
+        expression_results[ result['img_colony_prefix'] ]["images"].push(result)
       end
     end
     
-    expression_results_cache.each do |colony_prefix,data|
-      @@ms.cache.write( "sanger-phenotyping-wholemount_expression_results_#{colony_prefix}", data.to_json, :expires_in => 12.hours )
+    expression_results.each do |colony,data|
+      @@ms.cache.write( "sanger-phenotyping-wholemount_expression_results_#{colony}", data.to_json, :expires_in => 12.hours )
     end
     
-    @@ms.cache.write( "sanger-phenotyping-wholemount_expression_results_lookup", expression_results.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-wholemount_expression_lookup", expression_lookup.to_json, :expires_in => 12.hours )
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
-    @@ms.cache.write( "sanger-phenotyping-abr_results", find_pheno_abr_results.to_json, :expires_in => 12.hours )
+    @@ms.cache.write( "sanger-phenotyping-abr_results", sanger_phenotyping_find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_names")
@@ -328,9 +347,9 @@ def setup_pheno_configuration
     
     image_info      = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )
     abr_info        = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-abr_results") )
-    homviable_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results") )
-    fertility_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_lookup") )
-    wholemount_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_lookup") )
+    homviable_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_lookup") )
+    fertility_info  = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_lookup") )
+    wholemount_info = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_lookup") )
     
     results = pheno_dataset.search( :attributes => ["colony_prefix"], :process_results => true )
     results.each do |result|
@@ -355,15 +374,15 @@ end
 
 # Function to return an array of pheno tests for a given colony_prefix 
 # that have a detailed phenotyping report page.
-def pheno_links( colony_prefix, result_data=nil )
-  setup_pheno_configuration
+def sanger_phenotyping_details_links( colony_prefix, result_data=nil )
+  sanger_phenotyping_setup
   links = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-pheno_links") )[colony_prefix]
   return links
 end
 
 # Template helper function to map the status descriptions retrived from MIG into 
 # a CSS class that is used to draw the heat map
-def css_class_for_test(status_desc)
+def sanger_phenotyping_css_class_for_test(status_desc)
   case status_desc
   when /Done but not considered interesting/i then "no_significant_difference"
   when /Considered interesting/i              then "significant_difference"
@@ -376,7 +395,7 @@ end
 
 # Utility function to retrieve all of the data from the mart for a 
 # given colony_prefix
-def search_mart_by_colony_prefix(colony_prefix)
+def sanger_phenotyping_search_by_colony(colony_prefix)
   search_data            = []
   search_data_from_cache = @@ms.cache.fetch("pheno_details_page_search:#{colony_prefix}")
   

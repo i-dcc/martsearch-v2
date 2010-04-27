@@ -57,7 +57,7 @@
     <% @heat_map.each do |result| %>
       <%
         # Get a list of tests with details pages to link to
-        detail_links = pheno_links(result["colony_prefix"])
+        detail_links = sanger_phenotyping_details_links(result["colony_prefix"])
       %>
       <tr>
         <td><%= result["pipeline"] %></td>
@@ -85,7 +85,7 @@
               end
             end
           %>
-          <td class="<%= css_class_for_test(result[test]) %> pheno_result" tooltip="<%= title_text %>"><%= link_text %></td>
+          <td class="<%= sanger_phenotyping_css_class_for_test(result[test]) %> pheno_result" tooltip="<%= title_text %>"><%= link_text %></td>
         <% end %>
       </tr>
     <% end %>

@@ -29,7 +29,7 @@ begin
   
     desc "Writes a JSON list of the mouse colonies with pheno details pages to the /tmp directory."
     task :image_cache_json do
-      setup_pheno_configuration
+      sanger_phenotyping_setup
       File.open("/tmp/sanger-phenotyping-pheno_links.json","w") do |f|
         f.write @@ms.cache.fetch("sanger-phenotyping-pheno_links")
       end

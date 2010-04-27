@@ -1,59 +1,33 @@
 require "#{File.dirname(__FILE__)}/test_helper.rb"
 
 class IndexBuilderTest < Test::Unit::TestCase
-  context "An index builder object (with memory based cache)" do
-    setup do
-      config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
-      config["index"]["building"] = nil if config["index"]["building"]
-      
-      @index_builder = IndexBuilder.new(config)
-      @index_builder.test_environment = true
-      
-      build_public_methods(@index_builder)
-    end
-    
-    teardown do
-      @index_builder.destroy()
-    end
+  ["file","memory"].each do |cache_type|
+    context "An index builder object (with #{cache_type} based cache)" do
+      setup do
+        config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
+        config["index"]["building"] = { "cache" => cache_type, "location" => "/tmp" }
 
-    should "have basic attributes" do
-      assert( @index_builder.config.is_a?(Hash), "@index_builder.config is not a config hash." )
-    end
-    
-    should "generate a Solr XML schema" do
-      generate_solr_schema( @index_builder )
-    end
-    
-    should "act as expected when we simulate the document building process..." do
-      simulate_building_process( @index_builder )
-    end
-  end
-  
-  context "An index builder object (with gdbm based cache)" do
-    setup do
-      config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
-      config["index"]["building"] = { "cache" => "file", "location" => "/tmp" }
-      
-      @index_builder = IndexBuilder.new(config)
-      @index_builder.test_environment = true
-      
-      build_public_methods(@index_builder)
-    end
-    
-    teardown do
-      @index_builder.destroy()
-    end
+        @index_builder = IndexBuilder.new(config)
+        @index_builder.test_environment = true
 
-    should "have basic attributes" do
-      assert( @index_builder.config.is_a?(Hash), "@index_builder.config is not a config hash." )
-    end
-    
-    should "generate a Solr XML schema" do
-      generate_solr_schema( @index_builder )
-    end
-    
-    should "act as expected when we simulate the document building process..." do
-      simulate_building_process( @index_builder )
+        build_public_methods( @index_builder )
+      end
+
+      teardown do
+        @index_builder.destroy()
+      end
+
+      should "have basic attributes" do
+        assert( @index_builder.config.is_a?(Hash), "@index_builder.config is not a config hash." )
+      end
+
+      should "generate a Solr XML schema" do
+        generate_solr_schema( @index_builder )
+      end
+
+      should "act as expected when we simulate the document building process..." do
+        simulate_building_process( @index_builder )
+      end
     end
   end
   

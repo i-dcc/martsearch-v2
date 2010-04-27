@@ -201,6 +201,15 @@ class IndexBuilder
   def destroy_cache
     if @file_based_cache
       @document_cache.close()
+      file_name = "martsearchr_index_builder_cache.db"
+      
+      if @config["building"]["location"]
+        file_name = "#{@config["building"]["location"]}/martsearchr_index_builder_cache.db"
+      end
+      
+      system("rm -rf #{file_name}")
+    else
+      @document_cache = {}
     end
   end
   

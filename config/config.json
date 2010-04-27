@@ -13,6 +13,7 @@
     ]
   },
   "index": {
+    "building": { "cache": "file", "location": "/tmp" },
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,
     "schema_name":     "martsearch-search",

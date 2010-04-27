@@ -1,7 +1,7 @@
 # This class is responsible for the set-up, building and updating 
 # of a Solr search index for use with a MartSearchr application.
 class IndexBuilder
-  attr_reader :martsearch, :config, :documents, :documents_by, :xml_dir
+  attr_reader :martsearch, :config, :document_cache, :document_cache_lookup, :xml_dir
   attr_accessor :test_environment
   
   def initialize( config_desc )
@@ -18,13 +18,17 @@ class IndexBuilder
     @solr       = RSolr.connect :url => @config["url"]
     @batch_size = 1000
     
-    # Create a placeholder variable to store docs in (and a cache variable 
-    # for faster lookups if required...)
-    @documents    = {}
-    @documents_by = {}
+    # Create a document cache, and a helper lookup variable
+    @file_based_cache      = false
+    @document_cache        = initialize_cache()
+    @document_cache_lookup = {}
     
     @current = { :dataset_conf => nil, :biomart => nil }
     @xml_dir = nil
+  end
+  
+  def destroy
+    destroy_cache()
   end
   
   # Function to create the Solr XML Schema used to define 
@@ -77,9 +81,7 @@ class IndexBuilder
       process_dataset_results( results )
       
       # Finally, remove duplicates from our documents
-      @documents.values.each do |doc|
-        clean_document(doc)
-      end
+      clean_document_cache()
     end
   end
   
@@ -99,7 +101,7 @@ class IndexBuilder
       dir = Dir.mktmpdir
     end
     
-    doc_chunks = @documents.keys.chunk( @batch_size )
+    doc_chunks = @document_cache.keys.chunk( @batch_size )
     doc_chunks.each_index do |chunk_number|
       unless @test_environment
         puts "[ #{chunk_number + 1} / #{doc_chunks.size} ]"
@@ -108,7 +110,7 @@ class IndexBuilder
       doc_names = doc_chunks[chunk_number]
       docs = []
       doc_names.each do |name|
-        docs.push( @documents[name] )
+        docs.push( get_document( name ) )
       end
       
       file = File.open( "#{dir}/solr-xml-#{chunk_number+1}.xml", "w" )
@@ -176,6 +178,109 @@ class IndexBuilder
   end
   
   ##
+  ## Cache handling functions...
+  ##
+  
+  # Sets up the @document_cache
+  def initialize_cache
+    if @config["building"] and @config["building"]["cache"] == "file"
+      @file_based_cache = true
+      file_name         = "martsearchr_index_builder_cache.db"
+      
+      if @config["building"]["location"]
+        file_name = "#{@config["building"]["location"]}/martsearchr_index_builder_cache.db"
+      end
+      
+      return GDBM.new( file_name, mode=0666, flags=GDBM::NEWDB)
+    else
+      return {}
+    end
+  end
+  
+  # Closes and cleans up the @document_cache
+  def destroy_cache
+    if @file_based_cache
+      @document_cache.close()
+    end
+  end
+  
+  # Get a document from the @document_cache
+  def get_document( key )
+    document = @document_cache[key]
+    if document and @file_based_cache
+      return Marshal.load( document )
+    else
+      return document
+    end
+  end
+  
+  # Save a document to the @document_cache
+  def set_document( key, value )
+    if @file_based_cache
+      @document_cache[key] = Marshal.dump( value )
+    else
+      @document_cache[key] = value
+    end
+  end
+  
+  # Utility function to find a specific document (i.e. for a gene), arguments 
+  # are the field to search on, and the term to find.
+  def find_document( field, search_term )
+    if field == @config["schema"]["unique_key"].to_sym
+      return get_document( search_term )
+    else
+      map_term = @document_cache_lookup[field][search_term]
+      if map_term
+        return get_document( map_term )
+      else
+        return nil
+      end
+    end
+  end
+  
+  # Utility function to cache a lookup for the @document_cache by a given field. 
+  # This allows a much faster lookup of documents when we are not linking by 
+  # the primary field.
+  def cache_documents_by( field )
+    puts "  - caching documents by '#{field}'" unless @test_environment
+    @document_cache_lookup[field] = {}
+    
+    @document_cache.each_key do |cache_key|
+      document = get_document(cache_key)
+      document[field].each do |lookup_value|
+        @document_cache_lookup[field][lookup_value] = cache_key
+      end
+    end
+  end
+  
+  # Utility function to remove any duplication from the document cache.
+  def clean_document_cache
+    @document_cache.each_key do |cache_key|
+      document = get_document(cache_key)
+      
+      document.each do |index_field,index_values|
+        if index_values.size > 0
+          document[index_field] = index_values.uniq
+        end
+
+        # If we have multiple value entries in what should be a single valued 
+        # field, not the best solution, but just arbitrarily pick the first entry.
+        if !@config["schema"]["fields"][index_field.to_s]["multi_valued"] and index_values.size > 1
+          new_array = []
+          new_array.push(index_values[0])
+          document[index_field] = new_array
+        end
+      end
+      
+      set_document( cache_key, document )
+    end
+    
+    if @file_based_cache
+      @document_cache.reorganize()
+    end
+  end
+  
+  ##
   ## Utility functions specific for building the XML to prime a 
   ## Solr index
   ##
@@ -226,51 +331,13 @@ class IndexBuilder
       copy_fields.push( copy_field["dest"] )
     end
     
-    doc = { :datasets_with_data => [] }
+    doc = {}
     @config["schema"]["fields"].each do |key,detail|
       unless copy_fields.include?(key)
         doc[ key.to_sym ] = []
       end
     end
     return doc
-  end
-  
-  # Utility function to find a specific document (i.e. for a gene), arguments 
-  # are the field to search on, and the term to find.
-  def find_document( field, search_term )
-    if field == @config["schema"]["unique_key"].to_sym
-      return @documents[search_term]
-    else
-      if @documents_by[field][search_term]
-        return @documents[ @documents_by[field][search_term] ]
-      else
-        return nil
-      end
-    end
-  end
-  
-  # Utility function to cache the document store by a given field.  This 
-  # allows a much faster lookup of documents when we are not linking by 
-  # the primary field.
-  def cache_documents_by( field )
-    # Test to see if we really need to build the cache - it could have 
-    # already been done by a previous dataset...
-    build_cache = true
-    if @documents_by[field] and ( @documents.keys.size === @documents_by[field].keys.size )
-      build_cache = false
-    end
-    
-    if build_cache
-      unless @test_environment
-        puts "  - caching documents by '#{field}'"
-      end
-      @documents_by[field] = {}
-      @documents.each do |key,values|
-        values[field].each do |value|
-          @documents_by[field][value] = key
-        end
-      end
-    end
   end
   
   # Utility function to convert an array of data to a hash
@@ -309,8 +376,8 @@ class IndexBuilder
         # If we can't find one - see if we're allowed to create one
         unless doc
           if @current[:dataset_conf]["indexing"]["allow_document_creation"]
-            @documents[ value_to_look_up_doc_on ] = new_document()
-            doc = @documents[ value_to_look_up_doc_on ]
+            set_document( value_to_look_up_doc_on, new_document() )
+            doc = get_document( value_to_look_up_doc_on )
           end
         end
         
@@ -335,19 +402,16 @@ class IndexBuilder
             if value_to_index and map_data[:attribute_map][attr_name]["extract"]
               index_extracted_attributes( map_data[:attribute_map][attr_name]["extract"], doc, value_to_index )
             end
-            
-            # Stamp the dataset name onto this doc if we indexed something...
-            if value_to_index
-              unless doc[:datasets_with_data].include?( @current[:dataset_conf]["internal_name"] )
-                doc[:datasets_with_data].push( @current[:dataset_conf]["internal_name"] )
-              end
-            end
           end
           
-          # Finally - do we have any attributes that we need to group together?
+          # Do we have any attributes that we need to group together?
           if @current[:dataset_conf]["indexing"]["grouped_attributes"]
             index_grouped_attributes( @current[:dataset_conf]["indexing"]["grouped_attributes"], doc, data_row_obj, map_data )
           end
+          
+          # Finally - save the document to the cache
+          doc_primary_key = doc[@config["schema"]["unique_key"].to_sym][0]
+          set_document( doc_primary_key, doc )
         end
       end
     end
@@ -437,25 +501,6 @@ class IndexBuilder
     end
 
     return value_to_index
-  end
-  
-  # Utility function to remove any duplication from a document construct.
-  def clean_document( doc )
-    doc.each do |index_field,index_values|
-      if index_values.size > 0
-        doc[index_field] = index_values.uniq
-      end
-      
-      # If we have multiple value entries in what should be a single valued 
-      # field, not the best solution, but just arbitrarily pick the first entry.
-      unless index_field === :datasets_with_data
-        if !@config["schema"]["fields"][index_field.to_s]["multi_valued"] and index_values.size > 1
-          new_array = []
-          new_array.push(index_values[0])
-          doc[index_field]  = new_array
-        end
-      end
-    end
   end
   
   ##

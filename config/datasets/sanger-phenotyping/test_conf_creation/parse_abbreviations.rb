@@ -54,8 +54,8 @@ end
 abbreviations.each do |row|
   unless row[2] == "homviable"
     pipeline =  case row[0]
-    when /Mouse GP/ then "mouse-gp"
-    when /Pipeline/ then "mgp-pipeline-1-2"
+    when /Mouse GP/ then "sanger-mgp"
+    when /P1\/2/    then "eumodic-pipeline-1-2"
     end
     
     test         = row[2]

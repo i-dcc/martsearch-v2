@@ -71,14 +71,14 @@ class MartsearchUiTest < Test::Unit::TestCase
       
       @browser.get "/"
       assert( @browser.last_response.ok?, "Unable to make request to '/'." )
-      assert( @browser.last_response.body.include?('<div id="status_msgs"'), "The templates do not include the status messages." )
+      assert( @browser.last_response.body.include?('This is a <em>test message</em>.'), "The templates do not include the status messages." )
       
       File.delete("#{File.dirname(__FILE__)}/../messages/htmltest.html")
       File.delete("#{File.dirname(__FILE__)}/../messages/mdtest.markdown")
       
       @browser.get "/"
       assert( @browser.last_response.ok?, "Unable to make request to '/'." )
-      assert( !@browser.last_response.body.include?('<div id="status_msgs"'), "The templates include the status messages div when there are no messages!" )
+      assert( !@browser.last_response.body.include?('This is a <em>test message</em>.'), "The templates include the status messages div when there are no messages!" )
     end
     
     should "allow you to manually clear the search cache" do

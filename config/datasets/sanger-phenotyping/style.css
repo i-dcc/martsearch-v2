@@ -1,67 +1,40 @@
 /* sanger-phenotyping custom css */
 
-.sanger-phenotyping table td {
-	background: #fff;
-}
-
-.sanger-phenotyping table td.test_not_done {
-	background-color: #f1f1f1;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.completed_data_available {
-	background-color: #376598;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.significant_difference {
-	background-color: #de2920;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.no_significant_difference {
-	background-color: #6998cb;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.not_applicable {
-	background-color: #ccc;
-	cursor: pointer;
-}
-
-.sanger-phenotyping table td.early_indication_of_possible_phenotype {
-	background-color: #fcfe66;
-	cursor: pointer;
-}
-
+.sanger-phenotyping table td { background: #fff; }
+.sanger-phenotyping table td.test_not_done {	background-color: #f1f1f1; }
+.sanger-phenotyping table td.completed_data_available {	background-color: #376598; }
+.sanger-phenotyping table td.significant_difference {	background-color: #de2920; }
+.sanger-phenotyping table td.no_significant_difference { background-color: #6998cb; }
+.sanger-phenotyping table td.not_applicable {	background-color: #ccc; }
+.sanger-phenotyping table td.early_indication_of_possible_phenotype {	background-color: #fcfe66; }
 .sanger-phenotyping table td.pheno_result {
 	text-align: center;
 	vertical-align: middle;
 	padding: 0;
-	min-width: 16px;
+	width: 22px;
 }
 
 .sanger-phenotyping table td.pheno_result a img {
-	border: none;
-	padding: 2px;
+  background-color: #fff;
+	border: 1px solid #999;
+	padding: 1px;
 }
 
-/* Heatmap specific code */
-
-#sanger-phenotyping_heatmap th {
+.sanger-phenotyping_heatmap th {
 	vertical-align:	bottom;
 	height: 280px;
+	min-width: 16px;
+	white-space: nowrap;
 }
 
-#sanger-phenotyping_heatmap .vertical_text {
-	white-space: nowrap;
-	display: block;
+.sanger-phenotyping_heatmap .vertical_text {
 	width: 16px;
-	rotation: 90deg !important;
-	-webkit-transform: rotate(-90deg);
-	-moz-transform: rotate(-90deg);
-	-ms-writing-mode:tb-rl;
-	writing-mode:tb-rl;
+}
+
+.sanger-phenotyping-heatmap-link {
+	background-image: url(../images/silk/page_white_excel.png);
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 /* Phenotyping details pages */
@@ -74,6 +47,7 @@
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 }
 
 .test-parameter-group {
@@ -96,6 +70,7 @@
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
 }
 
 #test-parameter-groups div.test-parameter-group div.pheno_result {
@@ -133,12 +108,12 @@ table.expression_ticklist td {
 
 table.expression_ticklist td.present {
 	text-indent: -9999px;
-	background: #fff url(../images/tick.png) no-repeat center center;
+	background: #fff url(../images/silk/tick.png) no-repeat center center;
 }
 
 table.expression_ticklist td.absent {
 	text-indent: -9999px;
-	background: #fff url(../images/cross.png) no-repeat center center;
+	background: #fff url(../images/silk/cross.png) no-repeat center center;
 }
 
 table.expression_ticklist td.no_data,
@@ -146,4 +121,60 @@ table.expression_ticklist td.ambiguous {
 	color: #999;
 	font-style: italic;
 	text-transform: lowercase;
+}
+
+#sanger-phenotyping-adult-expression-images {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#sanger-phenotyping-adult-expression-image-list li {
+	list-style-type: none;
+	margin: 5px;
+	padding: 5px;
+	display: -moz-inline-stack;
+	display: inline-block;
+	min-height: 190px;
+	width: 190px;
+	text-align: left;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	vertical-align: top;
+	zoom: 1;
+	*display: inline;
+	_height: 190px;
+}
+
+#sanger-phenotyping-adult-expression-image-list li img {
+	padding: 2px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	margin-top: 5px;
+	width: 180px;
+}
+
+#sanger-phenotyping-adult-expression-image-list li img:hover {
+	background-color: #fcf9b2;
+}
+
+#sanger-phenotyping-adult-expression-image-list .gender {
+	width: 16px;
+	height: 16px;
+	float: right;
+}
+
+#sanger-phenotyping-adult-expression-image-list .male {
+	background-image: url(../images/silk/male.png);
+}
+
+#sanger-phenotyping-adult-expression-image-list .female {
+	background-image: url(../images/silk/female.png);
 }

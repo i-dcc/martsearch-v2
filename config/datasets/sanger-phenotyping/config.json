@@ -12,12 +12,12 @@
   "display_name":         "Phenotyping",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
-  "description":          "",
+  "description":          "Phenotyping assay data from the Mouse Genetics Program (MGP) at the Wellcome Trust Sanger Institute.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
       { "attr": "colony_prefix", "idx": "colony_prefix", "use_to_map": true },
-      { "attr": "adult_expression", "idx": "sanger_phenotype", "if_attr_equals": ["Considered interesting.","Complete and data/resources available."], "index_attr_name": true },
+      { "attr": "adult_expression", "idx": "sanger_phenotype", "if_attr_equals": ["Considered interesting."], "index_attr_name": true },
       { "attr": "adult_expression_comments", "idx": "phenotype_comments", "if_other_attr_indexed": "adult_expression", "extract": { "idx": "mp_id", "regexp": "MP\\:\\d+" } },
       { "attr": "abr", "idx": "sanger_phenotype", "if_attr_equals": ["Considered interesting."], "index_attr_name": true },
       { "attr": "abr_comments", "idx": "phenotype_comments", "if_other_attr_indexed": "abr", "extract": { "idx": "mp_id", "regexp": "MP\\:\\d+" } },

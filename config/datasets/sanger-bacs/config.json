@@ -12,7 +12,7 @@
   "display_name":         "DNA Clone Resources",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
-  "description":          "",
+  "description":          "DNA clone resources available from The Wellcome Trust Sanger Institute.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [

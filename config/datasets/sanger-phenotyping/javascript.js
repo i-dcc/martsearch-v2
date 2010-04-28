@@ -7,9 +7,7 @@ jQuery(document).ready(function() {
     jQuery(this).attr( "title", "" );
     jQuery(this).qtip({
        content:  jQuery(this).attr("tooltip"),
-       show:     "mouseover",
-       hide:     "mouseout",
-       style:    { tip: "topMiddle", border: { radius: 5 }, name: "dark" },
+       style:    { tip: "topMiddle", border: { radius: 5 }, name: "light" },
        position: { corner: { target: "bottomMiddle", tooltip: "topMiddle" } }
     });
   });

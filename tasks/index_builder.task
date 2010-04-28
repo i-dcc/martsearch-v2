@@ -26,7 +26,9 @@ begin
   require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
   require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 
-  @builder = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
+  @builder            = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
+  @solr_xml_dir       = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls"
+  @solr_xml_dir_daily = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
 
   namespace :solr do
   
@@ -38,33 +40,66 @@ begin
     end
     
     desc "Cleans up old Solr document XML directories"
-    task :clean_document_xmls do
-      Dir.chdir("#{File.dirname(__FILE__)}/../tmp/solr_document_xmls") do
+    task :clean_daily_directories do
+      Dir.chdir(@solr_xml_dir) do
         directories = Dir.glob("*").sort
         while directories.size > 4
           system("/bin/rm -rf '#{directories.shift}'")
         end
       end
     end
-  
-    desc "Generates the Solr document XMLs and saves them in the /tmp directory"
-    task :build_document_xmls => :clean_document_xmls do
-      dir = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
-      
-      begin
-        Dir.mkdir( dir )
-      rescue Errno::EEXIST => e
-        system("/bin/rm -rf '#{dir}'")
-        Dir.mkdir( dir )
-      end
     
-      @builder.build_documents()
-      @builder.build_document_xmls( dir )
+    task :build_daily_directory do
+      
+    end
+    
+    desc "Generates the Solr document XMLs and saves them in the /tmp/solr_document_xmls directory"
+    task :build_document_xmls => :clean_daily_directories do
+      begin
+        Dir.mkdir( @solr_xml_dir_daily )
+      rescue Errno::EEXIST => e
+        system("/bin/rm -rf '#{@solr_xml_dir_daily}'")
+        Dir.mkdir( @solr_xml_dir_daily )
+      end
+      
+      tmpdir = Dir.mktmpdir
+      Dir.chdir(tmpdir) do
+        puts "Working in #{tmpdir}"
+        @builder.initialize_file_based_cache()
+        @builder.build_documents()
+        @builder.build_document_xmls()
+        system("/bin/mv * #{@solr_xml_dir_daily}/")
+      end
+      system("/bin/rmdir #{tmpdir}")
+    end
+    
+    desc "Generates the Solr document XMLs and saves them in the /tmp/solr_document_xmls directory (using a disk based cache - suitable for low RAM systems - but is much slower)"
+    task :build_document_xmls_low_mem => :clean_daily_directories do
+      begin
+        Dir.mkdir( @solr_xml_dir_daily )
+      rescue Errno::EEXIST => e
+        system("/bin/rm -rf '#{@solr_xml_dir_daily}'")
+        Dir.mkdir( @solr_xml_dir_daily )
+      end
+      
+      Dir.chdir(@solr_xml_dir_daily) do
+        @builder.build_documents()
+        @builder.build_document_xmls()
+      end
     end
   
     desc "Retrieves all of the data to be indexed from the datasets and uploads them to the Solr index"
     task :rebuild_index => :build_document_xmls do
-      @builder.send_documents_to_solr()
+      Dir.chdir(@solr_xml_dir_daily) do
+        @builder.send_documents_to_solr()
+      end
+    end
+    
+    desc "Retrieves all of the data to be indexed from the datasets and uploads them to the Solr index (using a disk based cache - suitable for low RAM systems - but is much slower)"
+    task :rebuild_index_low_mem => :build_document_xmls_low_mem do
+      Dir.chdir(@solr_xml_dir_daily) do
+        @builder.send_documents_to_solr()
+      end
     end
   
   end

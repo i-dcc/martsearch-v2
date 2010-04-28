@@ -38,6 +38,6 @@
     <pre><%= @test_images.to_yaml %></pre>
     <hr />
     <h3>mart search data for <%= @colony_prefix %></h3>
-    <pre><%= search_mart_by_colony_prefix(@colony_prefix).to_yaml %></pre>
+    <pre><%= sanger_phenotyping_search_by_colony(@colony_prefix).to_yaml %></pre>
   </div>
 <% end %>

@@ -1,4 +1,8 @@
 <%= will_paginate @results %>
+
+<a id="explaination" href="#">Explain results</a>
+<div class="clear"></div>
+
 <% for result in @results %>
   <% result_data = @data[result] %>
   <div class="result">
@@ -24,6 +28,18 @@
         </td>
       </tr>
     </table>
+    
+    <% unless result_data['search_explaination'].nil? or result_data['search_explaination'].empty? %>
+      <div class="search_explaination help">
+        <h6>The gene <%= result_data["index"]["marker_symbol"] %> was returned for the following reasons:</h6>
+        <ul>
+          <% result_data['search_explaination'].each_pair do |field, value| %>
+            <li><strong><%= field %></strong> contains: &quot;<%= value %>&quot;</li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
         <% if dataset.use_in_display? and result_data[ dataset.internal_name ] %>

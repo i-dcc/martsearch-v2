@@ -61,6 +61,13 @@ function setup_toggles() {
     jQuery(this).toggleClass("toggle-close");
   });
   
+  // Add Toggling for search explaination
+  jQuery(".search_explaination").hide();
+  jQuery("#explaination").click( function() {
+      jQuery(".search_explaination").slideToggle("fast");
+      return false; // Prevent the normal click event to be triggered
+  });
+  
   // Add Toggling for error messages
   jQuery(".error_msg_toggle").live("click", function () {
     jQuery(this).parent().parent().find(".error_msg_content").slideToggle("fast");

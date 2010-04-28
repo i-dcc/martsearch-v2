@@ -230,6 +230,7 @@ a.button:hover, a.order:hover {
 /* Pagination Controls */
 
 .pagination {
+  float: left;
 	margin-bottom: 10px;
 }
 
@@ -729,4 +730,17 @@ table.ikmc-pipeline-progress-bar td.end_error {
 
 table.ikmc-pipeline-progress-bar td.end_warn {
   background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-warn.png');
+}
+
+/* Search explaination */
+
+a#explaination {
+  float: right;
+  background: none;
+  border: 0;
+  padding: 3px;
+}
+
+span.highlight {
+  font-weight: bold;
 }

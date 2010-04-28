@@ -4,17 +4,10 @@ class IndexBuilderTest < Test::Unit::TestCase
   ["file","memory"].each do |cache_type|
     context "An index builder object (with #{cache_type} based cache)" do
       setup do
-        config = JSON.load( File.new( "#{File.dirname(__FILE__)}/../config/config.json", "r" ) )
-        config["index"]["building"] = { "cache" => cache_type, "location" => "/tmp" }
-
-        @index_builder = IndexBuilder.new(config)
+        @index_builder = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
         @index_builder.test_environment = true
-
+        
         build_public_methods( @index_builder )
-      end
-
-      teardown do
-        @index_builder.destroy()
       end
 
       should "have basic attributes" do
@@ -26,7 +19,12 @@ class IndexBuilderTest < Test::Unit::TestCase
       end
 
       should "act as expected when we simulate the document building process..." do
-        simulate_building_process( @index_builder )
+        dir = Dir.mktmpdir
+        Dir.chdir(dir) do
+          @index_builder.initialize_file_based_cache() if cache_type == "file"
+          simulate_building_process( @index_builder )
+        end
+        #puts "@index_builder (#{cache_type} based) cache and XML files written to #{dir}"
       end
     end
   end
@@ -116,7 +114,7 @@ class IndexBuilderTest < Test::Unit::TestCase
           results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1","Mysm1"] } )
           index_builder.process_dataset_results_public( results )
           
-          assert( index_builder.document_cache.keys.size > 0, "index_builder.document_cache is empty! - Should have at least two entries..." )
+          assert( index_builder.document_cache_keys.keys.size > 0, "index_builder.document_cache is empty! - Should have at least two entries..." )
           [ { "MGI:104874" => "Akt2" }, { "MGI:1196439" => "Cbx7" } ].each do |ids|
             assert( index_builder.get_document_public( ids.keys[0] ) != nil, "index_builder.document_cache does not contain a data entry for #{ids.values[0]}." )
             assert( index_builder.get_document_public( ids.keys[0] ).is_a?(Hash), "index_builder.document_cache does not contain a Hash for #{ids.values[0]}." )
@@ -134,19 +132,14 @@ class IndexBuilderTest < Test::Unit::TestCase
     
     # Document cleaning...
     index_builder.clean_document_cache_public()
-    index_builder.document_cache.each_key do |cache_key|
+    index_builder.document_cache_keys.each_key do |cache_key|
       doc = index_builder.get_document_public(cache_key)
       assert( doc[ index_builder.config["schema"]["unique_key"].to_sym ].size === 1, "index_builder.clean_document_cache has not removed duplicate entries." )
     end
     
     # Saving the document XMLs
     index_builder.build_document_xmls()
-    assert( !index_builder.xml_dir.nil?, "index_builder.xml_dir was not set by index_builder.build_document_xmls()." )
-    
-    present_dir  = Dir.getwd
-    Dir.chdir( index_builder.xml_dir )
-    xml_files    = Dir.glob("solr-*.xml")
-    Dir.chdir( present_dir )
+    xml_files = Dir.glob("solr-*.xml")
     assert( xml_files.size > 0, "index_builder.build_document_xmls() did not produce any XML files." )
     
     #puts "Index docs in: #{index_builder.xml_dir}"

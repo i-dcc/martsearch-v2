@@ -1,7 +1,6 @@
 require "uri"
 require "net/http"
 require "cgi"
-require "gdbm"
 
 require "rubygems"
 require "erubis"

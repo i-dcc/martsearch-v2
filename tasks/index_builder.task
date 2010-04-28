@@ -2,7 +2,6 @@ begin
   require "uri"
   require "net/http"
   require "cgi"
-  require "gdbm"
 
   require "rubygems"
   require "json"
@@ -27,7 +26,9 @@ begin
   require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
   require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 
-  @builder = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
+  @builder            = IndexBuilder.new("#{File.dirname(__FILE__)}/../config/config.json")
+  @solr_xml_dir       = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls"
+  @solr_xml_dir_daily = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
 
   namespace :solr do
   
@@ -40,7 +41,7 @@ begin
     
     desc "Cleans up old Solr document XML directories"
     task :clean_document_xmls do
-      Dir.chdir("#{File.dirname(__FILE__)}/../tmp/solr_document_xmls") do
+      Dir.chdir(@solr_xml_dir) do
         directories = Dir.glob("*").sort
         while directories.size > 4
           system("/bin/rm -rf '#{directories.shift}'")
@@ -50,22 +51,27 @@ begin
   
     desc "Generates the Solr document XMLs and saves them in the /tmp directory"
     task :build_document_xmls => :clean_document_xmls do
-      dir = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
-      
       begin
-        Dir.mkdir( dir )
+        Dir.mkdir( @solr_xml_dir_daily )
       rescue Errno::EEXIST => e
-        system("/bin/rm -rf '#{dir}'")
-        Dir.mkdir( dir )
+        system("/bin/rm -rf '#{@solr_xml_dir_daily}'")
+        Dir.mkdir( @solr_xml_dir_daily )
       end
-    
-      @builder.build_documents()
-      @builder.build_document_xmls( dir )
+      
+      Dir.mktmpdir do
+        puts "Working in #{Dir.getwd}"
+        @builder.initialize_file_based_cache()
+        @builder.build_documents()
+        @builder.build_document_xmls()
+        system("/bin/mv * #{@solr_xml_dir_daily}/")
+      end
     end
   
     desc "Retrieves all of the data to be indexed from the datasets and uploads them to the Solr index"
     task :rebuild_index => :build_document_xmls do
-      @builder.send_documents_to_solr()
+      Dir.chdir(@solr_xml_dir_daily) do
+        @builder.send_documents_to_solr()
+      end
     end
   
   end

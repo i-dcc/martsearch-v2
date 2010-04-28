@@ -1,7 +1,7 @@
 # This class is responsible for the set-up, building and updating 
 # of a Solr search index for use with a MartSearchr application.
 class IndexBuilder
-  attr_reader :martsearch, :config, :document_cache, :document_cache_lookup, :xml_dir
+  attr_reader :martsearch, :config, :document_cache, :document_cache_keys, :document_cache_lookup
   attr_accessor :test_environment
   
   def initialize( config_desc )
@@ -20,15 +20,17 @@ class IndexBuilder
     
     # Create a document cache, and a helper lookup variable
     @file_based_cache      = false
-    @document_cache        = initialize_cache()
+    @document_cache        = {}
+    @document_cache_keys   = {}
     @document_cache_lookup = {}
     
     @current = { :dataset_conf => nil, :biomart => nil }
-    @xml_dir = nil
   end
   
-  def destroy
-    destroy_cache()
+  def initialize_file_based_cache
+    Dir.mkdir("cache")
+    @document_cache   = ActiveSupport::Cache::FileStore.new("cache")
+    @file_based_cache = true
   end
   
   # Function to create the Solr XML Schema used to define 
@@ -89,19 +91,12 @@ class IndexBuilder
   # index based on the @documents store in this current instance.  If 
   # a directory location is passed as an argument it'll save the XML 
   # files there, otherwise it'll save to a temporary directory.
-  def build_document_xmls( path=false )
+  def build_document_xmls()
     unless @test_environment
       puts "Creating Solr XML files (#{@batch_size} docs per file)..."
     end
     
-    dir = nil
-    if path
-      dir = path
-    else
-      dir = Dir.mktmpdir
-    end
-    
-    doc_chunks = @document_cache.keys.chunk( @batch_size )
+    doc_chunks = @document_cache_keys.keys.chunk( @batch_size )
     doc_chunks.each_index do |chunk_number|
       unless @test_environment
         puts "[ #{chunk_number + 1} / #{doc_chunks.size} ]"
@@ -113,12 +108,10 @@ class IndexBuilder
         docs.push( get_document( name ) )
       end
       
-      file = File.open( "#{dir}/solr-xml-#{chunk_number+1}.xml", "w" )
+      file = File.open( "solr-xml-#{chunk_number+1}.xml", "w" )
       file.print solr_document_xml(docs)
       file.close
     end
-    
-    @xml_dir = dir
   end
   
   # Function to post our @documents to the Solr instance.
@@ -127,7 +120,7 @@ class IndexBuilder
       puts "Uploading Solr documents in batches of #{@batch_size}..."
     end
     
-    doc_chunks = @documents.keys.chunk( @batch_size )
+    doc_chunks = @document_cache_keys.keys.chunk( @batch_size )
     doc_chunks.each_index do |chunk_number|
       unless @test_environment
         puts "[ #{chunk_number + 1} / #{doc_chunks.size} ]"
@@ -136,7 +129,7 @@ class IndexBuilder
       doc_names = doc_chunks[chunk_number]
       docs = []
       doc_names.each do |name|
-        docs.push( @documents[name] )
+        docs.push( get_document( name ) )
       end
       
       @solr.add docs
@@ -181,52 +174,26 @@ class IndexBuilder
   ## Cache handling functions...
   ##
   
-  # Sets up the @document_cache
-  def initialize_cache
-    if @config["building"] and @config["building"]["cache"] == "file"
-      @file_based_cache = true
-      file_name         = "martsearchr_index_builder_cache.db"
-      
-      if @config["building"]["location"]
-        file_name = "#{@config["building"]["location"]}/martsearchr_index_builder_cache.db"
-      end
-      
-      return GDBM.new( file_name, mode=0666, flags=GDBM::NEWDB)
-    else
-      return {}
-    end
-  end
-  
-  # Closes and cleans up the @document_cache
-  def destroy_cache
-    if @file_based_cache
-      @document_cache.close()
-      file_name = "martsearchr_index_builder_cache.db"
-      
-      if @config["building"]["location"]
-        file_name = "#{@config["building"]["location"]}/martsearchr_index_builder_cache.db"
-      end
-      
-      system("rm -rf #{file_name}")
-    else
-      @document_cache = {}
-    end
-  end
-  
   # Get a document from the @document_cache
   def get_document( key )
-    document = @document_cache[key]
-    if document and @file_based_cache
-      return Marshal.load( document )
+    if @file_based_cache
+      document = @document_cache.fetch(key)
+      if document
+        return Marshal.load( document )
+      else
+        return nil
+      end
     else
+      document = @document_cache[key]
       return document
     end
   end
   
   # Save a document to the @document_cache
   def set_document( key, value )
+    @document_cache_keys[key] = true
     if @file_based_cache
-      @document_cache[key] = Marshal.dump( value )
+      @document_cache.write( key, Marshal.dump( value ) )
     else
       @document_cache[key] = value
     end
@@ -254,7 +221,7 @@ class IndexBuilder
     puts "  - caching documents by '#{field}'" unless @test_environment
     @document_cache_lookup[field] = {}
     
-    @document_cache.each_key do |cache_key|
+    @document_cache_keys.each_key do |cache_key|
       document = get_document(cache_key)
       document[field].each do |lookup_value|
         @document_cache_lookup[field][lookup_value] = cache_key
@@ -264,7 +231,7 @@ class IndexBuilder
   
   # Utility function to remove any duplication from the document cache.
   def clean_document_cache
-    @document_cache.each_key do |cache_key|
+    @document_cache_keys.each_key do |cache_key|
       document = get_document(cache_key)
       
       document.each do |index_field,index_values|
@@ -282,10 +249,6 @@ class IndexBuilder
       end
       
       set_document( cache_key, document )
-    end
-    
-    if @file_based_cache
-      @document_cache.reorganize()
     end
   end
   

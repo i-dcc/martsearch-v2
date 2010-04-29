@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 
 function setup_toggles() {
   // Add the toggling observers for results...
-  jQuery(".dataset_title").live("click", function () {
+  jQuery(".dataset_title").live("click", function() {
     jQuery(this).parent().find(".dataset_content").slideToggle("fast");
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
@@ -65,17 +65,22 @@ function setup_toggles() {
   jQuery(".search_explaination").hide();
   jQuery("#search_explaination_toggle").click( function() {
       jQuery(".search_explaination").slideToggle("fast");
-      return false; // Prevent the normal click event to be triggered
+      return false;
+  });
+  
+  jQuery(".search_explaination_close").live("click", function() {
+    jQuery(".search_explaination").hide();
+    return false;
   });
   
   // Add Toggling for error messages
-  jQuery(".error_msg_toggle").live("click", function () {
+  jQuery(".error_msg_toggle").live("click", function() {
     jQuery(this).parent().parent().find(".error_msg_content").slideToggle("fast");
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
   });
   
-  jQuery(".error_msg_toggle").each( function (index) {
+  jQuery(".error_msg_toggle").each( function(index) {
     jQuery(this).parent().parent().find(".error_msg_content").slideUp("fast");
     jQuery(this).addClass("toggle-open");
     jQuery(this).removeClass("toggle-close");

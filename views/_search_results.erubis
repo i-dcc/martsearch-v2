@@ -1,6 +1,9 @@
 
 <div class="search_information">
-  <a id="search_explaination_toggle" class="button" href="#">Explain These Search Results</a>
+  
+  <% unless @current == "browse" %>
+    <a id="search_explaination_toggle" class="button" href="#">Explain These Search Results</a>
+  <% end %>
   <%= will_paginate @results %>
 </div>
 
@@ -30,8 +33,9 @@
       </tr>
     </table>
     
-    <% unless result_data['search_explaination'].nil? or result_data['search_explaination'].empty? %>
+    <% unless @current == "browse" or result_data['search_explaination'].nil? or result_data['search_explaination'].empty? %>
       <div class="search_explaination help">
+        <a class="search_explaination_close" href="#"></a>
         <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
         <ul>
           <% result_data['search_explaination'].each_pair do |field, value| %>

@@ -72,7 +72,9 @@ class Index
         "q"     => query,
         "sort"  => @sort_results_by,
         "start" => start_doc,
-        "rows"  => @docs_per_page
+        "rows"  => @docs_per_page,
+        "hl"    => true,
+        "hl.fl" => '*'
       }
     )
     
@@ -85,7 +87,10 @@ class Index
     @current_results_total = data["response"]["numFound"]
     
     data["response"]["docs"].each do |doc|
-      @current_results[ doc[ @primary_field ] ] = { "index" => doc }
+      @current_results[ doc[ @primary_field ] ] = {
+        "index"               => doc,
+        "search_explaination" => data["highlighting"][ doc[ @primary_field ] ]
+      }
       @ordered_results.push( doc[ @primary_field ] )
     end
     

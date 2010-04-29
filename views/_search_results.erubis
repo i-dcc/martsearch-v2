@@ -1,7 +1,8 @@
-<%= will_paginate @results %>
 
-<a id="explaination" href="#">Explain results</a>
-<div class="clear"></div>
+<div class="search_information">
+  <a id="search_explaination_toggle" class="button" href="#">Explain These Search Results</a>
+  <%= will_paginate @results %>
+</div>
 
 <% for result in @results %>
   <% result_data = @data[result] %>
@@ -31,10 +32,10 @@
     
     <% unless result_data['search_explaination'].nil? or result_data['search_explaination'].empty? %>
       <div class="search_explaination help">
-        <h6>The gene <%= result_data["index"]["marker_symbol"] %> was returned for the following reasons:</h6>
+        <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
         <ul>
           <% result_data['search_explaination'].each_pair do |field, value| %>
-            <li><strong><%= field %></strong> contains: &quot;<%= value %>&quot;</li>
+            <li><strong><%= field %></strong>: &quot;<%= value %>&quot;</li>
           <% end %>
         </ul>
       </div>
@@ -63,7 +64,10 @@
     </div>
   </div>
 <% end %>
-<%= will_paginate @results %>
+
+<div class="search_information search_information_bottom">
+  <%= will_paginate @results %>
+</div>
 
 <% if @ms.index.current_results_total > @ms.index.docs_per_page %>
   <script type="text/javascript" charset="utf-8">

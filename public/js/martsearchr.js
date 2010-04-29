@@ -61,9 +61,9 @@ function setup_toggles() {
     jQuery(this).toggleClass("toggle-close");
   });
   
-  // Add Toggling for search explaination
+  // Add Toggling for search explainations
   jQuery(".search_explaination").hide();
-  jQuery("#explaination").click( function() {
+  jQuery("#search_explaination_toggle").click( function() {
       jQuery(".search_explaination").slideToggle("fast");
       return false; // Prevent the normal click event to be triggered
   });

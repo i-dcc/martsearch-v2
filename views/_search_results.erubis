@@ -20,7 +20,6 @@
             Datasets: 
             <% for dataset in @ms.datasets %>
               <% if dataset.use_in_display? %>
-                <!-- TODO: Add in tooltip text describing each dataset -->
                 <% if result_data[ dataset.internal_name ]  %>
                   <a href="#<%= result_data["index"]["marker_symbol"].downcase %>-<%= dataset.internal_name %>" class="dataset_returned dataset_link_bubble" title="<%= partial( "dataset_returned_tooltip", :locals => { :dataset => dataset, :data_return => true } ) %>"><%= dataset.display_name.gsub( " ", "&nbsp;" ) %></a>
                 <% else %>

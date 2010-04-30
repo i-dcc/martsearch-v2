@@ -62,7 +62,6 @@ function setup_toggles() {
   });
   
   // Add Toggling for search explainations
-  jQuery(".search_explaination").hide();
   jQuery("#search_explaination_toggle").click( function() {
       jQuery(".search_explaination").slideToggle("fast");
       return false;

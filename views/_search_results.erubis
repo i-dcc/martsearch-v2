@@ -69,16 +69,18 @@
   </div>
 <% end %>
 
-<div class="search_information search_information_bottom">
+<div class="search_information">
   <%= will_paginate @results %>
 </div>
 
-<% if @ms.index.current_results_total > @ms.index.docs_per_page %>
-  <script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
+  jQuery(".search_explaination").hide();
+  
+  <% if @ms.index.current_results_total > 1 %>
     jQuery(".doc_title").each( function(index) {
       jQuery(this).parent().parent().parent().parent().parent().find(".doc_content").hide();
       jQuery(this).addClass("toggle-close");
       jQuery(this).removeClass("toggle-open");
     });
-  </script>
-<% end %>
+  <% end %>
+</script>

@@ -33,15 +33,24 @@
       </tr>
     </table>
     
-    <% unless @current == "browse" or result_data['search_explaination'].nil? or result_data['search_explaination'].empty? %>
+    <% unless @current == "browse" or result_data['search_explaination'].nil? %>
       <div class="search_explaination help">
         <a class="search_explaination_close" href="#"></a>
-        <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
-        <ul>
-          <% result_data['search_explaination'].each_pair do |field, value| %>
-            <li><strong><%= field %></strong>: &quot;<%= value %>&quot;</li>
-          <% end %>
-        </ul>
+        <% if result_data['search_explaination'].empty? %>
+          <em>
+            Sorry about this, unfortunately our search engine has no explanation for 
+            this result (most likely due to a mis-configuration).  Please 
+            <a href="mailto:<%= @ms.config["email"]["to"] %>">get in touch</a> and let 
+            us know of this error so that we can improve this service for you.
+          </em>
+        <% else %>
+          <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
+          <ul>
+            <% result_data['search_explaination'].each_pair do |field, value| %>
+              <li><strong><%= field %></strong>: &quot;<%= value %>&quot;</li>
+            <% end %>
+          </ul>
+        <% end %>
       </div>
     <% end %>
     

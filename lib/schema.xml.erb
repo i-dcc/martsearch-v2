@@ -428,7 +428,7 @@
 
    <%- @config["schema"]["fields"].each do |name, details| -%>
    <field name="<%= name %>" type="<%= details["type"] %>" <%- if details["indexed"] -%>indexed="<%= details["indexed"] %>" <%- end -%>
-   <%- if details["stored"] -%>stored="<%= details["stored"] %>" <%- end -%>
+   <%- if details["stored"] -%>stored="true" <%- else -%>stored="false" <%- end -%>
    <%- if details["required"] -%>required="<%= details["required"] %>" <%- end -%>
    <%- if details["multi_valued"] -%>multiValued="<%= details["multi_valued"] %>" <%- end -%>/>
    <%- end -%>

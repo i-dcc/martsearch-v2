@@ -1,4 +1,12 @@
-<%= will_paginate @results %>
+
+<div class="search_information">
+  
+  <% unless @current == "browse" %>
+    <a id="search_explaination_toggle" class="button" href="#">Explain These Search Results</a>
+  <% end %>
+  <%= will_paginate @results %>
+</div>
+
 <% for result in @results %>
   <% result_data = @data[result] %>
   <div class="result">
@@ -24,6 +32,28 @@
         </td>
       </tr>
     </table>
+    
+    <% unless @current == "browse" or result_data['search_explaination'].nil? %>
+      <div class="search_explaination help">
+        <a class="search_explaination_close" href="#"></a>
+        <% if result_data['search_explaination'].empty? %>
+          <em>
+            Sorry about this, unfortunately our search engine has no explanation for 
+            this result (most likely due to a mis-configuration).  Please 
+            <a href="mailto:<%= @ms.config["email"]["to"] %>">get in touch</a> and let 
+            us know of this error so that we can improve this service for you.
+          </em>
+        <% else %>
+          <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
+          <ul>
+            <% result_data['search_explaination'].each_pair do |field, value| %>
+              <li><strong><%= field %></strong>: &quot;<%= value %>&quot;</li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    <% end %>
+    
     <div class="doc_content">
       <% for dataset in @ms.datasets %>
         <% if dataset.use_in_display? and result_data[ dataset.internal_name ] %>
@@ -47,14 +77,19 @@
     </div>
   </div>
 <% end %>
-<%= will_paginate @results %>
 
-<% if @ms.index.current_results_total > 1 %>
-  <script type="text/javascript" charset="utf-8">
+<div class="search_information">
+  <%= will_paginate @results %>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery(".search_explaination").hide();
+  
+  <% if @ms.index.current_results_total > 1 %>
     jQuery(".doc_title").each( function(index) {
       jQuery(this).parent().parent().parent().parent().parent().find(".doc_content").hide();
       jQuery(this).addClass("toggle-close");
       jQuery(this).removeClass("toggle-open");
     });
-  </script>
-<% end %>
+  <% end %>
+</script>

@@ -25,7 +25,7 @@ def idcc_targ_rep_product_order_url( project, result_data, order_type )
   project_id        = project['ikmc_project_id']
   marker_symbol     = result_data['index']['marker_symbol']
   
-  if pipeline === "KOMP-CSD"
+  if pipeline == "KOMP-CSD"
     case order_type
     when "vectors"
       url = "http://www.komp.org/vectorOrder.php?projectid=#{project_id}"
@@ -35,7 +35,7 @@ def idcc_targ_rep_product_order_url( project, result_data, order_type )
       url = "http://www.komp.org/geneinfo.php?project=CSD#{project_id}"
     end
   
-  elsif pipeline === "KOMP-Regeneron"
+  elsif pipeline == "KOMP-Regeneron"
     case order_type
     when "vectors"
       url = "http://www.komp.org/vectorOrder.php?projectid=#{project_id}"
@@ -45,7 +45,7 @@ def idcc_targ_rep_product_order_url( project, result_data, order_type )
       url = "http://www.komp.org/geneinfo.php?project=#{project_id}"
     end
   
-  elsif pipeline === "EUCOMM"
+  elsif pipeline == "EUCOMM" or "mirKO"
     case order_type
     when "vectors"
       url = "http://www.eummcr.org/final_vectors.php?mgi_id=#{mgi_accession_id}"
@@ -57,7 +57,7 @@ def idcc_targ_rep_product_order_url( project, result_data, order_type )
       url = "http://www.eummcr.org/order.php"
     end
   
-  elsif pipeline === "NorCOMM"
+  elsif pipeline == "NorCOMM"
     url = "http://www.phenogenomics.ca/services/cmmr/escell_services.html"
   end
   

@@ -230,7 +230,7 @@ a.button:hover, a.order:hover {
 /* Pagination Controls */
 
 .pagination {
-	margin-bottom: 10px;
+	padding-top: 6px;
 }
 
 .pagination a {
@@ -259,6 +259,41 @@ a.button:hover, a.order:hover {
 	-moz-border-radius: 2px;
 	-o-border-radius: 2px;
 	padding: 5px;
+}
+
+/* Search explaination */
+
+a#search_explaination_toggle {
+	float: right;
+	background-image: url(../images/silk/help.png);
+}
+
+.search_explaination.help h6 {
+	margin-bottom: 5px;
+}
+
+.search_explaination.help ul {
+	margin-bottom: 0;
+}
+
+.search_explaination a.search_explaination_close {
+	background-image: url(../images/silk/cross.png);
+	float: right;
+	width: 16px;
+	height: 16px;
+}
+
+span.highlight {
+	font-weight: bold;
+	color: #f91d1b;
+}
+
+/* Search Information */
+
+.search_information {
+	margin-bottom: 10px;
+	height: 26px;
+	clear: both;
 }
 
 /* Data Browsing Controls */

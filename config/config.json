@@ -260,7 +260,7 @@
     "sanger-phenotyping",
     "sanger-wholemount_expression",
     "sanger-kermits",
-    "sanger-htgt_targ",
+    "ikmc-idcc_targ_rep",
     "sanger-bacs"
   ]
 }

@@ -48,6 +48,8 @@
       "parental_cell_line",
       "allele_symbol_superscript"
     ],
-    "filters": {}
+    "filters": {
+      "pipeline": ["KOMP-CSD", "EUCOMM", "mirKO"]
+    }
   }
 }

@@ -44,11 +44,7 @@
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-<<<<<<< HEAD
-                  :locals => { :clones => conditional_clones }
-=======
                   :locals => { :pipeline => pipeline, :clones => conditional_clones }
->>>>>>> master
                 )
               %>
             <% else %>
@@ -65,11 +61,7 @@
               <%=
                 partial(
                   "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-<<<<<<< HEAD
-                  :locals => { :clones => nonconditional_clones }
-=======
                   :locals => { :pipeline => pipeline, :clones => nonconditional_clones }
->>>>>>> master
                 )
               %>
             <% else %>

@@ -69,12 +69,13 @@ class Index
     
     data = index_request(
       {
-        "q"     => query,
-        "sort"  => @sort_results_by,
-        "start" => start_doc,
-        "rows"  => @docs_per_page,
-        "hl"    => true,
-        "hl.fl" => '*'
+        "q"                       => query,
+        "sort"                    => @sort_results_by,
+        "start"                   => start_doc,
+        "rows"                    => @docs_per_page,
+        "hl"                      => true,
+        "hl.fl"                   => '*',
+        "hl.usePhraseHighlighter" => true
       }
     )
     

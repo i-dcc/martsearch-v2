@@ -95,7 +95,7 @@ class Martsearch
     stylesheet = ""
     
     @datasets.each do |ds|
-      if ds.stylesheet
+      unless ds.stylesheet.nil?
         stylesheet << "\n" + ds.stylesheet
       end
     end

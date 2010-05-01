@@ -92,9 +92,17 @@ configure :production do
   end
   
   css_to_compress = ""
+  js_to_compress  = ""
+  
   DEFAULT_CSS_FILES.each do |file|
     file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
     css_to_compress << file.read
+    file.close
+  end
+  
+  DEFAULT_JS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
+    js_to_compress << file.read
     file.close
   end
   
@@ -102,8 +110,14 @@ configure :production do
     css_to_compress << ds.stylesheet unless ds.stylesheet.nil?
   end
   
+  @@ms.datasets.each do |ds|
+    js_to_compress << ds.javascript unless ds.javascript.nil?
+  end
+  
   css_compressor = YUI::CssCompressor.new()
+  
   COMPRESSED_CSS = css_compressor.compress(css_to_compress)
+  COMPRESSED_JS  = js_to_compress
 end
 
 helpers do
@@ -334,17 +348,8 @@ get "/css/martsearch*.css" do
 end
 
 get "/js/martsearch*.js" do
-  js_text = ""
-  DEFAULT_JS_FILES.each do |file|
-    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
-    js_text << file.read
-    file.close
-  end
-  
-  js_text << @@ms.dataset_javascripts
-  
   content_type "text/javascript"
-  return js_text
+  return COMPRESSED_JS
 end
 
 get "/dataset-css/:dataset_name" do

@@ -89,20 +89,6 @@ class Martsearch
     return results
   end
   
-  # Utility function to return all of the custom javascript files for 
-  # the datasets as one concatenated file.
-  def dataset_javascripts
-    js = ""
-    
-    @datasets.each do |ds|
-      if ds.javascript
-        js << "\n" + ds.javascript
-      end
-    end
-    
-    return js
-  end
-  
   # Utility function to send an email to/from an address specified in the 
   # config file.  Uses Mail (http://github.com/mikel/mail) to handle the 
   # email formatting (and delivery if using SMTP).

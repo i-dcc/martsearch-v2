@@ -32,6 +32,17 @@ require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
 PORTAL_VERSION = "0.0.9"
+DEFAULT_CSS = [
+  "reset.css",
+  "jquery.prettyPhoto.css",
+  "jquery.tablesorter.css",
+  "jquery.fontresize.css",
+  "jquery-ui-1.8.redmond.css",
+  "screen.css"
+]
+DEFAULT_JS = [
+  
+]
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{MARTSEARCHR_PATH}/config/config.json" )
@@ -302,27 +313,22 @@ end
 
 get "/css/martsearch*.css" do
   css_text = ""
-  css_files = [
-    "reset.css",
-    "jquery.prettyPhoto.css",
-    "jquery.tablesorter.css",
-    "jquery.fontresize.css",
-    "jquery-ui-1.8.redmond.css",
-    "screen.css"
-  ]
-  
-  css_files.each do |file|
-    css_text << "\n /* #{file} */ \n\n"
+  DEFAULT_CSS.each do |file|
     file = File.new("#{Dir.pwd}/public/css/#{file}","r")
     css_text << file.read
     file.close
   end
   
-  css_text << "\n /* DATASET CUSTOM CSS */ \n\n"
   css_text << @@ms.dataset_stylesheets
   
   content_type "text/css"
   return css_text
+end
+
+get "/dataset-css/:dataset_name" do
+  content_type "text/css"
+  dataset_name = params[:dataset_name].sub(".css","")
+  @@ms.datasets_by_name[ dataset_name.to_sym ].stylesheet
 end
 
 get "/js/martsearch*.js" do

@@ -10,8 +10,21 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
-    <link type="text/css" href="<%= BASE_URI %>/css/martsearch-<%= PORTAL_VERSION %>.css" rel="stylesheet" media="screen, projection" />
     <script type="text/javascript" src="<%= BASE_URI %>/js/jquery-1.4.2.min.js" charset="utf-8"></script>
+    <% if ENV['RACK_ENV'] == "production" %>
+      <link type="text/css" href="<%= BASE_URI %>/css/martsearch-<%= PORTAL_VERSION %>.css" rel="stylesheet" media="screen, projection" />
+    <% else %>
+      <% DEFAULT_CSS.each do |css_file| %>
+        <link type="text/css" href="<%= BASE_URI %>/css/<%= css_file %>" rel="stylesheet" media="screen, projection" />
+      <% end %>
+      <% @ms.datasets.each do |ds| %>
+        <% unless ds.stylesheet.nil? %>
+          <link type="text/css" href="<%= BASE_URI %>/dataset-css/<%= ds.internal_name %>.css" rel="stylesheet" media="screen, projection" />
+        <% end %>
+      <% end %>
+    <% end %>
+    
+    
   </head>
   <body>
     <div id="wrapper">

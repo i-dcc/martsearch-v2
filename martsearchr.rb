@@ -42,7 +42,12 @@ DEFAULT_CSS_FILES = [
   "screen.css"
 ]
 DEFAULT_JS_FILES  = [
-  "jquery-plugins.min.js",
+  "jquery.qtip-1.0.js",
+  "jquery.prettyPhoto.js",
+  "jquery.tablesorter.js",
+  "jquery.cookie.js",
+  "jquery.fontResize.js",
+  "jquery.scrollTo-1.4.2.js",
   "jquery-ui-1.8.min.js",
   "martsearchr.js"
 ]

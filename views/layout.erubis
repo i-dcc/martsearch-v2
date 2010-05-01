@@ -116,6 +116,17 @@
       </div>
     <% end %>
     
-    <script type="text/javascript" src="<%= BASE_URI %>/js/martsearch-<%= PORTAL_VERSION %>.js" charset="utf-8"></script>
+    <% if ENV['RACK_ENV'] == "production" %>
+      <script type="text/javascript" src="<%= BASE_URI %>/js/martsearch-<%= PORTAL_VERSION %>.js" charset="utf-8"></script>
+    <% else %>
+      <% DEFAULT_JS.each do |js_file| %>
+        <script type="text/javascript" src="<%= BASE_URI %>/js/<%= js_file %>" charset="utf-8"></script>
+      <% end %>
+      <% @ms.datasets.each do |ds| %>
+        <% unless ds.stylesheet.nil? %>
+          <script type="text/javascript" src="<%= BASE_URI %>/dataset-js/<%= ds.internal_name %>.js" charset="utf-8"></script>
+        <% end %>
+      <% end %>
+    <% end %>
   </body>
 </html>

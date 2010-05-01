@@ -41,7 +41,9 @@ DEFAULT_CSS = [
   "screen.css"
 ]
 DEFAULT_JS = [
-  
+  "jquery-plugins.min.js",
+  "jquery-ui-1.8.min.js",
+  "martsearchr.js"
 ]
 
 # Initialise the MartSearch object
@@ -314,7 +316,7 @@ end
 get "/css/martsearch*.css" do
   css_text = ""
   DEFAULT_CSS.each do |file|
-    file = File.new("#{Dir.pwd}/public/css/#{file}","r")
+    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
     css_text << file.read
     file.close
   end
@@ -333,24 +335,22 @@ end
 
 get "/js/martsearch*.js" do
   js_text = ""
-  js_files = [
-    "jquery-plugins.min.js",
-    "jquery-ui-1.8.min.js",
-    "martsearchr.js"
-  ]
-  
-  js_files.each do |file|
-    js_text << "\n /* #{file} */ \n\n"
-    file = File.new("#{Dir.pwd}/public/js/#{file}","r")
+  DEFAULT_JS.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
     js_text << file.read
     file.close
   end
   
-  js_text << "\n // DATASET CUSTOM JS \n\n"
   js_text << @@ms.dataset_javascripts
   
   content_type "text/javascript"
   return js_text
+end
+
+get "/dataset-js/:dataset_name" do
+  content_type "text/javascript"
+  dataset_name = params[:dataset_name].sub(".js","")
+  @@ms.datasets_by_name[ dataset_name.to_sym ].javascript
 end
 
 def check_for_errors

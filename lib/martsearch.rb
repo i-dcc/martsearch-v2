@@ -35,7 +35,7 @@ class Martsearch
       ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
       dataset = Dataset.new( ds_name, ds_conf )
       
-      if dataset.custom_sort
+      unless dataset.custom_sort.nil?
         # If we have a custom sorting routine, use a Mock object
         # to override the sorting method.
         dataset = Mock.method( dataset, :sort_results ) { eval( dataset.custom_sort ) }

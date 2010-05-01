@@ -2,7 +2,7 @@
 # aspects of this class/dataset/query can be configured via the 
 # configuration json.
 class Dataset
-  attr_reader :dataset, :dataset_name
+  attr_reader :dataset, :dataset_name, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_reader :use_custom_view_helpers, :use_custom_routes, :config, :internal_name
   attr_accessor :url, :attributes, :filters, :display_name, :description
@@ -33,6 +33,7 @@ class Dataset
     @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
     @use_custom_view_helpers  = conf["custom_view_helpers"]
     @use_custom_routes        = conf["custom_routes"]
+    @custom_sort              = load_file_if_true( @config["custom_sort"], "custom_sort.rb" )
     
     @current_search_results = nil
     @current_sorted_results = nil
@@ -46,11 +47,6 @@ class Dataset
   # Function to return a the contents of custom js file (if configured) or nil
   def javascript
     load_file_if_true( @config["custom_js"], "javascript.js" )
-  end
-  
-  # Function to return a the contents of custom sort file (if configured) or nil
-  def custom_sort
-    load_file_if_true( @config["custom_sort"], "custom_sort.rb" )
   end
   
   # Function to return true/false for if a dataset is to be used in 

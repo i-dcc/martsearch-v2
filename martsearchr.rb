@@ -13,6 +13,7 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
+require "yui/compressor"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
@@ -31,8 +32,8 @@ require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.9"
-DEFAULT_CSS = [
+PORTAL_VERSION    = "0.0.9"
+DEFAULT_CSS_FILES = [
   "reset.css",
   "jquery.prettyPhoto.css",
   "jquery.tablesorter.css",
@@ -40,7 +41,7 @@ DEFAULT_CSS = [
   "jquery-ui-1.8.redmond.css",
   "screen.css"
 ]
-DEFAULT_JS = [
+DEFAULT_JS_FILES  = [
   "jquery-plugins.min.js",
   "jquery-ui-1.8.min.js",
   "martsearchr.js"
@@ -89,6 +90,20 @@ configure :production do
     @request = request
     erubis :error
   end
+  
+  css_to_compress = ""
+  DEFAULT_CSS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
+    css_to_compress << file.read
+    file.close
+  end
+  
+  @@ms.datasets.each do |ds|
+    css_to_compress << ds.stylesheet unless ds.stylesheet.nil?
+  end
+  
+  css_compressor = YUI::CssCompressor.new()
+  COMPRESSED_CSS = css_compressor.compress(css_to_compress)
 end
 
 helpers do
@@ -314,28 +329,13 @@ get "/clear_cache/?" do
 end
 
 get "/css/martsearch*.css" do
-  css_text = ""
-  DEFAULT_CSS.each do |file|
-    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
-    css_text << file.read
-    file.close
-  end
-  
-  css_text << @@ms.dataset_stylesheets
-  
   content_type "text/css"
-  return css_text
-end
-
-get "/dataset-css/:dataset_name" do
-  content_type "text/css"
-  dataset_name = params[:dataset_name].sub(".css","")
-  @@ms.datasets_by_name[ dataset_name.to_sym ].stylesheet
+  return COMPRESSED_CSS
 end
 
 get "/js/martsearch*.js" do
   js_text = ""
-  DEFAULT_JS.each do |file|
+  DEFAULT_JS_FILES.each do |file|
     file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
     js_text << file.read
     file.close
@@ -345,6 +345,12 @@ get "/js/martsearch*.js" do
   
   content_type "text/javascript"
   return js_text
+end
+
+get "/dataset-css/:dataset_name" do
+  content_type "text/css"
+  dataset_name = params[:dataset_name].sub(".css","")
+  @@ms.datasets_by_name[ dataset_name.to_sym ].stylesheet
 end
 
 get "/dataset-js/:dataset_name" do

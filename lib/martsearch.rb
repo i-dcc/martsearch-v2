@@ -89,20 +89,6 @@ class Martsearch
     return results
   end
   
-  # Utility function to return all of the custom stylesheets for the 
-  # datasets as one concatenated file.
-  def dataset_stylesheets
-    stylesheet = ""
-    
-    @datasets.each do |ds|
-      unless ds.stylesheet.nil?
-        stylesheet << "\n" + ds.stylesheet
-      end
-    end
-    
-    return stylesheet
-  end
-  
   # Utility function to return all of the custom javascript files for 
   # the datasets as one concatenated file.
   def dataset_javascripts

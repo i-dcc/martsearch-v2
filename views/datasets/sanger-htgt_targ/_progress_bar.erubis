@@ -1,4 +1,4 @@
-<table class="sanger-htgt_targ_allele_progress">
+<table class="ikmc-pipeline-progress-bar">
   <tr>
     <td width="15%"></td>
     <th width="15%" class="centre">Pre-pipeline</th>

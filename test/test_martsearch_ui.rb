@@ -51,13 +51,6 @@ class MartsearchUiTest < Test::Unit::TestCase
       end
     end
     
-    should "supply concatenated css and javascript files" do
-      ["/css/martsearch.css","/js/martsearch.js"].each do |path|
-        @browser.get path
-        assert( @browser.last_response.ok?, "Unable to make request to '#{path}'." )
-      end
-    end
-    
     should "allow admins to set messages for the users" do
       # HTML message file
       File.open("#{File.dirname(__FILE__)}/../messages/htmltest.html","w") do |f|
@@ -173,5 +166,12 @@ class MartsearchUiTest < Test::Unit::TestCase
     assert_equal( "http://example.org/search/#{@@ms.config["test"][search_conf]}", browser.last_request.url, "Simple search did not redirect to the search results page." )
     assert( browser.last_response.body.include?("Search Results for '#{@@ms.config["test"][search_conf]}'"), "Search template not rendering the search results header." )
     assert( browser.last_response.ok? )
+  end
+end
+
+class MartsearchUiTestProductionMode < MartsearchUiTest
+  def initialize(args)
+    ENV['RACK_ENV'] = 'production'
+    super
   end
 end

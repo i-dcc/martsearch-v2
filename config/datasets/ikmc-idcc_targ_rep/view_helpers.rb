@@ -45,7 +45,7 @@ def idcc_targ_rep_product_order_url( project, result_data, order_type )
       url = "http://www.komp.org/geneinfo.php?project=#{project_id}"
     end
   
-  elsif pipeline == "EUCOMM" or "mirKO"
+  elsif pipeline == "EUCOMM" or pipeline == "mirKO"
     case order_type
     when "vectors"
       url = "http://www.eummcr.org/final_vectors.php?mgi_id=#{mgi_accession_id}"

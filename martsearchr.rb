@@ -13,7 +13,7 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
-require "yui/compressor"
+#require "yui/compressor"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
@@ -75,8 +75,11 @@ def compress_js_and_css
   @@ms.datasets.each { |ds| css_to_compress << ds.stylesheet unless ds.stylesheet.nil? }
   @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
   
-  @@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
-  @@compressed_js  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
+  #@@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
+  #@@compressed_js  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
+  
+  @@compressed_css = css_to_compress
+  @@compressed_js  = js_to_compress
 end
 
 configure :production do

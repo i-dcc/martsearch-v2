@@ -14,7 +14,6 @@ require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
 require "yui/compressor"
-require "closure-compiler"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
@@ -116,8 +115,7 @@ configure :production do
   @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
   
   COMPRESSED_CSS = YUI::CssCompressor.new.compress(css_to_compress)
-  #COMPRESSED_JS  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
-  COMPRESSED_JS  = Closure::Compiler.new(:compilation_level => 'ADVANCED_OPTIMIZATIONS').compress(js_to_compress)
+  COMPRESSED_JS  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
 end
 
 helpers do

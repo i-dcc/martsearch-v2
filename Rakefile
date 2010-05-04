@@ -18,8 +18,7 @@ task :install_deps do
     "rack-test",
     "builder",
     "rsolr",
-    "yui-compressor",
-    "closure-compiler"
+    "yui-compressor"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

@@ -207,6 +207,7 @@
     "ikmc-dcc-knockout_attempts",
     "ikmc-idcc_targ_rep",
     "ikmc-dcc-trapped_products",
+    "ikmc-dcc-other_mutants",
     "sanger-htgt_targ",
     "sanger-kermits",
     "sanger-phenotyping",

@@ -11,6 +11,8 @@ jQuery(document).ready(function() {
     var target_id = jQuery(this).attr("href");
     if ( jQuery(target_id).parent().css("display") === "none" ) {
       jQuery(target_id).parent().show();
+      jQuery(target_id).parent().parent().find(".doc_title").toggleClass("toggle-open");
+      jQuery(target_id).parent().parent().find(".doc_title").toggleClass("toggle-close");
     }
     jQuery.scrollTo( target_id, 800 );
     return false;

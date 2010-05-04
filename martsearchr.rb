@@ -56,6 +56,29 @@ DEFAULT_JS_FILES  = [
 @@ms = Martsearch.new( "#{MARTSEARCHR_PATH}/config/config.json" )
 BASE_URI = @@ms.base_uri()
 
+def compress_js_and_css
+  css_to_compress = ""
+  js_to_compress  = ""
+  
+  DEFAULT_CSS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
+    css_to_compress << file.read
+    file.close
+  end
+  
+  DEFAULT_JS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
+    js_to_compress << file.read
+    file.close
+  end
+  
+  @@ms.datasets.each { |ds| css_to_compress << ds.stylesheet unless ds.stylesheet.nil? }
+  @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
+  
+  @@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
+  @@compressed_js  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
+end
+
 configure :production do
   not_found do
     # Email if this is a broken link within the portal
@@ -96,26 +119,11 @@ configure :production do
     erubis :error
   end
   
-  css_to_compress = ""
-  js_to_compress  = ""
-  
-  DEFAULT_CSS_FILES.each do |file|
-    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
-    css_to_compress << file.read
-    file.close
-  end
-  
-  DEFAULT_JS_FILES.each do |file|
-    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
-    js_to_compress << file.read
-    file.close
-  end
-  
-  @@ms.datasets.each { |ds| css_to_compress << ds.stylesheet unless ds.stylesheet.nil? }
-  @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
-  
-  COMPRESSED_CSS = YUI::CssCompressor.new.compress(css_to_compress)
-  COMPRESSED_JS  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
+  compress_js_and_css
+end
+
+configure :staging do
+  compress_js_and_css
 end
 
 helpers do
@@ -342,12 +350,14 @@ end
 
 get "/css/martsearch*.css" do
   content_type "text/css"
-  return COMPRESSED_CSS
+  compress_js_and_css unless @@compressed_css
+  return @@compressed_css
 end
 
 get "/js/martsearch*.js" do
   content_type "text/javascript"
-  return COMPRESSED_JS
+  compress_js_and_css unless @@compressed_js
+  return @@compressed_js
 end
 
 get "/dataset-css/:dataset_name" do

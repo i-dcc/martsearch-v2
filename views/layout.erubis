@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
     <script type="text/javascript" src="<%= BASE_URI %>/js/jquery-1.4.2.min.js" charset="utf-8"></script>
-    <% if ENV['RACK_ENV'] == "production" %>
+    <% if ENV['RACK_ENV'] == "production" or ENV['RACK_ENV'] == "staging" %>
       <link type="text/css" href="<%= BASE_URI %>/css/martsearch-<%= PORTAL_VERSION %>.css" rel="stylesheet" media="screen, projection" />
     <% else %>
       <% DEFAULT_CSS_FILES.each do |css_file| %>
@@ -115,7 +115,7 @@
       </div>
     <% end %>
     
-    <% if ENV['RACK_ENV'] == "production" %>
+    <% if ENV['RACK_ENV'] == "production" or ENV['RACK_ENV'] == "staging" %>
       <script type="text/javascript" src="<%= BASE_URI %>/js/martsearch-<%= PORTAL_VERSION %>.js" charset="utf-8"></script>
     <% else %>
       <% DEFAULT_JS_FILES.each do |js_file| %>

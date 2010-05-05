@@ -14,6 +14,7 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
+#require "yui/compressor"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
@@ -32,11 +33,55 @@ require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION = "0.0.9"
+PORTAL_VERSION    = "0.0.9"
+DEFAULT_CSS_FILES = [
+  "reset.css",
+  "jquery.prettyPhoto.css",
+  "jquery.tablesorter.css",
+  "jquery.fontresize.css",
+  "jquery-ui-1.8.1.redmond.css",
+  "screen.css"
+]
+DEFAULT_JS_FILES  = [
+  "jquery.qtip-1.0.js",
+  "jquery.prettyPhoto.js",
+  "jquery.tablesorter.js",
+  "jquery.cookie.js",
+  "jquery.fontResize.js",
+  "jquery.scrollTo-1.4.2.js",
+  "jquery-ui-1.8.1.min.js",
+  "martsearchr.js"
+]
 
 # Initialise the MartSearch object
 @@ms = Martsearch.new( "#{MARTSEARCHR_PATH}/config/config.json" )
 BASE_URI = @@ms.base_uri()
+
+def compress_js_and_css
+  css_to_compress = ""
+  js_to_compress  = ""
+  
+  DEFAULT_CSS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/css/#{file}","r")
+    css_to_compress << file.read
+    file.close
+  end
+  
+  DEFAULT_JS_FILES.each do |file|
+    file = File.new("#{MARTSEARCHR_PATH}/public/js/#{file}","r")
+    js_to_compress << file.read
+    file.close
+  end
+  
+  @@ms.datasets.each { |ds| css_to_compress << ds.stylesheet unless ds.stylesheet.nil? }
+  @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
+  
+  #@@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
+  #@@compressed_js  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
+  
+  @@compressed_css = css_to_compress
+  @@compressed_js  = js_to_compress
+end
 
 configure :production do
   not_found do
@@ -77,6 +122,12 @@ configure :production do
     @request = request
     erubis :error
   end
+  
+  compress_js_and_css
+end
+
+configure :staging do
+  compress_js_and_css
 end
 
 helpers do
@@ -368,50 +419,27 @@ get "/clear_cache/?" do
 end
 
 get "/css/martsearch*.css" do
-  css_text = ""
-  css_files = [
-    "reset.css",
-    "jquery.prettyPhoto.css",
-    "jquery.tablesorter.css",
-    "jquery.fontresize.css",
-    "jquery-ui-1.8.redmond.css",
-    "screen.css"
-  ]
-  
-  css_files.each do |file|
-    css_text << "\n /* #{file} */ \n\n"
-    file = File.new("#{Dir.pwd}/public/css/#{file}","r")
-    css_text << file.read
-    file.close
-  end
-  
-  css_text << "\n /* DATASET CUSTOM CSS */ \n\n"
-  css_text << @@ms.dataset_stylesheets
-  
   content_type "text/css"
-  return css_text
+  compress_js_and_css unless @@compressed_css
+  return @@compressed_css
 end
 
 get "/js/martsearch*.js" do
-  js_text = ""
-  js_files = [
-    "jquery-plugins.min.js",
-    "jquery-ui-1.8.min.js",
-    "martsearchr.js"
-  ]
-  
-  js_files.each do |file|
-    js_text << "\n /* #{file} */ \n\n"
-    file = File.new("#{Dir.pwd}/public/js/#{file}","r")
-    js_text << file.read
-    file.close
-  end
-  
-  js_text << "\n // DATASET CUSTOM JS \n\n"
-  js_text << @@ms.dataset_javascripts
-  
   content_type "text/javascript"
-  return js_text
+  compress_js_and_css unless @@compressed_js
+  return @@compressed_js
+end
+
+get "/dataset-css/:dataset_name" do
+  content_type "text/css"
+  dataset_name = params[:dataset_name].sub(".css","")
+  @@ms.datasets_by_name[ dataset_name.to_sym ].stylesheet
+end
+
+get "/dataset-js/:dataset_name" do
+  content_type "text/javascript"
+  dataset_name = params[:dataset_name].sub(".js","")
+  @@ms.datasets_by_name[ dataset_name.to_sym ].javascript
 end
 
 def check_for_errors

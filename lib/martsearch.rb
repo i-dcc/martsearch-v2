@@ -35,7 +35,7 @@ class Martsearch
       ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
       dataset = Dataset.new( ds_name, ds_conf )
       
-      if dataset.custom_sort
+      unless dataset.custom_sort.nil?
         # If we have a custom sorting routine, use a Mock object
         # to override the sorting method.
         dataset = Mock.method( dataset, :sort_results ) { eval( dataset.custom_sort ) }
@@ -87,34 +87,6 @@ class Martsearch
        pager.replace(@index.ordered_results)
     end
     return results
-  end
-  
-  # Utility function to return all of the custom stylesheets for the 
-  # datasets as one concatenated file.
-  def dataset_stylesheets
-    stylesheet = ""
-    
-    @datasets.each do |ds|
-      if ds.stylesheet
-        stylesheet << "\n" + ds.stylesheet
-      end
-    end
-    
-    return stylesheet
-  end
-  
-  # Utility function to return all of the custom javascript files for 
-  # the datasets as one concatenated file.
-  def dataset_javascripts
-    js = ""
-    
-    @datasets.each do |ds|
-      if ds.javascript
-        js << "\n" + ds.javascript
-      end
-    end
-    
-    return js
   end
   
   # Utility function to send an email to/from an address specified in the 

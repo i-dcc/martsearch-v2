@@ -1,0 +1,31 @@
+{
+  "display":              true,
+  "use_in_search":        true,
+  "index":                false,
+  "custom_sort":          true,
+  "custom_css":           false,
+  "custom_js":            false,
+  "custom_view_helpers" : false,
+  "custom_routes":        false,
+  "url":                  "http://www.i-dcc.org/biomart",
+  "dataset_name":         "dcc",
+  "display_name":         "Other Mutants/Resources",
+  "attribution":          "Mouse Genome Informatics (MGI)",
+  "attribution_link":     "http://www.informatics.jax.org/",
+  "description":          "Other mutant lines and resources tracked by MGI.",
+  "indexing": {},
+  "searching": {
+    "joined_index_field":       "mgi_accession_id_key",
+    "joined_biomart_filter":    "mgi_accession_id",
+    "joined_biomart_attribute": "mgi_accession_id",
+    "attributes": [
+      "mgi_accession_id",
+      "mgi_gene_traps",
+      "igtc",
+      "imsr",
+      "targeted_mutations",
+      "other_mutations"
+    ],
+    "filters": {}
+  }
+}

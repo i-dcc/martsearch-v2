@@ -2,7 +2,7 @@
 # aspects of this class/dataset/query can be configured via the 
 # configuration json.
 class Dataset
-  attr_reader :dataset, :dataset_name, :stylesheet, :javascript, :custom_sort
+  attr_reader :dataset, :dataset_name, :custom_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_reader :use_custom_view_helpers, :use_custom_routes, :config, :internal_name
   attr_accessor :url, :attributes, :filters, :display_name, :description
@@ -31,28 +31,22 @@ class Dataset
     end
     
     @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
-    @stylesheet               = nil
-    @javascript               = nil
-    @custom_sort              = nil
     @use_custom_view_helpers  = conf["custom_view_helpers"]
     @use_custom_routes        = conf["custom_routes"]
-    
-    file_path = File.expand_path(File.dirname(__FILE__))
-    
-    if conf["custom_sort"]
-      @custom_sort = load_file("#{file_path}/../config/datasets/#{@internal_name}/custom_sort.rb")
-    end
-
-    if conf["custom_css"]
-      @stylesheet = load_file("#{file_path}/../config/datasets/#{@internal_name}/style.css")
-    end
-
-    if conf["custom_js"]
-      @javascript = load_file("#{file_path}/../config/datasets/#{@internal_name}/javascript.js")
-    end
+    @custom_sort              = load_file_if_true( @config["custom_sort"], "custom_sort.rb" )
     
     @current_search_results = nil
     @current_sorted_results = nil
+  end
+  
+  # Function to return a the contents of custom css file (if configured) or nil
+  def stylesheet
+    load_file_if_true( @config["custom_css"], "style.css" )
+  end
+  
+  # Function to return a the contents of custom js file (if configured) or nil
+  def javascript
+    load_file_if_true( @config["custom_js"], "javascript.js" )
   end
   
   # Function to return true/false for if a dataset is to be used in 
@@ -244,12 +238,16 @@ class Dataset
   private
   
   # Utility function to read in a file and return it's contents 
-  # as a string.
-  def load_file( file_name )
-    file      = File.new(file_name,"r")
-    file_data = file.read
-    file.close
-    return file_data
+  # as a string if the given test is true.
+  def load_file_if_true( test, file_name )
+    if test
+      file      = File.new( "#{File.expand_path(File.dirname(__FILE__))}/../config/datasets/#{@internal_name}/#{file_name}","r")
+      file_data = file.read
+      file.close
+      return file_data
+    else
+      nil
+    end
   end
   
 end

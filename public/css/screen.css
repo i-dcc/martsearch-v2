@@ -464,12 +464,6 @@ table ul {
 	margin-bottom: 0;
 }
 
-/* Martsearchr Search Form */
-
-form#martsearchr {
-	text-align: center;
-}
-
 /* Search Results */
 
 #search_results h2 {
@@ -563,6 +557,11 @@ form#martsearchr {
 
 table.welcome td {
 	border: none;
+}
+
+table.welcome td p,
+table.welcome td ul {
+	font-size: larger;
 }
 
 table.welcome td td {

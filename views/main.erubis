@@ -1,113 +1,72 @@
-<form id="martsearchr" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
-  <input type="text" name="query" value="" size="50" />&nbsp;
-  <input type="submit" value="Search" /><br />
-  <small>
-    Enter gene/product identifiers (e.g. 
-    <a href="<%= BASE_URI %>/search/Cbx1">Cbx1</a> or
-    <a href="<%= BASE_URI %>/search/EPD0027_2_A01">EPD0027_2_A01</a>) 
-    or any other search term described in the 
-    <a href="<%= BASE_URI %>/help">help</a> section.
-  </small>
-</form>
+<table class="welcome">
+  <tr>
+    <td width="50%">
+      <p>
+        The IKMC MartSearch project combines data from numerous 
+        <a href="http://www.biomart.org">biomarts</a> to facilitate simple and 
+        expert searches performed by both people and computers.  Use the search bar 
+        to the right to use perform simple searches over our data.
+      </p>
+    </td>
+    <td width="50%">
+      <form id="martsearchr" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
+        <input type="text" name="query" value="" size="50" />&nbsp;
+        <input type="submit" value="Search" /><br />
+        <small>
+          Enter gene/product identifiers (e.g. 
+          <a href="<%= BASE_URI %>/search/Cbx1">Cbx1</a> or
+          <a href="<%= BASE_URI %>/search/EPD0027_2_A01">EPD0027_2_A01</a>) 
+          or any other <br />search term described in the 
+          <a href="<%= BASE_URI %>/help">help</a> section.
+        </small>
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h2>Advanced Searches</h2>
+      <p>
+        These links take you to the <a href="http://www.i-dcc.org/biomart">standard 
+        MartView interface</a> for our biomarts, with the described queries already 
+        set-up to run:
+      </p>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h2>The Biomarts</h2>
+      <p>
+        This portal presents a unified view over numerous biomarts containing data 
+        related to mouse mutations and knockouts.  An overview of these biomarts and 
+        the way in which they relate to each other can be seen in the figure below. 
+        For more information about this portal and the way in which it unites and 
+        searches the data, please see the <a href="<%= BASE_URI %>/about">about</a> section.
+      </p>
+      <!-- TODO: Insert image here - Viv like image -->
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h2>Information for Developers</h2>
+      <p>
+        While developing this portal we have made sure that all the code and data that we 
+        produce and use is completely open and free to use.  The following links will guide 
+        you to our source-code and some documentation on how you can interact with the 
+        services which we provide within your own applications or websites.
+      </p>
+      <ul>
+        <li><a href="http://github.com/dazoakley/martsearchr" target="_blank">All the code used to create this portal - it's 100% open-source</a></li>
+        <li><a href="http://github.com/dazoakley/biomart" target="_blank">The ruby API we use to interact with our biomarts</a></li>
+        <li><a href="http://wiki.github.com/dazoakley/martsearchr/using-the-i-dcc-search-engine-in-your-application" target="_blank">Using our search engine in your application</a></li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 <div class="clear"></div>
 
-<div>
-  <table class="welcome">
-    <tr>
-      <td width="55%" style="vertical-align:top;">
-        <h2>Welcome to the IKMC</h2>
-        <p>
-          The members of the International Knockout Mouse Consortium (IKMC) are working together to
-          mutate all protein-coding genes in the mouse using a combination of gene trapping and gene
-          targeting in C57BL/6 mouse embryonic stem (ES) cells. <a href="http://www.knockoutmouse.org/about" class="ext_link">read more</a>
-        </p>
-        <p>
-          <ul>
-            <li><a href="http://www.knockoutmouse.org/download">Download the IKMC Gene List</a></li>
-            <li><a href="http://www.knockoutmouse.org/about/targeting-strategies">View targeting strategies</a></li>
-            <li><a href="http://www.knockoutmouse.org/about/view-all-ikmc-allele-types">View all allele types</a></li>
-          </ul>
-        </p>
-        <p style="text-align:center;">
-          <a href="http://www.eucomm.org/"><img src="<%= BASE_URI %>/images/eucomm.png" alt="EUCOMM" /></a> 
-          <a href="http://www.norcomm.org/"><img src="<%= BASE_URI %>/images/norcomm.gif" alt="NorCOMM" /></a> 
-          <a href="http://www.knockoutmouse.org/about/komp"><img src="<%= BASE_URI %>/images/komp.png" alt="KOMP" /></a> 
-          <a href="http://www.tigm.org/"><img src="<%= BASE_URI %>/images/tigm.png" alt="TIGM" /></a>
-        </p>
-      </td>
-      <td width="45%">
-        <h2>News</h2>
-        <div id="news">
-          <table class="noborder">
-            <% (0..4).each do |i| %>
-              <% item = @news[i] %>
-              <tr>
-                <td><%= item["date"] %></td>
-                <td><a href="<%= item["link"] %>"><%= item["title"] %></a></td>
-              </tr>
-            <% end %>
-          </table>
-        </div>
-        <p>
-          <a href="http://www.knockoutmouse.org/blog/feed" class="feed">subscribe</a> | 
-          <a href="http://www.knockoutmouse.org/blog">more news...</a>
-        </p>
-      </td>
-    </tr>
-  </table>
-  
-  <hr />
-  
-  <table class="welcome">
-    <tr>
-      <td width="40%">
-        <h2>ES Cell Lines Progress</h2>
-        <div id="googlemeter_crop">
-          <%
-            chart_url =  "http://chart.apis.google.com/chart?"
-            chart_url << "chs=450x225" # size
-            chart_url << "&cht=gom"    # type
-            chart_url << "&chd=t:#{@chart["targ_prog"]},#{@chart["trap_prog"]}|#{@chart["all_prog"]}" # data (progress %)
-            chart_url << "&chxt=x,y" # print text labels
-            chart_url << "&chxl=0:|#{@chart["targ_count"]}+Targeted|#{@chart["trap_count"]}+Trapped|#{@chart["all_count"]}+Combined|1:|0|#{@chart["mouse_genes"]}" # labels
-            chart_url << "&chls=3,5,5|5|10|15" # styling for the arrows
-            chart_url << "&chma=0,0,0,10|0,0" # image padding
-          %>
-          <img src="<%= chart_url %>" alt="ES Cell Line Progress" />
-        </div>
-        <div style="text-align: center;">
-          Number of protein coding genes with mutant ES <br />
-          cell lines in the IKMC resource
-        </div>
-      </td>
-      <td width="60%">
-        <%
-          products = ["Vector", "ES Cell", "Mouse"]
-          statuses = ["Generated", "Available"]
-          projects = ["KOMP-CSD", "KOMP-Regeneron", "EUCOMM", "NorCOMM", "TIGM"]
-        %>
-        <h2>IKMC Gene Progress Summary</h2>
-        <table id="summary_staistics">
-          <tr>
-            <th></th>
-            <% projects.each do |project| %>
-            <th><%= project %></th>
-            <% end %>
-          </tr>
-          <% products.each do |product| %>
-            <% statuses.each do |status| %>
-              <tr>
-                <th><%= "#{product} #{status}" %></th>
-                <% projects.each do |project| %>
-                <td><%= link_to( @counts[product][status][project], "#{BASE_URI}/search?query=ikmc_project_product_status:\"#{project} #{product} #{status}\"" ) %></td>
-                <% end %>
-              </tr>
-            <% end %>
-          <% end %>
-        </table>
-      </td>
-    </tr>
-  </table>
-  
-</div>

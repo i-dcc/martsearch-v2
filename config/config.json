@@ -1,6 +1,6 @@
 {
-  "portal_name": "International Knockout Mouse Consortium",
-  "portal_url":  "http://www.i-dcc.org/labs/idcc_mouse_portal",
+  "portal_name": "IKMC MartSearch",
+  "portal_url":  "http://www.i-dcc.org/martsearch",
   "debug":       false,
   "email": {
     "to":   "mouseportal@sanger.ac.uk",

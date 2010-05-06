@@ -14,6 +14,9 @@
   </tr>
   <tr>
     <th>Mouse ID</th><td><%= img['mouse_barcode'] %></td>
-    <th>Comments</th><td><%= img['img_comments'] %></td>
+    <th>Age at Death</th><td><%= img['age_at_death'].gsub(" (at death)","") %></td>
+  </tr>
+  <tr>
+    <th>Comments</th><td colspan='3'><%= img['img_comments'] %></td>
   </tr>
 </table>

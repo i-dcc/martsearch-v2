@@ -281,6 +281,7 @@ def sanger_phenotyping_setup
         "mouse_barcode",
         "img_gender",
         "het_hom",
+        "age_at_death",
         "img_type",
         "tissue",
         "annotations",

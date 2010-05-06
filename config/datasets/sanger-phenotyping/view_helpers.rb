@@ -304,7 +304,7 @@ def sanger_phenotyping_setup
     end
     
     image_data.sort{ |a,b| "#{a['tissue']}-#{a['img_gender']}" <=> "#{b['tissue']}-#{b['img_gender']}" }.each do |result|
-      unless expression_results[ result['img_colony_prefix'] ].nil?
+      if ( expression_results[ result['img_colony_prefix'] ] != nil ) and ( result['img_type'] == "Wholemount Expression" )
         expression_results[ result['img_colony_prefix'] ]["images"].push(result)
       end
     end

@@ -765,3 +765,11 @@ table.ikmc-pipeline-progress-bar td.end_error {
 table.ikmc-pipeline-progress-bar td.end_warn {
   background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-warn.png');
 }
+
+/* Advanced Form */
+#advanced_form {
+  display: none;
+  padding: 10px;
+  border: 1px solid #838383;
+  background: #eee;
+}

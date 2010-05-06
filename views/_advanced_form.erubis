@@ -1,0 +1,61 @@
+<%-
+  search_fields = @ms.config['index']['advanced_form_fields'].sort_by { |field| field['display'] }
+-%>
+
+<form id="advanced_form" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
+  <p>
+    Results that match 
+    <select name="logical_operator">
+      <option value="AND">all</option>
+      <option value="OR">any</option>
+    </select>
+    of the following conditions:
+  </p>
+  
+  <table>
+    <thead>
+      <th>Field</th>
+      <th>Condition</th>
+      <th>Value</th>
+      <th>Priority</th>
+      <th></th>
+    </thead>
+    
+    <tbody id="sub_queries">
+      <tr class="form_row">
+        <td>
+          <select name="field">
+            <option value="text" selected>Any field</option>
+            <% search_fields.each do |field| %>
+              <option value="<%= field['source'] %>"><%= field['display'] %></option>
+            <% end %>
+          </select>
+        </td>
+        
+        <td>
+          <select name="condition">
+            <option value="true">Contains</option>
+            <option value="false">Does not contain</option>
+          </select>
+        </td>
+        
+        <td><input type="text" name="query" value="" /></td>
+        
+        <td>
+          <select name="priority">
+            <option value="1.5">High</option>
+            <option value="1" selected>Normal</option>
+            <option value="0.5">Low</option>
+          </select>
+        </td>
+        
+        <td>
+          <input type="submit" class="adv_form_row_rmv" value="-" />
+          <input type="submit" class="adv_form_row_add" value="+" />    
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <input type="submit" value="Search">
+</form>

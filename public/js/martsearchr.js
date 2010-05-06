@@ -4,6 +4,7 @@
 jQuery(document).ready(function() {
   setup_toggles();
   check_browser_compatibility();
+  setup_advanced_search_form();
   
   // Add an observer for all the returned dataset links - this 
   // will make sure that the target elment for the link is visible.
@@ -149,3 +150,74 @@ function check_browser_compatibility() {
     jQuery(".sanger-phenotyping_heatmap th").css("height","auto");
   }
 }
+
+// Advanced Search Form JS helpers
+function setup_advanced_search_form(){
+    // Toggle advanced form display
+    jQuery('#display_advanced_form').click(function(){
+        jQuery('#advanced_form').toggle('slide');
+        return false;
+    })
+    
+    // Will reset field values of the given row
+    function reset_row( row ) {
+        jQuery('[name="field"]', row).val('text');
+        jQuery('[name="condition"]', row).val('true');
+        jQuery('[name="query"]', row).val('');
+        jQuery('[name="priority"]', row).val('1');
+    }
+    
+    // On load
+    reset_row( jQuery('#sub_queries tr:first') );
+    jQuery('.adv_form_row_rmv').attr('disabled', 'disabled');
+    
+    // Will add a new row to the form
+    jQuery('.adv_form_row_add').live('click', function(){
+        var current_row = jQuery(this).closest('.form_row');
+        var new_row     = jQuery(current_row).clone().insertAfter( jQuery(current_row) );
+        reset_row( jQuery(new_row) );
+        
+        jQuery('.adv_form_row_rmv:disabled').attr("disabled", "");
+        return false;
+    });
+    
+    // Will remove a row from the form
+    jQuery('.adv_form_row_rmv').live('click', function(){
+        jQuery(this).closest('.form_row').remove();
+        
+        if( jQuery('.adv_form_row_rmv').length == 1 ) 
+            jQuery('.adv_form_row_rmv').attr("disabled", "disabled");
+        
+        return false;
+    });
+    
+    // When submiting advanced form data
+    jQuery('#advanced_form').submit( function() {
+        var sub_queries = [];
+        
+        jQuery('#sub_queries tr').each(function(){
+            var current_row = jQuery(this);
+            
+            var field       = jQuery('[name="field"]',     current_row).val();
+            var condition   = jQuery('[name="condition"]', current_row).val();
+            var text        = jQuery('[name="query"]',     current_row).val();
+            var priority    = jQuery('[name="priority"]',  current_row).val();
+            
+            if( text != '' ){
+                var sub_query = field + ':' + text + "^" + priority;
+                if( condition == 'false' ) sub_query = '-' + sub_query;
+                
+                sub_queries.push( sub_query );
+            }
+        });
+        
+        var logical_operator = jQuery('[name="logical_operator"]').val();
+        var query = sub_queries.join( " " + logical_operator + " " );
+        
+        jQuery('#martsearchr input[name="query"]').val( query );
+        jQuery('#martsearchr').submit();
+        return false;
+    });
+}
+
+

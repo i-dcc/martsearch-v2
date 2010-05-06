@@ -16,7 +16,7 @@
     "url":             "http://www.sanger.ac.uk/mouseportal/solr",
     "docs_per_page":   10,
     "schema_name":     "martsearch-search",
-    "sort_results_by": "marker_symbol_str asc",
+    "sort_results_by": "score desc",
     "schema": {
       "unique_key": "mgi_accession_id_key",
       "fields": {
@@ -172,6 +172,39 @@
       "ensembl-mouse-go_bio_process",
       "ensembl-mouse-go_cell_component",
       "ensembl-mouse-go_mol_function"
+    ],
+    "advanced_form_fields": [
+        { "source": "mgi_accession_id_key",  "display": "MGI Accession ID" },
+        { "source": "marker_symbol",         "display": "Marker Symbol" },
+        { "source": "synonym",               "display": "Synonym" },
+        { "source": "ensembl_gene_id",       "display": "Ensembl Gene ID" },
+        { "source": "ensembl_peptide_id",    "display": "Ensembl Peptide ID" },
+        { "source": "ensembl_transcript_id", "display": "Ensembl Transcript ID" },
+        { "source": "vega_gene_id",          "display": "Vega Gene ID" },
+        { "source": "ncbi_gene_id",          "display": "NCBI Gene ID" },
+        { "source": "ccds_id",               "display": "CCDS ID" },
+        { "source": "omim_id",               "display": "OMIM ID" },
+        { "source": "omim_desc",             "display": "OMIM Description" },
+        { "source": "ikmc_project_id",       "display": "IKMC Project ID" },
+        { "source": "targeting_design",      "display": "Targeting Design" },
+        { "source": "intermediate_vector",   "display": "Intermediate Vector" },
+        { "source": "targeting_vector",      "display": "Targeting Vector" },
+        { "source": "escell",                "display": "ES Cell" },
+        { "source": "colony_prefix",         "display": "Colony Prefix" },
+        { "source": "sanger_phenotype",      "display": "Sanger Phenotype" },
+        { "source": "phenotype",             "display": "Phenotype" },
+        { "source": "sanger_expression",     "display": "Sanger Expression" },
+        { "source": "expression",            "display": "Expression" },
+        { "source": "mp_id",                 "display": "MP ID" },
+        { "source": "mp_term",               "display": "MP Term" },
+        { "source": "go_id",                 "display": "GO ID" },
+        { "source": "go_term",               "display": "GO Term" },
+        { "source": "interpro_id",           "display": "Interpro ID" },
+        { "source": "interpro_desc",         "display": "Interpro Description" },
+        { "source": "emma_id",               "display": "Emma ID" },
+        { "source": "pubmed_id",             "display": "Pubmed ID" },
+        { "source": "emap_id",               "display": "EMAP ID" },
+        { "source": "emap_term",             "display": "EMAP Term" }
     ]
   },
   "browsable_content": {

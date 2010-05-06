@@ -5,32 +5,9 @@
 
 <div class="accordion">
   <% sanger_phenotyping_test_groupings_order.each do |group| %>
-    <%
-      tests             = sanger_phenotyping_test_groupings[group]
-      no_subjects       = result_data["sanger-phenotyping"].size
-      no_positive_tests = 0
-      
-      result_data["sanger-phenotyping"].each do |result|
-        tests.each do |test|
-          if sanger_phenotyping_css_class_for_test(result[test]) == "significant_difference"
-            no_positive_tests = no_positive_tests + 1
-          end
-        end
-      end
-    %>
-    <h6>
-      <a href="">
-        <%= group %> - 
-        <span class="header_annotation">
-          <%= no_positive_tests %> positive phenotyping 
-          <% if no_positive_tests == 1 %>test<% else %>tests<% end %> 
-          (performed on <%= no_subjects %> zygosity 
-          <% if no_subjects == 1 %>group<% else %>groups<% end %>)
-        </span>
-      </a>
-    </h6>
+    <% tests = sanger_phenotyping_test_groupings[group] %>
+    <h6><a href=""><%= group %></a></h6>
     <div>
-      
       <table class="sanger-phenotyping_heatmap">
         <thead>
           <tr>

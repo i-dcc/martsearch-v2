@@ -20,7 +20,6 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
     run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
     run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
-    run "ln -nfs #{release_path}/public #{shared_path}/htdocs/dev/idcc_mouseportal"
   end
   
   desc "Set the permissions of the filesystem so that others in the team can deploy"

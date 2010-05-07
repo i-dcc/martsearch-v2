@@ -30,11 +30,23 @@
         MartView interface</a> for our biomarts, with the described queries already 
         set-up to run:
       </p>
-      <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
+      <ol>
+        <li><a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=mmusculus_gene_ensembl.default.feature_page.ensembl_gene_id|mmusculus_gene_ensembl.default.feature_page.ensembl_transcript_id|mmusculus_gene_ensembl.default.feature_page.start_position|mmusculus_gene_ensembl.default.feature_page.end_position|mmusculus_gene_ensembl.default.feature_page.chromosome_name|dcc.default.feature_page.marker_symbol|dcc.default.feature_page.mgi_accession_id|dcc.default.feature_page.ikmc_project|dcc.default.feature_page.ikmc_project_id|dcc.default.feature_page.status|dcc.default.feature_page.mouse_available|dcc.default.feature_page.escell_available|dcc.default.feature_page.vector_available&FILTERS=mmusculus_gene_ensembl.default.filters.chromosome_name."1"|dcc.default.filters.status."Mice - Genotype confirmed,Mice - Germline transmission,Mice - Microinjection in progress,ES Cells - Targeting Confirmed"|dcc.default.filters.project."EUCOMM"&VISIBLEPANEL=resultspanel' target="_blank">Find all EUCOMM ES cells that have the status "Targeting Confirmed" on Chromosome 1</a></li>
+        <li>
+          <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=kermits.default.attributes.sponsor|kermits.default.attributes.marker_symbol|kermits.default.attributes.status|kermits.default.attributes.emma|kermits.default.attributes.mi_centre|idcc_targ_rep.default.attributes.pipeline|idcc_targ_rep.default.attributes.ikmc_project_id|idcc_targ_rep.default.attributes.mgi_accession_id|idcc_targ_rep.default.attributes.targeting_vector|idcc_targ_rep.default.attributes.escell_clone|idcc_targ_rep.default.attributes.cassette|idcc_targ_rep.default.attributes.backbone&FILTERS=kermits.default.filters.status."Genotype Confirmed"|kermits.default.filters.mi_centre."WTSI"&VISIBLEPANEL=resultspanel' target="_blank">
+            Find all IKMC mice bred at WTSI which have genotype confirmed heterozygotes, 
+            along with the cassette, backbone and name of the targeting vector used to 
+            make the mutation</a>. (This query joins the "kermits" dataset which records 
+          mouse breeding details; to the IKMC targeting repository, which stores data 
+          on vectors, cells and details of the mutation).
+        </li>
+        <li>
+          <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=template.default.attributes.tmp_template_id_key|template.default.attributes.tmp_gene_symbol|template.default.attributes.tmp_gene_description|template.default.attributes.tmp_chromosone_location|template.default.attributes.tmp_aliases|template.default.attributes.ass_assay_id_key|template.default.attributes.assay_image|template.default.attributes.emap_term|template.default.attributes.ann_strength|template.default.attributes.ann_pattern|template.default.attributes.ann_comments|dcc.default.attributes.marker_symbol|dcc.default.attributes.mgi_accession_id|dcc.default.attributes.mouse_available|dcc.default.attributes.escell_available|dcc.default.attributes.vector_available|dcc.default.attributes.status&FILTERS=template.default.filters.ann_strength.%22strong%22|template.default.filters.ann_pattern.%22regional%22|dcc.default.filters.escell_available.%221%22&VISIBLEPANEL=resultspanel' target="_blank">
+            Find all genes with available ES cells which have strong regional Eurexpress 
+            annotation</a>. (This query joins the Eurexpress dataset to the IKMC Genes and 
+          projects dataset).
+        </li>
+      </ol>
     </td>
   </tr>
   <tr>

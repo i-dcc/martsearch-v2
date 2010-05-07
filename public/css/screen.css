@@ -560,8 +560,13 @@ table.welcome td {
 }
 
 table.welcome td p,
-table.welcome td ul {
+table.welcome td ul,
+table.welcome td ol {
 	font-size: larger;
+}
+
+table.welcome td li {
+	margin-bottom: 5px;
 }
 
 table.welcome td td {

@@ -1,4 +1,4 @@
-<div id="issues">
+<div class="larger">
   <h2>Reporting Issues/Bugs and Requests</h2>
   <p>
     We have tried our best to build this portal as free of problems as possible, but 
@@ -6,12 +6,10 @@
     request a new feature that we have not yet thought of, please send an email to 
     <a href="mailto:<%= @ms.config["email"]["to"] %>"><%= @ms.config["email"]["to"] %></a>.
   </p>
-</div>
+  
+  <hr />
 
-<hr />
-
-<div id="adv_search">
-  <h2 id="help_search">Searching</h2>
+  <h2>Searching</h2>
   <p>
     By default when you submit a search (without any of the query modifiers detailed 
     below) your search will be carried out over the following terms:

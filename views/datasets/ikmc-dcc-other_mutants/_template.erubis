@@ -1,0 +1,58 @@
+<%
+  result = result_data["ikmc-dcc-other_mutants"]
+  
+  layout_setup = {
+    #"mgi_gene_traps" => {
+    #  :desc => "",
+    #  :url  => "",
+    #  :sing => "",
+    #  :mult => ""
+    #},
+    "imsr" => {
+      :desc => "International Mouse Strain Resource (IMSR)",
+      :url  => "http://www.informatics.jax.org/imsr/fetch?page=imsrSummary&op:name=contains&state=LM&state=OV&state=EM&state=SP&state=ES&type=&op:ga_symname=&ga_symname=#{result_data["index"]["marker_symbol"]}&ga_symnameBreadth=CM&mutationType=chromosomal+aberration&mutationType=chemically+induced+mutation&mutationType=deletion&mutationType=duplication&mutationType=gene+trap&mutationType=insertion&mutationType=inversion&mutationType=other&mutationType=radiation+induced+mutation&mutationType=robertsonian+translocation&mutationType=spontaneous+mutation&mutationType=reciprocal+translocation&mutationType=targeted+mutation&mutationType=transposition&noLimit=",
+      :sing => "strain/ES cell line",
+      :mult => "strains/ES cell lines"
+    },
+    "igtc" => {
+      :desc => "International Gene Trap Consortium (IGTC)",
+      :url  => "http://www.genetrap.org/cgi-bin/annotation.py?mgi=#{result_data["index"]["mgi_accession_id_key"]}",
+      :sing => "gene trap",
+      :mult => "gene traps"
+    },
+    "targeted_mutations" => {
+      :desc => "Targeted mutations in MGI",
+      :url  => "http://www.informatics.jax.org/searches/allele_report.cgi?markerID=#{result_data["index"]["mgi_accession_id_key"]}&alleleCategory=targAll",
+      :sing => "mutant",
+      :mult => "mutants"
+    },
+    "other_mutations" => {
+      :desc => "Other mutations in MGI",
+      :url  => "http://www.informatics.jax.org/searches/allele_report.cgi?markerID=#{result_data["index"]["mgi_accession_id_key"]}&alleleCategory=not%20targeted%20(all)",
+      :sing => "mutant",
+      :mult => "mutants"
+    }
+  }
+%>
+
+<table class="noborder nobg nopadding">
+  <tbody>
+    <% layout_setup.each do |key,conf| %>
+      <% if result[key] > 0 %>
+        <tr>
+          <td><%= conf[:desc] %>:</td>
+          <td>
+            <a href="<%= conf[:url] %>" target="_blank">
+              <%= result[key] %> 
+              <% if result[key] == 1 %>
+                <%= conf[:sing] %>
+              <% else %>
+                <%= conf[:mult] %>
+              <% end %>
+            </a>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

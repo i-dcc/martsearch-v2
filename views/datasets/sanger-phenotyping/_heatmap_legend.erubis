@@ -25,7 +25,7 @@
   </tr>
   <tr>
     <td class="noborder"></td>
-    <td class="pheno_result noborder"><a href=""><img src="<%= BASE_URI %>/images/silk/chart_bar.png" /></a></td>
+    <td class="pheno_result noborder"><img src="<%= BASE_URI %>/images/silk/chart_bar.png" /></td>
     <td class="noborder">link to a phenotyping test report page</td>
     <td class="noborder"></td>
     <td class="noborder"></td>

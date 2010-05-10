@@ -10,8 +10,8 @@
   "url":                  "http://www.i-dcc.org/biomart",
   "dataset_name":         "idcc_targ_rep",
   "display_name":         "IKMC Targeted Products",
-  "attribution":          "The International Data Coordination Centre (I-DCC)",
-  "attribution_link":     "http://www.i-dcc.org/targ_rep",
+  "attribution":          "The International Knockout Mouse Consortium (IKMC)",
+  "attribution_link":     "http://www.knockoutmouse.org/",
   "description":          "Gene targeted mutant ES cells and vectors produced by members of The International Knockout Mouse Consortium (IKMC).",
   "indexing": {
     "allow_document_creation": false,

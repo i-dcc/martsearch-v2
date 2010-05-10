@@ -40,7 +40,7 @@ DEFAULT_CSS_FILES = [
   "jquery.prettyPhoto.css",
   "jquery.tablesorter.css",
   "jquery.fontresize.css",
-  "jquery-ui-1.8.redmond.css",
+  "jquery-ui-1.8.1.redmond.css",
   "screen.css"
 ]
 DEFAULT_JS_FILES  = [
@@ -50,7 +50,7 @@ DEFAULT_JS_FILES  = [
   "jquery.cookie.js",
   "jquery.fontResize.js",
   "jquery.scrollTo-1.4.2.js",
-  "jquery-ui-1.8.min.js",
+  "jquery-ui-1.8.1.min.js",
   "martsearchr.js"
 ]
 

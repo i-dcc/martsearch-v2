@@ -17,12 +17,7 @@ sorted_results = {}
       "mgi_accession_id"   => result["mgi_accession_id"],
       "status"             => result["status"],
       "marker_symbol"      => result["marker_symbol"],
-      "ensembl_gene_id"    => result["ensembl_gene_id"],
-      "igtc"               => result["igtc"],
-      "imsr"               => result["imsr"],
-      "mgi_gene_traps"     => result["mgi_gene_traps"],
-      "targeted_mutations" => result["targeted_mutations"],
-      "other_mutations"    => result["other_mutations"]
+      "ensembl_gene_id"    => result["ensembl_gene_id"]
     }
   end
   

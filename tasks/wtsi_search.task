@@ -1,0 +1,92 @@
+require "rubygems"
+require "builder"
+require "net/http"
+require "erubis"
+
+NAME_ON_SANGER_INDEX = 'Sanger Mouse Portal Data'
+DESC_ON_SANGER_INDEX = 'Unified access to the different resources available from the Institute or its collaborators'
+DOCS_PER_FILE        = 1000 # Retrieve data by chunks of 1000 docs
+WTSI_XML_DIR         = "#{File.dirname(__FILE__)}/../tmp/wtsi_document_xmls"
+WTSI_XML_DIR_DAILY   = WTSI_XML_DIR + '/' + Date.today.to_s
+
+
+# Setup HTTP Client
+@@http_client = Net::HTTP
+if ENV['http_proxy'] or ENV['HTTP_PROXY']
+  proxy = URI.parse( ENV['http_proxy'] ) || URI.parse( ENV['HTTP_PROXY'] )
+  @@http_client = Net::HTTP::Proxy( proxy.host, proxy.port )
+end
+
+# POST a request to the Solr index
+def index_request( params={} )
+  res = @@http_client.post_form( URI.parse(@config['index']['url'] + '/select'), params.update({ "wt" => "ruby" }) )
+  
+  if res.code.to_i != 200
+    raise IndexSearchError, "Index Search Error: #{res.body}"
+  else
+    return eval(res.body)
+  end
+end
+
+
+##
+##  Tasks definitions
+##
+
+namespace :wtsi do
+  
+  desc "Cleans up old WTSI document XML directories"
+  task :clean_daily_directories do
+    begin
+      Dir.chdir(WTSI_XML_DIR) do
+        directories = Dir.glob("*").sort
+        while directories.size > 4
+          system("/bin/rm -rf '#{directories.shift}'")
+        end
+      end
+    rescue Errno::ENOENT => e
+      Dir.mkdir(WTSI_XML_DIR)
+    end
+  end
+  
+  desc "Generates the search index document XML and saves it in the /tmp/wtsi_document_xmls directory"
+  task :build_document_xml => :clean_daily_directories do
+    begin
+      Dir.mkdir( WTSI_XML_DIR_DAILY )
+    rescue Errno::EEXIST => e
+      system("/bin/rm -rf '#{WTSI_XML_DIR_DAILY}'")
+      Dir.mkdir( WTSI_XML_DIR_DAILY )
+    end
+    
+    # Change to temp dir
+    tmpdir = Dir.mktmpdir
+    Dir.chdir(tmpdir) do
+      puts "Working in #{tmpdir}"
+      
+      # Get number of docs in mouse portal index
+      data = index_request( :q => '*', :start => 0, :rows => 1 )
+      nb_docs = data['response']['numFound']
+      
+      # Retrieve mouse portal data by chunks of 1000 docs
+      docs =
+        (0..nb_docs).step( DOCS_PER_FILE ).collect do |step|
+          data = index_request( :q => '*', :start => step, :rows => DOCS_PER_FILE )
+          data['response']['docs']
+        end
+      docs.flatten!
+      
+      # Dump data to XML following WTSI search index requirements
+      template_file = File.new( "#{File.dirname(__FILE__)}/wtsi_data.xml.erubis", 'r' )
+      template = Erubis::Eruby.new( template_file.read )
+      template_file.close()
+      
+      xml_file = File.new( "mouseportal-data.xml", 'w')
+      xml_file.print( template.result( binding ) )
+      xml_file.close()
+      
+      system("/bin/mv * #{WTSI_XML_DIR_DAILY}/")
+    end
+    
+    system("/bin/rmdir #{tmpdir}")
+  end
+end

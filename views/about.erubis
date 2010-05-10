@@ -1,63 +1,63 @@
-<h2>About This Portal</h2>
-<p>
-  This portal is a user-friendly search tool which reads and dynamically 
-  re-presents summary data about targeted and trapped mouse knockout 
-  availability and structure from a number distinct BioMarts. These 
-  BioMarts currently contain: 
-  <ul>
-    <li>Gene information from MGI</li>
-    <li>Knockout information from KOMP, EUCOMM, NorCOMM, Regeneron and TIGM</li>
-    <li>Gene expression information from Eurexpress</li>
-    <li>Phenotyping data from Europhenome</li>
-    <li>Mouse distribution information from EMMA</li>
-  </ul>
-</p>
-<p>
-  And shall soon also include (when these datasets become publicly available):
-  <ul>
-    <li>Gene expression information from GXD</li>
-  </ul>
-</p>
-<p>
-  Our motivation arises from our belief that BioMarts are an excellent 
-  tool for allowing large datasets to be presented and accessed by 
-  computers and expert users.  However, BioMarts need more friendly 
-  user search mechanisms and interfaces for casual users: this 
-  portal is one attempt to provide such an interface.  In the process, 
-  we believe we have created a portal for the mouse community that can 
-  be easily extended to present summarised data as it arises, without 
-  extensive re-development.
-</p>
+<div class="larger">
+  <h2>About This Portal</h2>
+  <p>
+    This portal is a user-friendly search tool which reads and dynamically 
+    re-presents summary data about targeted and trapped mouse knockout 
+    availability and structure from a number distinct BioMarts. These 
+    BioMarts currently contain: 
+    <ul>
+      <li>Gene information from MGI</li>
+      <li>Knockout information from KOMP, EUCOMM, NorCOMM, Regeneron and TIGM</li>
+      <li>Gene expression information from Eurexpress</li>
+      <li>Phenotyping data from Europhenome</li>
+      <li>Mouse distribution information from EMMA</li>
+    </ul>
+  </p>
+  <p>
+    And shall soon also include (when these datasets become publicly available):
+    <ul>
+      <li>Gene expression information from GXD</li>
+    </ul>
+  </p>
+  <p>
+    Our motivation arises from our belief that BioMarts are an excellent 
+    tool for allowing large datasets to be presented and accessed by 
+    computers and expert users.  However, BioMarts need more friendly 
+    user search mechanisms and interfaces for casual users: this 
+    portal is one attempt to provide such an interface.  In the process, 
+    we believe we have created a portal for the mouse community that can 
+    be easily extended to present summarised data as it arises, without 
+    extensive re-development.
+  </p>
 
-<hr />
+  <hr />
 
-<h3>How This Portal Works</h3>
-<p>
-  This portal is powered by software called 
-  <a href="http://github.com/dazoakley/martsearchr/">MartSearchr</a>, 
-  a server-side client written in Ruby used to pull together data from 
-  distributed data sources (housed in Biomarts) into a single unified view.
-</p>
-<p>
-  <!-- TODO: link to Solr's webpage -->
-  MartSearchr works by first building a search engine (using 
-  <a href="" target="_blank">Apache Solr</a>) looking at all of the 
-  available search terms in the cloud of Biomarts and tying/grouping them to 
-  an MGI gene locus.  Here are some diagrams explaining how this linking is 
-  done and the relationships between the data:
-  <ul>
-    <li>
-      <a href="<%= BASE_URI %>/images/about-page/indexing-strategy.png" title="How the search engine is built" rel="prettyPhoto">How the search engine is built</a>.
-    </li>
-    <li>
-      <a href="<%= BASE_URI %>/images/about-page/whats-in-a-doc.png" title="How the biomarts are linked into the search engine" rel="prettyPhoto">How the biomarts are linked into the search engine</a>.
-    </li>
-  </ul>
-</p>
-<p>
-  When a user performs a search, the query is first run against the search engine 
-  which returns a paginated list of MGI gene loci and associated meta data, this meta 
-  data is then used to retrieve the information from the cloud of biomarts (data sources) 
-  available to the search interface.  A graphical representation of this process is 
-  <a href="<%= BASE_URI %>/images/about-page/portal-b-search.png" title="I-DCC WP4: Portal B - The Search Process" rel="prettyPhoto">available here</a>.
-</p>
+  <h3>How This Portal Works</h3>
+  <p>
+    This portal is powered by software called 
+    <a href="http://github.com/dazoakley/martsearchr/">MartSearchr</a>, 
+    a server-side client written in Ruby used to pull together data from 
+    distributed data sources (housed in Biomarts) into a single unified view.
+  </p>
+  <p>
+    MartSearchr works by first building a search engine (using 
+    <a href="http://lucene.apache.org/solr/" target="_blank">Apache Solr</a>) 
+    looking at all of the available search terms in the cloud of Biomarts and 
+    tying/grouping them to an MGI gene locus.  Here are some diagrams explaining 
+    how this linking is done and the relationships between the data:
+    <ul>
+      <li>
+        <a href="<%= BASE_URI %>/images/about-page/indexing-strategy.png" title="How the search engine is built" rel="prettyPhoto">How the search engine is built</a>.
+      </li>
+      <li>
+        <a href="<%= BASE_URI %>/images/about-page/ikmc-biomart-links.png" title="How the biomarts are linked into the search engine (and portal)" rel="prettyPhoto">How the biomarts are linked into the search engine (and portal)</a>.
+      </li>
+    </ul>
+  </p>
+  <p>
+    When a user performs a search, the query is first run against the search engine 
+    which returns a paginated list of MGI gene loci and associated meta data, this meta 
+    data is then used to retrieve the information from the cloud of biomarts (data sources) 
+    available to the search interface.
+  </p>
+</div>

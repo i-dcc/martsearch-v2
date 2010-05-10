@@ -1,0 +1,256 @@
+<h1>Gene Report (project <%= @data[:project_id] %>)</h1>
+<h3><%= @data[:marker_symbol] %> <%= @data[:mgi_accession_id] %> <%= @data[:ensembl_gene_id][0] %> <%= @data[:vega_gene_id][0] %></h3>
+
+<div id="search_results">
+  <div class="result">
+    
+    <!-- Pipeline progress bar -->
+    
+    <div class="pipeline_stage hide_on_print">
+      <table class="sanger-htgt_targ_allele_progress">
+        <caption>Pipeline Stage (<%= @data[:pipeline] %>)</caption>
+        <thead>
+          <th class="nobg noborder"></th>
+          <th width="20%" class="centre">Pre-pipeline</th>
+          <th width="20%" class="centre">Designs</th>
+          <th width="20%" class="centre">Vectors</th>
+          <th width="20%" class="centre">ES Cells</th>
+          <th width="20%" class="centre">Mice</th>
+        </thead>
+
+        <tbody>
+          <tr>
+            <% if not @data[:product_status].grep(/Mouse/).empty? %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="end_normal normal"><%= @data[:status] %></td>
+            <% elsif not @data[:product_status].grep(/ES Cell/).empty? %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_incomp"><%= @data[:status] %></td>
+              <td class="end_incomp incomp"></td>
+            <% elsif not @data[:vector_available].grep(/Vector/).empty? %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_incomp"><%= @data[:status] %></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="end_incomp incomp"></td>
+            <% else %>
+              <td class="start_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="end_incomp incomp"></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    
+    <!-- Mice -->
+    
+    <div class="dataset">
+      <h4 class="dataset_title toggle-open">Mice</h4>
+      <div class="dataset_content">
+        <% if @data[:mice] %>
+          <table>
+            <thead>
+              <th>Gene</th>
+              <th>Allele</th>
+              <th>Targeting Vector</th>
+              <th>ES Cell Clone</th>
+              <th>Parental ES Cell Strain</th>
+              <th>Parental ES Cell Line</th>
+            </thead>
+            <tbody>
+              <% for mouse in @data[:mice] %>
+              <tr>
+                <td><%= mouse[:marker_symbol] %></td>
+                <td><%= mouse[:allele_name] %></td>
+                <td><%= @data[:escell_clones][:conditionals][mouse[:escell_clone]][:targeting_vector]%></td>
+                <td><%= mouse[:escell_clone] %></td>
+                <td><%= mouse[:escell_strain] %></td>
+                <td><%= mouse[:escell_line] %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <em>No mouse available for this project.</em>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+    
+    
+    <!-- ES Cell Clones (Conditional) -->
+    
+    <div class="dataset" style="page-break-after:always;">
+      <h4 class="dataset_title toggle-open">ES Cell Clones (Conditional)</h4>
+      <div class="dataset_content">
+        <img src="<%= @data[:escell_cond_img_link] %>" width="900px" />
+        <div class="clear"></div>
+        
+        <% if @data[:escell_clones][:conditionals] %>
+          <table>
+            <thead>
+              <th>ES Cell Clone</th>
+              <th>Targeting Vector</th>
+              <th>Allele</th>
+              <th>Parental ES Cell Line</th>
+              <th class="hide_on_print">Genbank File</th>
+            </thead>
+
+            <tbody>
+              <% @data[:escell_clones][:conditionals].keys.sort.each_with_index do |escell_name,i| %>
+                <% details = @data[:escell_clones][:conditionals][escell_name] %>
+                <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
+                  <td><%= escell_name %></td>
+                  <td><%= details[:targeting_vector] %></td>
+                  <td><%= @data[:marker_symbol] %><sup><%= details[:allele_symbol_superscript] %></sup></td>
+                  <td><%= details[:parental_cell_line] %></td>
+                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:escell_clone] %>" target="_blank">View</a></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% if @data[:escell_clones][:conditionals].keys.length > 1 %>
+            <a href="#" id="toggle_conditionals" class="hide_on_print">
+              Click here to see <%= @data[:escell_clones][:conditionals].keys.length - 1 %> more...
+            </a>
+          <% end %>
+        <% else %>
+          <em>No conditional ES Cell Clone available for this project.</em>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+    
+    
+    <!-- ES Cell Clones (Non-Conditionals) -->
+    
+    <div class="dataset">
+      <h4 class="dataset_title toggle-open">ES Cell Clones (Non-Conditional)</h4>
+      <div class="dataset_content">
+        <img src="<%= @data[:escell_non_cond_img_link] %>" width="900px" />
+        <div class="clear"></div>
+        
+        <% if @data[:escell_clones][:non_conditionals] %>
+          <table>
+            <thead>
+              <th>ES Cell Clone</th>
+              <th>Targeting Vector</th>
+              <th>Allele</th>
+              <th>Parental ES Cell Line</th>
+              <th class="hide_on_print">Genbank File</th>
+            </thead>
+
+            <tbody>
+              <% @data[:escell_clones][:non_conditionals].keys.sort.each_with_index do |escell_name, i| %>
+                <% details = @data[:escell_clones][:non_conditionals][escell_name] %>
+                <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
+                  <td><%= escell_name %></td>
+                  <td><%= details[:targeting_vector] %></td>
+                  <td><%= @data[:marker_symbol] %><sup><%= details[:allele_symbol_superscript] %></sup></td>
+                  <td><%= details[:parental_cell_line] %></td>
+                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:escell_clone] %>" target="_blank">View</a></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% if @data[:escell_clones][:non_conditionals].keys.length > 1 %>
+            <a href="#" id="toggle_non_conditionals" class="hide_on_print">
+              Click here to see <%= @data[:escell_clones][:non_conditionals].keys.length - 1 %> more...
+            </a>
+          <% end %>
+        <% else %>
+          <em>No Non-Conditional ES Cell Clone available for this project.</em>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+    
+    
+    <!-- Targeting Vectors -->
+    
+    <div class="dataset">
+      <h4 class="dataset_title toggle-open">Targeting Vectors</h4>
+      <div class="dataset_content">
+        <% if @data[:targeting_vectors] %>
+          <table>
+            <thead>
+              <th>Gene</th>
+              <th>Design ID</th>
+              <th>Design Type</th>
+              <th>Targeting Vector</th>
+              <th>Floxed Exon</th>
+              <th>Cassette</th>
+              <th>Backbone</th>
+              <th class="hide_on_print">Genbank File</th>
+            </thead>
+            <tbody>
+              <% @data[:targeting_vectors].each_pair do |targ_vec, targ_vec_details| %>
+                <tr>
+                  <td><%= @data[:marker_symbol] %></td>
+                  <td><%= @data[:design_id] %></td>
+                  <td><%= targ_vec_details[:design_type] %></td>
+                  <td><%= targ_vec %></td>
+                  <td><%= @data[:floxed_exon] %></td>
+                  <td><%= @data[:cassette] %></td>
+                  <td><%= @data[:backbone] %></td>
+                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:targeting_vector] %>" target="_blank">View</a></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <em>No targeting vector available for this project.</em>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+    
+    
+    <!-- Intermediate Vectors -->
+    
+    <div class="dataset">
+      <h4 class="dataset_title toggle-open">Intermediate Vectors</h4>
+      <div class="dataset_content">
+        <% if @data[:intermediate_vectors] %>
+          <table>
+            <thead>
+              <th>Gene</th>
+              <th>Design ID</th>
+              <th>Design Type</th>
+              <th>Intermediate Vector</th>
+              <th>Floxed Exon</th>
+            </thead>
+            <tbody>
+              <% @data[:intermediate_vectors].each_pair do |int_vec, int_vec_details| %>
+                <tr>
+                  <td><%= @data[:marker_symbol] %></td>
+                  <td><%= @data[:design_id] %></td>
+                  <td><%= int_vec_details[:design_type] %></td>
+                  <td><%= int_vec %></td>
+                  <td><%= @data[:floxed_exon] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <em>No intermediate vector available for this project.</em>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+    
+  </div>
+</div>

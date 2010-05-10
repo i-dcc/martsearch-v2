@@ -15,7 +15,7 @@
 
 <div>
   <h2>About This Portal</h2>
-  <p>
+  <p class="larger">
     The Wellcome Trust Sanger Institute generates, characterises, and 
     uses a variety of reagents for mouse genetics research. It also 
     aims to facilitate the distribution of these resources to the 
@@ -33,7 +33,7 @@
     <tr>
       <td width="60%" style="padding-right: 10px;">
         <h2>Summary</h2>
-        <p>
+        <p class="larger">
           The table below displays the number of unique genes with each individual 
           product type produced at the Wellcome Trust Sanger Institute.
         </p>
@@ -94,7 +94,7 @@
       </td>
       <td style="padding-left: 10px; vertical-align: top;">
         <h2>Phenotyping Overview</h2>
-        <table class="noborder">
+        <table class="noborder larger">
           <tr>
             <td style="text-align:center;">
               <a href="<%= BASE_URI %>/pheno_overview.xls" title="Download the Phenotyping Overview">
@@ -126,7 +126,7 @@
   
   <hr />
   
-  <div>
+  <div class="larger">
     <table class="noborder nobg">
       <tr>
         <td style="text-align:center;vertical-align:middle;">

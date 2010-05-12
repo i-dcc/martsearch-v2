@@ -14,10 +14,10 @@
     pipeline_projects.each do |key, project|
       # Get mouse availability from 'ikmc-dcc-knockout_attempts' dataset
       if result_data['ikmc-dcc-knockout_attempts']
-        ikmc_projects    = result_data['ikmc-dcc-knockout_attempts'][pipeline]
+        ikmc_projects   = result_data['ikmc-dcc-knockout_attempts'][pipeline]
         ikmc_project_id = project['ikmc_project_id']
         
-        if ikmc_project and ikmc_projects[ikmc_project_id]
+        if ikmc_projects and ikmc_projects[ikmc_project_id]
           project['mouse_available'] = ikmc_projects[ikmc_project_id]['mouse_available']
           project['ensembl_gene_id'] = ikmc_projects['ensembl_gene_id']
         end

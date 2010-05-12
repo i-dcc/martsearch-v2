@@ -35,11 +35,9 @@ class Martsearch
       ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
       dataset = Dataset.new( ds_name, ds_conf )
       
-      unless dataset.custom_sort.nil?
-        # If we have a custom sorting routine, use a Mock object
-        # to override the sorting method.
-        dataset = Mock.method( dataset, :sort_results ) { eval( dataset.custom_sort ) }
-      end
+      # If we have custom sorting routines, use a Mock object to override the methods.
+      dataset = Mock.method(dataset,:sort_results) { eval(dataset.custom_sort) } unless dataset.custom_sort.nil?
+      dataset = Mock.method(dataset,:secondary_sort) { eval(dataset.custom_secondary_sort) } unless dataset.custom_secondary_sort.nil?
       
       @datasets.push( dataset )
       @datasets_by_name[ dataset.internal_name.to_sym ] = dataset
@@ -208,7 +206,8 @@ class Martsearch
     end
   end
   
-  # Utility function that performs the dataset searches
+  # Utility function that performs the dataset searches and 
+  # post-search sorting routines
   def search_from_fresh_datasets
     success = true
     threads = []
@@ -238,6 +237,10 @@ class Martsearch
     end
   
     threads.each { |thread| thread.join }
+    
+    @datasets.each do |ds|
+      ds.secondary_sort unless ds.custom_secondary_sort.nil?
+    end
     
     return success
   end

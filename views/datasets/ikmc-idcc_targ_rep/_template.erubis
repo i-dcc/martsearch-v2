@@ -9,7 +9,7 @@
     displayed_project = nil
     
     pipeline_projects.each do |key, project|
-      # Get mouse availability from ``KO attempts`` dataset
+      # Get mouse availability from 'ikmc-dcc-knockout_attempts' dataset
       if result_data['ikmc-dcc-knockout_attempts']
         ikmc_project = result_data['ikmc-dcc-knockout_attempts'][pipeline]
         ikmc_project_id = project['ikmc_project_id']

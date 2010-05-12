@@ -20,8 +20,8 @@ class Mock
   #  hello.to_s # returns "olleh"
   #
   def self.method instance, method_name, &new_method
-    i = instance.clone
-    i.extend(Module.new { define_method(method_name, &new_method) })
-    i
+    instance_clone = instance.clone
+    instance_clone.extend(Module.new { define_method(method_name, &new_method) })
+    instance_clone
   end
 end

@@ -40,29 +40,51 @@
       <!-- Vectors -->
       <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
         <% if project['vector_available'] %>
-          <% url = idcc_targ_rep_product_order_url( project, result_data, "vectors" ) %>
-          <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% if project['pipeline'] == 'mirKO' %>
+            <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
+          <% else %>
+            <% url = idcc_targ_rep_product_order_url( project, result_data, "vectors" ) %>
+            <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% end %>
         <% end %>
       </td>
       
       <!-- Cells -->
       <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
         <% if project['escell_available'] %>
-          <% url = idcc_targ_rep_product_order_url( project, result_data, "cells" ) %>
-          <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% if project['pipeline'] == 'mirKO' %>
+            <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
+          <% else %>
+            <% url = idcc_targ_rep_product_order_url( project, result_data, "cells" ) %>
+            <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% end %>
         <% end %>
       </td>
       
       <!-- Mice -->
       <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
         <% if project["mouse_available"] %>
-          <% url = idcc_targ_rep_product_order_url( project, result_data, "mice" ) %>
-          <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% if project['pipeline'] == 'mirKO' %>
+            <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
+          <% else %>
+            <% url = idcc_targ_rep_product_order_url( project, result_data, "mice" ) %>
+            <a href="<%= url %>" class="order" target="_blank">order</a>
+          <% end %>
         <% end %>
       </td>
       
       <!-- Details -->
       <td><a class="ikmc-idcc_targ_rep_allele_progress_details_toggle">view&nbsp;details</a></td>
     </tr>
+    <% if project['pipeline'] == 'mirKO' %>
+      <tr>
+        <td colspan="5" style="text-align:left;color:#666;">
+          Public distribution of the mirKO reagents is pending. If you wish to 
+          express an interest in these reagents then please email 
+          <a href="mailto:mirKO@sanger.ac.uk">mirKO@sanger.ac.uk</a> 
+          and we shall inform you when the resource is able to fulfill general requests.
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>

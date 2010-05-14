@@ -6,7 +6,7 @@
   <a href="http://www.ensembl.org/Mus_musculus/contigview?gene=<%= @data['vega_gene_id'] %>&bottom=%7Cmanaged_das_KO_vectors%3Aon"><%= @data['vega_gene_id'] %></a>
 </h5>
 
-<p class="display_on_print">
+<p class="display_on_print" style="display:none;">
   Program: <%= @data['ikmc_project'] %><br />
   Pipeline Progress: <%= @data['status'] %>
 </p>
@@ -30,27 +30,41 @@
 
         <tbody>
           <tr>
-            <% if @data['mouse_available'] == '1' %>
-              <td class="start_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="end_normal normal"><%= @data['status'] %></td>
-            <% elsif @data['escell_available'] == '1' %>
-              <td class="start_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_incomp"><%= @data['status'] %></td>
-              <td class="end_incomp incomp"></td>
-            <% elsif @data['vector_available'] == '1' %>
-              <td class="start_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_normal"></td>
-              <td class="normal normal_incomp"><%= @data['status'] %></td>
+            <% if @data[:stage] == 'pre' %>
+              <td class="start_<%= @data[:stage_type] %>"></td>
+              <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
               <td class="incomp incomp_incomp"></td>
               <td class="end_incomp incomp"></td>
+            <% elsif @data[:stage] == 'designs' %>
+              <td class="start_normal"></td>
+              <td class="normal normal_<%= @data[:stage_type] %>"></td>
+              <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="end_incomp incomp"></td>
+            <% elsif @data[:stage] == 'vectors' %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_<%= @data[:stage_type] %>"></td>
+              <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+              <td class="incomp incomp_incomp"></td>
+              <td class="end_incomp incomp"></td>
+            <% elsif @data[:stage] == 'cells' %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_<%= @data[:stage_type] %>"></td>
+              <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+              <td class="end_incomp incomp"></td>
+            <% elsif @data[:stage] == 'mice' %>
+              <td class="start_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_normal"></td>
+              <td class="normal normal_<%= @data[:stage_type] %>"></td>
+              <td class="end_<%= @data[:stage_type] %> <%= @data[:stage_type] %>"><%= @data['status'] %></td>
             <% else %>
               <td class="start_incomp"></td>
               <td class="incomp incomp_incomp"></td>
@@ -137,7 +151,7 @@
                     <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
                     <td><%= cell['parental_cell_line'] %></td>
                     <td class="hide_on_print">
-                      <a href="<%= @data['conditionals']['genbank_file'] %>" target="_blank">View</a>
+                      <a href="<%= @data['conditionals']['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
                     </td>
                     <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
                       <td>Yes</td>
@@ -155,8 +169,10 @@
               </a>
             <% end %>
           <% else %>
-            <em>No conditional ES Cell Clone available for this project.</em>
+            <em>No distributable conditional ES Cell Clone available for this project.</em>
           <% end %>
+        <% else %>
+          <em>No distributable conditional ES Cell Clone available for this project.</em>
         <% end %>
         <div class="clear"></div>
       </div>
@@ -192,7 +208,7 @@
                 <th class="hide_on_print">Genbank File</th>
                 <th>Mouse</th>
               </thead>
-
+              
               <tbody>
                 <% cells.each_with_index do |cell, i| %>
                   <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
@@ -204,7 +220,7 @@
                     <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
                     <td><%= cell['parental_cell_line'] %></td>
                     <td class="hide_on_print">
-                      <a href="<%= @data['non_conditionals']['genbank_file'] %>" target="_blank">View</a>
+                      <a href="<%= @data['non_conditionals']['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
                     </td>
                     <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
                       <td>Yes</td>
@@ -221,8 +237,10 @@
               </a>
             <% end %>
           <% else %>
-            <em>No Non-Conditional ES Cell Clone available for this project.</em>
+            <em>No distributable non-conditional ES Cell Clone available for this project.</em>
           <% end %>
+        <% else %>
+          <em>No distributable non-conditional ES Cell Clone available for this project.</em>
         <% end %>
         <div class="clear"></div>
       </div>
@@ -263,14 +281,14 @@
                   <td><%= targvec['cassette'] %></td>
                   <td><%= targvec['backbone'] %></td>
                   <td class="hide_on_print">
-                    <a href="<%= targvec['genbank_file'] %>" target="_blank">View</a>
+                    <a href="<%= targvec['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
                   </td>
                 </tr>
               <% end %>
             </tbody>
           </table>
         <% else %>
-          <em>No targeting vector available for this project.</em>
+          <em>No distributable targeting vector available for this project.</em>
         <% end %>
         <div class="clear"></div>
       </div>
@@ -304,7 +322,7 @@
             </tbody>
           </table>
         <% else %>
-          <em>No intermediate vector available for this project.</em>
+          <em>No intermediate vector found for this project.</em>
         <% end %>
         <div class="clear"></div>
       </div>

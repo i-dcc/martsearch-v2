@@ -8,6 +8,7 @@ get "/project/:id" do
   @data.update( get_vectors_and_cells(project_id) )
   @data.update( get_mice(@data['ensembl_gene_id']) ) if @data['ensembl_gene_id']
   @data.update( order_buttons_url(@data) )
+  @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
   
   erubis :project_report
 end
@@ -177,4 +178,45 @@ def order_buttons_url( data )
   else
     return {}
   end
+end
+
+def get_pipeline_stage( status )
+  status_definitions = {
+    "On Hold"                                                 => { :stage => "pre",     :stage_type => "warn"   },
+    "Transferred to NorCOMM"                                  => { :stage => "pre",     :stage_type => "error"  },
+    "Transferred to KOMP"                                     => { :stage => "pre",     :stage_type => "error"  },
+    "Withdrawn From Pipeline"                                 => { :stage => "pre",     :stage_type => "error"  },
+    "Design Requested"                                        => { :stage => "designs", :stage_type => "normal" },
+    "Alternate Design Requested"                              => { :stage => "designs", :stage_type => "warn"   },
+    "VEGA Annotation Requested"                               => { :stage => "designs", :stage_type => "warn"   },
+    "Design Not Possible"                                     => { :stage => "designs", :stage_type => "error"  },
+    "Design Completed"                                        => { :stage => "designs", :stage_type => "normal" },
+    "Vector Construction in Progress"                         => { :stage => "vectors", :stage_type => "normal" },
+    "Vector Unsuccessful - Project Terminated"                => { :stage => "vectors", :stage_type => "error"  },
+    "Vector Unsuccessful - Alternate Design in Progress"      => { :stage => "vectors", :stage_type => "warn"   },
+    "Vector - Initial Attempt Unsuccessful"                   => { :stage => "vectors", :stage_type => "warn"   },
+    "Vector Complete"                                         => { :stage => "vectors", :stage_type => "normal" },
+    "Vector - DNA Not Suitable for Electroporation"           => { :stage => "vectors", :stage_type => "warn"   },
+    "ES Cells - Electroporation in Progress"                  => { :stage => "cells",   :stage_type => "normal" },
+    "ES Cells - Electroporation Unsuccessful"                 => { :stage => "cells",   :stage_type => "error"  },
+    "ES Cells - No QC Positives"                              => { :stage => "cells",   :stage_type => "warn"   },
+    "ES Cells - Targeting  Unsuccessful - Project Terminated" => { :stage => "cells",   :stage_type => "error"  },
+    "ES Cells - Targeting Confirmed"                          => { :stage => "cells",   :stage_type => "normal" },
+    "Mice - Microinjection in progress"                       => { :stage => "mice",    :stage_type => "normal" },
+    "Mice - Germline transmission"                            => { :stage => "mice",    :stage_type => "normal" },
+    "Mice - Genotype confirmed"                               => { :stage => "mice",    :stage_type => "normal" },
+    "Regeneron Selected"                                      => { :stage => "pre",     :stage_type => "normal" },
+    "Design Finished/Oligos Ordered"                          => { :stage => "designs", :stage_type => "normal" },
+    "Parental BAC Obtained"                                   => { :stage => "vectors", :stage_type => "normal" },
+    "Targeting Vector QC Completed"                           => { :stage => "vectors", :stage_type => "normal" },
+    "Vector Electroporated into ES Cells"                     => { :stage => "vectors", :stage_type => "normal" },
+    "ES cell colonies picked"                                 => { :stage => "cells",   :stage_type => "normal" },
+    "ES cell colonies screened / QC no positives"             => { :stage => "cells",   :stage_type => "warn"   },
+    "ES cell colonies screened / QC one positive"             => { :stage => "cells",   :stage_type => "warn"   },
+    "ES cell colonies screened / QC positives"                => { :stage => "cells",   :stage_type => "normal" },
+    "ES Cell Clone Microinjected"                             => { :stage => "cells",   :stage_type => "normal" },
+    "Germline Transmission Achieved"                          => { :stage => "mice",    :stage_type => "normal" }
+  }
+  
+  return status_definitions[ status ]
 end

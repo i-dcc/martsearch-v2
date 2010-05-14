@@ -7,6 +7,7 @@ require "rss"
 
 require "rubygems"
 require "erubis"
+require "newrelic_rpm"
 require "json"
 require "rdiscount"
 require "mail"

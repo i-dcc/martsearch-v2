@@ -9,7 +9,7 @@
   "custom_routes":        true,
   "url":                  "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":         "phenotyping",
-  "display_name":         "Phenotyping",
+  "display_name":         "MGP Phenotyping",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",
   "attribution_link":     "http://www.sanger.ac.uk/",
   "description":          "Phenotyping assay data from the Mouse Genetics Program (MGP) at the Wellcome Trust Sanger Institute.",

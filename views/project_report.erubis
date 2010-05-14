@@ -1,5 +1,15 @@
-<h1>Gene Report (project <%= @data[:project_id] %>)</h1>
-<h3><%= @data[:marker_symbol] %> <%= @data[:mgi_accession_id] %> <%= @data[:ensembl_gene_id][0] %> <%= @data[:vega_gene_id][0] %></h3>
+<h3>IKMC Project Report (ID: <%= @data['project_id'] %>)</h3>
+<h5>
+  <a href="http://www.knockoutmouse.org/genedetails/<%= @data['mgi_accession_id'] %>"><%= @data['marker_symbol'] %></a> 
+  <a href="http://www.informatics.jax.org/searches/accession_report.cgi?id=<%= @data['mgi_accession_id'] %>"><%= @data['mgi_accession_id'] %></a> 
+  <a href="http://www.ensembl.org/Mus_musculus/contigview?gene=<%= @data['ensembl_gene_id'] %>&bottom=%7Cmanaged_das_KO_vectors%3Aon"><%= @data['ensembl_gene_id'] %></a> 
+  <a href="http://www.ensembl.org/Mus_musculus/contigview?gene=<%= @data['vega_gene_id'] %>&bottom=%7Cmanaged_das_KO_vectors%3Aon"><%= @data['vega_gene_id'] %></a>
+</h5>
+
+<p class="display_on_print">
+  Program: <%= @data['ikmc_project'] %><br />
+  Pipeline Progress: <%= @data['status'] %>
+</p>
 
 <div id="search_results">
   <div class="result">
@@ -8,7 +18,7 @@
     
     <div class="pipeline_stage hide_on_print">
       <table class="sanger-htgt_targ_allele_progress">
-        <caption>Pipeline Stage (<%= @data[:pipeline] %>)</caption>
+        <caption>Pipeline Stage (<%= @data['ikmc_project'] %>)</caption>
         <thead>
           <th class="nobg noborder"></th>
           <th width="20%" class="centre">Pre-pipeline</th>
@@ -20,25 +30,25 @@
 
         <tbody>
           <tr>
-            <% if not @data[:product_status].grep(/Mouse/).empty? %>
+            <% if @data['mouse_available'] == '1' %>
               <td class="start_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
-              <td class="end_normal normal"><%= @data[:status] %></td>
-            <% elsif not @data[:product_status].grep(/ES Cell/).empty? %>
+              <td class="end_normal normal"><%= @data['status'] %></td>
+            <% elsif @data['escell_available'] == '1' %>
               <td class="start_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
-              <td class="normal normal_incomp"><%= @data[:status] %></td>
+              <td class="normal normal_incomp"><%= @data['status'] %></td>
               <td class="end_incomp incomp"></td>
-            <% elsif not @data[:vector_available].grep(/Vector/).empty? %>
+            <% elsif @data['vector_available'] == '1' %>
               <td class="start_normal"></td>
               <td class="normal normal_normal"></td>
               <td class="normal normal_normal"></td>
-              <td class="normal normal_incomp"><%= @data[:status] %></td>
+              <td class="normal normal_incomp"><%= @data['status'] %></td>
               <td class="incomp incomp_incomp"></td>
               <td class="end_incomp incomp"></td>
             <% else %>
@@ -60,26 +70,29 @@
     <div class="dataset">
       <h4 class="dataset_title toggle-open">Mice</h4>
       <div class="dataset_content">
-        <% if @data[:mice] %>
+        <% if @data['mice'] %>
+          <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
+          <a href="<%= order_url %>" class="order hide_on_print" target="_blank">
+            Register interest in a mouse
+          </a>
+          <div class="clear"></div>
           <table>
             <thead>
               <th>Gene</th>
               <th>Allele</th>
-              <th>Targeting Vector</th>
               <th>ES Cell Clone</th>
               <th>Parental ES Cell Strain</th>
               <th>Parental ES Cell Line</th>
             </thead>
             <tbody>
-              <% for mouse in @data[:mice] %>
-              <tr>
-                <td><%= mouse[:marker_symbol] %></td>
-                <td><%= mouse[:allele_name] %></td>
-                <td><%= @data[:escell_clones][:conditionals][mouse[:escell_clone]][:targeting_vector]%></td>
-                <td><%= mouse[:escell_clone] %></td>
-                <td><%= mouse[:escell_strain] %></td>
-                <td><%= mouse[:escell_line] %></td>
-              </tr>
+              <% @data['mice'].each do |mouse| %>
+                <tr>
+                  <td><%= @data['marker_symbol'] %></td>
+                  <td><%= mouse['allele_name'] %></td>
+                  <td><%= mouse['escell_clone'] %></td>
+                  <td><%= mouse['escell_strain'] %></td>
+                  <td><%= mouse['escell_line'] %></td>
+                </tr>
               <% end %>
             </tbody>
           </table>
@@ -92,43 +105,58 @@
     
     
     <!-- ES Cell Clones (Conditional) -->
+    <% order_cell_url = @data.include?('order_cell_url') ? @data['order_cell_url'] : @data['order_default_url'] %>
     
-    <div class="dataset" style="page-break-after:always;">
+    <div class="dataset">
       <h4 class="dataset_title toggle-open">ES Cell Clones (Conditional)</h4>
       <div class="dataset_content">
-        <img src="<%= @data[:escell_cond_img_link] %>" width="900px" />
-        <div class="clear"></div>
-        
-        <% if @data[:escell_clones][:conditionals] %>
-          <table>
-            <thead>
-              <th>ES Cell Clone</th>
-              <th>Targeting Vector</th>
-              <th>Allele</th>
-              <th>Parental ES Cell Line</th>
-              <th class="hide_on_print">Genbank File</th>
-            </thead>
-
-            <tbody>
-              <% @data[:escell_clones][:conditionals].keys.sort.each_with_index do |escell_name,i| %>
-                <% details = @data[:escell_clones][:conditionals][escell_name] %>
-                <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
-                  <td><%= escell_name %></td>
-                  <td><%= details[:targeting_vector] %></td>
-                  <td><%= @data[:marker_symbol] %><sup><%= details[:allele_symbol_superscript] %></sup></td>
-                  <td><%= details[:parental_cell_line] %></td>
-                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:escell_clone] %>" target="_blank">View</a></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <% if @data[:escell_clones][:conditionals].keys.length > 1 %>
-            <a href="#" id="toggle_conditionals" class="hide_on_print">
-              Click here to see <%= @data[:escell_clones][:conditionals].keys.length - 1 %> more...
-            </a>
+        <% if @data['conditionals'] %>
+          <img src="<%= @data['conditionals']['allele_image'] %>" width="940px" />
+          <div class="clear"></div>
+          
+          <% unless @data['conditionals']['cells'].empty? %>
+            <%- cells = @data['conditionals']['cells'].sort_by { |cell| cell['name'] } -%>
+            <table>
+              <thead>
+                <th class="hide_on_print"></th>
+                <th>ES Cell Clone</th>
+                <th>Targeting Vector</th>
+                <th>Allele</th>
+                <th>Parental ES Cell Line</th>
+                <th class="hide_on_print">Genbank File</th>
+                <th>Mouse</th>
+              </thead>
+              <tbody>
+                <% cells.each_with_index do |cell,i| %>
+                  <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
+                    <td class="hide_on_print">
+                      <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                    </td>
+                    <td><%= cell['name'] %></td>
+                    <td><%= cell['targeting_vector'] %></td>
+                    <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
+                    <td><%= cell['parental_cell_line'] %></td>
+                    <td class="hide_on_print">
+                      <a href="<%= @data['conditionals']['genbank_file'] %>" target="_blank">View</a>
+                    </td>
+                    <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
+                      <td>Yes</td>
+                    <% else %>
+                      <td>No</td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          
+            <% if cells.length > 1 %>
+              <a href="#" id="toggle_conditionals" class="hide_on_print">
+                Click here to see <%= cells.length - 1 %> more...
+              </a>
+            <% end %>
+          <% else %>
+            <em>No conditional ES Cell Clone available for this project.</em>
           <% end %>
-        <% else %>
-          <em>No conditional ES Cell Clone available for this project.</em>
         <% end %>
         <div class="clear"></div>
       </div>
@@ -137,42 +165,64 @@
     
     <!-- ES Cell Clones (Non-Conditionals) -->
     
-    <div class="dataset">
-      <h4 class="dataset_title toggle-open">ES Cell Clones (Non-Conditional)</h4>
+    <div class="dataset" style="page-break-before:always;">
+      <h4 class="dataset_title toggle-open">ES Cell Clones (Targeted Non-Conditional)</h4>
       <div class="dataset_content">
-        <img src="<%= @data[:escell_non_cond_img_link] %>" width="900px" />
-        <div class="clear"></div>
-        
-        <% if @data[:escell_clones][:non_conditionals] %>
-          <table>
-            <thead>
-              <th>ES Cell Clone</th>
-              <th>Targeting Vector</th>
-              <th>Allele</th>
-              <th>Parental ES Cell Line</th>
-              <th class="hide_on_print">Genbank File</th>
-            </thead>
-
-            <tbody>
-              <% @data[:escell_clones][:non_conditionals].keys.sort.each_with_index do |escell_name, i| %>
-                <% details = @data[:escell_clones][:non_conditionals][escell_name] %>
-                <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
-                  <td><%= escell_name %></td>
-                  <td><%= details[:targeting_vector] %></td>
-                  <td><%= @data[:marker_symbol] %><sup><%= details[:allele_symbol_superscript] %></sup></td>
-                  <td><%= details[:parental_cell_line] %></td>
-                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:escell_clone] %>" target="_blank">View</a></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <% if @data[:escell_clones][:non_conditionals].keys.length > 1 %>
-            <a href="#" id="toggle_non_conditionals" class="hide_on_print">
-              Click here to see <%= @data[:escell_clones][:non_conditionals].keys.length - 1 %> more...
-            </a>
+        <% if @data['non_conditionals'] %>
+          <% if @data['non_conditionals']['allele_image'] %>
+            <img src="<%= @data['non_conditionals']['allele_image'] %>" width="940px" />
+            <div class="clear"></div>
+            <p>
+              <strong>Note:</strong>
+              Mutations of type &quot;Targeted Non-Conditional&quot; are correctly
+              targeted clones that have lost the 3&apos; LoxP site. 
+              These mutations cannot be converted into conditional alleles.
+            </p>
           <% end %>
-        <% else %>
-          <em>No Non-Conditional ES Cell Clone available for this project.</em>
+          
+          <% unless @data['non_conditionals']['cells'].empty? %>
+            <%- cells = @data['non_conditionals']['cells'].sort_by { |cell| cell['name'] } -%>
+            <table>
+              <thead>
+                <th class="hide_on_print"></th>
+                <th>ES Cell Clone</th>
+                <th>Targeting Vector</th>
+                <th>Allele</th>
+                <th>Parental ES Cell Line</th>
+                <th class="hide_on_print">Genbank File</th>
+                <th>Mouse</th>
+              </thead>
+
+              <tbody>
+                <% cells.each_with_index do |cell, i| %>
+                  <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
+                    <td class="hide_on_print">
+                      <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                    </td>
+                    <td><%= cell['name'] %></td>
+                    <td><%= cell['targeting_vector'] %></td>
+                    <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
+                    <td><%= cell['parental_cell_line'] %></td>
+                    <td class="hide_on_print">
+                      <a href="<%= @data['non_conditionals']['genbank_file'] %>" target="_blank">View</a>
+                    </td>
+                    <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
+                      <td>Yes</td>
+                    <% else %>
+                      <td>No</td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <% if cells.length > 1 %>
+              <a href="#" id="toggle_non_conditionals" class="toggle-open hide_on_print">
+                Click here to see <%= cells.length - 1 %> more...
+              </a>
+            <% end %>
+          <% else %>
+            <em>No Non-Conditional ES Cell Clone available for this project.</em>
+          <% end %>
         <% end %>
         <div class="clear"></div>
       </div>
@@ -184,9 +234,12 @@
     <div class="dataset">
       <h4 class="dataset_title toggle-open">Targeting Vectors</h4>
       <div class="dataset_content">
-        <% if @data[:targeting_vectors] %>
+        <% if @data['targeting_vectors'] %>
+          <% order_vector_url = @data.include?('order_vector_url') ? @data['order_vector_url'] : @data['order_default_url'] %>
+          
           <table>
             <thead>
+              <th class="hide_on_print"></th>
               <th>Gene</th>
               <th>Design ID</th>
               <th>Design Type</th>
@@ -197,16 +250,21 @@
               <th class="hide_on_print">Genbank File</th>
             </thead>
             <tbody>
-              <% @data[:targeting_vectors].each_pair do |targ_vec, targ_vec_details| %>
+              <% @data['targeting_vectors'].each do |targvec| %>
                 <tr>
-                  <td><%= @data[:marker_symbol] %></td>
-                  <td><%= @data[:design_id] %></td>
-                  <td><%= targ_vec_details[:design_type] %></td>
-                  <td><%= targ_vec %></td>
-                  <td><%= @data[:floxed_exon] %></td>
-                  <td><%= @data[:cassette] %></td>
-                  <td><%= @data[:backbone] %></td>
-                  <td class="hide_on_print"><a href="<%= @data[:genbank_files_urls][:targeting_vector] %>" target="_blank">View</a></td>
+                  <td class="hide_on_print">
+                    <a href="<%= order_vector_url %>" class="order" target="_blank">Order</a>
+                  </td>
+                  <td><%= @data['marker_symbol'] %></td>
+                  <td><%= targvec['design_id'] %></td>
+                  <td><%= targvec['design_type'] %></td>
+                  <td><%= targvec['name'] %></td>
+                  <td><%= targvec['floxed_exon'] %></td>
+                  <td><%= targvec['cassette'] %></td>
+                  <td><%= targvec['backbone'] %></td>
+                  <td class="hide_on_print">
+                    <a href="<%= targvec['genbank_file'] %>" target="_blank">View</a>
+                  </td>
                 </tr>
               <% end %>
             </tbody>
@@ -224,7 +282,7 @@
     <div class="dataset">
       <h4 class="dataset_title toggle-open">Intermediate Vectors</h4>
       <div class="dataset_content">
-        <% if @data[:intermediate_vectors] %>
+        <% if @data['intermediate_vectors'] %>
           <table>
             <thead>
               <th>Gene</th>
@@ -234,13 +292,13 @@
               <th>Floxed Exon</th>
             </thead>
             <tbody>
-              <% @data[:intermediate_vectors].each_pair do |int_vec, int_vec_details| %>
+              <% @data['intermediate_vectors'].each do |intvec| %>
                 <tr>
-                  <td><%= @data[:marker_symbol] %></td>
-                  <td><%= @data[:design_id] %></td>
-                  <td><%= int_vec_details[:design_type] %></td>
-                  <td><%= int_vec %></td>
-                  <td><%= @data[:floxed_exon] %></td>
+                  <td><%= @data['marker_symbol'] %></td>
+                  <td><%= intvec['design_id'] %></td>
+                  <td><%= intvec['design_type'] %></td>
+                  <td><%= intvec['name'] %></td>
+                  <td><%= intvec['floxed_exon'] %></td>
                 </tr>
               <% end %>
             </tbody>

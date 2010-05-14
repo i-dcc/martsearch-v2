@@ -2,7 +2,7 @@
 # aspects of this class/dataset/query can be configured via the 
 # configuration json.
 class Dataset
-  attr_reader :dataset, :dataset_name, :custom_sort
+  attr_reader :dataset, :dataset_name, :custom_sort, :custom_secondary_sort
   attr_reader :joined_index_field, :joined_biomart_filter, :joined_biomart_attribute
   attr_reader :use_custom_view_helpers, :use_custom_routes, :config, :internal_name
   attr_accessor :url, :attributes, :filters, :display_name, :description
@@ -33,7 +33,9 @@ class Dataset
     @dataset                  = Biomart::Dataset.new( @url, { :name => @dataset_name } )
     @use_custom_view_helpers  = conf["custom_view_helpers"]
     @use_custom_routes        = conf["custom_routes"]
+    
     @custom_sort              = load_file_if_true( @config["custom_sort"], "custom_sort.rb" )
+    @custom_secondary_sort    = load_file_if_true( @config["custom_secondary_sort"], "custom_secondary_sort.rb" )
     
     @current_search_results = nil
     @current_sorted_results = nil
@@ -139,6 +141,14 @@ class Dataset
     end
     
     return sorted_results
+  end
+  
+  # A secondary sort function that allows a dataset to interact with 
+  # the data from all the other datasets prior to going to the templates 
+  # or into a cache store.  This can be used to house some cross-dataset 
+  # processing that would otherwise be done in the template.
+  def secondary_sort
+    # This function is empty as it's a placeholder for custom code...
   end
   
   # Function to add the biomart results into the results_stash - 

@@ -3,10 +3,10 @@
     <tr>
       <td width="50%">
         <p>
-          The IKMC MartSearch project combines data from numerous 
-          <a href="http://www.biomart.org">biomarts</a> to facilitate simple and 
-          expert searches performed by both people and computers.  Use the search bar 
-          to the right to use perform simple searches over our data.
+          The IKMC MartSearch project integrates data from numerous 
+          <a href="http://www.biomart.org">Biomarts</a> to facilitate 
+          both simple and expert searches.  Use the search bar 
+          to the right to perform simple searches of our data.
         </p>
       </td>
       <td width="50%">
@@ -27,32 +27,34 @@
 
   <hr />
 
-  <h2>Advanced Searches</h2>
+  <h2>Federated Searches</h2>
   <p>
-    These links take you to the <a href="http://www.i-dcc.org/biomart">standard 
-    MartView interface</a> for our biomarts, with the described queries already 
-    set-up to run:
+    The links below take you to the <a href="http://www.i-dcc.org/biomart">standard 
+    MartView interface</a> for several examples of federated queries:
   </p>
   <ol>
-    <li><a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=mmusculus_gene_ensembl.default.feature_page.ensembl_gene_id|mmusculus_gene_ensembl.default.feature_page.ensembl_transcript_id|mmusculus_gene_ensembl.default.feature_page.start_position|mmusculus_gene_ensembl.default.feature_page.end_position|mmusculus_gene_ensembl.default.feature_page.chromosome_name|dcc.default.feature_page.marker_symbol|dcc.default.feature_page.mgi_accession_id|dcc.default.feature_page.ikmc_project|dcc.default.feature_page.ikmc_project_id|dcc.default.feature_page.status|dcc.default.feature_page.mouse_available|dcc.default.feature_page.escell_available|dcc.default.feature_page.vector_available&FILTERS=mmusculus_gene_ensembl.default.filters.chromosome_name."1"|dcc.default.filters.status."Mice - Genotype confirmed,Mice - Germline transmission,Mice - Microinjection in progress,ES Cells - Targeting Confirmed"|dcc.default.filters.project."EUCOMM"&VISIBLEPANEL=resultspanel' target="_blank">Find all EUCOMM ES cells that have the status "Targeting Confirmed" on Chromosome 1</a></li>
     <li>
-      <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=kermits.default.attributes.sponsor|kermits.default.attributes.marker_symbol|kermits.default.attributes.status|kermits.default.attributes.emma|kermits.default.attributes.mi_centre|idcc_targ_rep.default.attributes.pipeline|idcc_targ_rep.default.attributes.ikmc_project_id|idcc_targ_rep.default.attributes.mgi_accession_id|idcc_targ_rep.default.attributes.targeting_vector|idcc_targ_rep.default.attributes.escell_clone|idcc_targ_rep.default.attributes.cassette|idcc_targ_rep.default.attributes.backbone&FILTERS=kermits.default.filters.status."Genotype Confirmed"|kermits.default.filters.mi_centre."WTSI"&VISIBLEPANEL=resultspanel' target="_blank">
-        Find all IKMC mice bred at WTSI which have genotype confirmed heterozygotes, 
-        along with the cassette, backbone and name of the targeting vector used to 
-        make the mutation</a>.
+      <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=mmusculus_gene_ensembl.default.feature_page.ensembl_gene_id|mmusculus_gene_ensembl.default.feature_page.ensembl_transcript_id|mmusculus_gene_ensembl.default.feature_page.chromosome_name|mmusculus_gene_ensembl.default.feature_page.start_position|mmusculus_gene_ensembl.default.feature_page.end_position|mmusculus_gene_ensembl.default.feature_page.go_biological_process_id|mmusculus_gene_ensembl.default.feature_page.name_1006|dcc.default.feature_page.marker_symbol|dcc.default.feature_page.mgi_accession_id|dcc.default.feature_page.ikmc_project|dcc.default.feature_page.ikmc_project_id|dcc.default.feature_page.status|dcc.default.feature_page.mouse_available|dcc.default.feature_page.escell_available|dcc.default.feature_page.vector_available&FILTERS=mmusculus_gene_ensembl.default.filters.chromosome_name."1"|mmusculus_gene_ensembl.default.filters.go_biological_process_parent_term."GO:0006350"|dcc.default.filters.status."Mice - Genotype confirmed,Mice - Germline transmission,Mice - Microinjection in progress,ES Cells - Targeting Confirmed"&VISIBLEPANEL=resultspanel' target="_blank">
+        Find all IKMC targeted ES cells for genes encoding transcription factors on Chromosome 1.
+      </a>
       <span style="color:#666;font-style:italic;">
-        (This query joins the "kermits" dataset which records mouse breeding details; 
-        to the IKMC targeting repository, which stores data on vectors, cells and 
-        details of the mutation).
+        (This query joins IKMC Projects/Alleles to Ensembl).
       </span>
     </li>
     <li>
-      <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=template.default.attributes.tmp_template_id_key|template.default.attributes.tmp_gene_symbol|template.default.attributes.tmp_gene_description|template.default.attributes.tmp_chromosone_location|template.default.attributes.tmp_aliases|template.default.attributes.ass_assay_id_key|template.default.attributes.assay_image|template.default.attributes.emap_term|template.default.attributes.ann_strength|template.default.attributes.ann_pattern|template.default.attributes.ann_comments|dcc.default.attributes.marker_symbol|dcc.default.attributes.mgi_accession_id|dcc.default.attributes.mouse_available|dcc.default.attributes.escell_available|dcc.default.attributes.vector_available|dcc.default.attributes.status&FILTERS=template.default.filters.ann_strength.%22strong%22|template.default.filters.ann_pattern.%22regional%22|dcc.default.filters.escell_available.%221%22&VISIBLEPANEL=resultspanel' target="_blank">
-        Find all genes with available ES cells which have strong regional Eurexpress 
-        annotation</a>.
+      <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=kermits.default.attributes.sponsor|kermits.default.attributes.marker_symbol|kermits.default.attributes.status|kermits.default.attributes.mi_centre|kermits.default.attributes.emma|idcc_targ_rep.default.attributes.pipeline|idcc_targ_rep.default.attributes.ikmc_project_id|idcc_targ_rep.default.attributes.mgi_accession_id|idcc_targ_rep.default.attributes.targeting_vector|idcc_targ_rep.default.attributes.escell_clone|idcc_targ_rep.default.attributes.cassette|idcc_targ_rep.default.attributes.backbone&FILTERS=kermits.default.filters.emma."1"|kermits.default.filters.status."Genotype Confirmed"&VISIBLEPANEL=resultspanel' target="_blank">
+        Find all IKMC mice available from the EMMA Repository with information on the vector used to make the mutation.
+      </a>
       <span style="color:#666;font-style:italic;">
-        (This query joins the Eurexpress dataset to the IKMC Genes and 
-        projects dataset).
+        (This query joins IKMC Targeting Repository to Mouse Production data).
+      </span>
+    </li>
+    <li>
+      <a href='http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=template.default.attributes.tmp_template_id_key|template.default.attributes.tmp_gene_symbol|template.default.attributes.tmp_gene_description|template.default.attributes.tmp_chromosone_location|template.default.attributes.tmp_aliases|template.default.attributes.ass_assay_id_key|template.default.attributes.assay_image|template.default.attributes.emap_term|template.default.attributes.ann_pattern|template.default.attributes.ann_strength|template.default.attributes.ann_comments|dcc.default.attributes.marker_symbol|dcc.default.attributes.mgi_accession_id|dcc.default.attributes.mouse_available|dcc.default.attributes.escell_available|dcc.default.attributes.vector_available&FILTERS=template.default.filters.emap_term."heart"|dcc.default.filters.escell_available."1"&VISIBLEPANEL=resultspanel' target="_blank">
+        Find all IKMC targeted ES cells for genes expressed in heart.
+      </a>
+      <span style="color:#666;font-style:italic;">
+        (This query joins IKMC Projects/Alleles to EurExpress).
       </span>
     </li>
   </ol>
@@ -61,10 +63,9 @@
 
   <h2>The Biomarts</h2>
   <p>
-    This portal presents a unified view over numerous biomarts containing data 
-    related to mouse mutations and knockouts.  An overview of these biomarts can 
-    be seen in the figure below. For more information about this portal and the way 
-    in which it unites and searches the data, please see the 
+    This portal integrates information on IKMC mouse knockout resources with numerous 
+    other relevant datasets, including Ensembl, EurExpress and EMMA.  For more information 
+    about this portal and the way in which it unites and searches the data, please see the 
     <a href="<%= BASE_URI %>/about">about</a> page.
   </p>
   <div style="text-align:center">
@@ -75,14 +76,13 @@
 
   <h2>Information for Developers</h2>
   <p>
-    While developing this portal we have made sure that all the code and data that we 
-    produce and use is completely open and free to use.  The following links will guide 
-    you to our source-code and some documentation on how you can interact with the 
-    services which we provide within your own applications or websites.
+    All the code and data that we produce is open-source and free to use. The following links 
+    will guide you to our source-code and documentation on how you can interact with the 
+    services we provide.
   </p>
   <ul>
-    <li><a href="http://github.com/dazoakley/martsearchr" target="_blank">All the code used to create this portal - it's open-source</a></li>
-    <li><a href="http://github.com/dazoakley/biomart" target="_blank">The ruby API we use to interact with the biomarts</a></li>
+    <li><a href="http://github.com/dazoakley/martsearchr" target="_blank">All the code used to create this portal</a></li>
+    <li><a href="http://github.com/dazoakley/biomart" target="_blank">The ruby API used to interact with the Biomarts</a></li>
     <li><a href="http://wiki.github.com/dazoakley/martsearchr/using-the-i-dcc-search-engine-in-your-application" target="_blank">Using our search engine in your application</a></li>
   </ul>
 </div>

@@ -416,3 +416,5 @@ end
     load "#{MARTSEARCHR_PATH}/config/datasets/#{ds.internal_name}/routes.rb"
   end
 end
+
+load "#{MARTSEARCHR_PATH}/project_report.rb"

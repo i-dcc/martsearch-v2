@@ -74,6 +74,18 @@ function setup_toggles() {
     return false;
   });
   
+  // Add Toggling for Project Report
+  jQuery('.toggle_conditional_row').hide();
+  jQuery('.toggle_non_conditional_row').hide();
+  jQuery('#toggle_conditionals').click( function() {
+      jQuery('.toggle_conditional_row').toggle();
+      return false;
+  });
+  jQuery('#toggle_non_conditionals').click( function() {
+      jQuery('.toggle_non_conditional_row').toggle();
+      return false;
+  });
+  
   // Add Toggling for error messages
   jQuery(".error_msg_toggle").live("click", function() {
     jQuery(this).parent().parent().find(".error_msg_content").slideToggle("fast");

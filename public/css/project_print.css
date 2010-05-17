@@ -1,0 +1,34 @@
+body {
+  background: transparent;
+  font-size: 12pt;
+  color: #000;
+}
+
+tr {
+  display: table-row !important;
+}
+
+th, td {
+  color: #000;
+  border-color: #000;
+}
+
+#header, #navigation, #browser_warnings, .pagination {
+  display: none;
+}
+
+#search_results .result {
+  border: none;
+}
+
+#search_results .result .dataset {
+  border-color: #000;
+}
+
+.hide_on_print {
+  display:none !important;
+}
+
+.dataset_content, .display_on_print {
+  display: block !important;
+}

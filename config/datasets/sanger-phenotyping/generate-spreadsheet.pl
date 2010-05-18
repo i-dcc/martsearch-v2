@@ -73,23 +73,23 @@ sub generate_spreadsheet {
   ##
   
   my $unsorted_worksheet = $workbook->add_worksheet('Overview');
-  my $sorted_worksheet   = $workbook->add_worksheet('Overview (Sortable)');
+  #my $sorted_worksheet   = $workbook->add_worksheet('Overview (Sortable)');
   
   _xls_setup_worksheet( $unsorted_worksheet, $no_of_leading_text_entries, scalar( @{$data->{data}} ) );
-  _xls_setup_worksheet( $sorted_worksheet, $no_of_leading_text_entries, scalar( @{$data->{data}} ) );
+  #_xls_setup_worksheet( $sorted_worksheet, $no_of_leading_text_entries, scalar( @{$data->{data}} ) );
   
   _xls_print_headers( $unsorted_worksheet, $data->{headers}, $no_of_leading_text_entries, $formats );
-  _xls_print_headers( $sorted_worksheet, $data->{headers}, $no_of_leading_text_entries, $formats );
+  #_xls_print_headers( $sorted_worksheet, $data->{headers}, $no_of_leading_text_entries, $formats );
 
   ##
   ## Now print the data and legends...
   ##
   
   my $number_of_columns = write_data( $unsorted_worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats );
-  write_data( $sorted_worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats );
+  #write_data( $sorted_worksheet, $data, $colonies_with_details, $no_of_leading_text_entries, $formats );
   
   write_unsorted_legend( $unsorted_worksheet, $number_of_columns, $formats );
-  write_sorted_legend( $sorted_worksheet, $number_of_columns, $formats );
+  #write_sorted_legend( $sorted_worksheet, $number_of_columns, $formats );
   
 }
 

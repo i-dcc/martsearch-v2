@@ -30,6 +30,13 @@
       "second_description": "The mean values obtained for mice of the same genotype are represented as symbols joined by a line on the graphs below. The standard deviation for each data point are shown as whiskers. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green.",
       "slug": "body-weight-curve-normal-chow"
     },
+    "citrobacter-challenge": {
+      "description": "Mice were challenged orally with Citrobacter rodentium. Fecal shedding was quantified every 2-3 days following infection. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated.",
+      "images": [{"shedding":"Mean Bacterial Shedding"},{"citrospleen":"Mean Spleen Counts"},{"citroliver":"Mean Liver Counts"},{"colon":"Mean Colon Counts"},{"ceacum":"Mean Ceacum Counts"},{"cp":"Mean Ceacal Patch Counts"},{"citroceaccont":"Mean Ceacal Content Counts"},{"colonweight":"Mean Colon Weights"}],
+      "name": "Citrobacter Rodentium Challenge",
+      "second_description": "The data shows mean bacterial counts either per gram of tissue or per 0.1 gram of feces or per content of ceacum. Statistical analysis is performed using a Mann-Whitney U test.",
+      "slug": "citrobacter-challenge"
+    },
     "core-temperature": {
       "description": "Core Temperature (week 14) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age): Rectal core body temperature is measured using a TH-5 thermometer with a RET-3 probe (Viking Medical).",
       "images": [{"basaltemp":"Basal Body Temperature"},{"deltatemp":"Change in Temperature"}],
@@ -142,6 +149,13 @@
       "second_description": "The data for each mouse are represented as a single symbol on the graphs below. Standard errors of the mean (box) and standard deviations (whiskers) for each of the genotypes are shown adjacent to the raw data. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green (where available).",
       "slug": "rotarod"
     },
+    "salmonella-challenge": {
+      "description": "Mice were challenged i.v. with a sub lethal dose of Salmonella Typhimurium. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated. On day 28, blood serum was also collected and tetc specific antibody ELISAs performed to calculate IgG, IgG1 and IgG2a antibody titers.",
+      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"}],
+      "name": "Salmonella Typhimurium Challenge",
+      "second_description": "The data shows mean bacterial counts per gram of tissue from 4 mice on days 14 and 28 for wild type (green) and knockout mice (red). Statistical analysis is performed using a Mann-Whitney U test.",
+      "slug": "salmonella-challenge"
+    },
     "skin-screen": {
       "description": "Skin screen collaboration (week 14) (Mice were fed on Mouse Breeder Diet (5021, Labdiet) from weaning):  Whole mount preparations of tail epidermis were prepared essentially as described by Braun et al (Development 130:5241-5255, 2003). Whole mounts were labeled with antibodies to keratin 14 (red) and keratin 15 (green), and counter-stained with DAPI to reveal cell nuclei (blue). Keratin 14 is expressed by undifferentiated cells in the hair follicles, sebaceous glands and interfollicular epidermis. Keratin 15 is expressed by the reservoir of stem cells in the hair follicle bulge.",
       "images": [{"skinif":"Images - Miscellaneous 2"},{"skinifwt":"Images - Miscellaneous 2"},{"skinifhet":"Images - Miscellaneous 2"},{"skinifhom":"Images - Miscellaneous 2"}],
@@ -164,6 +178,13 @@
       "name": "Body Weight Curve (High Fat Diet)",
       "second_description": "The mean values obtained for mice of the same genotype are represented as symbols joined by a line on the graphs below. The standard deviation for each data point are shown as whiskers. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green.",
       "slug": "body-weight-curve-high-fat-diet"
+    },
+    "citrobacter-challenge": {
+      "description": "Mice were challenged orally with Citrobacter rodentium. Fecal shedding was quantified every 2-3 days following infection. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated.",
+      "images": [{"shedding":"Mean Bacterial Shedding"},{"citrospleen":"Mean Spleen Counts"},{"citroliver":"Mean Liver Counts"},{"colon":"Mean Colon Counts"},{"ceacum":"Mean Ceacum Counts"},{"cp":"Mean Ceacal Patch Counts"},{"citroceaccont":"Mean Ceacal Content Counts"},{"colonweight":"Mean Colon Weights"}],
+      "name": "Citrobacter Rodentium Challenge",
+      "second_description": "The data shows mean bacterial counts either per gram of tissue or per 0.1 gram of feces or per content of ceacum. Statistical analysis is performed using a Mann-Whitney U test.",
+      "slug": "citrobacter-challenge"
     },
     "core-temperature": {
       "description": "Core Temperature and Stress Induced Hyperthermia (15 weeks) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age); Basal core body temperature is measured rectally using a TH-5 thermometer with a RET-3 probe (Viking Medical). The mice are thereafter placed in a clean cage and a second reading is taken after 15-30 minutes.",
@@ -262,6 +283,13 @@
       "name": "Open Field",
       "second_description": "The data for each mouse are represented as a single symbol on the graphs below. Standard errors of the mean (box) and standard deviations (whiskers) for each of the genotypes are shown adjacent to the raw data. The mean +/- 1 and 2 standard deviations for all wildtype mice of the same strain and gender are highlighted in green (where available).",
       "slug": "open-field"
+    },
+    "salmonella-challenge": {
+      "description": "Mice were challenged i.v. with a sub lethal dose of Salmonella Typhimurium. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated. On day 28, blood serum was also collected and tetc specific antibody ELISAs performed to calculate IgG, IgG1 and IgG2a antibody titers.",
+      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"}],
+      "name": "Salmonella Typhimurium Challenge",
+      "second_description": "The data shows mean bacterial counts per gram of tissue from 4 mice on days 14 and 28 for wild type (green) and knockout mice (red). Statistical analysis is performed using a Mann-Whitney U test.",
+      "slug": "salmonella-challenge"
     },
     "skin-screen": {
       "description": "Skin screen collaboration (week 16) (Mice were fed on High Fat Diet (Western RD, 829100, Special Diets Services) from 4 weeks of age):  Whole mount preparations of tail epidermis were prepared essentially as described by Braun et al (Development 130:5241-5255, 2003). Whole mounts were labeled with antibodies to keratin 14 (red) and keratin 15 (green), and counter-stained with DAPI to reveal cell nuclei (blue). Keratin 14 is expressed by undifferentiated cells in the hair follicles, sebaceous glands and interfollicular epidermis. Keratin 15 is expressed by the reservoir of stem cells in the hair follicle bulge.",

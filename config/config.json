@@ -12,8 +12,8 @@
       "phenotyping/heatmap",
       "search/sanger_phenotype:*",
       "search?query=microinjection_centre_status%3A%22WTSI+-+Genotype+Confirmed%22",
-      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+ES+Cell+Available%22+ikmc_project_product_status%3A%22EUCOMM+ES+Cell+Available%22",
-      "search?query=ikmc_project_product_status%3A%22KOMP-CSD+Vector+Available%22+ikmc_project_product_status%3A%22EUCOMM+Vector+Available%22",
+      "search?query=ikmc_project_product_status_str%3A%22KOMP-CSD+ES+Cell+Available%22+OR+ikmc_project_product_status_str%3A%22EUCOMM+ES+Cell+Available%22",
+      "search?query=ikmc_project_product_status_str%3A%22KOMP-CSD+Vector+Available%22+OR+ikmc_project_product_status_str%3A%22EUCOMM+Vector+Available%22",
       "search?query=dna_library%3A%22MICER%22",
       "search?query=dna_library%3A%22C57Bl%2F6J%22",
       "search?query=dna_library%3A%22129S7%22"

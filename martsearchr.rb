@@ -237,8 +237,8 @@ get "/?" do
     @counts = {
       "phenotyping"       => { "query" => 'sanger_phenotype:*' },
       "mice"              => { "query" => 'microinjection_centre_status:"WTSI - Genotype Confirmed"' },
-      "escells"           => { "query" => 'ikmc_project_product_status:"KOMP-CSD ES Cell Available" ikmc_project_product_status:"EUCOMM ES Cell Available"' },
-      "targ_vectors"      => { "query" => 'ikmc_project_product_status:"KOMP-CSD Vector Available" ikmc_project_product_status:"EUCOMM Vector Available"' },
+      "escells"           => { "query" => 'ikmc_project_product_status_str:"KOMP-CSD ES Cell Available" OR ikmc_project_product_status_str:"EUCOMM ES Cell Available"' },
+      "targ_vectors"      => { "query" => 'ikmc_project_product_status_str:"KOMP-CSD Vector Available" OR ikmc_project_product_status_str:"EUCOMM Vector Available"' },
       "micer_clones"      => { "query" => 'dna_library:"MICER"' },
       "c57_bacs"          => { "query" => 'dna_library:"C57Bl/6J"' },
       "one_two_nine_bacs" => { "query" => 'dna_library:"129S7"' }

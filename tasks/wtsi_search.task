@@ -3,7 +3,7 @@ require "builder"
 require "net/http"
 require "erubis"
 
-NAME_ON_SANGER_INDEX = 'Sanger Mouse Portal Data'
+NAME_ON_SANGER_INDEX = 'Mouse Portal'
 DESC_ON_SANGER_INDEX = 'Unified access to the different resources available from the Institute or its collaborators'
 DOCS_PER_FILE        = 1000 # Retrieve data by chunks of 1000 docs
 WTSI_XML_DIR         = "#{File.dirname(__FILE__)}/../tmp/wtsi_document_xmls"
@@ -75,6 +75,36 @@ namespace :wtsi do
         end
       docs.flatten!
       
+      docs.each do |doc|
+        if doc.include? 'product_status'
+          doc['available_resources'] = []
+          doc['product_status'].each do |status|
+            if status.include? 'Vector Available'
+              doc['available_resources'].push('Targeting Vectors')
+            elsif status.include? 'ES Cell Available'
+              doc['available_resources'].push('ES Cells')
+            elsif status.include? 'Mouse Available'
+              doc['available_resources'].push('Mice')
+            end
+          end
+        else
+          doc['available_resources'] = ''
+        end
+        
+        # Use HTML formatting
+        doc.each do |key, value|
+          doc[key] = value.join(', ') if value.is_a? Array
+          
+          if doc[key].is_a? String
+            doc[key].gsub!('&', '&amp;')
+            doc[key].gsub!('"', '&quot;')
+            doc[key].gsub!("'", '&apos;')
+            doc[key].gsub!('<', '&lt;')
+            doc[key].gsub!('>', '&gt;')
+          end
+        end
+      end
+      
       # Dump data to XML following WTSI search index requirements
       template_file = File.new( "#{File.dirname(__FILE__)}/wtsi_data.xml.erubis", 'r' )
       template = Erubis::Eruby.new( template_file.read )
@@ -85,6 +115,8 @@ namespace :wtsi do
       xml_file.close()
       
       system("/bin/mv * #{WTSI_XML_DIR_DAILY}/")
+      system("/bin/cp #{WTSI_XML_DIR_DAILY}/mouseportal-data.xml #{WTSI_XML_DIR_DAILY}/../mouseportal-data.xml.new")
+      system("/bin/mv #{WTSI_XML_DIR_DAILY}/../mouseportal-data.xml.new #{WTSI_XML_DIR_DAILY}/../mouseportal-data.xml")
     end
     
     system("/bin/rmdir #{tmpdir}")

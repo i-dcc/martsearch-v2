@@ -3,7 +3,7 @@
   "portal_url":  "http://www.sanger.ac.uk/mouseportal",
   "debug":       false,
   "email": {
-    "to":   "mouseportal@sanger.ac.uk",
+    "to":   "team87@sanger.ac.uk",
     "from": "do2@sanger.ac.uk"
   },
   "cache": {

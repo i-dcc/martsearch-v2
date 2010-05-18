@@ -130,14 +130,18 @@
     <table class="noborder nobg">
       <tr>
         <td style="text-align:center;vertical-align:middle;">
-          <a href="mailto:mouseportal@sanger.ac.uk" title="Get in Touch">
-            <img src="<%= BASE_URI %>/images/internet-mail.png" alt="Get in Touch" />
-          </a>
+          <img src="<%= BASE_URI %>/images/internet-mail.png" alt="Get in Touch" />
         </td>
         <td style="vertical-align:middle;">
           <h2 style="margin-bottom:5px;">Get in Touch</h2>
+          <p style="margin-bottom:5px;">
+            For enquiries about the data displayed in this portal (or requests for 
+            further information), please contact 
+            <a href="mailto:mouseinterest@sanger.ac.uk">mouseinterest@sanger.ac.uk</a>.
+          </p>
           <p style="margin-bottom:0;">
-            If you have any questions, comments, suggestions or queries plese send an email to 
+            If you have any problems/comments with regards to this portal, or would like to 
+            request a new feature plese send an email to 
             <a href="mailto:mouseportal@sanger.ac.uk">mouseportal@sanger.ac.uk</a>, 
             we'd like to hear from you!
           </p>

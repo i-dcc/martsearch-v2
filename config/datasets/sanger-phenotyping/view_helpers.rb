@@ -416,83 +416,106 @@ end
 
 def sanger_phenotyping_test_groupings
   {
-    "Independent Observations" => [
-      "homozygote_viability",
-      "recessive_lethal",
-      "fertility",
-      "adult_expression",
-      "embryo_expression",
-      "general_observations",
-      "citrobacter_challenge",
-      "salmonella_challenge",
-      "micronuclei_irradiated",
-      "skin_screen",
-      "brain_histology"
-    ],
-    "Cardiovascular and Metabolism" => [
-      "body_weight_curve_high_fat_diet",
-      "dysmorphology",
-      "blood_pressure",
-      "indirect_calorimetry",
-      "ip_gtt",
-      "dexa",
-      "x_ray_imaging",
-      "core_temperature",
-      "fasted_clinical_chemistry",
-      "heart_weight",
-      "heart_histology",
-      "insulin"
-    ],
-    "Behaviour and Sensory" => [
-      "body_weight_curve_normal_chow",
-      "open_field",
-      "modified_shirpa",
-      "grip_strength",
-      "rotarod",
-      "prepulse_inhibition",
-      "hot_plate",
-      "abr",
-      "eye_morphology",
-      "histology",
-      "full_clinical_chemistry",
-      "haematology",
-      "pheripheral_blood_lymphocytes",
-      "serum_immunoglobulins",
-      "micronuclei_naive"
-    ],
-    "Comprehensive Phenotyping Pipeline" => [
-      "body_weight_curve_high_fat_diet",
-      "tail_length",
-      "dysmorphology",
-      "hair_follicle",
-      "open_field",
-      "modified_shirpa",
-      "grip_strength",
-      "hot_plate",
-      "indirect_calorimetry",
-      "ip_gtt",
-      "abr",
-      "dexa",
-      "x_ray_imaging",
-      "core_temperature",
-      "eye_morphology",
-      "full_clinical_chemistry",
-      "haematology",
-      "pheripheral_blood_lymphocytes",
-      "serum_immunoglobulins",
-      "micronuclei_naive",
-      "heart_weight",
-      "heart_histology",
-      "histology"
-    ]
+    "Viability, Fertility and Expression" => {
+      :pipelines => [ "P1/2", "EUMODIC P1/2", "Mouse GP", "Sanger MGP" ],
+      :tests     => [
+        "homozygote_viability",
+        "recessive_lethal",
+        "fertility",
+        "embryo_expression",
+        "adult_expression",
+        "general_observations"
+      ]
+    },
+    "Cardiovascular and Metabolism" => {
+      :pipelines => [ "P1/2", "EUMODIC P1/2" ],
+      :tests     => [
+        "body_weight_curve_high_fat_diet",
+        "dysmorphology",
+        "blood_pressure",
+        "indirect_calorimetry",
+        "ip_gtt",
+        "dexa",
+        "x_ray_imaging",
+        "core_temperature",
+        "heart_weight",
+        "heart_histology",
+        "fasted_clinical_chemistry"
+      ]
+    },
+    "Behaviour and Sensory" => {
+      :pipelines => [ "P1/2", "EUMODIC P1/2" ],
+      :tests     => [
+        "body_weight_curve_normal_chow",
+        "open_field",
+        "modified_shirpa",
+        "grip_strength",
+        "rotarod",
+        "prepulse_inhibition",
+        "hot_plate",
+        "abr",
+        "eye_morphology",
+        "histology",
+        "full_clinical_chemistry",
+        "plasma_immunoglobulins",
+        "haematology",
+        "peripheral_blood_lymphocytes",
+        "micronuclei_naive"
+      ]
+    },
+    "Comprehensive Phenotyping Pipeline" => {
+      :pipelines => [ "Mouse GP", "Sanger MGP" ],
+      :tests     => [
+        "body_weight_curve_high_fat_diet",
+        "hair_follicle",
+        "open_field",
+        "modified_shirpa",
+        "grip_strength",
+        "dysmorphology",
+        "hot_plate",
+        "indirect_calorimetry",
+        "ip_gtt",
+        "abr",
+        "dexa",
+        "x_ray_imaging",
+        "core_temperature",
+        "eye_morphology",
+        "heart_weight",
+        "heart_histology",
+        "histology",
+        "full_clinical_chemistry",
+        "plasma_immunoglobulins",
+        "haematology",
+        "peripheral_blood_lymphocytes",
+        "micronuclei_naive"
+      ]
+    },
+    "Infectious Challenges" => {
+      :pipelines => [ "P1/2", "EUMODIC P1/2", "Mouse GP", "Sanger MGP" ],
+      :tests     => [
+        "salmonella_challenge",
+        "citrobacter_challenge"
+      ]
+    },
+    "Collaborations" => {
+      :pipelines => [ "P1/2", "EUMODIC P1/2", "Mouse GP", "Sanger MGP" ],
+      :tests     => [
+        "micronuclei_irradiated",
+        "insulin",
+        "skin_screen",
+        "brain_histology"
+      ]
+    }
   }
 end
 
 def sanger_phenotyping_test_groupings_order
   [
-    "Independent Observations",
+    "Viability, Fertility and Expression",
     "Cardiovascular and Metabolism",
     "Behaviour and Sensory",
-    "Comprehensive Phenotyping Pipeline"
+    "Comprehensive Phenotyping Pipeline",
+    "Infectious Challenges",
+    "Collaborations"
   ]
 end

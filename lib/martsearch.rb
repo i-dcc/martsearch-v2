@@ -35,11 +35,9 @@ class Martsearch
       ds_conf = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/#{ds_name}/config.json","r") )
       dataset = Dataset.new( ds_name, ds_conf )
       
-      unless dataset.custom_sort.nil?
-        # If we have a custom sorting routine, use a Mock object
-        # to override the sorting method.
-        dataset = Mock.method( dataset, :sort_results ) { eval( dataset.custom_sort ) }
-      end
+      # If we have custom sorting routines, use a Mock object to override the methods.
+      dataset = Mock.method(dataset,:sort_results) { eval(dataset.custom_sort) } unless dataset.custom_sort.nil?
+      dataset = Mock.method(dataset,:secondary_sort) { eval(dataset.custom_secondary_sort) } unless dataset.custom_secondary_sort.nil?
       
       @datasets.push( dataset )
       @datasets_by_name[ dataset.internal_name.to_sym ] = dataset
@@ -166,59 +164,24 @@ class Martsearch
     end
   end
   
-  # Utility function to perform a search off of the index and datasets
+  # Utility function to control a fresh search off of the index and datasets
   def search_from_fresh( query, page )
     @search_data         = {}
     @search_results      = []
-    do_not_save_to_cache = false
     
-    begin
-      @search_data = @index.search( query, page )
-    rescue IndexSearchError => error
-      @errors.push({
-        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
-        :full_text => error
-      })
-      do_not_save_to_cache = true
-    end
-  
+    index_search_status = search_from_fresh_index( query, page )
+    
     if @index.current_results_total === 0
       @search_data = nil
     else
-      threads = []
-    
-      @datasets.each do |ds|
-        if ds.use_in_search?
-          threads << Thread.new(ds) do |dataset|
-            begin
-              search_terms = @index.grouped_terms[ dataset.joined_index_field ]
-              mart_results = dataset.search( search_terms )
-              dataset.add_to_results_stash( @index.primary_field, @search_data, mart_results )
-            rescue Biomart::BiomartError => error
-              @errors.push({
-                :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again if you would like data from this source.",
-                :full_text => error
-              })
-              do_not_save_to_cache = true
-            rescue Timeout::Error => error
-              @errors.push({
-                :highlight => "The '#{dataset.display_name}' dataset did not respond quickly enough for this query.  Please try submitting your search again in about 15 minutes for a more complete search return.",
-                :full_text => error
-              })
-              do_not_save_to_cache = true
-            end
-          end
-        end
-      end
-    
-      threads.each { |thread| thread.join }
+      dataset_search_status = search_from_fresh_datasets()
     end
-  
+    
     if @index.ordered_results.size > 0
       @search_results = paged_results()
     end
     
-    unless do_not_save_to_cache
+    if index_search_status and dataset_search_status
       obj_to_cache = {
         :search_data           => @search_data,
         :current_page          => @index.current_page,
@@ -227,6 +190,59 @@ class Martsearch
       }
       @cache.write( "query:#{query}-page:#{page}", obj_to_cache.to_json, :expires_in => 3.hours )
     end
+  end
+  
+  # Utility function that performs the index searches
+  def search_from_fresh_index( query, page )
+    begin
+      @search_data = @index.search( query, page )
+      return true
+    rescue IndexSearchError => error
+      @errors.push({
+        :highlight => "The search term you used has caused an error on the search engine, please try another search term without any special characters in it.",
+        :full_text => error
+      })
+      return false
+    end
+  end
+  
+  # Utility function that performs the dataset searches and 
+  # post-search sorting routines
+  def search_from_fresh_datasets
+    success = true
+    threads = []
+  
+    @datasets.each do |ds|
+      if ds.use_in_search?
+        threads << Thread.new(ds) do |dataset|
+          begin
+            search_terms = @index.grouped_terms[ dataset.joined_index_field ]
+            mart_results = dataset.search( search_terms )
+            dataset.add_to_results_stash( @index.primary_field, @search_data, mart_results )
+          rescue Biomart::BiomartError => error
+            @errors.push({
+              :highlight => "The '#{dataset.display_name}' dataset has returned an error for this query.  Please try submitting your search again if you would like data from this source.",
+              :full_text => error
+            })
+            success = false
+          rescue Timeout::Error => error
+            @errors.push({
+              :highlight => "The '#{dataset.display_name}' dataset did not respond quickly enough for this query.  Please try submitting your search again in about 15 minutes for a more complete search return.",
+              :full_text => error
+            })
+            success = false
+          end
+        end
+      end
+    end
+  
+    threads.each { |thread| thread.join }
+    
+    @datasets.each do |ds|
+      ds.secondary_sort unless ds.custom_secondary_sort.nil?
+    end
+    
+    return success
   end
   
   # Helper function to initialize the caching system.  Uses 

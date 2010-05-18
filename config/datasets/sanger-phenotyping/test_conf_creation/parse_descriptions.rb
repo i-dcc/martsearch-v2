@@ -22,6 +22,7 @@ TEST_MAP = {
   "Body weight curve (HFD)"               => "body-weight-curve-high-fat-diet",
   "Body weight curve (normal chow)"       => "body-weight-curve-normal-chow",
   "Core temp/Stress induced hyperthermia" => "core-temperature",
+  "Citrobacter Challenge"                 => "citrobacter-challenge",
   "DEXA"                                  => "dexa",
   "Dysmorphology"                         => "dysmorphology",
   "Eye Morphology"                        => "eye-morphology",
@@ -38,6 +39,7 @@ TEST_MAP = {
   "Modified SHIRPA"                       => "modified-shirpa",
   "Open Field"                            => "open-field",
   "Rotarod"                               => "rotarod",
+  "Salmonella Challenge"                  => "salmonella-challenge",
   "Skin Screen"                           => "skin-screen",
   "X-ray imaging"                         => "x-ray-imaging"
 }
@@ -46,10 +48,12 @@ TEST_MAP = {
 # we default to using what was in the spreadsheet.
 TEST_NAMES = {
   "body-weight-curve-high-fat-diet" => "Body Weight Curve (High Fat Diet)",
+  "citrobacter-challenge"           => "Citrobacter Rodentium Challenge",
   "dexa"                            => "Dual Energy X-Ray Absorptiometry (DEXA)",
   "heart-weight"                    => "Heart Weight",
   "ip-gtt"                          => "ip-GTT",
   "modified-shirpa"                 => "Modified SHIRPA",
+  "salmonella-challenge"            => "Salmonella Typhimurium Challenge",
   "x-ray-imaging"                   => "X-Ray Imaging"
 }
 
@@ -104,6 +108,7 @@ descriptions.each do |row|
     test_pipeline = case row[1]
     when /Mouse GP/ then "sanger-mgp"
     when /P1\/2/    then "eumodic-pipeline-1-2"
+    when /MGP Pipe/ then "eumodic-pipeline-1-2"
     when /Expre/    then "expression"
     end
     

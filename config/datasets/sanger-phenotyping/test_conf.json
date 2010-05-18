@@ -1,7 +1,7 @@
 {
   "expression": {
     "adult-expression": {
-      "description": "Adult expression (week 6):  The lacZ reporter gene within the targeting vector was used to determine the wholemount expression profile of the targeted gene.  Mice were fixed by cardiac perfusion using 4% paraformaldehyde (PFA).  Following dissection, the tissues to be stained were fixed an additional 30 min in 4% PFA before being rinsed in phosphate buffered saline and transferred to lacZ staining solution, containing 0.1% X-gal, for up to 48 hours.  After an additional overnight post-staining fixation in 4% PFA, tissues were cleared with 50% glycerol then transferred to 70% glycerol for long-term storage.",
+      "description": "Adult expression (&ge; week 6):  The lacZ reporter gene within the targeting vector was used to determine the wholemount expression profile of the targeted gene.  Mice were fixed by cardiac perfusion using 4% paraformaldehyde (PFA).  Following dissection, the tissues to be stained were fixed an additional 30 min in 4% PFA before being rinsed in phosphate buffered saline and transferred to lacZ staining solution, containing 0.1% X-gal, for up to 48 hours.  After an additional overnight post-staining fixation in 4% PFA, tissues were cleared with 50% glycerol then transferred to 70% glycerol for long-term storage.",
       "images": [],
       "name": "Adult Expression",
       "second_description": "",

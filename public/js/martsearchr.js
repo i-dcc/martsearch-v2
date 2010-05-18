@@ -46,6 +46,10 @@ jQuery(document).ready(function() {
     }
   });
   
+  jQuery(".accordion.active").each( function() {
+    jQuery(this).accordion( "activate", 0 );
+  });
+  
   // Add font resizing buttons
   jQuery("#fontresize").fontResize();
 });

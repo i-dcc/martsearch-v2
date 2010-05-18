@@ -245,13 +245,12 @@
         { "text": "Modified SHIRPA", "query": "modified_shirpa", "slug": "modified-shirpa" },
         { "text": "Open Field", "query": "open_field", "slug": "open-field" },
         { "text": "Peripheral Blood Lymphocytes", "query": "peripheral_blood_lymphocytes", "slug": "peripheral-blood-lymphocytes" },
+        { "text": "Plasma Immunoglobulins", "query": "plasma_immunoglobulins", "slug": "plasma-immunoglobulins" },
         { "text": "Prepulse Inhibition", "query": "prepulse_inhibition", "slug": "prepulse-inhibition" },
         { "text": "Recessive Lethal", "query": "recessive_lethal", "slug": "recessive-lethal" },
         { "text": "Rotarod", "query": "rotarod", "slug": "rotarod" },
         { "text": "Salmonella Challenge", "query": "salmonella_challenge", "slug": "salmonella-challenge" },
-        { "text": "Serum Immunoglobulins", "query": "serum_immunoglobulins", "slug": "serum-immunoglobulins" },
         { "text": "Skin Screen", "query": "skin_screen", "slug": "skin-screen" },
-        { "text": "Tail Length", "query": "tail_length", "slug": "tail-length" },
         { "text": "X-Ray Imaging", "query": "x_ray_imaging", "slug": "x-ray-imaging" }
       ]
     }

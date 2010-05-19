@@ -142,7 +142,7 @@
     },
     "salmonella-challenge": {
       "description": "Mice were challenged i.v. with a sub lethal dose of Salmonella Typhimurium. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated. On day 28, blood serum was also collected and tetc specific antibody ELISAs performed to calculate IgG, IgG1 and IgG2a antibody titers.",
-      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"}],
+      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"},{"elisa":"Antibody Titres"}],
       "name": "Salmonella Typhimurium Challenge",
       "second_description": "The data shows mean bacterial counts per gram of tissue from 4 mice on days 14 and 28 for wild type (green) and knockout mice (red). Statistical analysis is performed using a Mann-Whitney U test.",
       "slug": "salmonella-challenge"
@@ -286,7 +286,7 @@
     },
     "salmonella-challenge": {
       "description": "Mice were challenged i.v. with a sub lethal dose of Salmonella Typhimurium. Mice were killed on days 14 and 28 post infection and at both time points organs were removed, homogenized, serially diluted onto agar plates and bacteria enumerated. On day 28, blood serum was also collected and tetc specific antibody ELISAs performed to calculate IgG, IgG1 and IgG2a antibody titers.",
-      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"}],
+      "images": [{"spleen":"Mean Spleen Counts"},{"liver":"Mean Liver Counts"},{"ceaccont":"Mean Ceacal Contents Counts"},{"elisa":"Antibody Titres"}],
       "name": "Salmonella Typhimurium Challenge",
       "second_description": "The data shows mean bacterial counts per gram of tissue from 4 mice on days 14 and 28 for wild type (green) and knockout mice (red). Statistical analysis is performed using a Mann-Whitney U test.",
       "slug": "salmonella-challenge"

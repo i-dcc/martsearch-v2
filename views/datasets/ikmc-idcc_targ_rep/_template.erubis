@@ -42,16 +42,18 @@
         <div class="clear"></div>
       
         <!-- Targeting Vectors -->
-        <%=
-          partial(
-            "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
-            :locals => {
-              :allele_id         => project['allele_id'],
-              :pipeline          => project['pipeline'],
-              :targeting_vectors => project['targeting_vectors']
-            }
-          ) 
-        %>
+        <% if project['targeting_vectors'].size > 0 %>
+          <%=
+            partial(
+              "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
+              :locals => {
+                :allele_id         => project['allele_id'],
+                :pipeline          => project['pipeline'],
+                :targeting_vectors => project['targeting_vectors']
+              }
+            ) 
+          %>
+        <% end %>
       </div>
     
       <div class="clear"></div>

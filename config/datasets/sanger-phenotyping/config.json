@@ -7,7 +7,7 @@
   "custom_js":            true,
   "custom_view_helpers":  true,
   "custom_routes":        true,
-  "url":                  "http://hpgen-1-14.internal.sanger.ac.uk:9002/biomart",
+  "url":                  "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":         "phenotyping",
   "display_name":         "MGP Phenotyping",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",

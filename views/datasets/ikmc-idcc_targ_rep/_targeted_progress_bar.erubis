@@ -21,7 +21,7 @@
       <td class="start_normal">
         <strong><%= project["pipeline"] %></strong><br />
         
-        <% if project["pipeline"] === "KOMP-Regeneron" %>
+        <% if project["pipeline"] === "KOMP-Regeneron" and project['ikmc_project_id'] %>
           <% velocigene_id = project['ikmc_project_id'].gsub("VG","") %>
           (Project: 
           <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank">

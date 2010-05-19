@@ -38,11 +38,16 @@ jQuery(document).ready(function() {
   // Add the accordion effect to anything with the class 'accordion'
   jQuery(".accordion").accordion({
     collapsible: true,
-    autoHeight: false,
+    active:      false,
+    autoHeight:  false,
     icons: {
       header: "ui-icon-circle-arrow-e",
       headerSelected: "ui-icon-circle-arrow-s"
     }
+  });
+  
+  jQuery(".accordion.active").each( function() {
+    jQuery(this).accordion( "activate", 0 );
   });
   
   // Add font resizing buttons
@@ -72,6 +77,18 @@ function setup_toggles() {
   jQuery(".search_explaination_close").live("click", function() {
     jQuery(".search_explaination").hide();
     return false;
+  });
+  
+  // Add Toggling for Project Report
+  jQuery('.toggle_conditional_row').hide();
+  jQuery('.toggle_non_conditional_row').hide();
+  jQuery('#toggle_conditionals').click( function() {
+      jQuery('.toggle_conditional_row').toggle();
+      return false;
+  });
+  jQuery('#toggle_non_conditionals').click( function() {
+      jQuery('.toggle_non_conditional_row').toggle();
+      return false;
   });
   
   // Add Toggling for error messages

@@ -221,16 +221,16 @@
   </ul>
   <p>
     Please note that by default, leaving a space between two search parameters causes the 
-    search engine to perform an OR query, i.e. <strong>chromosome:1 chromosome:2</strong> 
-    is equivalent to <strong>chromosome:1 OR chromosome:2</strong>.
+    search engine to perform an AND query, i.e. <strong>chromosome:1 chromosome:2</strong> 
+    is equivalent to <strong>chromosome:1 AND chromosome:2</strong>.
   </p>
   
   <h3>Spaces in Search Terms</h3>
   <p>
     As mentioned in the above paragraph, our search engine interprets 
-    whitespace to mean the logical operator 'OR'.  Therefore, if you would 
-    like to search for a term such as <em>breast cancer</em> you must 
-    enclose the words that are supposed to be interpreted together in 
+    whitespace to mean the logical operator 'AND'.  However, if you would 
+    like to group search terms together such as <em>breast cancer</em> you 
+    must enclose the words that are to be interpreted as a group in 
     double-quotes.
   </p>
   <table>
@@ -240,15 +240,15 @@
     </tr>
     <tr>
       <td><strong>breast cancer</strong></td>
-      <td>&quot;breast&quot; OR &quot;cancer&quot;</td>
+      <td>&quot;breast&quot; AND &quot;cancer&quot; (anywhere in the gene entry)</td>
     </tr>
     <tr>
       <td><strong>'breast cancer'</strong></td>
-      <td>&quot;breast&quot; OR &quot;cancer&quot;</td>
+      <td>&quot;breast&quot; AND &quot;cancer&quot; (anywhere in the gene entry)</td>
     </tr>
     <tr>
       <td><strong>&quot;breast cancer&quot;</strong></td>
-      <td>&quot;breast cancer&quot; together as one term</td>
+      <td>&quot;breast cancer&quot; (grouped as one term)</td>
     </tr>
   </table>
 </div>

@@ -56,6 +56,7 @@ abbreviations.each do |row|
     pipeline =  case row[0]
     when /Mouse GP/ then "sanger-mgp"
     when /P1\/2/    then "eumodic-pipeline-1-2"
+    when /MGP Pipe/ then "eumodic-pipeline-1-2"
     end
     
     test         = row[2]
@@ -68,10 +69,14 @@ abbreviations.each do |row|
       row[4]       = "w00t wibble blibble flip"
     end
     
+    if test == "citrobacter-infection" or test == "salmonella-infection"
+      test.gsub!("infection","challenge")
+    end
+    
     begin
       test_conf[pipeline][test]["images"].push({ abbreviation => variable })
 
-      unless row[4].nil?
+      if row[4] and row[4] != nil
         ["wt","het","hom"].each do |append|
           test_conf[pipeline][test]["images"].push({ abbreviation+append => variable })
         end

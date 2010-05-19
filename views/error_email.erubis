@@ -1,18 +1,19 @@
 Project: MartSearch
 Tracker: Bug
 Priority: High
+Category: 
 
 An error occured: <%= @request.env["sinatra.error"].message %>
 
-===================================================================
-SinatraError:
-===================================================================
+################
+# SinatraError #
+################
 
 <%= @request.env["sinatra.error"] %>
 
-===================================================================
-Request Environment:
-===================================================================
+#######################
+# Request Environment #
+#######################
 
 PID:  <%= $$ %>
 PWD:  <%= Dir.getwd %>

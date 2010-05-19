@@ -443,7 +443,7 @@ def sanger_phenotyping_test_groupings
         "fasted_clinical_chemistry"
       ]
     },
-    "Behaviour and Sensory" => {
+    "Behaviour, Sensory and Blood" => {
       :pipelines => [ "P1/2", "EUMODIC P1/2" ],
       :tests     => [
         "body_weight_curve_normal_chow",
@@ -513,7 +513,7 @@ def sanger_phenotyping_test_groupings_order
   [
     "Viability, Fertility and Expression",
     "Cardiovascular and Metabolism",
-    "Behaviour and Sensory",
+    "Behaviour, Sensory and Blood",
     "Comprehensive Phenotyping Pipeline",
     "Infectious Challenges",
     "Collaborations"

@@ -74,7 +74,7 @@
             </p>
             <ul>
               <li>&gt;13&#37; Homozygous = Viable</li>
-              <li>&gt;0&#37; and &lt;13&#37; = Subviable</li>
+              <li>&gt;0&#37; and &le;13&#37; = Subviable</li>
               <li>0&#37; = Lethal</li>
             </ul>
           </div>

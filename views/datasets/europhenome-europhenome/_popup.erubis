@@ -15,8 +15,8 @@
           <tr>
             <td><%= parameter['parameter_name'] %></td>
             <td><%= result['sex'] %></td>
-            <td><%= BigDecimal.new(result['significance']).truncate(3).to_s('E').gsub('E','e') %></td>
-            <td><%= BigDecimal.new(result['effect_size']).truncate(3).to_s('E').gsub('E','e') %></td>
+            <td><%= BigDecimal.new(result['significance'],4).to_s('E').gsub('E','e') %></td>
+            <td><%= BigDecimal.new(result['effect_size'],4).to_s('E').gsub('E','e') %></td>
             <td><%= result['mp_term_name'] %></td>
           </tr>
         <% end %>

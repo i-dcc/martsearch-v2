@@ -97,6 +97,7 @@
               <th>ES Cell Clone</th>
               <th>Parental ES Cell Strain</th>
               <th>Parental ES Cell Line</th>
+              <th>Microinjection Status</th>
             </thead>
             <tbody>
               <% @data['mice'].each do |mouse| %>
@@ -106,6 +107,7 @@
                   <td><%= mouse['escell_clone'] %></td>
                   <td><%= mouse['escell_strain'] %></td>
                   <td><%= mouse['escell_line'] %></td>
+                  <td><%= mouse['status']%></td>
                 </tr>
               <% end %>
             </tbody>

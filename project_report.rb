@@ -6,7 +6,7 @@ get "/project/:id" do
   @data = { 'project_id' => project_id }
   @data.update( get_common_data(project_id) )
   @data.update( get_vectors_and_cells(project_id) )
-  @data.update( get_mice(@data['ensembl_gene_id']) ) if @data['ensembl_gene_id']
+  @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
   @data.update( order_buttons_url(@data) )
   @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
   
@@ -133,17 +133,21 @@ def get_vectors_and_cells( project_id )
 end
 
 # Will query Kermits mart
-def get_mice( ensembl_gene_id )
+def get_mice( marker_symbol )
   conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/sanger-kermits/config.json","r") )
   dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
   results = dataset.search({
-    :filters => { 'ensembl_gene_id' => ensembl_gene_id },
-    :attributes => ['allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
+    :filters => { 'marker_symbol' => marker_symbol },
+    :attributes => ['status', 'allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
     :process_results => true
   })
+  results.reject! { |result| result['status'].nil? }
   
-  return { 'mice' => results } unless results.empty?
-  return {}
+  unless results.empty?
+    return { 'mice' => results }
+  else
+    return {}
+  end
 end
 
 def order_buttons_url( data )

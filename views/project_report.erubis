@@ -17,7 +17,7 @@
     <!-- Pipeline progress bar -->
     
     <div class="pipeline_stage hide_on_print">
-      <table class="sanger-htgt_targ_allele_progress">
+      <table class="ikmc-pipeline-progress-bar">
         <thead>
           <th class="nobg noborder"></th>
           <th width="20%" class="centre">Pre-pipeline</th>

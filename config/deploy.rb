@@ -20,6 +20,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
     run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
     run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
+    run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
+    run "ln -nfs #{shared_path}/pheno_abr #{release_path}/tmp/pheno_abr"
     run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
   end
   

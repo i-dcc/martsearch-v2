@@ -17,7 +17,6 @@ sorted_results = {}
   if sorted_results[ result[ @joined_biomart_attribute ] ][ "#{result['europhenome_id']}-#{het_hom}" ].nil?
     sorted_results[ result[ @joined_biomart_attribute ] ][ "#{result['europhenome_id']}-#{het_hom}" ] = {
       "europhenome_id" => result["europhenome_id"],
-      "pipeline"       => result["pipeline"],
       "line_name"      => result["line_name"],
       "zygosity"       => het_hom,
       "allele_id"      => result["allele_id"],
@@ -25,6 +24,7 @@ sorted_results = {}
       "emma_id"        => result["emma_id"],
       "escell_clone"   => result["escell_clone"],
       "stocklist_id"   => result["stocklist_id"],
+      "pipelines"      => [],
       "pipeline_data"  => {}
     }
   end
@@ -32,6 +32,8 @@ sorted_results = {}
   result_data = sorted_results[ result[ @joined_biomart_attribute ] ][ "#{result['europhenome_id']}-#{het_hom}" ]
   
   # Process and store the result data...
+  
+  result_data["pipelines"].push(result["pipeline"]).uniq!
   
   pipeline_name = nil
   test_eslim_id = result["parameter_eslim_id"][0,( result["parameter_eslim_id"].size - 4 )]

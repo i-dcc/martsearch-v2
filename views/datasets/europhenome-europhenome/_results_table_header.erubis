@@ -4,13 +4,13 @@
     <% pipeline_parameters.each do |parameter_id| %>
       <th colspan="2">
         <a href="<%= europhenome_empress_link_url( pipeline_name, parameter_id )%>" target="_blank">
-          <%= europhenome_test_mapping()[parameter_id] %>
+          <%= europhenome_test_mapping[parameter_id] %>
         </a>
       </th>
     <% end %>
   
-    <% if pipeline_parameters.size < europhenome_tests_per_row() %>
-      <% ( europhenome_tests_per_row() - pipeline_parameters.size ).times do |fill| %>
+    <% if pipeline_parameters.size < europhenome_tests_per_row %>
+      <% ( europhenome_tests_per_row - pipeline_parameters.size ).times do |fill| %>
         <th colspan="2" class="nobg noborder"></th>
       <% end %>
     <% end %>
@@ -22,8 +22,8 @@
       <th class="female" width="<%= column_width %>%">F</th>
     <% end %>
   
-    <% if pipeline_parameters.size < europhenome_tests_per_row() %>
-      <% ( europhenome_tests_per_row() - pipeline_parameters.size ).times do |fill| %>
+    <% if pipeline_parameters.size < europhenome_tests_per_row %>
+      <% ( europhenome_tests_per_row - pipeline_parameters.size ).times do |fill| %>
         <th class="nobg noborder"></th>
         <th class="nobg noborder"></th>
       <% end %>

@@ -41,8 +41,8 @@
     <% end %>
   <% end %>
 
-  <% if pipeline_parameters.size < europhenome_tests_per_row() %>
-    <% ( europhenome_tests_per_row() - pipeline_parameters.size ).times do |fill| %>
+  <% if pipeline_parameters.size < europhenome_tests_per_row %>
+    <% ( europhenome_tests_per_row - pipeline_parameters.size ).times do |fill| %>
       <td class="nobg noborder"></td>
       <td class="nobg noborder"></td>
     <% end %>

@@ -230,29 +230,24 @@ get "/?" do
   erubis :main
 end
 
-get "/search/?" do
-  if params.empty?
-    redirect "#{BASE_URI}/"
-  else
-    @current    = "home"
-    @page_title = "Search Results for '#{params[:query]}'"
-    @results    = @@ms.search( params[:query], params[:page] )
-    @data       = @@ms.search_data
-    check_for_errors
-
-    erubis :search
-  end
-end
-
-["/search/:query/?", "/search/:query/:page/?"].each do |path|
+["/search/?", "/search/:query/?", "/search/:query/:page/?"].each do |path|
   get path do
-    @current    = "home"
-    @page_title = "Search Results for '#{params[:query]}'"
-    @results    = @@ms.search( params[:query], params[:page] )
-    @data       = @@ms.search_data
-    check_for_errors
-    
-    erubis :search
+    if params.empty?
+      redirect "#{BASE_URI}/"
+    else
+      @current    = "home"
+      @page_title = "Search Results for '#{params[:query]}'"
+      @results    = @@ms.search( params[:query], params[:page] )
+      @data       = @@ms.search_data
+      check_for_errors
+
+      if params[:wt] == "json"
+        content_type "application/json"
+        return @data.to_json
+      else
+        erubis :search
+      end
+    end
   end
 end
 

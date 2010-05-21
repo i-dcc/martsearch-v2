@@ -5,7 +5,6 @@
     <%
       display_this_pipeline = false
       result_data["europhenome-europhenome"].each do |europh_id_zyg,line_data|
-        puts "comparing '#{line_data['pipeline']}' with '#{pipeline_name}'"
         if line_data["pipeline"] == pipeline_name
           display_this_pipeline = true
         end

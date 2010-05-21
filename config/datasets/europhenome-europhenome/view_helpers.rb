@@ -169,3 +169,18 @@ def europhenome_link_url( europhenome_id, sex, parameter_id, result_ids )
   
   return url + opts_array.join("&")
 end
+
+def europhenome_empress_link_url( pipeline_name, parameter_id )
+  url =  "http://empress.har.mrc.ac.uk/viewempress/?pipelineprocedure="
+  
+  pipeline_param = case "#{pipeline_name}~#{europhenome_test_mapping()[parameter_id]}"
+  when "EUMODIC Pipeline 2~Open Field"             then "EUMODIC Pipeline 2~Open-Field"
+  when "EUMODIC Pipeline 2~Acoustic Startle & PPI" then "EUMODIC Pipeline 2~Acoustic Startle%26PPI"
+  when "MGP Pipeline~Haematology"                  then "MGP Pipeline~Haematology test"
+  else
+    "#{pipeline_name}~#{europhenome_test_mapping()[parameter_id]}"
+  end
+  
+  url << pipeline_param.gsub(" ","+")
+  return url
+end

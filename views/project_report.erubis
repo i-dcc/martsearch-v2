@@ -1,4 +1,4 @@
-<h3>IKMC Project Report (ID: <%= @data['project_id'] %>)</h3>
+<h3>IKMC Project Report - <%= @data['ikmc_project'] %> (ID: <%= @data['project_id'] %>)</h3>
 <h5>
   <a href="http://www.knockoutmouse.org/genedetails/<%= @data['mgi_accession_id'] %>"><%= @data['marker_symbol'] %></a> 
   <a href="http://www.informatics.jax.org/searches/accession_report.cgi?id=<%= @data['mgi_accession_id'] %>"><%= @data['mgi_accession_id'] %></a> 
@@ -18,7 +18,6 @@
     
     <div class="pipeline_stage hide_on_print">
       <table class="sanger-htgt_targ_allele_progress">
-        <caption>Pipeline Stage (<%= @data['ikmc_project'] %>)</caption>
         <thead>
           <th class="nobg noborder"></th>
           <th width="20%" class="centre">Pre-pipeline</th>
@@ -78,17 +77,12 @@
       </table>
     </div>
     
-    
     <!-- Mice -->
     
     <div class="dataset">
       <h4 class="dataset_title toggle-open">Mice</h4>
       <div class="dataset_content">
         <% if @data['mice'] %>
-          <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
-          <a href="<%= order_url %>" class="order hide_on_print" target="_blank">
-            Register interest in a mouse
-          </a>
           <div class="clear"></div>
           <table>
             <thead>
@@ -98,6 +92,7 @@
               <th>Parental ES Cell Strain</th>
               <th>Parental ES Cell Line</th>
               <th>Microinjection Status</th>
+              <th class="noborder nocol nobg hide_on_print"></th>
             </thead>
             <tbody>
               <% @data['mice'].each do |mouse| %>
@@ -108,6 +103,10 @@
                   <td><%= mouse['escell_strain'] %></td>
                   <td><%= mouse['escell_line'] %></td>
                   <td><%= mouse['status']%></td>
+                  <td class="nobg noborder hide_on_print">
+                    <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
+                    <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
+                  </td>
                 </tr>
               <% end %>
             </tbody>

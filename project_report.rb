@@ -1,16 +1,23 @@
-get "/project/:id" do
-  project_id  = params[:id]
+["/project/:id","/project/?"].each do |path|
+  get path do
+    project_id  = params[:id]
   
-  @current    = "home"
-  @page_title = "Report for project #{project_id}"
-  @data = { 'project_id' => project_id }
-  @data.update( get_common_data(project_id) )
-  @data.update( get_vectors_and_cells(project_id) )
-  @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
-  @data.update( order_buttons_url(@data) )
-  @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
+    @current    = "home"
+    @page_title = "Report for project #{project_id}"
+    @data = { 'project_id' => project_id }
+    @data.update( get_common_data(project_id) )
+    @data.update( get_vectors_and_cells(project_id) )
+    @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
+    @data.update( order_buttons_url(@data) )
+    @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
   
-  erubis :project_report
+    if params[:wt] == "json"
+      content_type "application/json"
+      return @data.to_json
+    else
+      erubis :project_report
+    end
+  end
 end
 
 # Will query DCC gene details mart
@@ -152,7 +159,7 @@ end
 
 def order_buttons_url( data )
   mgi_accession_id  = data['mgi_accession_id'][4..-1]
-  pipeline          = data['pipeline']
+  pipeline          = data['ikmc_project']
   marker_symbol     = data['marker_symbol']
   project_id        = data['project_id']
   

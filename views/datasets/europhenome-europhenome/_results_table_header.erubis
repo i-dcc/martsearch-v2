@@ -3,7 +3,7 @@
     <th></th>
     <% pipeline_parameters.each do |parameter_id| %>
       <th colspan="2">
-        <a href="http://empress.har.mrc.ac.uk/viewempress/?pipelineprocedure=<%= pipeline_name.gsub(" ","+") %>~<%= europhenome_test_mapping()[parameter_id].gsub(" ","+") %>" target="_blank">
+        <a href="<%= europhenome_empress_link_url( pipeline_name, parameter_id )%>" target="_blank">
           <%= europhenome_test_mapping()[parameter_id] %>
         </a>
       </th>

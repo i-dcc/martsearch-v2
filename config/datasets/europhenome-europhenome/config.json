@@ -20,6 +20,7 @@
     "joined_biomart_attribute": "mgi_accession_id",
     "attributes": [
       "mgi_accession_id",
+      "pipeline",
       "europhenome_id",
       "line_name",
       "sex",

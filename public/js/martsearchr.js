@@ -38,11 +38,16 @@ jQuery(document).ready(function() {
   // Add the accordion effect to anything with the class 'accordion'
   jQuery(".accordion").accordion({
     collapsible: true,
-    autoHeight: false,
+    active:      false,
+    autoHeight:  false,
     icons: {
       header: "ui-icon-circle-arrow-e",
       headerSelected: "ui-icon-circle-arrow-s"
     }
+  });
+  
+  jQuery(".accordion.active").each( function() {
+    jQuery(this).accordion( "activate", 0 );
   });
   
   // Add font resizing buttons

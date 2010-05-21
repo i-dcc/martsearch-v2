@@ -7,7 +7,7 @@ jQuery(document).ready(function() {
     jQuery(this).attr( "title", "" );
     jQuery(this).qtip({
        content:  jQuery(this).attr("tooltip"),
-       style:    { tip: "topMiddle", border: { radius: 5 }, width: 400, name: "light" },
+       style:    { tip: "topMiddle", border: { radius: 5 }, width: 500, name: "light" },
        position: { corner: { target: "bottomMiddle", tooltip: "topMiddle" } }
     });
   });

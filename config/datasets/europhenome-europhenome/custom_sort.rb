@@ -17,6 +17,7 @@ sorted_results = {}
   if sorted_results[ result[ @joined_biomart_attribute ] ][ "#{result['europhenome_id']}-#{het_hom}" ].nil?
     sorted_results[ result[ @joined_biomart_attribute ] ][ "#{result['europhenome_id']}-#{het_hom}" ] = {
       "europhenome_id" => result["europhenome_id"],
+      "pipeline"       => result["pipeline"],
       "line_name"      => result["line_name"],
       "zygosity"       => het_hom,
       "allele_id"      => result["allele_id"],

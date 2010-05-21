@@ -525,4 +525,27 @@ Mouse GP,Grip Strength All Paws Trial 3,grip-strength,allpaw3,
 Mouse GP,Body Weight,grip-strength,bodywt,
 Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,
 Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
-,Txt - miscellaneous 1,homviable,homviable,
+MGP Pipeline 1,Mean bacterial shedding,citrobacter-infection,shedding,
+MGP Pipeline 1,Mean spleen counts,citrobacter-infection,citrospleen
+MGP Pipeline 1,Mean liver counts,citrobacter-infection,citroliver
+MGP Pipeline 1,Mean colon counts,citrobacter-infection,colon
+MGP Pipeline 1,Mean ceacum counts,citrobacter-infection,ceacum
+MGP Pipeline 1,Mean ceacal patch counts,citrobacter-infection,cp
+MGP Pipeline 1,Mean ceacal content counts,citrobacter-infection,citroceaccont
+MGP Pipeline 1,Mean colon weights,citrobacter-infection,colonweight
+MGP Pipeline 1,Mean spleen counts,salmonella-infection,spleen
+MGP Pipeline 1,Mean liver counts,salmonella-infection,liver
+MGP Pipeline 1,Mean ceacal contents counts,salmonella-infection,ceaccont
+MGP Pipeline 1,Antibody titres,salmonella-infection,elisa
+Mouse GP,Mean bacterial shedding,citrobacter-infection,shedding
+Mouse GP,Mean spleen counts,citrobacter-infection,citrospleen
+Mouse GP,Mean liver counts,citrobacter-infection,citroliver
+Mouse GP,Mean colon counts,citrobacter-infection,colon
+Mouse GP,Mean ceacum counts,citrobacter-infection,ceacum
+Mouse GP,Mean ceacal patch counts,citrobacter-infection,cp,
+Mouse GP,Mean ceacal content counts,citrobacter-infection,citroceaccont,
+Mouse GP,Mean colon weights,citrobacter-infection,colonweight,
+Mouse GP,Mean spleen counts,salmonella-infection,spleen,
+Mouse GP,Mean liver counts,salmonella-infection,liver,
+Mouse GP,Mean ceacal contents counts,salmonella-infection,ceaccont,
+Mouse GP,Antibody titres,salmonella-infection,elisa,

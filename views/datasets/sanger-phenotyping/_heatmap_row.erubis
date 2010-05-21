@@ -1,0 +1,93 @@
+<%
+  # See if there is a joined kermits entry
+  related_kermits_entry = nil
+  if result["colony_prefix"] && result_data["sanger-kermits"]
+    result_data["sanger-kermits"].each do |kerm|
+      if kerm["colony_prefix"] === result["colony_prefix"]
+        related_kermits_entry = kerm
+      end
+    end
+  end
+
+  # See if there is a joined htgt_targ entry
+  related_htgt_targ_entry = nil
+  if (related_kermits_entry && related_kermits_entry["escell_clone"]) && result_data["sanger-htgt_targ"]
+    result_data["sanger-htgt_targ"].each do |targ|
+      ["conditional_clones","nonconditional_clones"].each do |clone_type|
+        if targ[clone_type]
+          targ[clone_type].each do |clone|
+            if clone["escell_clone"] === related_kermits_entry["escell_clone"]
+              related_htgt_targ_entry = targ
+            end
+          end
+        end
+      end
+    end
+  end
+
+  # Get a list of tests with details pages to link to
+  detail_links = sanger_phenotyping_details_links(result["colony_prefix"])
+%>
+<tr>
+  <td>
+    <%
+      allele_name = result["allele_name"]
+      if related_kermits_entry and related_kermits_entry["allele_name"]
+        allele_name = related_kermits_entry["allele_name"]
+      end
+    %>
+    <%= allele_name %>
+  </td>
+  <td>
+    <%= result["comparison"] %>
+  </td>
+  <% tests.each do |test| %>
+    <%
+      title_text = "<h6>#{ds_attrib_objects[test].display_name}</h6>"
+
+      title_text << "<div>"
+      title_text << "<strong>Result:</strong><br />#{result[test]}<br /><br />"
+
+      if result["#{test}_comments"]
+        title_text << "<strong>Comments:</strong><br />#{result["#{test}_comments"]}<br /><br />"
+      end
+
+      title_text << "<strong>Pipeline:</strong> #{result["pipeline"]}<br />"
+      title_text << "<strong>Comparison Type:</strong> #{result["comparison"]}<br />"
+
+      escell_clone = result["marker_symbol"] + "-" + result["colony_prefix"]
+      if related_kermits_entry and related_kermits_entry["escell_clone"]
+        escell_clone = related_kermits_entry["escell_clone"]
+      end
+      title_text << "<strong>ES Cell Clone:</strong> #{escell_clone}<br />"
+
+      if related_htgt_targ_entry and related_htgt_targ_entry["cassette"]
+        cassette = "Promotorless"
+        if related_htgt_targ_entry["cassette"].match("_P")
+          cassette = "Promotor Driven"
+        end
+        title_text << "<strong>Cassette Type:</strong> #{cassette}<br />"
+      end
+
+      if related_kermits_entry and related_kermits_entry["allele_type"]
+        unless related_kermits_entry["allele_type"].empty?
+          title_text << "<strong>Allele Type:</strong> #{related_kermits_entry["allele_type"]}<br />"
+        end
+      end
+
+      title_text << "</div>"
+
+      link_text = ""
+      if test === "abr"
+        if detail_links.include?("abr")
+          link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/abr/'><img src='#{BASE_URI}/images/silk/chart_bar.png' /></a>"
+        end
+      else
+        if detail_links.include?( test.gsub("_","-") )
+          link_text = "<a href='#{BASE_URI}/phenotyping/#{result['colony_prefix']}/#{test.gsub("_","-")}/'><img src='#{BASE_URI}/images/silk/chart_bar.png' /></a>"
+        end
+      end
+    %>
+    <td class="<%= sanger_phenotyping_css_class_for_test(result[test]) %> pheno_result" title="<%= title_text %>" rel="qtip"><%= link_text %></td>
+  <% end %>
+</tr>

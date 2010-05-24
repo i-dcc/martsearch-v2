@@ -74,7 +74,9 @@ def get_vectors_and_cells( project_id )
     allele_image = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
     genbank_file = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
     
-    # Intermediate Vectors
+    #
+    #   Intermediate Vectors
+    #
     data['intermediate_vectors'].push(
       'name'        => result['intermediate_vector'],
       'design_id'   => result['design_id'],
@@ -82,7 +84,10 @@ def get_vectors_and_cells( project_id )
       'floxed_exon' => result['floxed_start_exon']
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
-    # Targeting Vectors
+    
+    #
+    #   Targeting Vectors
+    #
     data['targeting_vectors'].push(
       'name'         => result['targeting_vector'],
       'design_id'    => result['design_id'],
@@ -93,7 +98,10 @@ def get_vectors_and_cells( project_id )
       'genbank_file' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/targeting-vector-genbank-file"
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
-    # Non-Conditionals
+    
+    #
+    #   Non-Conditionals
+    #
     if result['mutation_subtype'] == 'targeted_non_conditional'
       data['non_conditionals'].update(
         'design_type'  => design_type,
@@ -110,7 +118,10 @@ def get_vectors_and_cells( project_id )
         'targeting_vector'          => result['targeting_vector']
       )
     
-    # Conditionals
+    
+    #
+    #   Conditionals
+    #
     else
       data['conditionals'].update(
         'design_type'  => design_type,
@@ -144,7 +155,7 @@ def get_mice( marker_symbol )
   conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/sanger-kermits/config.json","r") )
   dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
   results = dataset.search({
-    :filters => { 'marker_symbol' => marker_symbol },
+    :filters => { 'marker_symbol' => marker_symbol, 'active' => '1' },
     :attributes => ['status', 'allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
     :process_results => true
   })

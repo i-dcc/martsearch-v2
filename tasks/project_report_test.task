@@ -3,7 +3,7 @@ require "rack/test"
 namespace :project_report do
   desc "Test that a report can be produced for every project"
   task :test do
-    browser = Rack::Test::Session.new( Rack::MockSession.new( Sinatra::Application ) )
+    browser  = Rack::Test::Session.new( Rack::MockSession.new( Sinatra::Application ) )
     conf     = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/ikmc-dcc-gene_details/config.json","r") )
     dataset  = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
     results  = dataset.search({
@@ -16,8 +16,8 @@ namespace :project_report do
     })
     
     results.each do |result|
-      name  = result['ikmc_project']
-      id    = result['ikmc_project_id']
+      id                = result['ikmc_project_id']
+      name              = result['ikmc_project']
       mouse_available   = result['mouse_available'].to_i
       escell_available  = result['escell_available'].to_i
       vector_available  = result['vector_available'].to_i

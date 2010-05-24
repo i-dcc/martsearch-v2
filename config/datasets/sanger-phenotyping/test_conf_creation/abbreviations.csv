@@ -51,8 +51,8 @@ MGP Pipeline 1,Glycerol,fasted-clinical-chemistry,glycerol,
 MGP Pipeline 1,Fructosamine,fasted-clinical-chemistry,fructos,
 MGP Pipeline 1,Cumulative Food Intake,indirect-calorimetry,food,
 MGP Pipeline 1,Respiratory Exchange Ratio,indirect-calorimetry,rer,
-MGP Pipeline 1,VCO2,indirect-calorimetry,co2,
-MGP Pipeline 1,VO2,indirect-calorimetry,o2,
+MGP Pipeline 1,VCO2,indirect-calorimetry,vco2,
+MGP Pipeline 1,VO2,indirect-calorimetry,vo2,
 MGP Pipeline 1,Energy Expenditure,indirect-calorimetry,ee,
 MGP Pipeline 1,Energy Expenditure/Animal,indirect-calorimetry,eeanimal,
 MGP Pipeline 1,X-Activity Total,indirect-calorimetry,xactivity,
@@ -242,7 +242,7 @@ MGP Pipeline 2,Left Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucl
 MGP Pipeline 2,Right Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucright,
 MGP Pipeline 2,Left Eye Blood Vessels,eye-morphology,bloodvesselleft,
 MGP Pipeline 2,Right Eye Blood Vessels,eye-morphology,bloodvesselright,
-MGP Pipeline 2,General Morphology,eye-morphology,genmorph,
+MGP Pipeline 2,General Morphology - SL,eye-morphology,genmorphsl,
 MGP Pipeline 2,Left Optic Disk,eye-morphology,opticleft,
 MGP Pipeline 2,Right Optic Disk,eye-morphology,opticright,
 MGP Pipeline 2,Left Retina,eye-morphology,retleft,
@@ -254,7 +254,7 @@ MGP Pipeline 2,Right Retina Structure,eye-morphology,retstructright,
 MGP Pipeline 2,Cornea,eye-morphology,corn,
 MGP Pipeline 2,Cornea Opacity,eye-morphology,cornopacity,
 MGP Pipeline 2,Cornea Vascularization,eye-morphology,cornvasc,
-MGP Pipeline 2,General Morphology,eye-morphology,genmorph,
+MGP Pipeline 2,General Morphology - Op,eye-morphology,genmorphop,
 MGP Pipeline 2,Eye Size,eye-morphology,eyesize,
 MGP Pipeline 2,Blood Presence,eye-morphology,bloodpres,
 MGP Pipeline 2,Eyelid Closure,eye-morphology,eyelidclose,
@@ -273,8 +273,8 @@ MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,
 MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Cumulative Food Intake,indirect-calorimetry,food,
 Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer,
-Mouse GP,VCO2,indirect-calorimetry,co2,
-Mouse GP,VO2,indirect-calorimetry,o2,
+Mouse GP,VCO2,indirect-calorimetry,vco2,
+Mouse GP,VO2,indirect-calorimetry,vo2,
 Mouse GP,Energy Expenditure,indirect-calorimetry,ee,
 Mouse GP,Energy Expenditure/Animal,indirect-calorimetry,eeanimal,
 Mouse GP,X-Activity Total,indirect-calorimetry,xactivity,
@@ -401,7 +401,7 @@ Mouse GP,Left Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucleft
 Mouse GP,Right Eye Blood Vessels Structure,eye-morphology,bloodvesselstrucright
 Mouse GP,Left Eye Blood Vessels,eye-morphology,bloodvesselleft
 Mouse GP,Right Eye Blood Vessels,eye-morphology,bloodvesselright
-Mouse GP,General Morphology,eye-morphology,genmorph
+Mouse GP,General Morphology - SL,eye-morphology,genmorphsl
 Mouse GP,Left Optic Disk,eye-morphology,opticleft
 Mouse GP,Right Optic Disk,eye-morphology,opticright
 Mouse GP,Left Retina,eye-morphology,retleft
@@ -413,7 +413,7 @@ Mouse GP,Right Retina Structure,eye-morphology,retstructright
 Mouse GP,Cornea,eye-morphology,corn
 Mouse GP,Cornea Opacity,eye-morphology,cornopacity
 Mouse GP,Cornea Vascularization,eye-morphology,cornvasc
-Mouse GP,General Morphology,eye-morphology,genmorph
+Mouse GP,General Morphology - Op,eye-morphology,genmorphop
 Mouse GP,Eye Size,eye-morphology,eyesize
 Mouse GP,Blood Presence,eye-morphology,bloodpres
 Mouse GP,Eyelid Closure,eye-morphology,eyelidclose
@@ -468,7 +468,6 @@ Mouse GP,Shape Of Spine,x-ray-imaging,spnshp,
 Mouse GP,Kyphosis,x-ray-imaging,kypho,
 Mouse GP,Lordosis,x-ray-imaging,lordo,
 Mouse GP,Scoliosis,x-ray-imaging,scolio,
-Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
 Mouse GP,Body Weight,dysmorphology,bodywt,
 Mouse GP,Hyperactivity,dysmorphology,hyper,
@@ -484,6 +483,7 @@ Mouse GP,Head Morphology,dysmorphology,headmorph,
 Mouse GP,Mouth Morphology,dysmorphology,mouthmorph,
 Mouse GP,Snout Morphology,dysmorphology,snoutmorph,
 Mouse GP,Incisor,dysmorphology,incisor,
+Mouse GP,Incisor Colour,dysmorphology,incisorco,
 Mouse GP,Whiskers,dysmorphology,whisker,
 Mouse GP,Ear Morphology,dysmorphology,earmorph,
 Mouse GP,Ear Size,dysmorphology,earsize,
@@ -542,10 +542,10 @@ Mouse GP,Mean spleen counts,citrobacter-infection,citrospleen
 Mouse GP,Mean liver counts,citrobacter-infection,citroliver
 Mouse GP,Mean colon counts,citrobacter-infection,colon
 Mouse GP,Mean ceacum counts,citrobacter-infection,ceacum
-Mouse GP,Mean ceacal patch counts,citrobacter-infection,cp,
-Mouse GP,Mean ceacal content counts,citrobacter-infection,citroceaccont,
-Mouse GP,Mean colon weights,citrobacter-infection,colonweight,
-Mouse GP,Mean spleen counts,salmonella-infection,spleen,
-Mouse GP,Mean liver counts,salmonella-infection,liver,
-Mouse GP,Mean ceacal contents counts,salmonella-infection,ceaccont,
-Mouse GP,Antibody titres,salmonella-infection,elisa,
+Mouse GP,Mean ceacal patch counts,citrobacter-infection,cp
+Mouse GP,Mean ceacal content counts,citrobacter-infection,citroceaccont
+Mouse GP,Mean colon weights,citrobacter-infection,colonweight
+Mouse GP,Mean spleen counts,salmonella-infection,spleen
+Mouse GP,Mean liver counts,salmonella-infection,liver
+Mouse GP,Mean ceacal contents counts,salmonella-infection,ceaccont
+Mouse GP,Antibody titres,salmonella-infection,elisa

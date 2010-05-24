@@ -120,12 +120,10 @@ function check_browser_compatibility() {
     var major_gecko_revision = parseFloat(gecko_version[0] + "." + gecko_version[1]);
     var minor_gecko_revision = parseInt(gecko_version[2],10);
 
-    if ( major_gecko_revision == 1.9 ) {
-      if ( minor_gecko_revision < 1 ) {
-        browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
-        add_warning        = true;
-        hide_vertical_text = true;
-      }
+    if ( major_gecko_revision == 1.9 && minor_gecko_revision < 1 ) {
+      browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
+      add_warning        = true;
+      hide_vertical_text = true;
     } else if ( major_gecko_revision <= 1.8 ) {
       browser            = "the Mozilla Gecko rendering engine (used in Firefox and other browsers)";
       add_warning        = true;

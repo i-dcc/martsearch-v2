@@ -18,20 +18,24 @@
   <tbody>
     <tr>
       <!-- Pipeline Name with IKMC Project ID-->
-      <td class="start_normal">
+      <td class="start_<%= progress["vectors"] %>">
         <strong><%= project["pipeline"] %></strong><br />
         
+        <!-- Regeneron with product available -->
         <% if project["pipeline"] === "KOMP-Regeneron" and project['ikmc_project_id'] %>
           <% velocigene_id = project['ikmc_project_id'].gsub("VG","") %>
           (Project: 
           <a href="http://www.velocigene.com/komp/detail/<%= velocigene_id %>" target="_blank">
             <%= project['ikmc_project_id'] %>
           </a>)
-        <% elsif project['ikmc_project_id'] %>
+
+        <!-- Any other pipeline with product available -->
+        <% elsif project['ikmc_project_id'] and not project['no_products_available']%>
           (Project: 
           <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= project['ikmc_project_id'] %>" target="_blank">
             <%= project['ikmc_project_id'] %>
           </a>)
+
         <% else %>
           <!-- Don't print anything if no ikmc_project_id -->
         <% end %>
@@ -39,19 +43,22 @@
       
       <!-- Vectors -->
       <td class="<%= progress["vectors"] %> <%= progress["vectors"] %>_<%= progress["cells"] %>">
-        <% if project['vector_available'] %>
+        <% if project['vector_available'] == '1' %>
           <% if project['pipeline'] == 'mirKO' %>
             <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
           <% else %>
             <% url = idcc_targ_rep_product_order_url( project, result_data, "vectors" ) %>
             <a href="<%= url %>" class="order" target="_blank">order</a>
           <% end %>
+
+        <% elsif project['no_products_available'] and project['status'] %>
+          <span><%= project['status'] %></span>
         <% end %>
       </td>
       
       <!-- Cells -->
       <td class="<%= progress["cells"] %> <%= progress["cells"] %>_<%= progress["mice"] %>">
-        <% if project['escell_available'] %>
+        <% if project['escell_available'] == '1' %>
           <% if project['pipeline'] == 'mirKO' %>
             <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
           <% else %>
@@ -63,7 +70,7 @@
       
       <!-- Mice -->
       <td class="end_<%= progress["mice"] %> <%= progress["mice"] %>">
-        <% if project["mouse_available"] %>
+        <% if project["mouse_available"] == '1' %>
           <% if project['pipeline'] == 'mirKO' %>
             <a href="mailto:mirKO@sanger.ac.uk" class="order unavailable">express&nbsp;interest</a>
           <% else %>
@@ -74,7 +81,20 @@
       </td>
       
       <!-- Details -->
-      <td><a class="ikmc-idcc_targ_rep_allele_progress_details_toggle">view&nbsp;details</a></td>
+      <td>
+        <% if project['no_products_available'] %>
+          <% if project['project_ids'] %>
+            Projects:
+            <a href="http://knockoutmouse.org/genedetails/<%= project['mgi_accesion_id']%>" target="_blank">
+              <%= project['project_ids'].join(', ') -%>
+            </a>
+          <% end %>
+        <% else %>
+          <a class="ikmc-idcc_targ_rep_allele_progress_details_toggle">
+            view&nbsp;details
+          </a>
+        <% end %>
+      </td>
     </tr>
     <% if project['pipeline'] == 'mirKO' %>
       <tr>

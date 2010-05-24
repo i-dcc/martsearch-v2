@@ -1,6 +1,6 @@
 <h4>Targeting Vectors</h4>
 
-<% if targeting_vectors %>
+<% if targeting_vectors.length > 0 %>
   <table>
     <tr>
       <th>Targeting Vector</th>

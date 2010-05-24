@@ -1,18 +1,22 @@
 
 def idcc_targ_rep_get_progressbar_info( project )
-  if project['mouse_available']
+  if project['mouse_available'] == '1'
     return { "vectors" => "normal", "cells" => "normal", "mice" => "normal" }
   end
   
-  if project['escell_available']
+  if project['escell_available'] == '1'
     return { "vectors" => "normal", "cells" => "normal", "mice" => "incomp" }
   end
   
-  if project['vector_available']
+  if project['vector_available'] == '1'
     return { "vectors" => "normal", "cells" => "incomp", "mice" => "incomp" }
   end
   
-  # Nothing available - should not happen.
+  if project['no_products_available'] and project['status']
+    return { "vectors" => "normal", "cells" => "incomp", "mice" => "incomp" }
+  end
+  
+  # Some other case
   return { "vectors" => "incomp", "cells" => "incomp", "mice" => "incomp" }
 end
 

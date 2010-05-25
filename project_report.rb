@@ -1,16 +1,24 @@
 ["/project/:id","/project/?"].each do |path|
   get path do
     project_id  = params[:id]
-  
+    
     @current    = "home"
     @page_title = "Report for project #{project_id}"
-    @data = { 'project_id' => project_id }
-    @data.update( get_common_data(project_id) )
-    @data.update( get_vectors_and_cells(project_id) )
-    @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
-    @data.update( order_buttons_url(@data) )
-    @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
-  
+    
+    cached_data = @@ms.cache.fetch("project-report-#{project_id}")
+    if cached_data.nil? or params[:fresh] == "true"
+      @data = { 'project_id' => project_id }
+      @data.update( get_common_data(project_id) )
+      @data.update( get_vectors_and_cells(project_id) )
+      @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
+      @data.update( order_buttons_url(@data) )
+      @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
+      
+      @@ms.cache.write("project-report-#{project_id}", Marshal.dump(@data), :expires_in => 3.hours )
+    else
+      @data = Marshal.load(cached_data)
+    end
+    
     if params[:wt] == "json"
       content_type "application/json"
       return @data.to_json

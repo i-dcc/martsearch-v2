@@ -47,7 +47,8 @@
       "ikmc_project_id",
       "escell_clone",
       "parental_cell_line",
-      "allele_symbol_superscript"
+      "allele_symbol_superscript",
+      "mutation_subtype"
     ],
     "filters": {}
   }

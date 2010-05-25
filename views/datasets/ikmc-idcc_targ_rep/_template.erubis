@@ -12,51 +12,55 @@
         )
       %>
     
-      <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
-        <!-- Links -->
-        <%=
-          partial(
-            "datasets/ikmc-idcc_targ_rep/links", 
-            :locals => {
-              :allele_id       => project['allele_id'],
-              :ikmc_project_id => project['ikmc_project_id'],
-              :ensembl_gene_id => project['ensembl_gene_id']
-            }
-          )
-        %>
+      <%- if project['targeting_vectors'] or project['conditional_clones'] or project['nonconditional_clones'] -%>
       
-        <!-- ES Cells -->
-        <%=
-          partial(
-            "datasets/ikmc-idcc_targ_rep/escell_clones",
-            :locals => {
-              :allele_id             => project['allele_id'],
-              :design_id             => project['design_id'],
-              :design_type           => project['design_type'],
-              :pipeline              => project['pipeline'],
-              :conditional_clones    => project['conditional_clones'],
-              :nonconditional_clones => project['nonconditional_clones']
-            }
-          )
-        %>
-        <div class="clear"></div>
-      
-        <!-- Targeting Vectors -->
-        <% if project['targeting_vectors'].size > 0 %>
+        <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
+          <!-- Links -->
           <%=
             partial(
-              "datasets/ikmc-idcc_targ_rep/targeting_vectors", 
+              "datasets/ikmc-idcc_targ_rep/links",
               :locals => {
-                :allele_id         => project['allele_id'],
-                :pipeline          => project['pipeline'],
-                :targeting_vectors => project['targeting_vectors']
+                :allele_id       => project['allele_id'],
+                :ikmc_project_id => project['ikmc_project_id'],
+                :ensembl_gene_id => project['ensembl_gene_id']
               }
-            ) 
+            )
           %>
-        <% end %>
-      </div>
-    
-      <div class="clear"></div>
+
+          <!-- ES Cells -->
+          <%=
+            partial(
+              "datasets/ikmc-idcc_targ_rep/escell_clones",
+              :locals => {
+                :allele_id             => project['allele_id'],
+                :design_id             => project['design_id'],
+                :design_type           => project['design_type'],
+                :pipeline              => project['pipeline'],
+                :conditional_clones    => project['conditional_clones'],
+                :nonconditional_clones => project['nonconditional_clones']
+              }
+            )
+          %>
+          <div class="clear"></div>
+
+          <!-- Targeting Vectors -->
+          <% if project['targeting_vectors'] %>
+            <%=
+              partial(
+                "datasets/ikmc-idcc_targ_rep/targeting_vectors",
+                :locals => {
+                  :allele_id         => project['allele_id'],
+                  :pipeline          => project['pipeline'],
+                  :targeting_vectors => project['targeting_vectors']
+                }
+              )
+            %>
+          <% end %>
+        </div>
+
+        <div class="clear"></div>
+
+      <% end %>
     </div>
   <% end %>
 <% end %>

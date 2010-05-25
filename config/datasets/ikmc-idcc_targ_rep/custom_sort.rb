@@ -32,9 +32,9 @@ sorted_results = {}
       'targeting_vectors'       => [],
       'conditional_clones'      => [],
       'nonconditional_clones'   => [],
-      'vector_available'        => false,
-      'escell_available'        => false,
-      'mouse_available'         => false,
+      'vector_available'        => '0',
+      'escell_available'        => '0',
+      'mouse_available'         => '0',
       'display'                 => false
     }
   end
@@ -60,7 +60,7 @@ sorted_results = {}
     }
 
     unless project['targeting_vectors'].include? targ_vec
-      project['vector_available'] = true
+      project['vector_available'] = '1'
       project['targeting_vectors'].push( targ_vec )
     end
   end
@@ -76,14 +76,14 @@ sorted_results = {}
     }
   
     # Push cells into to the right basket ('conditional' or 'nonconditional')
-    if result['loxp_start'].nil?
+    if result['mutation_subtype'] == 'targeted_non_conditional'
       clone_type = "nonconditional_clones"
     else
       clone_type = "conditional_clones"
     end
     
     unless project[clone_type].include? es_cell
-      project['escell_available'] = true
+      project['escell_available'] = '1'
       project[clone_type].push( es_cell )
     end
   end

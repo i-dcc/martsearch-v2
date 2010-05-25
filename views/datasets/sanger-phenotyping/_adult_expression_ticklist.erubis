@@ -72,6 +72,7 @@
       <tr>
         <th><%= header.gsub("_"," ").titlecase %></th>
         <% @expression_data['ticklist'].each do |data| %>
+          <% data[header] = "no data" if data[header].nil? %>
           <td class="<%= data[header].gsub(" ","_").downcase %>" title="<%= data[header] %>"><%= data[header] %></td>
         <% end %>
       </tr>

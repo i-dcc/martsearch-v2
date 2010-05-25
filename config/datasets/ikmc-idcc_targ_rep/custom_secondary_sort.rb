@@ -1,22 +1,19 @@
-def status_sort( status )
-  status_definitions = {
-    "On Hold"                                            => { :sort => 1 },
-    "Transferred to NorCOMM"                             => { :sort => 2 },
-    "Transferred to KOMP"                                => { :sort => 3 },
-    "Withdrawn From Pipeline"                            => { :sort => 4 },
-    "Design Requested"                                   => { :sort => 5 },
-    "Alternate Design Requested"                         => { :sort => 6 },
-    "VEGA Annotation Requested"                          => { :sort => 7 },
-    "Design Not Possible"                                => { :sort => 8 },
-    "Design Completed"                                   => { :sort => 9 },
-    "Vector Construction in Progress"                    => { :sort => 10 },
-    "Vector Unsuccessful - Project Terminated"           => { :sort => 11 },
-    "Vector Unsuccessful - Alternate Design in Progress" => { :sort => 12 },
-    "Vector - Initial Attempt Unsuccessful"              => { :sort => 13 },
-    "Vector Complete"                                    => { :sort => 14 }
-  }
-  return status_definitions[ status ]
-end
+status_order = {
+  "On Hold"                                            => 1,
+  "Transferred to NorCOMM"                             => 2,
+  "Transferred to KOMP"                                => 3,
+  "Withdrawn From Pipeline"                            => 4,
+  "Design Requested"                                   => 5,
+  "Alternate Design Requested"                         => 6,
+  "VEGA Annotation Requested"                          => 7,
+  "Design Not Possible"                                => 8,
+  "Design Completed"                                   => 9,
+  "Vector Construction in Progress"                    => 10,
+  "Vector Unsuccessful - Project Terminated"           => 11,
+  "Vector Unsuccessful - Alternate Design in Progress" => 12,
+  "Vector - Initial Attempt Unsuccessful"              => 13,
+  "Vector Complete"                                    => 14
+}
 
 #
 # Sort projects on products availability (mice -> cells -> vectors -> nothing)
@@ -55,11 +52,9 @@ end
         if project['mouse_available'] == '1'
           projects_with_mice.push( project )
           displayed_project = key unless pipeline_projects[displayed_project]['mouse_available'] == '1'
-        
         elsif project['escell_available'] == '1' # From idcc-targ_rep custom sort
           projects_with_clones.push( project )
           displayed_project = key unless pipeline_projects[displayed_project]['mouse_available'] == '1'
-        
         elsif project['vector_available'] == '1' # From idcc-targ_rep custom sort
           projects_with_vectors.push( project )
         end
@@ -78,28 +73,28 @@ end
   result_data['ikmc-dcc-knockout_attempts'].each do |pipeline, pipeline_details|
     next if pipeline == 'TIGM' # Skip if TIGM pipeline (ie. Targeted Trap)
     
-    # Skip this pipeline if it's already reported in the targeting repository
-    # (ie. has distributable products)
+    # Skip this pipeline if it's already reported in the targeting repository (ie. has distributable products)
     next if result_data['ikmc-idcc_targ_rep'] and result_data['ikmc-idcc_targ_rep'].include? pipeline
     
+    # Retrieve projects_ids of this pipeline that don't have any product available
+    projects_ids      = []
+    projects_statuses = []
     
-    # Retrieve projects of this pipeline that don't have any product available
-    projects = pipeline_details.values.select do |pipeline_detail|
-      pipeline_detail.is_a? Hash                     \
-      and pipeline_detail.has_key? 'ikmc_project_id' \
-      and pipeline_detail['vector_available'] == '0' \
-      and pipeline_detail['escell_available'] == '0' \
-      and pipeline_detail['mouse_available']  == '0'
+    pipeline_details.values.each do |project|
+      if project.is_a? Hash and project.values_at('vector_available','escell_available','mouse_available') == ['0','0','0']
+        projects_ids.push( project['ikmc_project_id'] )
+        projects_statuses.push( project['status'] )
+      end
     end
-    next if projects.empty?
+    next if projects_ids.empty? or projects_statuses.empty?
     
     projects_with_nothing.push({
       'no_products_available' => true,
       'display'               => true,
       'pipeline'              => pipeline,
-      'status'                => pipeline_details['status'],
+      'status'                => projects_statuses.sort { |a,b| status_order[a] <=> status_order[b] }.first,
       'mgi_accesion_id'       => pipeline_details['mgi_accession_id'],
-      'project_ids'           => projects.collect { |p| p.values_at( 'ikmc_project_id' ) }.flatten
+      'project_ids'           => projects_ids
     })
   end
   

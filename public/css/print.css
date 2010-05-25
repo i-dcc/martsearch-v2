@@ -23,6 +23,14 @@ th, td {
 
 #search_results .result .dataset {
   border-color: #000;
+  border-width: 2px;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
 }
 
 .hide_on_print {

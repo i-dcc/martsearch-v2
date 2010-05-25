@@ -5,14 +5,12 @@ Category: IKMC
 
 An error occured: <%= @request.env["sinatra.error"].message %>
 
-################
-# SinatraError #
-################
+SinatraError
+#######################
 
 <%= @request.env["sinatra.error"] %>
 
-#######################
-# Request Environment #
+Request Environment
 #######################
 
 PID:  <%= $$ %>

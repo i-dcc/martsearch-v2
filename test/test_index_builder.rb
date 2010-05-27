@@ -108,10 +108,10 @@ class IndexBuilderTest < Test::Unit::TestCase
       
       # Biomart result processing
       #puts "#{dataset_conf["internal_name"]}:"
-      ["gene_symbol","marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
+      ["mgi_accession_id","gene_symbol","marker_symbol","tmp_gene_symbol","marker_symbol_107"].each do |filter_type|
         begin
           #puts "  - testing: #{filter_type}"
-          results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1","Mysm1"] } )
+          results = mart.search( :attributes => attribute_map.keys, :filters => { filter_type => ["Akt2","Cbx7","Cbx1","Mysm1","MGI:104874","MGI:1196439","MGI:2444584","MGI:105369"] } )
           index_builder.process_dataset_results_public( results )
           
           assert( index_builder.document_cache_keys.keys.size > 0, "index_builder.document_cache is empty! - Should have at least two entries..." )
@@ -141,8 +141,6 @@ class IndexBuilderTest < Test::Unit::TestCase
     index_builder.build_document_xmls()
     xml_files = Dir.glob("solr-*.xml")
     assert( xml_files.size > 0, "index_builder.build_document_xmls() did not produce any XML files." )
-    
-    #puts "Index docs in: #{index_builder.xml_dir}"
     
     # Upload XML to Solr
     #index_builder.send_documents_to_solr()

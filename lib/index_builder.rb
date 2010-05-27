@@ -88,9 +88,8 @@ class IndexBuilder
   end
   
   # Function to build and store the XML files needed to update a Solr 
-  # index based on the @documents store in this current instance.  If 
-  # a directory location is passed as an argument it'll save the XML 
-  # files there, otherwise it'll save to a temporary directory.
+  # index based on the @documents store in this current instance. Writes 
+  # the XML files to the current working directory.
   def build_document_xmls()
     unless @test_environment
       puts "Creating Solr XML files (#{@batch_size} docs per file)..."

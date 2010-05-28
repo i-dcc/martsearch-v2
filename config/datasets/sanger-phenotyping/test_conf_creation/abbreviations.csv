@@ -85,7 +85,7 @@ MGP Pipeline 1,Shape of Vertebrae,x-ray-imaging,vertshp,
 MGP Pipeline 1,Processes on Vertebrae,x-ray-imaging,vertprocess,
 MGP Pipeline 1,Ulna,x-ray-imaging,ulna,
 MGP Pipeline 1,Tibia,x-ray-imaging,tibia,
-MGP Pipeline 1,Teeth,x-ray-imaging,teeth,
+MGP Pipeline 1,Teeth,x-ray-imaging,teeth,or het or hom
 MGP Pipeline 1,Skull Shape,x-ray-imaging,skullshp,
 MGP Pipeline 1,Scapula,x-ray-imaging,scapula,
 MGP Pipeline 1,Shape of Ribs,x-ray-imaging,ribshp,
@@ -115,7 +115,7 @@ MGP Pipeline 1,Brachydactylism,x-ray-imaging,brachydact,
 MGP Pipeline 1,Number of Caudal Vertebrae,x-ray-imaging,caudal,
 MGP Pipeline 1,Shape of Ribcage,x-ray-imaging,ribcage,
 MGP Pipeline 1,Transitional Vertebrae,x-ray-imaging,transitionalvert,or het or hom
-MGP Pipeline 1,Images - miscellaneous 1,x-ray-imaging,carpalfusion,
+MGP Pipeline 1,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
 MGP Pipeline 1,Shape Of Spine,x-ray-imaging,spnshp,
 MGP Pipeline 1,Kyphosis,x-ray-imaging,kypho,
 MGP Pipeline 1,Lordosis,x-ray-imaging,lordo,
@@ -271,7 +271,7 @@ MGP Pipeline 2,Cataract visible using ophtalmoscope,eye-morphology,cat,
 MGP Pipeline 2,Left eye Bergmeister's papilla,eye-morphology,bergleft,
 MGP Pipeline 2,Right eye Bergmeister's papilla,eye-morphology,bergright,
 MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,or het or hom
-MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,
+MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Cumulative Food Intake,indirect-calorimetry,food,
 Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer,
 Mouse GP,VCO2,indirect-calorimetry,vco2,
@@ -465,12 +465,12 @@ Mouse GP,Brachydactylism,x-ray-imaging,brachydact
 Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal,
 Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage,
 Mouse GP,Transitional Vertebrae,x-ray-imaging,transitionalvert,or het or hom
-Mouse GP,Images - miscellaneous 1,x-ray-imaging,carpalfusion,
+Mouse GP,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
 Mouse GP,Shape Of Spine,x-ray-imaging,spnshp,
 Mouse GP,Kyphosis,x-ray-imaging,kypho,
 Mouse GP,Lordosis,x-ray-imaging,lordo,
 Mouse GP,Scoliosis,x-ray-imaging,scolio,or het or hom
-Mouse GP,Images - miscellaneous 3,x-ray-imaging,teeth,
+Mouse GP,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
 Mouse GP,Body Weight,dysmorphology,bodywt,
 Mouse GP,Hyperactivity,dysmorphology,hyper,
 Mouse GP,Respiration,dysmorphology,resp,
@@ -526,7 +526,7 @@ Mouse GP,Grip Strength All Paws Trial 2,grip-strength,allpaw2,
 Mouse GP,Grip Strength All Paws Trial 3,grip-strength,allpaw3,
 Mouse GP,Body Weight,grip-strength,bodywt,
 Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,or het or hom
-Mouse GP,Images - miscellaneous 2,skin-screen,skinif
+Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 MGP Pipeline 1,Mean bacterial shedding,citrobacter-infection,shedding
 MGP Pipeline 1,Mean spleen counts,citrobacter-infection,citrospleen
 MGP Pipeline 1,Mean liver counts,citrobacter-infection,citroliver

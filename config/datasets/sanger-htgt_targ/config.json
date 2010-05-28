@@ -23,7 +23,6 @@
       { "attr": "intvec_well",       "idx": "ignore_me" },
       { "attr": "targvec_plate",     "idx": "ignore_me" },
       { "attr": "targvec_well",      "idx": "ignore_me" },
-      { "attr": "allele_name",       "idx": "allele" },
       { "attr": "escell_clone",      "idx": "escell" }
     ],
     "grouped_attributes": [

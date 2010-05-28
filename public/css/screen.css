@@ -729,65 +729,65 @@ table.ikmc-pipeline-progress-bar td.warn {
 }
 
 table.ikmc-pipeline-progress-bar td.normal_normal {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-comp-comp.png');
+  background-image: url('../images/progress-bar/progress-comp-comp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.normal_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-comp-incomp.png');
+  background-image: url('../images/progress-bar/progress-comp-incomp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.normal_error {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-comp-error.png');
+  background-image: url('../images/progress-bar/progress-comp-error.png');
 }
 
 table.ikmc-pipeline-progress-bar td.normal_warn {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-comp-warn.png');
+  background-image: url('../images/progress-bar/progress-comp-warn.png');
 }
 
 table.ikmc-pipeline-progress-bar td.incomp_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-incomp-incomp.png');
+  background-image: url('../images/progress-bar/progress-incomp-incomp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.error_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-error-incomp.png');
+  background-image: url('../images/progress-bar/progress-error-incomp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.warn_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-warn-incomp.png');
+  background-image: url('../images/progress-bar/progress-warn-incomp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.start_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-start-incomp.png');
+  background-image: url('../images/progress-bar/progress-start-incomp.png');
   background-color: #fff;
 }
 
 table.ikmc-pipeline-progress-bar td.start_normal {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-start-comp.png');
+  background-image: url('../images/progress-bar/progress-start-comp.png');
   background-color: #fff;
 }
 
 table.ikmc-pipeline-progress-bar td.start_error {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-start-error.png');
+  background-image: url('../images/progress-bar/progress-start-error.png');
   background-color: #fff;
 }
 
 table.ikmc-pipeline-progress-bar td.start_warn {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-start-warn.png');
+  background-image: url('../images/progress-bar/progress-start-warn.png');
   background-color: #fff;
 }
 
 table.ikmc-pipeline-progress-bar td.end_incomp {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-incomp.png');
+  background-image: url('../images/progress-bar/progress-end-incomp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.end_normal {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-comp.png');
+  background-image: url('../images/progress-bar/progress-end-comp.png');
 }
 
 table.ikmc-pipeline-progress-bar td.end_error {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-error.png');
+  background-image: url('../images/progress-bar/progress-end-error.png');
 }
 
 table.ikmc-pipeline-progress-bar td.end_warn {
-  background-image: url('../images/ikmc-dcc-knockout_attempts/progress-end-warn.png');
+  background-image: url('../images/progress-bar/progress-end-warn.png');
 }

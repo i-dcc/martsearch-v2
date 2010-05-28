@@ -7,8 +7,8 @@ set :logging, false
 set :public, "#{File.dirname(__FILE__)}/../public"
 set :views, "#{File.dirname(__FILE__)}/../views"
 
-class ReportedCrashesTest < Test::Unit::TestCase
-  context "The Sanger Mouse Portal" do
+class ProjectPageBasic < Test::Unit::TestCase
+  context "A MartSearch application" do
     setup do
       # Read in the config file
       conf_obj  = JSON.load( File.new( @@conf_file, "r" ) )
@@ -22,6 +22,10 @@ class ReportedCrashesTest < Test::Unit::TestCase
       
       require "#{File.dirname(__FILE__)}/../martsearchr.rb"
       
+      # Create a 'noemail.txt' file in the /tmp dir so that we don't
+      # send a million and one emails during the tests...
+      system("touch #{File.dirname(__FILE__)}/../tmp/noemail.txt")
+      
       # Now instanciate our MartSearch app
       @browser = Rack::Test::Session.new( Rack::MockSession.new( Sinatra::Application ) )
     end
@@ -29,21 +33,18 @@ class ReportedCrashesTest < Test::Unit::TestCase
     teardown do
       # Put our original conf file back
       system("mv #{@@conf_file}.orig #{@@conf_file}")
+      
+      # And clear the no email flag
+      system("rm #{File.dirname(__FILE__)}/../tmp/noemail.txt")
     end
 
-    reported_bad_urls = [
-      '/browse/chromosome/7/305',
-      '/browse/marker-symbol/h/13',
-      '/browse/chromosome/11/249',
-      '/search/cbx7',
-      '/search/heart',
-      '/search?query=marker_symbol:mir*'
-    ]
-    
-    reported_bad_urls.each do |url|
-      should "not crash on #{url}" do
-        @browser.get url
-        assert( @browser.last_response.ok?, "Unable to make successful request to '#{url}'." )
+    PROJECT_IDS_TO_TEST = [ 35505, 39216, 42485 ]
+
+    should "not crash and burn when we open a few project pages" do
+      PROJECT_IDS_TO_TEST.each do |project_id|
+        @browser.get "/project/#{project_id}"
+        assert( @browser.last_response.ok?, "Unable to make request to '/project/#{project_id}'." )
+        assert( @browser.last_response.body.include?(project_id.to_s), "The template does not include the project_id!" )
       end
     end
   end

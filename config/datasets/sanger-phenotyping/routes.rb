@@ -57,10 +57,11 @@ end
 get "/phenotyping/:colony_prefix/adult-expression/?" do
   sanger_phenotyping_setup
   
-  @colony_prefix   = params[:colony_prefix]
-  @expression_data = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}") )
+  @colony_prefix = params[:colony_prefix]
+  cached_data    = @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}")
   
-  if @expression_data
+  if cached_data
+    @expression_data = JSON.parse(cached_data)
     @marker_symbol   = nil
     @page_title      = "#{@colony_prefix}: Adult Expression"
     
@@ -86,9 +87,10 @@ get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   sanger_phenotyping_setup
   
   @colony_prefix = params[:colony_prefix]
-  @test_data     = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-homviable_results_#{@colony_prefix}") )
+  cached_data     = @@ms.cache.fetch("sanger-phenotyping-homviable_results_#{@colony_prefix}")
 
-  if @test_data
+  if cached_data
+    @test_data     = JSON.parse(cached_data)
     @marker_symbol = nil
     @page_title    = "#{@colony_prefix}: Homozygote Viability"
 
@@ -110,9 +112,10 @@ get "/phenotyping/:colony_prefix/fertility/?" do
   sanger_phenotyping_setup
   
   @colony_prefix = params[:colony_prefix]
-  @mating_data   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}") )
+  cached_data    = @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}")
   
-  if @mating_data
+  if cached_data
+    @mating_data   = JSON.parse(cached_data)
     @marker_symbol = nil
     @page_title    = "#{@colony_prefix}: Fertility"
 
@@ -139,7 +142,6 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   
   @marker_symbol = nil
   @colony_prefix = params[:colony_prefix]
-  @test_images   = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[params[:colony_prefix]][params[:pheno_test]]
   @test          = nil
   
   # Try to figure out our pipeline and marker_symbol
@@ -168,6 +170,13 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
     if @test.nil? then @test = test_conf["sanger-mgp"][params[:pheno_test]] end
   else
     @test = test_conf[pipeline][params[:pheno_test]]
+  end
+  
+  # Now fetch our list of images to draw
+  @test_images      = nil
+  images_for_colony = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_images") )[params[:colony_prefix]]
+  unless images_for_colony.nil?
+    @test_images = images_for_colony[params[:pheno_test]]
   end
   
   if @test_images.nil? or @test.nil?

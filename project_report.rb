@@ -1,16 +1,31 @@
-get "/project/:id" do
-  project_id  = params[:id]
-  
-  @current    = "home"
-  @page_title = "Report for project #{project_id}"
-  @data = { 'project_id' => project_id }
-  @data.update( get_common_data(project_id) )
-  @data.update( get_vectors_and_cells(project_id) )
-  @data.update( get_mice(@data['ensembl_gene_id']) ) if @data['ensembl_gene_id']
-  @data.update( order_buttons_url(@data) )
-  @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
-  
-  erubis :project_report
+["/project/:id","/project/?"].each do |path|
+  get path do
+    project_id  = params[:id]
+    
+    @current    = "home"
+    @page_title = "Report for project #{project_id}"
+    
+    cached_data = @@ms.cache.fetch("project-report-#{project_id}")
+    if cached_data.nil? or params[:fresh] == "true"
+      @data = { 'project_id' => project_id }
+      @data.update( get_common_data(project_id) )
+      @data.update( get_vectors_and_cells(project_id) )
+      @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
+      @data.update( order_buttons_url(@data) )
+      @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
+      
+      @@ms.cache.write("project-report-#{project_id}", Marshal.dump(@data), :expires_in => 3.hours )
+    else
+      @data = Marshal.load(cached_data)
+    end
+    
+    if params[:wt] == "json"
+      content_type "application/json"
+      return @data.to_json
+    else
+      erubis :project_report
+    end
+  end
 end
 
 # Will query DCC gene details mart
@@ -67,7 +82,9 @@ def get_vectors_and_cells( project_id )
     allele_image = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
     genbank_file = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
     
-    # Intermediate Vectors
+    #
+    #   Intermediate Vectors
+    #
     data['intermediate_vectors'].push(
       'name'        => result['intermediate_vector'],
       'design_id'   => result['design_id'],
@@ -75,7 +92,10 @@ def get_vectors_and_cells( project_id )
       'floxed_exon' => result['floxed_start_exon']
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
-    # Targeting Vectors
+    
+    #
+    #   Targeting Vectors
+    #
     data['targeting_vectors'].push(
       'name'         => result['targeting_vector'],
       'design_id'    => result['design_id'],
@@ -86,7 +106,10 @@ def get_vectors_and_cells( project_id )
       'genbank_file' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/targeting-vector-genbank-file"
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
-    # Non-Conditionals
+    
+    #
+    #   Non-Conditionals
+    #
     if result['mutation_subtype'] == 'targeted_non_conditional'
       data['non_conditionals'].update(
         'design_type'  => design_type,
@@ -103,7 +126,10 @@ def get_vectors_and_cells( project_id )
         'targeting_vector'          => result['targeting_vector']
       )
     
-    # Conditionals
+    
+    #
+    #   Conditionals
+    #
     else
       data['conditionals'].update(
         'design_type'  => design_type,
@@ -133,22 +159,26 @@ def get_vectors_and_cells( project_id )
 end
 
 # Will query Kermits mart
-def get_mice( ensembl_gene_id )
+def get_mice( marker_symbol )
   conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/sanger-kermits/config.json","r") )
   dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
   results = dataset.search({
-    :filters => { 'ensembl_gene_id' => ensembl_gene_id },
-    :attributes => ['allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
+    :filters => { 'marker_symbol' => marker_symbol, 'active' => '1' },
+    :attributes => ['status', 'allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
     :process_results => true
   })
+  results.reject! { |result| result['status'].nil? }
   
-  return { 'mice' => results } unless results.empty?
-  return {}
+  unless results.empty?
+    return { 'mice' => results }
+  else
+    return {}
+  end
 end
 
 def order_buttons_url( data )
   mgi_accession_id  = data['mgi_accession_id'][4..-1]
-  pipeline          = data['pipeline']
+  pipeline          = data['ikmc_project']
   marker_symbol     = data['marker_symbol']
   project_id        = data['project_id']
   

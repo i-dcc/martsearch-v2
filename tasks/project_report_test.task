@@ -1,0 +1,54 @@
+require "rack/test"
+
+namespace :project_report do
+  desc "Test that a report can be produced for every project"
+  task :test do
+    browser  = Rack::Test::Session.new( Rack::MockSession.new( Sinatra::Application ) )
+    conf     = JSON.load( File.new("#{File.dirname(__FILE__)}/../config/datasets/ikmc-dcc-gene_details/config.json","r") )
+    dataset  = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+    results  = dataset.search({
+      :filters          => { 'project' => 'KOMP-CSD,KOMP-Regeneron,EUCOMM,NorCOMM' },
+      :attributes       => [
+        'ikmc_project', 'ikmc_project_id',
+        'mouse_available', 'escell_available', 'vector_available'
+      ],
+      :process_results  => true
+    })
+    
+    results.each do |result|
+      id                = result['ikmc_project_id']
+      name              = result['ikmc_project']
+      mouse_available   = result['mouse_available'].to_i
+      escell_available  = result['escell_available'].to_i
+      vector_available  = result['vector_available'].to_i
+      
+      # Try to produce the report page
+      browser.get "/project/#{id}" rescue puts "#{name} : #{id}"
+      html_body = browser.last_response.body
+      
+      # Check Mice availability reporting
+      message = '<em>No mouse available for this project.</em>'
+      if html_body.include? message and mouse_available == '1'
+        puts "[#{name}:#{id}] Report does not display available mice."
+      elsif !html_body.include? message and mouse_available == '0'
+        puts "[#{name}:#{id}] Report displays unavailable mice."
+      end
+      
+      # Check ES Cells availability reporting
+      message = '<em>No distributable conditional ES Cell Clone available for this project.</em>'
+      if html_body.include? message and escell_available == '1'
+        puts "[#{name}:#{id}] Report does not display available cells."
+      elsif !html_body.include? message and escell_available == '0'
+        puts "[#{name}:#{id}] Report displays unavailable cells."
+      end
+      
+      # Check Targeting Vectors availability reporting
+      message = '<em>No distributable targeting vector available for this project.</em>'
+      if html_body.include? message and vector_available == '1'
+        puts "[#{name}:#{id}] Report does not display available vectors."
+      elsif !html_body.include? message and vector_available == '0'
+        puts "[#{name}:#{id}] Report displays unavailable vectors."
+      end
+    end
+  end
+end

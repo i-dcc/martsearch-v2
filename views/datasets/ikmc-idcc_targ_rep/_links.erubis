@@ -14,11 +14,6 @@
         View a cartoon of this allele
       </a>
     </li>
-    <li>
-      <a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>">
-        View this allele in the targeting repository
-      </a>
-    </li>
     
     <!-- HTGT Gene Report -->
     <% if ikmc_project_id %>

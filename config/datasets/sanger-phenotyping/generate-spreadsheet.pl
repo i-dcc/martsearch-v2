@@ -26,7 +26,7 @@ my $HTTP_AGENT = LWP::UserAgent->new();
 ## Get on with it...
 ##
 
-my $image_cache = get_test_images();
+my $pheno_links = get_pheno_links();
 my $pheno_data  = query_biomart(
   $HTTP_AGENT,
   {
@@ -37,7 +37,7 @@ my $pheno_data  = query_biomart(
   }
 );
 
-generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data, $image_cache );
+generate_spreadsheet( "$SCRIPT_DIR/../../../public/pheno_overview.xls", $pheno_data, $pheno_links );
 
 ##
 ## Subroutines
@@ -366,13 +366,13 @@ sub write_sorted_legend {
   
 }
 
-# Helper function to run the rake task 'phenotyping:image_cache_json' 
-# to generate, a JSON dump of all of the phenotyping images stored on 
-# disk and read it in.
-sub get_test_images {
+# Helper function to run the rake task 'phenotyping:pheno_link_json' 
+# to generate, a JSON dump of all of the phenotyping tests that should 
+# have a details page on the portal
+sub get_pheno_links {
   my $SCRIPT_DIR = dirname(__FILE__);
   
-  system("rake --rakefile $SCRIPT_DIR/../../../Rakefile phenotyping:image_cache_json > /dev/null");
+  system("rake --rakefile $SCRIPT_DIR/../../../Rakefile phenotyping:pheno_link_json > /dev/null");
   my $image_cache = "";
   open( IMAGEJSON, "/tmp/sanger-phenotyping-pheno_links.json" );
   while (<IMAGEJSON>) { $image_cache .= $_; }

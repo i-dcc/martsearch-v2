@@ -28,10 +28,18 @@ begin
   namespace :phenotyping do
   
     desc "Writes a JSON list of the mouse colonies with pheno details pages to the /tmp directory."
-    task :image_cache_json do
+    task :pheno_link_json do
       sanger_phenotyping_setup
       File.open("/tmp/sanger-phenotyping-pheno_links.json","w") do |f|
         f.write @@ms.cache.fetch("sanger-phenotyping-pheno_links")
+      end
+    end
+    
+    desc "Writes a JSON list of the images available for each mouse colony to the /tmp directory."
+    task :image_cache_json do
+      sanger_phenotyping_setup
+      File.open("/tmp/sanger-phenotyping-test_images.json","w") do |f|
+        f.write @@ms.cache.fetch("sanger-phenotyping-test_images")
       end
     end
   

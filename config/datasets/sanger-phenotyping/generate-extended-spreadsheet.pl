@@ -72,9 +72,16 @@ my $subjects  = query_biomart(
     url        => $CONF->{"url"} . "/martservice",
     dataset    => $CONF->{"dataset_name"},
     filters    => {},
-    attributes => ["marker_symbol","colony_prefix","comparison"]
+    attributes => ["marker_symbol","colony_prefix","comparison","pipeline"]
   }
 );
+
+my @colonies = ();
+foreach my $data_row ( @{$subjects->{data}} ) {
+  if ( $data_row->[3] eq "Sanger MGP" ) {
+    push @colonies, $data_row;
+  }
+}
 
 ##
 ## Set up the spreadsheet
@@ -85,7 +92,7 @@ my $workbook  = Spreadsheet::WriteExcel->new( $filename ); $workbook->compatibil
 my $worksheet = $workbook->add_worksheet('Extended Heatmap');
 my $no_of_leading_entries = 2;
 
-_xls_setup_worksheet( $worksheet, $no_of_leading_entries, scalar(@{$subjects->{data}}), 500 );
+_xls_setup_worksheet( $worksheet, $no_of_leading_entries, scalar(@colonies)+1, 500 );
 
 # Cell formatting...
 
@@ -101,7 +108,7 @@ $worksheet->write( 1, $no_of_leading_entries-1, 'Colony Prefix', $formats->{titl
 $worksheet->write( 2, $no_of_leading_entries-1, 'Marker Symbol', $formats->{title} );
 
 my $col = 0;
-foreach my $subject ( @{$subjects->{data}} ) {
+foreach my $subject ( @colonies ) {
   $worksheet->write( 0, $col+$no_of_leading_entries, $subject->[2], $formats->{subject_title} );
   $worksheet->write( 1, $col+$no_of_leading_entries, $subject->[1], $formats->{subject_title} );
   $worksheet->write( 2, $col+$no_of_leading_entries, $subject->[0], $formats->{subject_title} );
@@ -123,7 +130,7 @@ foreach my $test ( sort keys %{$test_conf} ) {
     $worksheet->write( $row, 1, $param, $formats->{title} );
     
     my $col = 0;
-    foreach my $subject ( @{$subjects->{data}} ) {
+    foreach my $subject ( @colonies ) {
       my $colony = $subject->[1];
       
       foreach my $found_image ( @{$image_cache->{$colony}->{$test}} ) {

@@ -165,7 +165,7 @@
             </table>
           
             <% if cells.length > 1 %>
-              <a href="#" id="toggle_conditionals" class="hide_on_print">
+              <a href="#" id="toggle_conditionals" class="toggle-open hide_on_print">
                 Click here to see <%= cells.length - 1 %> more...
               </a>
             <% end %>

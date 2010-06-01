@@ -32,7 +32,7 @@
         <!-- Any other pipeline with product available -->
         <% elsif project['ikmc_project_id'] and not project['no_products_available']%>
           (Project: 
-          <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= project['ikmc_project_id'] %>" target="_blank">
+          <a href="http://www.knockoutmouse.org/martsearch/project/<%= project['ikmc_project_id'] %>" target="_blank">
             <%= project['ikmc_project_id'] %>
           </a>)
 

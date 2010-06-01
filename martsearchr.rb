@@ -227,6 +227,7 @@ end
 
 get "/?" do
   @current = "home"
+  @hide_side_search_form = true
   erubis :main
 end
 

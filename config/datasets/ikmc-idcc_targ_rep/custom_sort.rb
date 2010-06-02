@@ -76,7 +76,7 @@ sorted_results = {}
     }
   
     # Push cells into to the right basket ('conditional' or 'nonconditional')
-    if result['mutation_subtype'] == 'targeted_non_conditional'
+    if ['targeted_non_conditional', 'deletion'].include? result['mutation_subtype']
       clone_type = "nonconditional_clones"
     else
       clone_type = "conditional_clones"

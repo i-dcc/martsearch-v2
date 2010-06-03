@@ -1,0 +1,9 @@
+<h3>Index Coverage Report</h3>
+
+<ul>
+  <% @report_dates.each do |date| %>
+    <li>
+      <a href="<%= date %>" title="Coverage Report made on the <%= date %>"><%= date %></a>
+    </li>
+  <% end %>
+</ul>

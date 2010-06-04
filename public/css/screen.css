@@ -596,15 +596,16 @@ table.welcome table#summary_statistics th {
 }
 
 #header {
-	background: url(../images/swoosh_mice.png) no-repeat left top;
 	height: 66px;
 	text-align: left;
+	margin-top: 5px;
 }
 
 #header h1 {
-	float: right;
-	margin-top: 41px;
-	margin-bottom: 0;
+	background: url(../images/sanger-logo.png) no-repeat left top;
+	height: 60px;
+	text-align: right;
+	padding-top: 41px;
 }
 
 /* jQuery UI Overrides */

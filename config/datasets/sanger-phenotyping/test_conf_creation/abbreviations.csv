@@ -66,6 +66,7 @@ MGP Pipeline 1,O2 Difference,indirect-calorimetry,o2diff,
 MGP Pipeline 1,Temperature,indirect-calorimetry,temp,
 MGP Pipeline 1,Y-Activity Total,indirect-calorimetry,yactivity,
 MGP Pipeline 1,Y-Activity Ambulatory,indirect-calorimetry,yactivityambul,
+MGP Pipeline 1,Water Intake,indirect-calorimetry,water,
 MGP Pipeline 1,Basal Body Temperature,core-temperature,basaltemp,
 MGP Pipeline 1,Change in Temperature,core-temperature,deltatemp,
 MGP Pipeline 1,Body Weight,dexa,bodywt,
@@ -84,7 +85,7 @@ MGP Pipeline 1,Shape of Vertebrae,x-ray-imaging,vertshp,
 MGP Pipeline 1,Processes on Vertebrae,x-ray-imaging,vertprocess,
 MGP Pipeline 1,Ulna,x-ray-imaging,ulna,
 MGP Pipeline 1,Tibia,x-ray-imaging,tibia,
-MGP Pipeline 1,Teeth,x-ray-imaging,teeth,
+MGP Pipeline 1,Teeth,x-ray-imaging,teeth,or het or hom
 MGP Pipeline 1,Skull Shape,x-ray-imaging,skullshp,
 MGP Pipeline 1,Scapula,x-ray-imaging,scapula,
 MGP Pipeline 1,Shape of Ribs,x-ray-imaging,ribshp,
@@ -113,19 +114,19 @@ MGP Pipeline 1,Digit Integrity,x-ray-imaging,digitinteg,
 MGP Pipeline 1,Brachydactylism,x-ray-imaging,brachydact,
 MGP Pipeline 1,Number of Caudal Vertebrae,x-ray-imaging,caudal,
 MGP Pipeline 1,Shape of Ribcage,x-ray-imaging,ribcage,
-MGP Pipeline 1,Transitional Vertebrae,x-ray-imaging,transitionalvert,
+MGP Pipeline 1,Transitional Vertebrae,x-ray-imaging,transitionalvert,or het or hom
 MGP Pipeline 1,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
 MGP Pipeline 1,Shape Of Spine,x-ray-imaging,spnshp,
 MGP Pipeline 1,Kyphosis,x-ray-imaging,kypho,
 MGP Pipeline 1,Lordosis,x-ray-imaging,lordo,
-MGP Pipeline 1,Scoliosis,x-ray-imaging,scolio,
-MGP Pipeline 1,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
+MGP Pipeline 1,Scoliosis,x-ray-imaging,scolio,or het or hom
+MGP Pipeline 1,Images - miscellaneous 3,x-ray-imaging,teeth,
 MGP Pipeline 2,White Blood Cell Count,haematology,wbc,
 MGP Pipeline 2,Red Blood Cell Count,haematology,rbc,
 MGP Pipeline 2,Mean Corpuscular Volume,haematology,mcv,
 MGP Pipeline 2,Haemoglobin,haematology,hglbin,
 MGP Pipeline 2,Haematocrit,haematology,hcrit,
-MGP Pipeline 2,Mean Corpuscular Haemoglobin,haematology,mch,
+MGP Pipeline 2,Mean Corpuscular Haemoglobin,haematology,mch
 MGP Pipeline 2,Mean Corpuscular Haemoglobin Conc.,haematology,mchc
 MGP Pipeline 2,Red Blood Cell Distribution Width,haematology,rdw
 MGP Pipeline 2,Platelet Count,haematology,plat
@@ -141,7 +142,7 @@ MGP Pipeline 2,Weight Curve,body-weight-curve-high-fat-diet,hfd
 MGP Pipeline 2,Latency to Fall Trial 1,rotarod,latency1
 MGP Pipeline 2,Reason for Test End 1,rotarod,rrend1
 MGP Pipeline 2,Latency to Fall Trial 2,rotarod,latency2
-MGP Pipeline 2,Reason for Test End 2,rotarod,rrend2
+MGP Pipeline 2,Reason for Test End 2,rotarod,rrend2,
 MGP Pipeline 2,Latency to Fall Trial 3,rotarod,latency3,
 MGP Pipeline 2,Reason for Test End 3,rotarod,rrend3,
 MGP Pipeline 2,Body Weight,rotarod,bodywt,
@@ -269,7 +270,7 @@ MGP Pipeline 2,Suture Cataract,eye-morphology,suture,
 MGP Pipeline 2,Cataract visible using ophtalmoscope,eye-morphology,cat,
 MGP Pipeline 2,Left eye Bergmeister's papilla,eye-morphology,bergleft,
 MGP Pipeline 2,Right eye Bergmeister's papilla,eye-morphology,bergright,
-MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,
+MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,or het or hom
 MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Cumulative Food Intake,indirect-calorimetry,food,
 Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer,
@@ -285,9 +286,10 @@ Mouse GP,O2,indirect-calorimetry,o2,
 Mouse GP,Reference O2,indirect-calorimetry,refo2,
 Mouse GP,CO2 Difference,indirect-calorimetry,co2diff,
 Mouse GP,O2 Difference,indirect-calorimetry,o2diff,
-Mouse GP,Temperature,indirect-calorimetry,temp,
+Mouse GP,Temperature,indirect-calorimetry,temp
 Mouse GP,Y-Activity Total,indirect-calorimetry,yactivity
 Mouse GP,Y-Activity Ambulatory,indirect-calorimetry,yactivityambul
+Mouse GP,Water Intake,indirect-calorimetry,water
 Mouse GP,Basal Body Temperature,core-temperature,basaltemp
 Mouse GP,Post Stress Temperature,core-temperature,stresstemp
 Mouse GP,Change in Temperature,core-temperature,deltatemp
@@ -348,8 +350,8 @@ Mouse GP,Total Bilirubin,full-clinical-chemistry,totbili
 Mouse GP,Lactate Dehydrogenase,full-clinical-chemistry,ldh
 Mouse GP,Total Protein,full-clinical-chemistry,totprot
 Mouse GP,Albumin,full-clinical-chemistry,alb
-Mouse GP,Creatinine,full-clinical-chemistry,creat
-Mouse GP,Urea,full-clinical-chemistry,urea
+Mouse GP,Creatinine,full-clinical-chemistry,creat,
+Mouse GP,Urea,full-clinical-chemistry,urea,
 Mouse GP,Uric Acid,full-clinical-chemistry,uric,
 Mouse GP,Calcium,full-clinical-chemistry,ca,
 Mouse GP,Magnesium,full-clinical-chemistry,mg,
@@ -380,8 +382,8 @@ Mouse GP,Lacrimation,modified-shirpa,lacrimation,
 Mouse GP,Tremor,modified-shirpa,tremor,
 Mouse GP,Urination,modified-shirpa,urination,
 Mouse GP,Defecation,modified-shirpa,defecation,
-Mouse GP,Transfer Arousal,modified-shirpa,transarousal,
-Mouse GP,Gait (inc. Ataxia),modified-shirpa,gait,
+Mouse GP,Transfer Arousal,modified-shirpa,transarousal
+Mouse GP,Gait (inc. Ataxia),modified-shirpa,gait
 Mouse GP,Pelvic Elevation,modified-shirpa,pelvicele
 Mouse GP,Tail Elevation,modified-shirpa,tailele
 Mouse GP,Locomotor Activity,modified-shirpa,locoactivity
@@ -460,14 +462,14 @@ Mouse GP,Syndactylism,x-ray-imaging,syndact
 Mouse GP,Fusion of Ribs,x-ray-imaging,ribfusion
 Mouse GP,Digit Integrity,x-ray-imaging,digitinteg
 Mouse GP,Brachydactylism,x-ray-imaging,brachydact
-Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal
-Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage
-Mouse GP,Transitional Vertebrae,x-ray-imaging,transitionalvert,
+Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal,
+Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage,
+Mouse GP,Transitional Vertebrae,x-ray-imaging,transitionalvert,or het or hom
 Mouse GP,Images - miscellaneous 1,x-ray-imaging,carpalfusion,or het or hom
 Mouse GP,Shape Of Spine,x-ray-imaging,spnshp,
 Mouse GP,Kyphosis,x-ray-imaging,kypho,
 Mouse GP,Lordosis,x-ray-imaging,lordo,
-Mouse GP,Scoliosis,x-ray-imaging,scolio,
+Mouse GP,Scoliosis,x-ray-imaging,scolio,or het or hom
 Mouse GP,Images - miscellaneous 3,x-ray-imaging,teeth,or het or hom
 Mouse GP,Body Weight,dysmorphology,bodywt,
 Mouse GP,Hyperactivity,dysmorphology,hyper,
@@ -523,9 +525,9 @@ Mouse GP,Grip Strength All Paws Trial 1,grip-strength,allpaw1,
 Mouse GP,Grip Strength All Paws Trial 2,grip-strength,allpaw2,
 Mouse GP,Grip Strength All Paws Trial 3,grip-strength,allpaw3,
 Mouse GP,Body Weight,grip-strength,bodywt,
-Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,
+Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,or het or hom
 Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
-MGP Pipeline 1,Mean bacterial shedding,citrobacter-infection,shedding,
+MGP Pipeline 1,Mean bacterial shedding,citrobacter-infection,shedding
 MGP Pipeline 1,Mean spleen counts,citrobacter-infection,citrospleen
 MGP Pipeline 1,Mean liver counts,citrobacter-infection,citroliver
 MGP Pipeline 1,Mean colon counts,citrobacter-infection,colon

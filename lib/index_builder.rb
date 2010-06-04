@@ -88,9 +88,8 @@ class IndexBuilder
   end
   
   # Function to build and store the XML files needed to update a Solr 
-  # index based on the @documents store in this current instance.  If 
-  # a directory location is passed as an argument it'll save the XML 
-  # files there, otherwise it'll save to a temporary directory.
+  # index based on the @documents store in this current instance. Writes 
+  # the XML files to the current working directory.
   def build_document_xmls()
     unless @test_environment
       puts "Creating Solr XML files (#{@batch_size} docs per file)..."
@@ -142,6 +141,107 @@ class IndexBuilder
     @solr.optimize
     unless @test_environment
       puts "Document upload completed."
+    end
+  end
+  
+  # Compare the index data to the xml files and produce a coverage report
+  def index_coverage
+    require 'libxml'
+    
+    @coverage_report = {}
+    
+    Dir.glob('*.xml').each do |filename|
+      puts filename
+      xml = LibXML::XML::Parser.string( File.read( filename ) ).parse
+      
+      xml.root.find('./doc').each do |doc|
+        err_messages = []
+        
+        #
+        #   Build a Ruby structure similar to the SolR response
+        #   in order to compare them easily later
+        #
+        xml_doc = {}
+        doc.find('./field').each do |field|
+          attribute, value = field.attributes['name'], field.content
+          field = @config['schema']['fields'][attribute]
+          
+          # Field won't be in the SolR index response - skip it
+          next if field['stored'] == false
+          
+          # Field is an integer
+          value = value.to_i if field['type'] == 'tint'
+          
+          # Field has multiple values - store it in an Array
+          if field.include? 'multi_valued'
+            xml_doc[attribute] = [] unless xml_doc.include? attribute
+            xml_doc[attribute].push( value )
+          else
+            xml_doc[attribute] = value
+          end
+        end
+        
+        #
+        #   Query SolR index
+        #
+        mgi_accession_id = doc.find_first("./field[attribute::name='mgi_accession_id_key']").content
+        response = @solr.select({
+          :q  => "mgi_accession_id_key:\"#{mgi_accession_id}\"",
+          :fl => xml_doc.keys().join(',')
+        })
+        solr_docs = response['response']['docs']
+        if solr_docs.length == 0
+          err_messages.push 'There is no record in the index for this gene.'
+        else
+          solr_doc = solr_docs[0]
+        end
+        
+        #
+        #   Compare XML document to SolR response - dump differences
+        #
+        diff_data = {}
+        if solr_doc
+          diff = xml_doc.diff solr_doc
+          diff.each_key do |attribute|
+            xml_value   = xml_doc[attribute].to_a
+            solr_value  = solr_doc[attribute].to_a
+            xml_diff    = xml_value - solr_value
+            solr_diff   = solr_value - xml_value
+            
+            unless xml_diff.empty? and solr_diff.empty?
+              diff_data[attribute] = { 'xml' => xml_diff, 'solr' => solr_diff }
+            end
+          end
+        end
+        
+        #
+        #   Report errors for this MGI Accession ID
+        #
+        unless err_messages.empty? and diff_data.empty?
+          @coverage_report[mgi_accession_id] = {
+            'diff_data'  => diff_data     || nil,
+            'messages'   => err_messages  || nil,
+          }
+        end
+      end
+    end
+    
+    #
+    # Produce HTML report and send an email with errors if any
+    #
+    template_file = File.new( "#{File.dirname(__FILE__)}/../views/index_coverage_report.erubis", 'r' )
+    template = Erubis::Eruby.new( template_file.read )
+    template_file.close()
+    
+    report = File.new( "coverage_report.html", 'w')
+    report.print( template.result( binding ) )
+    report.close()
+    
+    unless @coverage_report.empty?
+      @@ms.send_email({
+        :subject => "[MartSearch Index Status] #{@coverage_report.keys.length} entries differ.",
+        :body    => "Coverage report is available here: #{@config['portal_url']}/index-status/#{Date.today.to_s}"
+      })
     end
   end
   

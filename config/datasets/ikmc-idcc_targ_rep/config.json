@@ -17,10 +17,11 @@
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
-      { "attr": "mgi_accession_id",    "idx": "mgi_accession_id_key", "use_to_map": true },
-      { "attr": "intermediate_vector", "idx": "intermediate_vector" },
-      { "attr": "targeting_vector",    "idx": "targeting_vector" },
-      { "attr": "escell_clone",        "idx": "escell" }
+      { "attr": "mgi_accession_id",          "idx": "mgi_accession_id_key", "use_to_map": true },
+      { "attr": "intermediate_vector",       "idx": "intermediate_vector" },
+      { "attr": "targeting_vector",          "idx": "targeting_vector" },
+      { "attr": "escell_clone",              "idx": "escell" },
+      { "attr": "allele_symbol_superscript", "idx": "allele" }
     ]
   },
   "searching": {

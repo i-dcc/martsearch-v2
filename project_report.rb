@@ -110,7 +110,7 @@ def get_vectors_and_cells( project_id )
     #
     #   Non-Conditionals
     #
-    if result['mutation_subtype'] == 'targeted_non_conditional'
+    if ['targeted_non_conditional', 'deletion'].include? result['mutation_subtype']
       data['non_conditionals'].update(
         'design_type'  => design_type,
         'allele_image' => allele_image,

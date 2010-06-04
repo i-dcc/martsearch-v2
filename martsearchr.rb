@@ -229,6 +229,7 @@ end
 
 get "/?" do
   @current = "home"
+  @hide_side_search_form = true
   
   # ikmc_front_page_data = @@ms.cache.fetch("ikmc_front_page_data")
   # if ikmc_front_page_data
@@ -393,6 +394,31 @@ end
       check_for_errors
       
       erubis :browse
+    end
+  end
+end
+
+get "/index-status/:date?" do
+    
+  # Display a list of available reports
+  if not params[:date]
+    # Don't display a link when the file does not actually exist.
+    file_paths = Dir.glob("#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/*").select do |path|
+      File.exists?("#{path}/coverage_report.html")
+    end
+    # Collect the dates - at the end of each path
+    @report_dates = file_paths.collect { |path| path.split('/')[-1] }
+    
+    erubis :index_coverage_report_main
+  
+  # Find and display report for the given date
+  else
+    file = "#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/#{params[:date]}/coverage_report.html"
+    if File.exists?(file)
+      erubis File.read( file )
+    else
+      status 404
+      erubis :not_found
     end
   end
 end

@@ -32,6 +32,10 @@
 	margin: 0 auto;
 }
 
+#fontresize {
+	float: right;
+}
+
 /* Typography */
 
 body {
@@ -383,14 +387,9 @@ span.highlight {
 	background-color: #376598;
 }
 
-#navigation #resize_and_search {
+#navigation #search {
 	float: right;
 	text-align: right;
-}
-
-#navigation #fontresize {
-	margin-top: 4px;
-	margin-right: 10px;
 }
 
 #navigation form {

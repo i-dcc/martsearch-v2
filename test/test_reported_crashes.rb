@@ -35,7 +35,9 @@ class ReportedCrashesTest < Test::Unit::TestCase
       '/browse/chromosome/7/305',
       '/browse/marker-symbol/h/13',
       '/browse/chromosome/11/249',
-      '/search/cbx7'
+      '/search/cbx7',
+      '/search/heart',
+      '/search?query=marker_symbol:mir*'
     ]
     
     reported_bad_urls.each do |url|

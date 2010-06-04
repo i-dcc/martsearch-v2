@@ -1,0 +1,42 @@
+<p>Click <a href="/index-status/">here</a> to view all coverage reports.</p>
+
+<h3>Index Discrepancy Report for the <%= Date.today.to_s %></h3>
+
+<% if @coverage_report.empty? %>
+  <p>All XML documents are in the SolR index.</p>
+<% else %>
+  <p><%= @coverage_report.keys.length %> entries differ.</p>
+  
+  <% @coverage_report.each_pair do |mgi_accession_id, errors| %>
+    <h4><%= mgi_accession_id %></h4>
+    
+    <%- if errors.include? "messages" and !errors['messages'].nil? and !errors['messages'].empty? -%>
+    <ul>
+      <% errors['messages'].each do |msg| %><li><%= msg %></li><% end %>
+    </ul>
+    <%- end -%>
+    
+    <%- if errors.include? "diff_data" and !errors['diff_data'].nil? and !errors['diff_data'].empty? %>
+    <table width="100%">
+      <thead>
+        <tr>
+          <th class="empty"></th>
+          <th width="40%">XML Document (Extra Data)</th>
+          <th width="40%">SolR Entry (Extra Data)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% errors['diff_data'].each_pair do |attribute, diff| %>
+          <%- unless diff['xml'].empty? and diff['solr'].empty? %>
+          <tr>
+            <td class="attribute"><%= attribute %></td>
+            <td><%= diff['xml'].join(', ') %></td>
+            <td><%= diff['solr'].join(', ') %></td>
+          </tr>
+          <%- end -%>
+        <%- end -%>
+      </tbody>
+    </table>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

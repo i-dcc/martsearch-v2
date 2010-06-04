@@ -287,7 +287,6 @@ def sanger_phenotyping_setup
         "annotations",
         "description",
         "img_comments",
-        "thumbnail_url",
         "full_image_url"
       ]
     )
@@ -305,6 +304,8 @@ def sanger_phenotyping_setup
     
     image_data.sort{ |a,b| "#{a['tissue']}-#{a['img_gender']}" <=> "#{b['tissue']}-#{b['img_gender']}" }.each do |result|
       if ( expression_results[ result['img_colony_prefix'] ] != nil ) and ( result['img_type'] == "Wholemount Expression" )
+        # get the thumbnail URL (as the one in the mart can be flakey...)
+        result["thumbnail_url"] = result["full_image_url"].sub("\.(\w+)$","thumb.\1")
         expression_results[ result['img_colony_prefix'] ]["images"].push(result)
       end
     end

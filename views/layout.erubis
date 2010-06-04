@@ -29,18 +29,20 @@
   <body>
     <div id="wrapper">
       <div id="header">
+        <span id="fontresize"></span>
         <a href="<%= BASE_URI %>/"><h1><%= @ms.portal_name %></h1></a>
         <a id="sanger_link" href="http://www.sanger.ac.uk"><img height="60" width="200" alt="" src="<%= BASE_URI %>/images/blank.gif"/></a>
       </div>
       
       <div id="navigation">
-        <span id="resize_and_search">
-          <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
-            <input type="text" class="textinput" name="query" value="" />
-            <input type="submit" class="submit" value="search" />
-          </form>
-          <span id="fontresize"></span>
-        </span>  
+        <% unless @hide_side_search_form %>
+          <span id="search">
+            <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
+              <input type="text" class="textinput" name="query" value="" />
+              <input type="submit" class="submit" value="search" />
+            </form>
+          </span>
+        <% end %>
         <ul>
           <li<% if @current === "home" %> class="current"<% end %>><a href="<%= BASE_URI %>/">Home</a></li>
           <li<% if @current === "browse" %> class="current"<% end %>><a href="<%= BASE_URI %>/browse">Browse</a></li>

@@ -29,17 +29,17 @@
   <body>
     <div id="wrapper">
       <div id="header">
+        <span id="fontresize"></span>
         <a href="<%= BASE_URI %>/"><h1><%= @ms.portal_name %></h1></a>
       </div>
       
       <div id="navigation">
         <% unless @hide_side_search_form %>
-          <span id="resize_and_search">
+          <span id="search">
             <form id="martsearchr_nav" action="<%= BASE_URI %>/search" method="get" accept-charset="utf-8">
               <input type="text" class="textinput" name="query" value="" />
               <input type="submit" class="submit" value="search" />
             </form>
-            <span id="fontresize"></span>
           </span>
         <% end %>
         <ul>

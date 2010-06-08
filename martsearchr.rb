@@ -217,7 +217,9 @@ before do
   blocked_hosts  = ['picmole.com']
   
   blocked_hosts.each do |host|
-    if request.env["HTTP_FROM"].match(host) or request.env["HTTP_USER_AGENT"].match(host)
+    if \
+         ( request.env["HTTP_FROM"] and request.env["HTTP_FROM"].match(host) ) \
+      or ( request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(host) )
       accept_request = false
     end
   end

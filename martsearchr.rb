@@ -215,6 +215,17 @@ end
 before do
   response["Content-Type"] = "text/html; charset=utf-8"
   
+  accept_request = true
+  blocked_hosts  = ['picmole.com']
+  
+  blocked_hosts.each do |host|
+    if request.env["HTTP_FROM"].match(host) or request.env["HTTP_USER_AGENT"].match(host)
+      accept_request = false
+    end
+  end
+  
+  halt 403, "go away!" unless accept_request
+  
   @ms              = @@ms
   @current         = nil
   @page_title      = nil

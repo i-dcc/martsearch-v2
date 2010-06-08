@@ -1,3 +1,8 @@
+Project: MartSearch
+Tracker: Bug
+Priority: High
+Category: WTSI
+
 A page/file could not be found: <%= @request.env["REQUEST_URI"] %>
 
 ===================================================================

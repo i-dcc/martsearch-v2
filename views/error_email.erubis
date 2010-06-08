@@ -1,7 +1,7 @@
 Project: MartSearch
 Tracker: Bug
 Priority: High
-Category: 
+Category: WTSI
 
 An error occured: <%= @request.env["sinatra.error"].message %>
 

@@ -130,7 +130,10 @@ configure :staging do
 end
 
 helpers do
+  include Rack::Utils
   include WillPaginate::ViewHelpers
+  
+  alias_method :h, :escape_html
   
   def partial(template, *args)
     template_array = template.to_s.split('/')

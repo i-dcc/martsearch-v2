@@ -1,5 +1,5 @@
 <div id="search_results">
-  <h2>Search Results for '<%= params[:query] %>'</h2>
+  <h2>Search Results for '<%=h params[:query] %>'</h2>
 
   <% if !@results.empty? %>
     <%= partial( :search_results ) %>

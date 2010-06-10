@@ -38,7 +38,7 @@ class IndexBuilder
   # Function to create the Solr XML Schema used to define 
   # how our search engine is structured.
   def solr_schema_xml
-    template = File.open( "#{File.dirname(__FILE__)}/schema.xml.erb", 'r' )
+    template = File.open( "#{File.dirname(__FILE__)}/../templates/solr_schema.xml.erb", "r" )
     erb      = ERB.new( template.read, nil, "-" )
     schema   = erb.result( binding )
     return schema

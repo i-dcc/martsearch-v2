@@ -1,7 +1,7 @@
 set :application, "martsearch"
 set :repository,  "git://github.com/dazoakley/martsearchr.git"
 set :branch, "master"
-set :user, "team87"
+set :user, "do2"
 
 set :scm, :git
 set :deploy_via, :export
@@ -12,7 +12,7 @@ set :use_sudo, false
 
 role :web, "localhost"
 role :app, "localhost"
-set :ssh_options, { :port => 10025 }
+set :ssh_options, { :port => 10027 }
 
 
 namespace :deploy do
@@ -26,6 +26,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
     run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
     run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
+    run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
   end
 end
 

@@ -20,7 +20,8 @@ task :install_deps do
     "rsolr",
     "yui-compressor",
     "rubytree",
-    "sequel"
+    "sequel",
+    "libxml-ruby"
   ]
   dependencies.each do |gem_name|
     puts "#{gem_name}"

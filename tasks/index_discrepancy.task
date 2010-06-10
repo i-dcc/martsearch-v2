@@ -1,0 +1,146 @@
+begin
+  require "uri"
+  require "net/http"
+  require "cgi"
+
+  require "rubygems"
+  require "json"
+  require "mail"
+  require "erubis"
+  require "active_support"
+  require "libxml"
+
+  gem "biomart", ">=0.1.5"
+  require "biomart"
+
+  require "#{File.dirname(__FILE__)}/../lib/mock.rb"
+  require "#{File.dirname(__FILE__)}/../lib/string.rb"
+  require "#{File.dirname(__FILE__)}/../lib/array.rb"
+  require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
+  require "#{File.dirname(__FILE__)}/../lib/index.rb"
+  require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
+  
+  @ms   = Martsearch.new( "#{File.dirname(__FILE__)}/../config/config.json" )
+  @solr = RSolr.connect( :url => @ms.config["index"]["url"] )
+  
+  @solr_xml_dir       = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls"
+  @solr_xml_dir_daily = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
+
+  # Helper function to create a mock solr response doc from 
+  # the stored XML files.  Will check to see if a field is 
+  # 'stored' within the index before adding it into the object.
+  def build_mock_solr_doc( doc )
+    xml_doc = {}
+    
+    doc.find("./field").each do |field|
+      attribute = field.attributes["name"]
+      value     = field.content
+      field     = @ms.config["index"]["schema"]["fields"][attribute]
+
+      # if the field is not stored, skip it
+      next if field["stored"] == false
+
+      # if the field is an integer, save it as such
+      value = value.to_i if field["type"] == "tint"
+
+      # if the field has multiple values, store it in an Array
+      if field.include? "multi_valued"
+        xml_doc[attribute] = [] unless xml_doc.include? attribute
+        xml_doc[attribute].push( value )
+      else
+        xml_doc[attribute] = value
+      end
+    end
+    
+    return xml_doc
+  end
+  
+  # Helper function to throw a query at the index.
+  def query_the_index( query, fields, error_stash )
+    response  = @solr.select({ :q => query, :fl => fields })
+    solr_docs = response["response"]["docs"]
+
+    if solr_docs.length == 0
+      error_stash.push "There is no record in the index for this gene."
+      return nil
+    else
+      return solr_doc = solr_docs[0]
+    end
+  end
+  
+  # Helper function to compare the xml doc to the solr response 
+  # and return the differences.
+  def compare_xml_to_solr_response( xml_doc, solr_doc )
+    diff_data = {}
+    
+    diff = xml_doc.diff solr_doc
+    diff.each_key do |attribute|
+      xml_value   = xml_doc[attribute].to_a
+      solr_value  = solr_doc[attribute].to_a
+      xml_diff    = xml_value - solr_value
+      solr_diff   = solr_value - xml_value
+
+      unless xml_diff.empty? and solr_diff.empty?
+        diff_data[attribute] = { "xml" => xml_diff, "solr" => solr_diff }
+      end
+    end
+    
+    return diff_data
+  end
+
+  namespace :solr do
+    
+    desc "Compares the current solr index to the xml files for today and produces discrepancy report"
+    task :build_discrepancy_report do
+      @discrepancy_report = {}
+      
+      Dir.chdir(@solr_xml_dir_daily)
+      xml_files = Dir.glob("*.xml")
+      xml_files.each_index do |index|
+        xml = LibXML::XML::Parser.string( File.read( xml_files[index] ) ).parse
+        puts "Processing file: '#{xml_files[index]}' [ #{index+1} / #{xml_files.size} ]"
+        
+        xml.root.find("./doc").each do |doc|
+          err_messages = []
+          
+          # Build a Ruby structure similar to the solr response...
+          xml_doc = build_mock_solr_doc(doc)
+          
+          # Query the index
+          mgi_accession_id = doc.find_first("./field[attribute::name='mgi_accession_id_key']").content
+          solr_doc = query_the_index( mgi_accession_id, xml_doc.keys().join(","), err_messages )
+          
+          # Compare xml document to solr response
+          diff_data = compare_xml_to_solr_response( xml_doc, solr_doc ) if solr_doc
+          
+          # Save errors/diffs for this MGI Accession ID
+          unless err_messages.empty? and diff_data.empty?
+            @discrepancy_report[mgi_accession_id] = {
+              "diff_data" => diff_data,
+              "messages"  => err_messages,
+            }
+          end
+        end
+      end
+
+      # Produce a html report and send an email with errors/diffs if we have any...
+      template_file = File.new( "#{File.dirname(__FILE__)}/../views/index_coverage_report.erubis", "r" )
+      template = Erubis::Eruby.new( template_file.read )
+      template_file.close()
+
+      report = File.new( "coverage_report.html", "w")
+      report.print( template.result( binding ) )
+      report.close()
+
+      unless @discrepancy_report.empty?
+        @ms.send_email({
+          :subject => "[MartSearch Index Status] #{@discrepancy_report.keys.length} entries differ.",
+          :body    => "Discrepancy report is available here: #{@config["portal_url"]}/index-status/#{Date.today.to_s}"
+        })
+      end
+    end
+    
+  end
+rescue LoadError
+  puts "[ERROR] Unable to load 'index_discrepancy' tasks - please run 'rake install_deps'"
+end

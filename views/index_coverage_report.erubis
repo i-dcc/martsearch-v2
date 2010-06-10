@@ -2,12 +2,12 @@
 
 <h3>Index Discrepancy Report for the <%= Date.today.to_s %></h3>
 
-<% if @coverage_report.empty? %>
-  <p>All XML documents are in the SolR index.</p>
+<% if @discrepancy_report.empty? %>
+  <p>All xml documents are in the solr index and are complete.</p>
 <% else %>
-  <p><%= @coverage_report.keys.length %> entries differ.</p>
+  <p><%= @discrepancy_report.keys.length %> entries differ.</p>
   
-  <% @coverage_report.each_pair do |mgi_accession_id, errors| %>
+  <% @discrepancy_report.each_pair do |mgi_accession_id, errors| %>
     <h4><%= mgi_accession_id %></h4>
     
     <%- if errors.include? "messages" and !errors['messages'].nil? and !errors['messages'].empty? -%>
@@ -22,7 +22,7 @@
         <tr>
           <th class="empty"></th>
           <th width="40%">XML Document (Extra Data)</th>
-          <th width="40%">SolR Entry (Extra Data)</th>
+          <th width="40%">Solr Document (Extra Data)</th>
         </tr>
       </thead>
       <tbody>

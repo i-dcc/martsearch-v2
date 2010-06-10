@@ -350,28 +350,23 @@ end
   end
 end
 
-get "/index-status/:date?" do
-    
-  # Display a list of available reports
-  if not params[:date]
-    # Don't display a link when the file does not actually exist.
-    file_paths = Dir.glob("#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/*").select do |path|
-      File.exists?("#{path}/coverage_report.html")
-    end
-    # Collect the dates - at the end of each path
-    @report_dates = file_paths.collect { |path| path.split('/')[-1] }
-    
-    erubis :index_coverage_report_main
+get "/index-status/?" do
+  file_paths = Dir.glob("#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/*").select do |path|
+    File.exists?("#{path}/discrepancy_report.html")
+  end
+  # Collect the dates - at the end of each path
+  @report_dates = file_paths.collect { |path| path.split('/')[-1] }
   
-  # Find and display report for the given date
+  erubis :index_discrepancy_reports
+end
+
+get "/index-status/:date/?" do
+  file = "#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/#{params[:date]}/discrepancy_report.html"
+  if File.exists?(file)
+    erubis File.read( file )
   else
-    file = "#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/#{params[:date]}/coverage_report.html"
-    if File.exists?(file)
-      erubis File.read( file )
-    else
-      status 404
-      erubis :not_found
-    end
+    status 404
+    erubis :not_found
   end
 end
 

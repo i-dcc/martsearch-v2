@@ -124,11 +124,11 @@ begin
       end
 
       # Produce a html report and send an email with errors/diffs if we have any...
-      template_file = File.new( "#{File.dirname(__FILE__)}/../views/index_coverage_report.erubis", "r" )
+      template_file = File.new( "#{File.dirname(__FILE__)}/../templates/index_discrepancy_report.erubis", "r" )
       template = Erubis::Eruby.new( template_file.read )
       template_file.close()
 
-      report = File.new( "coverage_report.html", "w")
+      report = File.new( "discrepancy_report.html", "w")
       report.print( template.result( binding ) )
       report.close()
 

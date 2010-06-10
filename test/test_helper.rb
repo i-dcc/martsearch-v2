@@ -26,6 +26,7 @@ require "#{File.dirname(__FILE__)}/../lib/string.rb"
 require "#{File.dirname(__FILE__)}/../lib/array.rb"
 require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
 require "#{File.dirname(__FILE__)}/../lib/index.rb"
+require "#{File.dirname(__FILE__)}/../lib/ontology_term.rb"
 require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
 require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
 

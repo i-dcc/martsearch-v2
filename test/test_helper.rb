@@ -12,6 +12,8 @@ require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
 require "rsolr"
+require "tree"
+require "sequel"
 
 gem "sinatra", ">=1.0"
 require "sinatra"

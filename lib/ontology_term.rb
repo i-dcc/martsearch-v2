@@ -1,7 +1,4 @@
 
-require "tree"
-require "sequel"
-
 # Error class for when we can't find a given ontology term.
 class OntologyTermNotFoundError < StandardError; end
 
@@ -9,7 +6,10 @@ class OntologyTermNotFoundError < StandardError; end
 # for a given identifier.
 class UnableToDefineOntologyTermError < StandardError; end
 
-# 
+# Class for handling ontology terms.  Simple wrapper around the a local copy 
+# of an OLS (Ontology Lookup Service - http://www.ebi.ac.uk/ontology-lookup/) 
+# database (created and managed by the EBI) using the Tree::TreeNode (rubytree) 
+# gem as a base class.
 class OntologyTerm < Tree::TreeNode
   attr_reader :term, :term_name
   

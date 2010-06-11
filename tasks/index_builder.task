@@ -97,13 +97,6 @@ begin
     task :rebuild_index_low_mem => [:clean_daily_directories, :build_document_xmls_low_mem, :send_documents_to_solr] do
       system("/bin/rm -rf #{@tmpdir}")
     end
-  
-    desc "Compare the index data to the xml files and produce a coverage report"
-    task :index_coverage do
-      Dir.chdir(@solr_xml_dir_daily) do
-        @builder.index_coverage()
-      end
-    end
   end
 rescue LoadError
   puts "[ERROR] Unable to load 'solr' tasks - please run 'rake install_deps'"

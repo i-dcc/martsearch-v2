@@ -66,8 +66,11 @@ def get_vectors_and_cells( project_id )
       data.update(
         'intermediate_vectors' => [],
         'targeting_vectors'    => [],
-        'conditionals'         => { 'cells' => [] },
-        'non_conditionals'     => { 'cells' => [] }
+        'es_cells'             => { 'conditionals' => [], 'non_conditionals' => [] },
+        'allele_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image",
+        'vector_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/vector-image",
+        'allele_gb'    => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file",
+        'vector_gb'    => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/targeting-vector-genbank-file"
       )
     end
     
@@ -78,9 +81,6 @@ def get_vectors_and_cells( project_id )
         when 'targeted_non_conditional' then 'Targeted, Non-Conditional'
         else ''
       end
-    
-    allele_image = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
-    genbank_file = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
     
     #
     #   Intermediate Vectors
@@ -102,58 +102,32 @@ def get_vectors_and_cells( project_id )
       'design_type'  => design_type,
       'cassette'     => result['cassette'],
       'backbone'     => result['backbone'],
-      'floxed_exon'  => result['floxed_start_exon'],
-      'genbank_file' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/targeting-vector-genbank-file"
+      'floxed_exon'  => result['floxed_start_exon']
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
+    #
+    #   ES Cells
+    #
+    next if result['escell_clone'].nil? or result['escell_clone'].empty?
     
-    #
-    #   Non-Conditionals
-    #
-    if ['targeted_non_conditional', 'deletion'].include? result['mutation_subtype']
-      data['non_conditionals'].update(
-        'design_type'  => design_type,
-        'allele_image' => allele_image,
-        'genbank_file' => genbank_file
-      )
-      
-      next if result['escell_clone'].nil? or result['escell_clone'].empty?
-      
-      data['non_conditionals']['cells'].push(
-        'name'                      => result['escell_clone'],
-        'allele_symbol_superscript' => result['allele_symbol_superscript'],
-        'parental_cell_line'        => result['parental_cell_line'],
-        'targeting_vector'          => result['targeting_vector']
-      )
-    
-    
-    #
-    #   Conditionals
-    #
-    else
-      data['conditionals'].update(
-        'design_type'  => design_type,
-        'allele_image' => allele_image,
-        'genbank_file' => genbank_file
-      )
-      
-      next if result['escell_clone'].nil? or result['escell_clone'].empty?
-      
-      data['conditionals']['cells'].push(
-        'name'                      => result['escell_clone'],
-        'allele_symbol_superscript' => result['allele_symbol_superscript'],
-        'parental_cell_line'        => result['parental_cell_line'],
-        'targeting_vector'          => result['targeting_vector']
-      )
-    end
+    push_to = result['mutation_subtype'] == 'conditional_ready' ? 'conditionals' : 'non_conditionals'
+    data['es_cells'][push_to].push(
+      'name'                      => result['escell_clone'],
+      'allele_symbol_superscript' => result['allele_symbol_superscript'],
+      'parental_cell_line'        => result['parental_cell_line'],
+      'targeting_vector'          => result['targeting_vector']
+    )
   end
   
   unless data.empty?
     data['intermediate_vectors'].uniq!
     data['targeting_vectors'].uniq!
-    data['conditionals']['cells'].uniq!
-    data['non_conditionals']['cells'].uniq!
+    data['es_cells']['conditionals'].uniq!
+    data['es_cells']['non_conditionals'].uniq!
   end
+  
+  require "ap"
+  ap data
   
   return data
 end
@@ -169,11 +143,7 @@ def get_mice( marker_symbol )
   })
   results.reject! { |result| result['status'].nil? }
   
-  unless results.empty?
-    return { 'mice' => results }
-  else
-    return {}
-  end
+  results.empty? ? {} : { 'mice' => results }
 end
 
 def order_buttons_url( data )

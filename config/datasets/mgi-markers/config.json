@@ -27,9 +27,7 @@
       { "attr": "synonym_1010",             "idx": "synonym" },
       { "attr": "ensembl_gene_id_103",      "idx": "ensembl_gene_id" },
       { "attr": "vega_gene_id_1011",        "idx": "vega_gene_id" },
-      { "attr": "mouse_entrez_gene_id_108", "idx": "ncbi_gene_id" },
-      { "attr": "go_id_104_att",            "idx": "go_id" },
-      { "attr": "go_term_104",              "idx": "go_term" }
+      { "attr": "mouse_entrez_gene_id_108", "idx": "ncbi_gene_id" }
     ],
     "filters": {
       "marker_type_107": ["Gene","microRNA"]
@@ -52,8 +50,6 @@
       "ensembl_gene_id_103",
       "vega_gene_id_1011",
       "mouse_entrez_gene_id_108",
-      "go_id_104_att",
-      "go_term_104",
       "human_symbol_105",
       "human_entrez_gene_id_105",
       "rat_symbol_109",

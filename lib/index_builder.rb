@@ -447,16 +447,10 @@ class IndexBuilder
         ontolo_term  = OntologyTerm.new( value_to_index )
         parent_terms = ontolo_term.parentage
         
-        ids_to_index   = [ ontolo_term.term ]
-        names_to_index = [ ontolo_term.term_name ]
-        
         parent_terms.each do |term|
-          ids_to_index.unshift( term.term )
-          names_to_index.unshift( term.term_name )
+          doc[ term_conf["idx"]["term"].to_sym ].push( term.term )
+          doc[ term_conf["idx"]["term_name"].to_sym ].push( term.term_name )
         end
-        
-        doc[ term_conf["idx"].to_sym ].push( ids_to_index.join(" - ") )
-        doc[ term_conf["idx"].to_sym ].push( names_to_index.join(" - ") )
       end
     end
   end

@@ -33,7 +33,13 @@ begin
   @solr_xml_dir       = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls"
   @solr_xml_dir_daily = "#{File.dirname(__FILE__)}/../tmp/solr_document_xmls/#{Date.today.to_s}"
   @tmpdir             = nil
-
+  
+  # Setup the connection parameters for our OLS database...
+  env = ENV['RACK_ENV']
+  env = 'production' if env.nil?
+  dbc = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/../config/ols_database.yml")[env]
+  OLS_DB = Sequel.connect("mysql://#{dbc['username']}:#{dbc['password']}@#{dbc['host']}:#{dbc['port']}/#{dbc['database']}")
+  
   namespace :solr do
   
     desc "Generates the Solr 'schema.xml' file in the current directory"

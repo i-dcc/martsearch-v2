@@ -444,12 +444,19 @@ class IndexBuilder
       value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
       
       if value_to_index and !value_to_index.gsub(" ","").empty?
+        ontolo_term  = OntologyTerm.new( value_to_index )
+        parent_terms = ontolo_term.parentage
         
-        ontology_term = OntologyTerm.new( value_to_index )
-        parent_terms  = ontology_term.parentage.reverse
+        ids_to_index   = [ ontolo_term.term ]
+        names_to_index = [ ontolo_term.term_name ]
         
+        parent_terms.each do |term|
+          ids_to_index.unshift( term.term )
+          names_to_index.unshift( term.term_name )
+        end
         
-        
+        doc[ term_conf["idx"].to_sym ].push( ids_to_index.join(" - ") )
+        doc[ term_conf["idx"].to_sym ].push( names_to_index.join(" - ") )
       end
     end
   end

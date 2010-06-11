@@ -21,7 +21,6 @@ class OntologyTermTest < Test::Unit::TestCase
     
     should "raise appropriate errors" do
       assert_raise(OntologyTermNotFoundError)       { OntologyTerm.new("FLIBBLE:5") }
-      assert_raise(UnableToDefineOntologyTermError) { OntologyTerm.new("GO:0000001") }
     end
     
     should "respond correctly to the .parentage method" do

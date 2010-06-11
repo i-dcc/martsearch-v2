@@ -66,15 +66,21 @@ class OntologyTerm < Tree::TreeNode
   # Helper function to query the OLS database and grab the full 
   # details of the ontology term.
   def get_term_details
-    term_set = OLS_DB[:term].filter(:identifier => @name)
+    # This query ensures we look at the most recent fully loaded ontologies
+    sql = <<-SQL
+      select term.*
+      from term
+      join ontology on ontology.ontology_id = term.ontology_id
+      where term.identifier = ?
+      order by ontology.fully_loaded desc, ontology.load_date asc
+    SQL
     
-    raise UnableToDefineOntologyTermError, "More than one ontology term has been found for '#{self.term}'." \
-      if term_set.count() > 1
+    term_set = OLS_DB[ sql, @name ].all()
     
     raise OntologyTermNotFoundError, "Unable to find the term '#{@name}' in the OLS database." \
-      if term_set.count() == 0
+      if term_set.size == 0
     
-    subject = term_set.first
+    subject      = term_set.first
     @content     = subject[:term_name]
     @term_pk     = subject[:term_pk]
     @ontology_id = subject[:ontology_id]

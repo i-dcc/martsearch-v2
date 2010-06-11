@@ -14,9 +14,6 @@ class OntologyTerm < Tree::TreeNode
   attr_reader :term, :term_name
   
   def initialize( name, content=nil )
-    dbc = OLS_DB_CONF
-    @db = Sequel.connect("mysql://#{dbc['username']}:#{dbc['password']}@#{dbc['host']}:#{dbc['port']}/#{dbc['database']}")
-
     @name, @content = name, content
     
     @already_fetched_parents  = false
@@ -69,7 +66,7 @@ class OntologyTerm < Tree::TreeNode
   # Helper function to query the OLS database and grab the full 
   # details of the ontology term.
   def get_term_details
-    term_set = @db[:term].filter(:identifier => @name)
+    term_set = OLS_DB[:term].filter(:identifier => @name)
     
     raise UnableToDefineOntologyTermError, "More than one ontology term has been found for '#{self.term}'." \
       if term_set.count() > 1
@@ -104,7 +101,7 @@ class OntologyTerm < Tree::TreeNode
         and subject_term.identifier = ?
     SQL
     
-    @db[ sql, node.term ].each do |row|
+    OLS_DB[ sql, node.term ].each do |row|
       parent = OntologyTerm.new( row[:parent_identifier], row[:parent_term] )
       parent << node
       get_parents( parent )
@@ -131,7 +128,7 @@ class OntologyTerm < Tree::TreeNode
         and object_term.identifier = ?
     SQL
     
-    @db[sql,node.term].each do |row|
+    OLS_DB[sql,node.term].each do |row|
       child = OntologyTerm.new( row[:child_identifier], row[:child_term] )
       node << child
       get_children( child )

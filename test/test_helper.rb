@@ -46,6 +46,7 @@ conf_obj["portal_url"] = "http://example.org/"
 @@ms = Martsearch.new( conf_obj )
 
 # Setup the connection parameters for our OLS database...
-env         = ENV['RACK_ENV']
-env         = 'production' if env.nil?
-OLS_DB_CONF = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/../config/ols_database.yml")[env]
+env = ENV['RACK_ENV']
+env = 'production' if env.nil?
+dbc = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/../config/ols_database.yml")[env]
+OLS_DB = Sequel.connect("mysql://#{dbc['username']}:#{dbc['password']}@#{dbc['host']}:#{dbc['port']}/#{dbc['database']}")

@@ -25,6 +25,9 @@
         "attrs": ["go_molecular_function_id","go_molecular_function__dm_name_1006"],
         "idx":   "go_molecular_function"
       }
+    ],
+    "ontology_terms": [
+      { "attr": "go_molecular_function_id", "idx": { "term": "go_id", "term_name": "go_term" } }
     ]
   }
 }

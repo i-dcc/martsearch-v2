@@ -25,6 +25,9 @@
         "attrs": ["go_cellular_component_id","go_cellular_component__dm_name_1006"],
         "idx":   "go_cellular_component"
       }
+    ],
+    "ontology_terms": [
+      { "attr": "go_cellular_component_id", "idx": { "term": "go_id", "term_name": "go_term" } }
     ]
   }
 }

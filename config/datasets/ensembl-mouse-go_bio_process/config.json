@@ -25,6 +25,9 @@
         "attrs": ["go_biological_process_id","name_1006"],
         "idx":   "go_biological_process"
       }
+    ],
+    "ontology_terms": [
+      { "attr": "go_biological_process_id", "idx": { "term": "go_id", "term_name": "go_term" } }
     ]
   }
 }

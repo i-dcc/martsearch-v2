@@ -382,6 +382,11 @@ class IndexBuilder
             index_grouped_attributes( @current[:dataset_conf]["indexing"]["grouped_attributes"], doc, data_row_obj, map_data )
           end
           
+          # Any ontology terms to index?
+          if @current[:dataset_conf]["indexing"]["ontology_terms"]
+            index_ontology_terms( @current[:dataset_conf]["indexing"]["ontology_terms"], doc, data_row_obj, map_data )
+          end
+          
           # Finally - save the document to the cache
           doc_primary_key = doc[@config["schema"]["unique_key"].to_sym][0]
           set_document( doc_primary_key, doc )
@@ -428,6 +433,23 @@ class IndexBuilder
       if !attrs.empty? and ( attrs.size() === group["attrs"].size() )
         join_str = group["using"] ? group["using"] : "||"
         doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
+      end
+    end
+  end
+  
+  # Utility function to handle the indexing of ontology terms
+  def index_ontology_terms( ontology_term_conf, doc, data_row_obj, map_data )
+    ontology_term_conf.each do |term_conf|
+      attribute      = term_conf["attr"]
+      value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
+      
+      if value_to_index and !value_to_index.gsub(" ","").empty?
+        
+        ontology_term = OntologyTerm.new( value_to_index )
+        parent_terms  = ontology_term.parentage.reverse
+        
+        
+        
       end
     end
   end

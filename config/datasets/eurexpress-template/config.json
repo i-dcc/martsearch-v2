@@ -20,11 +20,8 @@
       { "attr": "emap_id", "attr_prepend": "EMAP:", "idx": "emap_id" },
       { "attr": "emap_term", "idx": "emap_term" }
     ],
-    "grouped_attributes": [
-      {
-        "attrs": ["emap_id","emap_term"],
-        "idx":   "emap_ontology"
-      }
+    "ontology_terms": [
+      { "attr": "emap_id", "idx": "emap_ontology" }
     ]
   },
   "searching": {

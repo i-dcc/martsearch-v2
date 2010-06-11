@@ -14,9 +14,7 @@ class OntologyTerm < Tree::TreeNode
   attr_reader :term, :term_name
   
   def initialize( name, content=nil )
-    env = ENV['RACK_ENV']
-    env = 'production' if env.nil?
-    dbc = YAML.load_file("#{File.dirname(__FILE__)}/../config/ols_database.yml")[env]
+    dbc = OLS_DB_CONF
     @db = Sequel.connect("mysql://#{dbc['username']}:#{dbc['password']}@#{dbc['host']}:#{dbc['port']}/#{dbc['database']}")
 
     @name, @content = name, content

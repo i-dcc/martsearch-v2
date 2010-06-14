@@ -10,14 +10,22 @@
   <%= @test["description"] %>
 </div>
 
-<div class="accordion active">
-  <h6><a href="">Ticklist</a></h6>
-  <div>
-    <%= partial( "datasets/sanger-phenotyping/adult_expression_ticklist" ) %>
+<div id="test-parameter-groups">
+  <div class="test-parameter-group">
+    <% if @test["second_description"] %>
+      <p><%= @test["second_description"] %></p>
+    <% end %>
   </div>
   
-  <h6><a href="">Images</a></h6>
-  <div id="sanger-phenotyping-adult-expression-images">
-    <%= partial( "datasets/sanger-phenotyping/adult_expression_images" ) %>
+  <div class="accordion">
+    <h6><a href="">Ticklist</a></h6>
+    <div>
+      <%= partial( "datasets/sanger-phenotyping/adult_expression_ticklist" ) %>
+    </div>
+
+    <h6><a href="">Images</a></h6>
+    <div id="sanger-phenotyping-adult-expression-images">
+      <%= partial( "datasets/sanger-phenotyping/adult_expression_images" ) %>
+    </div>
   </div>
 </div>

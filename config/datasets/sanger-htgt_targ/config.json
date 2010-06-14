@@ -17,8 +17,8 @@
     "allow_document_creation": false,
     "attribute_map": [
       { "attr": "mgi_accession_id",  "idx": "mgi_accession_id_key", "use_to_map": true },
-      { "attr": "design_plate",      "idx": "design_plate" },
-      { "attr": "design_well",       "idx": "design_well" },
+      { "attr": "design_plate",      "idx": "ignore_me" },
+      { "attr": "design_well",       "idx": "ignore_me" },
       { "attr": "intvec_plate",      "idx": "ignore_me" },
       { "attr": "intvec_well",       "idx": "ignore_me" },
       { "attr": "targvec_plate",     "idx": "ignore_me" },

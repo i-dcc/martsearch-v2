@@ -50,8 +50,6 @@
         "ikmc_project_product_status": { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "product_status_str":          { "type": "string", "indexed": true, "stored": true, "multi_valued": true },
         "ikmc_project_product_status_str": { "type": "string", "indexed": true, "stored": true, "multi_valued": true },
-        "design_plate":                { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
-        "design_well":                 { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
         "targeting_design":            { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "intermediate_vector":         { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "targeting_vector":            { "type": "text", "indexed": true, "stored": true, "multi_valued": true },

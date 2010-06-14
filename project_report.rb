@@ -126,9 +126,6 @@ def get_vectors_and_cells( project_id )
     data['es_cells']['non_conditionals'].uniq!
   end
   
-  require "ap"
-  ap data
-  
   return data
 end
 

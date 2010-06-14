@@ -21,7 +21,14 @@
       { "attr": "mp_term_name",     "idx": "mp_term" }
     ],
     "ontology_terms": [
-      { "attr": "mp_term", "idx": { "term": "mp_id", "term_name": "mp_term" } }
+      {
+        "attr": "mp_term",
+        "idx": {
+          "term":       "mp_id",
+          "term_name":  "mp_term",
+          "breadcrumb": "mp_ontology"
+        }
+      }
     ]
   },
   "searching": {

@@ -27,7 +27,14 @@
       }
     ],
     "ontology_terms": [
-      { "attr": "go_biological_process_id", "idx": { "term": "go_id", "term_name": "go_term" } }
+      {
+        "attr": "go_biological_process_id",
+        "idx": {
+          "term":       "go_id",
+          "term_name":  "go_term",
+          "breadcrumb": "go_ontology"
+        }
+      }
     ]
   }
 }

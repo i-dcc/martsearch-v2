@@ -21,7 +21,14 @@
       { "attr": "emap_term", "idx": "emap_term" }
     ],
     "ontology_terms": [
-      { "attr": "emap_id", "idx": { "term": "emap_id", "term_name": "emap_term" } }
+      {
+        "attr": "emap_id",
+        "idx": {
+          "term":       "emap_id",
+          "term_name":  "emap_term",
+          "breadcrumb": "emap_ontology"
+        }
+      }
     ]
   },
   "searching": {

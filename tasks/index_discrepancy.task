@@ -10,7 +10,7 @@ begin
   require "active_support"
   require "libxml"
 
-  gem "biomart", ">=0.1.5"
+  gem "biomart", ">=0.2.0"
   require "biomart"
 
   require "#{File.dirname(__FILE__)}/../lib/mock.rb"

@@ -21,7 +21,7 @@ require "sequel"
 gem "sinatra", ">=1.0"
 require "sinatra"
 
-gem "biomart", ">=0.1.5"
+gem "biomart", ">=0.2.0"
 require "biomart"
 
 MARTSEARCHR_PATH = File.expand_path(File.dirname(__FILE__))

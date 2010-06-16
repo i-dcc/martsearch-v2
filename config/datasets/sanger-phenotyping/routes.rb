@@ -9,16 +9,17 @@ get "/phenotyping/:colony_prefix/abr" do
 end
 
 get "/phenotyping/:colony_prefix/abr/" do
-  file = "#{SANGER_PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/index.shtml"
+  @colony_prefix = params[:colony_prefix].upcase
+  file = "#{SANGER_PHENO_ABR_LOC}/#{@colony_prefix}/ABR/index.shtml"
   
   if File.exists?(file)
     html_text   = ""
-    @page_title = "#{params[:colony_prefix]}: Auditory Brainstem Response (ABR)"
+    @page_title = "#{@colony_prefix}: Auditory Brainstem Response (ABR)"
     
     search_data = sanger_phenotyping_search_by_colony(@colony_prefix)
     unless search_data.empty?
       @marker_symbol = search_data[0]["marker_symbol"]
-      @page_title = "#{@marker_symbol} (#{params[:colony_prefix]}): Auditory Brainstem Response (ABR)"
+      @page_title = "#{@marker_symbol} (#{@colony_prefix}): Auditory Brainstem Response (ABR)"
     end
     
     File.open(file,"r") do |f|
@@ -33,7 +34,8 @@ get "/phenotyping/:colony_prefix/abr/" do
 end
 
 get "/phenotyping/:colony_prefix/abr/*" do
-  file = "#{SANGER_PHENO_ABR_LOC}/#{params[:colony_prefix]}/ABR/#{params[:splat][0]}"
+  @colony_prefix = params[:colony_prefix].upcase
+  file = "#{SANGER_PHENO_ABR_LOC}/#{@colony_prefix}/ABR/#{params[:splat][0]}"
 
   if File.exists?(file)
     content = nil
@@ -57,7 +59,7 @@ end
 get "/phenotyping/:colony_prefix/adult-expression/?" do
   sanger_phenotyping_setup
   
-  @colony_prefix = params[:colony_prefix]
+  @colony_prefix = params[:colony_prefix].upcase
   cached_data    = @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}")
   
   if cached_data
@@ -86,7 +88,7 @@ end
 get "/phenotyping/:colony_prefix/homozygote-viability/?" do
   sanger_phenotyping_setup
   
-  @colony_prefix = params[:colony_prefix]
+  @colony_prefix = params[:colony_prefix].upcase
   cached_data     = @@ms.cache.fetch("sanger-phenotyping-homviable_results_#{@colony_prefix}")
 
   if cached_data
@@ -111,7 +113,7 @@ end
 get "/phenotyping/:colony_prefix/fertility/?" do
   sanger_phenotyping_setup
   
-  @colony_prefix = params[:colony_prefix]
+  @colony_prefix = params[:colony_prefix].upcase
   cached_data    = @@ms.cache.fetch("sanger-phenotyping-fertility_results_#{@colony_prefix}")
   
   if cached_data
@@ -141,7 +143,7 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   sanger_phenotyping_setup
   
   @marker_symbol = nil
-  @colony_prefix = params[:colony_prefix]
+  @colony_prefix = params[:colony_prefix].upcase
   @test          = nil
   
   # Try to figure out our pipeline and marker_symbol

@@ -1,4 +1,4 @@
-<h3>Index Coverage Report</h3>
+<h3>Index Discrepancy Reports</h3>
 
 <ul>
   <% @report_dates.each do |date| %>

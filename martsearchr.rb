@@ -15,12 +15,15 @@ require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
+require "rsolr"
+require "tree"
+require "sequel"
 #require "yui/compressor"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
 
-gem "biomart", ">=0.1.5"
+gem "biomart", ">=0.2.0"
 require "biomart"
 
 MARTSEARCHR_PATH = File.expand_path(File.dirname(__FILE__))
@@ -29,6 +32,7 @@ require "#{MARTSEARCHR_PATH}/lib/string.rb"
 require "#{MARTSEARCHR_PATH}/lib/array.rb"
 require "#{MARTSEARCHR_PATH}/lib/dataset.rb"
 require "#{MARTSEARCHR_PATH}/lib/index.rb"
+require "#{MARTSEARCHR_PATH}/lib/ontology_term.rb"
 require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 
 # We're going to use the version number as a cache breaker 
@@ -132,7 +136,10 @@ configure :staging do
 end
 
 helpers do
+  include Rack::Utils
   include WillPaginate::ViewHelpers
+  
+  alias_method :h, :escape_html
   
   def partial(template, *args)
     template_array = template.to_s.split('/')
@@ -214,6 +221,19 @@ end
 
 before do
   response["Content-Type"] = "text/html; charset=utf-8"
+  
+  accept_request = true
+  blocked_hosts  = ['picmole.com']
+  
+  blocked_hosts.each do |host|
+    if \
+         ( request.env["HTTP_FROM"] and request.env["HTTP_FROM"].match(host) ) \
+      or ( request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(host) )
+      accept_request = false
+    end
+  end
+  
+  halt 403, "go away!" unless accept_request
   
   @ms              = @@ms
   @current         = nil
@@ -398,28 +418,23 @@ end
   end
 end
 
-get "/index-status/:date?" do
-    
-  # Display a list of available reports
-  if not params[:date]
-    # Don't display a link when the file does not actually exist.
-    file_paths = Dir.glob("#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/*").select do |path|
-      File.exists?("#{path}/coverage_report.html")
-    end
-    # Collect the dates - at the end of each path
-    @report_dates = file_paths.collect { |path| path.split('/')[-1] }
-    
-    erubis :index_coverage_report_main
+get "/index-status/?" do
+  file_paths = Dir.glob("#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/*").select do |path|
+    File.exists?("#{path}/discrepancy_report.html")
+  end
+  # Collect the dates - at the end of each path
+  @report_dates = file_paths.collect { |path| path.split('/')[-1] }
   
-  # Find and display report for the given date
+  erubis :index_discrepancy_reports
+end
+
+get "/index-status/:date/?" do
+  file = "#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/#{params[:date]}/discrepancy_report.html"
+  if File.exists?(file)
+    erubis File.read( file )
   else
-    file = "#{MARTSEARCHR_PATH}/tmp/solr_document_xmls/#{params[:date]}/coverage_report.html"
-    if File.exists?(file)
-      erubis File.read( file )
-    else
-      status 404
-      erubis :not_found
-    end
+    status 404
+    erubis :not_found
   end
 end
 

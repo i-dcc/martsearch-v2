@@ -125,52 +125,48 @@
     <div class="dataset">
       <h4 class="dataset_title toggle-open">ES Cell Clones (Conditional)</h4>
       <div class="dataset_content">
-        <% if @data['conditionals'] %>
-          <img src="<%= @data['conditionals']['allele_image'] %>" width="940px" />
-          <div class="clear"></div>
+        <img src="<%= @data['allele_image'] %>" width="940px" />
+        <div class="clear"></div>
           
-          <% unless @data['conditionals']['cells'].empty? %>
-            <%- cells = @data['conditionals']['cells'].sort_by { |cell| cell['name'] } -%>
-            <table>
-              <thead>
-                <th class="hide_on_print"></th>
-                <th>ES Cell Clone</th>
-                <th>Targeting Vector</th>
-                <th>Allele</th>
-                <th>Parental ES Cell Line</th>
-                <th class="hide_on_print">Genbank File</th>
-                <th>Mouse</th>
-              </thead>
-              <tbody>
-                <% cells.each_with_index do |cell,i| %>
-                  <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
-                    <td class="hide_on_print">
-                      <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
-                    </td>
-                    <td><%= cell['name'] %></td>
-                    <td><%= cell['targeting_vector'] %></td>
-                    <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
-                    <td><%= cell['parental_cell_line'] %></td>
-                    <td class="hide_on_print">
-                      <a href="<%= @data['conditionals']['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
-                    </td>
-                    <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
-                      <td>Yes</td>
-                    <% else %>
-                      <td>No</td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          
-            <% if cells.length > 1 %>
-              <a href="#" id="toggle_conditionals" class="toggle-open hide_on_print">
-                Click here to see <%= cells.length - 1 %> more...
-              </a>
-            <% end %>
-          <% else %>
-            <em>No distributable conditional ES Cell Clone available for this project.</em>
+        <% unless @data['es_cells']['conditionals'].empty? %>
+          <%- cells = @data['es_cells']['conditionals'].sort_by { |cell| cell['name'] } -%>
+          <table>
+            <thead>
+              <th class="hide_on_print"></th>
+              <th>ES Cell Clone</th>
+              <th>Targeting Vector</th>
+              <th>Allele</th>
+              <th>Parental ES Cell Line</th>
+              <th class="hide_on_print">Genbank File</th>
+              <th>Mouse</th>
+            </thead>
+            <tbody>
+              <% cells.each_with_index do |cell,i| %>
+                <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
+                  <td class="hide_on_print">
+                    <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                  </td>
+                  <td><%= cell['name'] %></td>
+                  <td><%= cell['targeting_vector'] %></td>
+                  <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
+                  <td><%= cell['parental_cell_line'] %></td>
+                  <td class="hide_on_print">
+                    <a href="<%= @data['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
+                  </td>
+                  <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
+                    <td>Yes</td>
+                  <% else %>
+                    <td>No</td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        
+          <% if cells.length > 1 %>
+            <a href="#" id="toggle_conditionals" class="toggle-open hide_on_print">
+              Click here to see <%= cells.length - 1 %> more...
+            </a>
           <% end %>
         <% else %>
           <em>No distributable conditional ES Cell Clone available for this project.</em>
@@ -185,60 +181,54 @@
     <div class="dataset" style="page-break-before:always;">
       <h4 class="dataset_title toggle-open">ES Cell Clones (Targeted Non-Conditional)</h4>
       <div class="dataset_content">
-        <% if @data['non_conditionals'] %>
-          <% if @data['non_conditionals']['allele_image'] %>
-            <img src="<%= @data['non_conditionals']['allele_image'] %>" width="940px" />
-            <div class="clear"></div>
-            <p>
-              <strong>Note:</strong>
-              Mutations of type &quot;Targeted Non-Conditional&quot; are correctly
-              targeted clones that have lost the 3&apos; LoxP site. 
-              These mutations cannot be converted into conditional alleles.
-            </p>
-          <% end %>
-          
-          <% unless @data['non_conditionals']['cells'].empty? %>
-            <%- cells = @data['non_conditionals']['cells'].sort_by { |cell| cell['name'] } -%>
-            <table>
-              <thead>
-                <th class="hide_on_print"></th>
-                <th>ES Cell Clone</th>
-                <th>Targeting Vector</th>
-                <th>Allele</th>
-                <th>Parental ES Cell Line</th>
-                <th class="hide_on_print">Genbank File</th>
-                <th>Mouse</th>
-              </thead>
-              
-              <tbody>
-                <% cells.each_with_index do |cell, i| %>
-                  <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
-                    <td class="hide_on_print">
-                      <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
-                    </td>
-                    <td><%= cell['name'] %></td>
-                    <td><%= cell['targeting_vector'] %></td>
-                    <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
-                    <td><%= cell['parental_cell_line'] %></td>
-                    <td class="hide_on_print">
-                      <a href="<%= @data['non_conditionals']['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
-                    </td>
-                    <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
-                      <td>Yes</td>
-                    <% else %>
-                      <td>No</td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-            <% if cells.length > 1 %>
-              <a href="#" id="toggle_non_conditionals" class="toggle-open hide_on_print">
-                Click here to see <%= cells.length - 1 %> more...
-              </a>
-            <% end %>
-          <% else %>
-            <em>No distributable non-conditional ES Cell Clone available for this project.</em>
+        <img src="<%= @data['allele_image'] %>" width="940px" />
+        <div class="clear"></div>
+        <p>
+          <strong>Note:</strong>
+          Mutations of type &quot;Targeted Non-Conditional&quot; are correctly
+          targeted clones that have lost the 3&apos; LoxP site. 
+          These mutations cannot be converted into conditional alleles.
+        </p>
+        
+        <% unless @data['es_cells']['non_conditionals'].empty? %>
+          <%- cells = @data['es_cells']['non_conditionals'].sort_by { |cell| cell['name'] } -%>
+          <table>
+            <thead>
+              <th class="hide_on_print"></th>
+              <th>ES Cell Clone</th>
+              <th>Targeting Vector</th>
+              <th>Allele</th>
+              <th>Parental ES Cell Line</th>
+              <th class="hide_on_print">Genbank File</th>
+              <th>Mouse</th>
+            </thead>
+            
+            <tbody>
+              <% cells.each_with_index do |cell, i| %>
+                <tr class="<% unless i == 0 %>toggle_non_conditional_row<% end %>">
+                  <td class="hide_on_print">
+                    <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                  </td>
+                  <td><%= cell['name'] %></td>
+                  <td><%= cell['targeting_vector'] %></td>
+                  <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
+                  <td><%= cell['parental_cell_line'] %></td>
+                  <td class="hide_on_print">
+                    <a href="<%= @data['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
+                  </td>
+                  <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
+                    <td>Yes</td>
+                  <% else %>
+                    <td>No</td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% if cells.length > 1 %>
+            <a href="#" id="toggle_non_conditionals" class="toggle-open hide_on_print">
+              Click here to see <%= cells.length - 1 %> more...
+            </a>
           <% end %>
         <% else %>
           <em>No distributable non-conditional ES Cell Clone available for this project.</em>
@@ -253,6 +243,9 @@
     <div class="dataset">
       <h4 class="dataset_title toggle-open">Targeting Vectors</h4>
       <div class="dataset_content">
+        <img src="<%= @data['vector_image'] %>" width="940px" />
+        <div class="clear"></div>
+        
         <% if @data['targeting_vectors'] %>
           <% order_vector_url = @data.include?('order_vector_url') ? @data['order_vector_url'] : @data['order_default_url'] %>
           

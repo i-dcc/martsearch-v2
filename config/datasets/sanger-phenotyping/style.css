@@ -54,6 +54,10 @@
 	padding: 10px;
 }
 
+.test-parameter-group p {
+  margin-bottom: 0;
+}
+
 .test-parameter-group table td {
 	background-color: #fff;
 }

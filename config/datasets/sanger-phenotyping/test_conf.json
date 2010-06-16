@@ -167,7 +167,7 @@
       "description": "Adult expression (&ge; 6 weeks):  The lacZ reporter gene within the targeting vector was used to determine the wholemount expression profile of the targeted gene.  Mice were fixed by cardiac perfusion using 4% paraformaldehyde (PFA).  Following dissection, the tissues to be stained were fixed an additional 30 min in 4% PFA before being rinsed in phosphate buffered saline and transferred to lacZ staining solution, containing 0.1% X-gal, for up to 48 hours.  After an additional overnight post-staining fixation in 4% PFA, tissues were cleared with 50% glycerol then transferred to 70% glycerol for long-term storage.",
       "images": [],
       "name": "Adult Expression",
-      "second_description": "",
+      "second_description": "A ticklist of 41 tissues and organs was scored for the presence (green tick) or absence (red cross) of lacZ expression.<br />- The term 'Ambiguous' was assigned when there was uncertainty as to the validity of the observed pattern e.g. staining may be very faint, background or an artifact due to trapping.<br />- The term 'No Data' was assigned if the stained entity was not available to assess.<br />By default, up to 27 standard images may be taken using a Leica MZ16A microscope and Imagic software.  These images were only collected when X-gal staining was present.<br /><br />If information or images that you are interested in are not presented, please send details to MGPenquiries@sanger.ac.uk and, on a limited, first come first served basis, we will process your request.",
       "slug": "adult-expression"
     }
   },

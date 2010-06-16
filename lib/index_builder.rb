@@ -27,6 +27,8 @@ class IndexBuilder
     @current = { :dataset_conf => nil, :biomart => nil }
   end
   
+  # Function to switch the IndexBuilder to use a file based cache (the 
+  # default is a memory based one).
   def initialize_file_based_cache
     Dir.mkdir("cache")
     @document_cache   = ActiveSupport::Cache::FileStore.new("cache")
@@ -34,9 +36,9 @@ class IndexBuilder
   end
   
   # Function to create the Solr XML Schema used to define 
-  # how our search engine is structured
+  # how our search engine is structured.
   def solr_schema_xml
-    template = File.open( "#{File.dirname(__FILE__)}/schema.xml.erb", 'r' )
+    template = File.open( "#{File.dirname(__FILE__)}/../templates/solr_schema.xml.erb", "r" )
     erb      = ERB.new( template.read, nil, "-" )
     schema   = erb.result( binding )
     return schema
@@ -141,107 +143,6 @@ class IndexBuilder
     @solr.optimize
     unless @test_environment
       puts "Document upload completed."
-    end
-  end
-  
-  # Compare the index data to the xml files and produce a coverage report
-  def index_coverage
-    require 'libxml'
-    
-    @coverage_report = {}
-    
-    Dir.glob('*.xml').each do |filename|
-      puts filename
-      xml = LibXML::XML::Parser.string( File.read( filename ) ).parse
-      
-      xml.root.find('./doc').each do |doc|
-        err_messages = []
-        
-        #
-        #   Build a Ruby structure similar to the SolR response
-        #   in order to compare them easily later
-        #
-        xml_doc = {}
-        doc.find('./field').each do |field|
-          attribute, value = field.attributes['name'], field.content
-          field = @config['schema']['fields'][attribute]
-          
-          # Field won't be in the SolR index response - skip it
-          next if field['stored'] == false
-          
-          # Field is an integer
-          value = value.to_i if field['type'] == 'tint'
-          
-          # Field has multiple values - store it in an Array
-          if field.include? 'multi_valued'
-            xml_doc[attribute] = [] unless xml_doc.include? attribute
-            xml_doc[attribute].push( value )
-          else
-            xml_doc[attribute] = value
-          end
-        end
-        
-        #
-        #   Query SolR index
-        #
-        mgi_accession_id = doc.find_first("./field[attribute::name='mgi_accession_id_key']").content
-        response = @solr.select({
-          :q  => "mgi_accession_id_key:\"#{mgi_accession_id}\"",
-          :fl => xml_doc.keys().join(',')
-        })
-        solr_docs = response['response']['docs']
-        if solr_docs.length == 0
-          err_messages.push 'There is no record in the index for this gene.'
-        else
-          solr_doc = solr_docs[0]
-        end
-        
-        #
-        #   Compare XML document to SolR response - dump differences
-        #
-        diff_data = {}
-        if solr_doc
-          diff = xml_doc.diff solr_doc
-          diff.each_key do |attribute|
-            xml_value   = xml_doc[attribute].to_a
-            solr_value  = solr_doc[attribute].to_a
-            xml_diff    = xml_value - solr_value
-            solr_diff   = solr_value - xml_value
-            
-            unless xml_diff.empty? and solr_diff.empty?
-              diff_data[attribute] = { 'xml' => xml_diff, 'solr' => solr_diff }
-            end
-          end
-        end
-        
-        #
-        #   Report errors for this MGI Accession ID
-        #
-        unless err_messages.empty? and diff_data.empty?
-          @coverage_report[mgi_accession_id] = {
-            'diff_data'  => diff_data     || nil,
-            'messages'   => err_messages  || nil,
-          }
-        end
-      end
-    end
-    
-    #
-    # Produce HTML report and send an email with errors if any
-    #
-    template_file = File.new( "#{File.dirname(__FILE__)}/../views/index_coverage_report.erubis", 'r' )
-    template = Erubis::Eruby.new( template_file.read )
-    template_file.close()
-    
-    report = File.new( "coverage_report.html", 'w')
-    report.print( template.result( binding ) )
-    report.close()
-    
-    unless @coverage_report.empty?
-      @@ms.send_email({
-        :subject => "[MartSearch Index Status] #{@coverage_report.keys.length} entries differ.",
-        :body    => "Coverage report is available here: #{@config['portal_url']}/index-status/#{Date.today.to_s}"
-      })
     end
   end
   
@@ -481,6 +382,11 @@ class IndexBuilder
             index_grouped_attributes( @current[:dataset_conf]["indexing"]["grouped_attributes"], doc, data_row_obj, map_data )
           end
           
+          # Any ontology terms to index?
+          if @current[:dataset_conf]["indexing"]["ontology_terms"]
+            index_ontology_terms( @current[:dataset_conf]["indexing"]["ontology_terms"], doc, data_row_obj, map_data )
+          end
+          
           # Finally - save the document to the cache
           doc_primary_key = doc[@config["schema"]["unique_key"].to_sym][0]
           set_document( doc_primary_key, doc )
@@ -527,6 +433,33 @@ class IndexBuilder
       if !attrs.empty? and ( attrs.size() === group["attrs"].size() )
         join_str = group["using"] ? group["using"] : "||"
         doc[ group["idx"].to_sym ].push( attrs.join(join_str) )
+      end
+    end
+  end
+  
+  # Utility function to handle the indexing of ontology terms
+  def index_ontology_terms( ontology_term_conf, doc, data_row_obj, map_data )
+    ontology_term_conf.each do |term_conf|
+      attribute      = term_conf["attr"]
+      value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
+      
+      if value_to_index and !value_to_index.gsub(" ","").empty?
+        ontolo_term  = OntologyTerm.new( value_to_index )
+        parent_terms = ontolo_term.parentage
+        
+        terms_to_index = [ ontolo_term.term ]
+        names_to_index = [ ontolo_term.term_name ]
+        
+        parent_terms.each do |term|
+          doc[ term_conf["idx"]["term"].to_sym ].push( term.term )
+          doc[ term_conf["idx"]["term_name"].to_sym ].push( term.term_name )
+          
+          terms_to_index.unshift( term.term )
+          names_to_index.unshift( term.term_name )
+        end
+        
+        doc[ term_conf["idx"]["breadcrumb"].to_sym ].push( terms_to_index.join(" | ") )
+        doc[ term_conf["idx"]["breadcrumb"].to_sym ].push( names_to_index.join(" | ") )
       end
     end
   end

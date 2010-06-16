@@ -88,8 +88,9 @@ end
 # can easily build up links to and display pages from the images dumped 
 # by Jacqui, and the pages dumped by Neil.
 def sanger_phenotyping_setup
-  pheno_dataset = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
-  expre_dataset = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
+  pheno_dataset     = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
+  expre_dataset     = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
+  microscopy_img_ds = Biomart::Dataset.new( "http://www.sanger.ac.uk/htgt/biomart", { :name => "microscopy_images" } )
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
     pheno_conf = JSON.load( File.new( SANGER_PHENO_TEST_DESC_FILE, "r" ) )
@@ -240,6 +241,7 @@ def sanger_phenotyping_setup
         "cartilage",
         "colon",
         "eye",
+        "gall_bladder",
         "heart",
         "kidney",
         "large_intestine",
@@ -253,8 +255,10 @@ def sanger_phenotyping_setup
         "ovaries",
         "oviduct",
         "pancreas",
+        "parathyroid",
         "peripheral_nervous_system",
         "peyers_patch",
+        "pituitary_gland",
         "prostate",
         "skeletal_muscle",
         "skin",
@@ -264,6 +268,7 @@ def sanger_phenotyping_setup
         "stomach",
         "testis",
         "thymus",
+        "thyroid",
         "trachea",
         "urinary_system",
         "uterus",
@@ -273,40 +278,50 @@ def sanger_phenotyping_setup
       ]
     )
     
-    image_data = expre_dataset.search(
+    image_data = microscopy_img_ds.search(
       :process_results => true,
+      :filters => {
+        "image_type" => "Wholemount Expression",
+        "genotype"   => ["Heterozygous","Homozygous","Hemizygous"]
+      },
       :attributes => [
-        "img_marker_symbol",
-        "img_colony_prefix",
-        "mouse_barcode",
-        "img_gender",
-        "het_hom",
+        "colony_prefix",
+        "mouse_id",
+        "gender",
+        "genotype",
+        "genotype_locked",
         "age_at_death",
-        "img_type",
         "tissue",
-        "annotations",
+        "image_type",
         "description",
-        "img_comments",
+        "annotations",
+        "comments",
         "full_image_url"
       ]
     )
     
     ticklist_data.each do |result|
-      expression_lookup[ result['colony_prefix'] ] = true
-      if expression_results[ result['colony_prefix'] ].nil?
-        expression_results[ result['colony_prefix'] ] = {
-          "ticklist" => [],
-          "images"   => []
+      expression_lookup[ result["colony_prefix"] ] = true
+      if expression_results[ result["colony_prefix"] ].nil?
+        expression_results[ result["colony_prefix"] ] = {
+          "ticklist"      => [],
+          "adult_images"  => [],
+          "embryo_images" => []
         }
       end
-      expression_results[ result['colony_prefix'] ]["ticklist"].push(result)
+      expression_results[ result["colony_prefix"] ]["ticklist"].push(result)
     end
     
-    image_data.sort{ |a,b| "#{a['tissue']}-#{a['img_gender']}" <=> "#{b['tissue']}-#{b['img_gender']}" }.each do |result|
-      if ( expression_results[ result['img_colony_prefix'] ] != nil ) and ( result['img_type'] == "Wholemount Expression" )
+    image_data.sort{ |a,b| "#{a['tissue']}-#{a['gender']}" <=> "#{b['tissue']}-#{b['gender']}" }.each do |result|
+      if expression_results[ result["colony_prefix"] ] != nil and result["tissue"] != nil
         # get the thumbnail URL (as the one in the mart can be flakey...)
         result["thumbnail_url"] = result["full_image_url"].sub("\.(\w+)$","thumb.\1")
-        expression_results[ result['img_colony_prefix'] ]["images"].push(result)
+
+        if result["tissue"].match("Embryo")
+          expression_results[ result["colony_prefix"] ]["embryo_images"].push(result)
+        else
+          expression_results[ result["colony_prefix"] ]["adult_images"].push(result)
+        end
       end
     end
     

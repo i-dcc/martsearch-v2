@@ -7,23 +7,34 @@
     
     cached_data = @@ms.cache.fetch("project-report-#{project_id}")
     if cached_data.nil? or params[:fresh] == "true"
-      @data = { 'project_id' => project_id }
-      @data.update( get_common_data(project_id) )
-      @data.update( get_vectors_and_cells(project_id) )
-      @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
-      @data.update( order_buttons_url(@data) )
-      @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
+      @data       = { 'project_id' => project_id }
+      common_data = get_common_data(project_id)
       
-      @@ms.cache.write("project-report-#{project_id}", Marshal.dump(@data), :expires_in => 3.hours )
+      if common_data.nil?
+        @data = nil
+      else
+        @data.update( common_data )
+        @data.update( get_vectors_and_cells(project_id) )
+        @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
+        @data.update( order_buttons_url(@data) )
+        @data.update( get_pipeline_stage( @data['status']) ) if @data['status']
+
+        @@ms.cache.write("project-report-#{project_id}", Marshal.dump(@data), :expires_in => 3.hours )
+      end
     else
       @data = Marshal.load(cached_data)
     end
     
-    if params[:wt] == "json"
-      content_type "application/json"
-      return @data.to_json
+    if @data.nil?
+      status 404
+      erubis :not_found
     else
-      erubis :project_report
+      if params[:wt] == "json"
+        content_type "application/json"
+        return @data.to_json
+      else
+        erubis :project_report
+      end
     end
   end
 end
@@ -40,8 +51,7 @@ def get_common_data( project_id )
     :process_results => true
   })
   
-  return results[0] if results
-  return {}
+  return results[0]
 end
 
 # Will query IDCC targ rep mart

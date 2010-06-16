@@ -36,6 +36,7 @@ namespace :deploy do
 >>>>>>> master
     run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
     run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
+    run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
   end
   
   desc "Regenerate the Sanger Phenotyping heatmap upon release."

@@ -72,13 +72,25 @@ my $subjects  = query_biomart(
     url        => $CONF->{"url"} . "/martservice",
     dataset    => $CONF->{"dataset_name"},
     filters    => {},
-    attributes => ["marker_symbol","colony_prefix","comparison","pipeline"]
+    attributes => $CONF->{"searching"}->{"attributes"}
   }
 );
 
 my @colonies = ();
+my $attr_positions = {};
+
+for (my $i = 0; $i < scalar(@{$subjects->{headers}}) ; $i++) {
+  my $attr = $CONF->{"searching"}->{"attributes"}->[$i];
+  $attr =~ s/\_/\-/g;
+  $attr_positions->{$attr} = $i;
+}
+
+#print Dumper($attr_positions);
+#print "\n\n---\n\n";
+#print Dumper($subjects->{data}->[0]);
+
 foreach my $data_row ( @{$subjects->{data}} ) {
-  if ( $data_row->[3] eq "Sanger MGP" ) {
+  if ( $data_row->[ $attr_positions->{'pipeline'} ] eq "Sanger MGP" ) {
     push @colonies, $data_row;
   }
 }
@@ -109,9 +121,9 @@ $worksheet->write( 2, $no_of_leading_entries-1, 'Marker Symbol', $formats->{titl
 
 my $col = 0;
 foreach my $subject ( @colonies ) {
-  $worksheet->write( 0, $col+$no_of_leading_entries, $subject->[2], $formats->{subject_title} );
-  $worksheet->write( 1, $col+$no_of_leading_entries, $subject->[1], $formats->{subject_title} );
-  $worksheet->write( 2, $col+$no_of_leading_entries, $subject->[0], $formats->{subject_title} );
+  $worksheet->write( 0, $col+$no_of_leading_entries, $subject->[$attr_positions->{'comparison'}], $formats->{subject_title} );
+  $worksheet->write( 1, $col+$no_of_leading_entries, $subject->[$attr_positions->{'colony-prefix'}], $formats->{subject_title} );
+  $worksheet->write( 2, $col+$no_of_leading_entries, $subject->[$attr_positions->{'marker-symbol'}], $formats->{subject_title} );
   $col++;
 }
 
@@ -131,8 +143,10 @@ foreach my $test ( sort keys %{$test_conf} ) {
     
     my $col = 0;
     foreach my $subject ( @colonies ) {
-      my $colony = $subject->[1];
+      my $colony = $subject->[$attr_positions->{'colony-prefix'}];
+      my $have_i_got_an_image = 0;
       
+      # See if we have an image...
       foreach my $found_image ( @{$image_cache->{$colony}->{$test}} ) {
         unless ( defined $image_map->{$test}->{$found_image} ) {
           warn "WTF - found '$found_image' for '$test'...\n";
@@ -140,7 +154,23 @@ foreach my $test ( sort keys %{$test_conf} ) {
         }
         
         if ( $image_map->{$test}->{$found_image} eq $param ) {
+          $have_i_got_an_image = 1;
+        }
+      }
+      
+      # Now compare this against the reported heatmap value...
+      my $heatmap_result = $subject->[$attr_positions->{$test}];
+      
+      # Print an entry if we have data worth a damn...
+      if ( $heatmap_result eq 'Done but not considered interesting.' ) {
+        $worksheet->write( $row, $col+$no_of_leading_entries, '0', undef );
+      }
+      elsif ( $heatmap_result eq 'Considered interesting.' ) {
+        if ( $have_i_got_an_image == 1 ) {
           $worksheet->write( $row, $col+$no_of_leading_entries, '1', undef );
+        }
+        else {
+          $worksheet->write( $row, $col+$no_of_leading_entries, '0', undef );
         }
       }
       

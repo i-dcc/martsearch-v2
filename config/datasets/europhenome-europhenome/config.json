@@ -1,7 +1,7 @@
 {
   "display":              true,
   "use_in_search":        true,
-  "index":                false,
+  "index":                true,
   "custom_sort":          true,
   "custom_css":           true,
   "custom_js":            true,
@@ -13,7 +13,24 @@
   "attribution":          "Europhenome",
   "attribution_link":     "http://www.europhenome.org",
   "description":          "Phenotyping assay data provided by the Europhenome project.",
-  "indexing": {},
+  "indexing": {
+    "allow_document_creation": false,
+    "attribute_map": [
+      { "attr": "mgi_accession_id", "idx": "mgi_accession_id_key", "use_to_map": true },
+      { "attr": "mp_term",          "idx": "mp_id" },
+      { "attr": "mp_term_name",     "idx": "mp_term" }
+    ],
+    "ontology_terms": [
+      {
+        "attr": "mp_term",
+        "idx": {
+          "term":       "mp_id",
+          "term_name":  "mp_term",
+          "breadcrumb": "mp_ontology"
+        }
+      }
+    ]
+  },
   "searching": {
     "joined_index_field":       "mgi_accession_id_key",
     "joined_biomart_filter":    "mgi_accession_id",

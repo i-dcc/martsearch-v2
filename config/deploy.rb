@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 set :application, "sanger_mouse_portal"
 set :repository, "git://github.com/dazoakley/martsearchr.git"
 set :branch, "sanger_mouse_portal"
+=======
+set :application, "martsearch"
+set :repository,  "git://github.com/dazoakley/martsearchr.git"
+set :branch, "master"
+>>>>>>> master
 set :user, "do2"
 
 set :scm, :git
@@ -12,7 +18,7 @@ set :use_sudo, false
 
 role :web, "localhost"
 role :app, "localhost"
-set :ssh_options, { :port => 10025 }
+set :ssh_options, { :port => 10027 }
 
 namespace :deploy do
   desc "Symlink shared configs and folders on each release."
@@ -24,6 +30,7 @@ namespace :deploy do
     run "ln -nfs #{release_path}/public #{shared_path}/htdocs/mouseportal"
     run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
     run "ln -nfs #{shared_path}/pheno_abr #{release_path}/tmp/pheno_abr"
+    run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
   end
   
   desc "Regenerate the Sanger Phenotyping heatmap upon release."

@@ -24,9 +24,9 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
-    run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
-    run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
+    run "rm -rf #{release_path}/tmp && ln -nfs #{shared_path}/tmp #{release_path}/tmp"
     run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
+    run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
   end
 end
 

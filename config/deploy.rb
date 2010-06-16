@@ -29,6 +29,12 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
     run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
   end
+  
+  desc "Set the permissions of the filesystem so that others in the team can deploy"
+  task :fix_perms do
+    run "chmod 02775 #{release_path}"
+  end
 end
 
 after "deploy:update_code", "deploy:symlink_shared"
+after "deploy:symlink", "deploy:fix_perms"

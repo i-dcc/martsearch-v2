@@ -7,7 +7,7 @@
   "custom_js":            false,
   "custom_view_helpers":  false,
   "custom_routes":        false,
-  "url":                  "http://hpgen-1-14.internal.sanger.ac.uk:9002/biomart",
+  "url":                  "http://www.sanger.ac.uk/htgt/biomart",
   "dataset_name":         "wholemount_expression",
   "display_name":         "Sanger Wholemount Expression",
   "attribution":          "The Wellcome Trust Sanger Institute (WTSI)",

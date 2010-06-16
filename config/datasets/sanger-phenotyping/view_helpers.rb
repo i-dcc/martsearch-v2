@@ -90,7 +90,7 @@ end
 def sanger_phenotyping_setup
   pheno_dataset     = @@ms.datasets_by_name[:"sanger-phenotyping"].dataset
   expre_dataset     = @@ms.datasets_by_name[:"sanger-wholemount_expression"].dataset
-  microscopy_img_ds = Biomart::Dataset.new( "http://hpgen-1-14.internal.sanger.ac.uk:9002/biomart", { :name => "microscopy_images" } )
+  microscopy_img_ds = Biomart::Dataset.new( "http://www.sanger.ac.uk/htgt/biomart", { :name => "microscopy_images" } )
   
   unless @@ms.cache.fetch("sanger-phenotyping-test_conf")
     pheno_conf = JSON.load( File.new( SANGER_PHENO_TEST_DESC_FILE, "r" ) )

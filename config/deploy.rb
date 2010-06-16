@@ -24,6 +24,11 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
   end
   
+  desc "Set the permissions of the filesystem so that others in the team can deploy"
+  task :fix_perms do
+    run "chmod 02775 #{release_path}"
+  end
+  
   desc "Regenerate the Sanger Phenotyping heatmap upon release."
   task :generate_heatmap do
     brave_new_world_env = {
@@ -36,12 +41,6 @@ namespace :deploy do
     run "htgt-env.pl --live perl #{release_path}/config/datasets/sanger-phenotyping/generate-spreadsheet.pl", :env => brave_new_world_env
     run "chgrp team87 #{release_path}/public/pheno_overview.xls"
     run "chmod g+w #{release_path}/public/pheno_overview.xls"
-  end
-  
-  desc "Set the permissions of the filesystem so that others in the team can deploy"
-  task :fix_perms do
-    run "chgrp team87 #{release_path}/tmp"
-    run "chmod 02775 #{release_path}"
   end
 end
 

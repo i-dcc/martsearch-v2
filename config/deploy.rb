@@ -24,13 +24,18 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
+<<<<<<< HEAD
     run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
     run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
     run "ln -nfs #{shared_path}/wtsi_document_xmls #{release_path}/tmp/wtsi_document_xmls"
     run "ln -nfs #{release_path}/public #{shared_path}/htdocs/mouseportal"
     run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
     run "ln -nfs #{shared_path}/pheno_abr #{release_path}/tmp/pheno_abr"
+=======
+    run "rm -rf #{release_path}/tmp && ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+>>>>>>> master
     run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
+    run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
   end
   
   desc "Regenerate the Sanger Phenotyping heatmap upon release."

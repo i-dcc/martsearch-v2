@@ -16,7 +16,8 @@ require "rack/utils"
 require "rsolr"
 require "tree"
 require "sequel"
-#require "yui/compressor"
+require "yui/compressor"
+require "closure-compiler"
 
 gem "sinatra", ">=1.0"
 require "sinatra"
@@ -79,11 +80,18 @@ def compress_js_and_css
   @@ms.datasets.each { |ds| css_to_compress << ds.stylesheet unless ds.stylesheet.nil? }
   @@ms.datasets.each { |ds| js_to_compress  << ds.javascript unless ds.javascript.nil? }
   
-  #@@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
-  #@@compressed_js  = YUI::JavaScriptCompressor.new.compress(js_to_compress)
-  
-  @@compressed_css = css_to_compress
-  @@compressed_js  = js_to_compress
+  begin
+    Dir.mktmpdir do |dir|
+      @@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
+      @@compressed_js  = Closure::Compiler.new(:compilation_level => 'SIMPLE_OPTIMIZATIONS').compress(js_to_compress)
+      puts "[DEBUG] - Using YUI/Closure compressed CSS and Javascript"
+    end
+  rescue Exception => e
+    puts "[DEBUG] - YUI/Closure compression failed - resorting to concatenated files"
+    puts e
+    @@compressed_css = css_to_compress
+    @@compressed_js  = js_to_compress
+  end
 end
 
 configure :production do

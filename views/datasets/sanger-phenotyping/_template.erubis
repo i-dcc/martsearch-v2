@@ -15,7 +15,22 @@
       end
     %>
     <% if show_this_group %>
-      <h6><a href=""><%= group %></a></h6>
+      <%
+        positive_tests = false
+        result_data["sanger-phenotyping"].each do |result|
+          tests.each do |test|
+            positive_tests = true if sanger_phenotyping_css_class_for_test(result[test]) == "significant_difference"
+          end
+        end
+      %>
+      <h6>
+        <a href="">
+          <%= group %>
+          <% if positive_tests %>
+            - <span class="header_annotation">results of interest</span>
+          <% end %>
+        </a>
+      </h6>
       <div>
         <table class="sanger-phenotyping_heatmap">
           <thead>

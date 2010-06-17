@@ -59,8 +59,9 @@ end
 get "/phenotyping/:colony_prefix/adult-expression/?" do
   sanger_phenotyping_setup
   
-  @colony_prefix = params[:colony_prefix].upcase
-  cached_data    = @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}")
+  @colony_prefix    = params[:colony_prefix].upcase
+  @bg_staining_imgs = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-expression_background_staining") )
+  cached_data       = @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_results_#{@colony_prefix}")
   
   if cached_data
     @expression_data = JSON.parse(cached_data)

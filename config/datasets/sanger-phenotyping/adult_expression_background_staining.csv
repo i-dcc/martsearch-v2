@@ -1,0 +1,16 @@
+Picture number,Intensity,ID Mouse,ID picture,gene,organ
+1,High,M00271301,7700,Cds2,Nasal cavity
+2,Low,M00271153,7638,Btbd12,Nasal cavity
+3,High,M00271301,7685,Cds2,Thyroid trachea
+4,Low,M00271153,7629,Btbd12,Thyroid trachea
+5,High,M00271301,7687,Cds2,Stomach
+6,Low,M00271153,7631,Btbd12,Stomach
+7,High,M00338500,9682,Ndufs3,Kidney
+8,Low,M00271153,7632,Btbd12,Kidney
+9,Overview,M00271301,7692,Cds2,urinary system
+10,Close up,M00271301,7694,Cds2,close up of testis
+11,Consistent,M00271153,7630,Btbd12,rib cage
+12,Consistent,M00338500,9676,Ndufs3,Thymus
+13,Consistent,M00338500,9678,Ndufs3,Mesenteric LN
+14,High,M00338500,9685,Ndufs3,ovary
+15,Low,M00271155,7613,Btbd12,ovary

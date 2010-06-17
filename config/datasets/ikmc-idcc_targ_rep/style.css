@@ -13,3 +13,12 @@ div.ikmc-idcc_targ_rep_allele_progress_links {
 div.ikmc-idcc_targ_rep_progress_bar_hidden {
   display: none;
 }
+
+.ikmc-idcc_targ_rep_allele_progress_links ul {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.ikmc-idcc_targ_rep_allele_progress_links h4 {
+  margin-bottom: 5px;
+}

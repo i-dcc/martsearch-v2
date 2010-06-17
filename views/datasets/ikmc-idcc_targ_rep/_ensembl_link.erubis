@@ -28,4 +28,4 @@
   ensembl_link += "?g=#{ensembl_gene_id};"
   ensembl_link += "contigviewbottom=#{settings.join(",")}"
 %>
-<a href="<%= ensembl_link %>" target="_blank">View this allele in Ensembl</a>
+<a href="<%= ensembl_link %>" target="_blank">view this allele in Ensembl</a>

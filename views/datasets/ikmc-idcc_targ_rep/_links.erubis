@@ -11,22 +11,32 @@
     <!-- I-DCC Targeting Repository -->
     <li>
       <a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/allele-image" class="image" rel="prettyPhoto">
-        View a cartoon of this allele
+        view a cartoon of this allele
       </a>
     </li>
     <li>
       <a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/vector-image" class="image" rel="prettyPhoto">
-        View a cartoon of the vector
+        view a cartoon of the vector
       </a>
     </li>
     
     <!-- HTGT Gene Report -->
     <% if ikmc_project_id %>
-      <li>
-        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=<%= ikmc_project_id %>" target="_blank">
-          View this allele in HTGT
-        </a>
-      </li>
+      <%
+        url  = nil
+        dest = nil
+        if pipeline == "EUCOMM" or pipeline == "KOMP-CSD"
+          url  = "http://www.sanger.ac.uk/htgt/report/gene_report?project_id=#{ikmc_project_id}"
+          dest = "HTGT"
+        elsif pipeline == "NorCOMM"
+          url  = "http://norcomm.org/Pipeline/Search.php?IKMC_ID=#{ikmc_project_id}"
+          dest = "NorCOMM"
+        end
+      %>
+      <% unless url.nil? %>
+        <li><a href="<%= url %>" target="_blank">view allele details (<%= dest %>)</a></li>
+        <li><a href="http://www.knockoutmouse.org/martsearch/project/<%= ikmc_project_id %>" target="_blank">view allele details (IKMC)</a></li>
+      <% end %>
     <% end %>
   </ul>
 </div>

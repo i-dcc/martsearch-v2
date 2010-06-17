@@ -24,10 +24,17 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
     run "ln -nfs #{shared_path}/log #{release_path}/log"
-    run "ln -nfs #{shared_path}/cache #{release_path}/tmp/cache"
-    run "ln -nfs #{shared_path}/solr_document_xmls #{release_path}/tmp/solr_document_xmls"
+    run "rm -rf #{release_path}/tmp && ln -nfs #{shared_path}/tmp #{release_path}/tmp"
     run "ln -nfs #{shared_path}/ols_database.yml #{release_path}/config/ols_database.yml"
+    run "ln -nfs #{shared_path}/pheno_overview.xls #{release_path}/public/pheno_overview.xls"
+    run "ln -nfs #{shared_path}/pheno_images #{release_path}/public/images/pheno_images"
+  end
+  
+  desc "Set the permissions of the filesystem so that others in the team can deploy"
+  task :fix_perms do
+    run "chmod 02775 #{release_path}"
   end
 end
 
 after "deploy:update_code", "deploy:symlink_shared"
+after "deploy:symlink", "deploy:fix_perms"

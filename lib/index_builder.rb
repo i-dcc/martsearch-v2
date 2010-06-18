@@ -24,6 +24,10 @@ class IndexBuilder
     @document_cache_keys   = {}
     @document_cache_lookup = {}
     
+    # Create an ontology cache, this will help prevent needless
+    # database queries when indexing ontology terms...
+    @ontology_cache = {}
+    
     @current = { :dataset_conf => nil, :biomart => nil }
   end
   
@@ -444,25 +448,50 @@ class IndexBuilder
       value_to_index = extract_value_to_index( attribute, data_row_obj[attribute], map_data[:attribute_map], { attribute => data_row_obj[attribute] } )
       
       if value_to_index and !value_to_index.gsub(" ","").empty?
-        ontolo_term  = OntologyTerm.new( value_to_index )
-        parent_terms = ontolo_term.parentage
-        
-        terms_to_index = [ ontolo_term.term ]
-        names_to_index = [ ontolo_term.term_name ]
-        
-        unless parent_terms.nil?
-          parent_terms.each do |term|
-            doc[ term_conf["idx"]["term"].to_sym ].push( term.term )
-            doc[ term_conf["idx"]["term_name"].to_sym ].push( term.term_name )
-          
-            terms_to_index.unshift( term.term )
-            names_to_index.unshift( term.term_name )
-          end
+        cached_data = @ontology_cache[value_to_index]
+        if cached_data != nil
+          index_ontology_terms_from_cache( doc, term_conf, cached_data )
+        else
+          index_ontology_terms_from_fresh( doc, term_conf, value_to_index )
         end
-        
-        doc[ term_conf["idx"]["breadcrumb"].to_sym ].push( terms_to_index.join(" | ") )
-        doc[ term_conf["idx"]["breadcrumb"].to_sym ].push( names_to_index.join(" | ") )
       end
+    end
+  end
+  
+  # Helper function for indexing ontology terms we haven't seen before
+  def index_ontology_terms_from_fresh( doc, term_conf, value_to_index )
+    begin
+      ontolo_term  = OntologyTerm.new( value_to_index )
+      parent_terms = ontolo_term.parentage
+
+      terms_to_index = [ ontolo_term.term ]
+      names_to_index = [ ontolo_term.term_name ]
+
+      unless parent_terms.nil?
+        parent_terms.each do |term|
+          terms_to_index.unshift( term.term )
+          names_to_index.unshift( term.term_name )
+        end
+      end
+
+      # Store these terms to the cache for future use...
+      data_to_cache                   = { :term => terms_to_index, :term_name => names_to_index }
+      @ontology_cache[value_to_index] = data_to_cache
+      
+      # Write the data to the doc...
+      index_ontology_terms_from_cache( doc, term_conf, data_to_cache )
+    rescue OntologyTermNotFoundError => error
+      # The ontology term couldn't be found - no worries, just move on...
+    end
+  end
+  
+  # Helper function for indexing ontology terms we have in the cache
+  def index_ontology_terms_from_cache( doc, term_conf, cached_data )
+    [:term,:term_name].each do |term_or_name|
+      cached_data[term_or_name].each do |target|
+        doc[ term_conf["idx"][term_or_name.to_s].to_sym ].push( target )
+      end
+      doc[ term_conf["idx"]["breadcrumb"].to_sym ].push( cached_data[term_or_name].join(" | ") )
     end
   end
   

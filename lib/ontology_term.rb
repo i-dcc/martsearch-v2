@@ -14,12 +14,10 @@ class OntologyTerm < Tree::TreeNode
   attr_reader :term, :term_name
   
   def initialize( name, content=nil )
-    @name, @content = name, content
+    super
     
     @already_fetched_parents  = false
     @already_fetched_children = false
-    
-    super
     
     get_term_details if @content.nil? or @content.empty?
   end
@@ -77,10 +75,34 @@ class OntologyTerm < Tree::TreeNode
     
     term_set = OLS_DB[ sql, @name ].all()
     
+    if term_set.size == 0
+      get_term_from_synonym
+    else
+      subject      = term_set.first
+      @content     = subject[:term_name]
+      @term_pk     = subject[:term_pk]
+      @ontology_id = subject[:ontology_id]
+    end
+  end
+  
+  # Helper function to try to find an ontology term via a synonym.
+  def get_term_from_synonym
+    sql = <<-SQL
+      select term.*
+      from term
+      join ontology on ontology.ontology_id = term.ontology_id
+      join term_synonym on term.term_pk = term_synonym.term_pk
+      where term_synonym.synonym_value = ?
+      order by ontology.fully_loaded desc, ontology.load_date asc
+    SQL
+    
+    term_set = OLS_DB[ sql, @name ].all()
+    
     raise OntologyTermNotFoundError, "Unable to find the term '#{@name}' in the OLS database." \
       if term_set.size == 0
     
     subject      = term_set.first
+    @name        = subject[:identifier]
     @content     = subject[:term_name]
     @term_pk     = subject[:term_pk]
     @ontology_id = subject[:ontology_id]

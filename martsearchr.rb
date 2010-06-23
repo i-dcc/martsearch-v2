@@ -86,10 +86,9 @@ def compress_js_and_css
     Dir.mktmpdir do |dir|
       @@compressed_css = YUI::CssCompressor.new.compress(css_to_compress)
       @@compressed_js  = Closure::Compiler.new(:compilation_level => 'SIMPLE_OPTIMIZATIONS').compress(js_to_compress)
-      puts "[DEBUG] - Using YUI/Closure compressed CSS and Javascript"
     end
   rescue Exception => e
-    puts "[DEBUG] - YUI/Closure compression failed - resorting to concatenated files"
+    puts "[ERROR] - YUI/Closure compression failed - resorting to concatenated files"
     puts e
     @@compressed_css = css_to_compress
     @@compressed_js  = js_to_compress

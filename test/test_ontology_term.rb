@@ -40,5 +40,13 @@ class OntologyTermTest < Test::Unit::TestCase
       assert( @ont.children[0].is_a?(OntologyTerm), "OntologyTerm.children[0] does not return an OntologyTerm tree." )
       assert_equal( 3, @ont.children.size, "OntologyTerm.children is not returning the correct number of entries (we expect 3 direct children for #{@emap_id})." )
     end
+    
+    should "be able to locate ontology terms via synonyms" do
+      go_id = 'GO:0007242'
+      ont   = OntologyTerm.new(go_id)
+      
+      assert_equal( 'GO:0023034', ont.term, "A synonym search for GO:0007242 has not found GO:0023034." )
+      assert_equal( 'intracellular signaling pathway', ont.term_name, "A synonym search for GO:0007242 has not found 'intracellular signaling pathway'." )
+    end
   end
 end

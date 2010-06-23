@@ -474,6 +474,10 @@ class IndexBuilder
         end
       end
 
+      # Remove the "top-level" ontology name - there's no need to have this 
+      # in the search index...
+      names_to_index.shift
+
       # Store these terms to the cache for future use...
       data_to_cache                   = { :term => terms_to_index, :term_name => names_to_index }
       @ontology_cache[value_to_index] = data_to_cache

@@ -291,6 +291,16 @@ a#search_explaination_toggle {
 	height: 16px;
 }
 
+.search_explaination table.search_explaination_detail {
+  margin-bottom: 0;
+  margin-left: 20px;
+}
+
+.search_explaination table.search_explaination_detail th {
+  text-align: right;
+  font-style: italic;
+}
+
 span.highlight {
 	font-weight: bold;
 	color: #f91d1b;

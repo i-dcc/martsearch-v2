@@ -44,11 +44,15 @@
           </em>
         <% else %>
           <h6><%= result_data["index"]["marker_symbol"] %> was found for the following reasons:</h6>
-          <ul>
+          <table class="nocol nobg noborder nopadding search_explaination_detail">
             <% result_data['search_explaination'].each_pair do |field, value| %>
-              <li><strong><%= field %></strong>: &quot;<%= value %>&quot;</li>
+              <tr>
+                <th><%= field %></th>
+                <td>-</td>
+                <td><%= value %></td>
+              </tr>
             <% end %>
-          </ul>
+          </table>
         <% end %>
       </div>
     <% end %>

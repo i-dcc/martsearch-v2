@@ -1,0 +1,18 @@
+<%
+  cleaned_names = {
+    :baygenomics => 'Bay Genomics',
+    :egtc        => 'EGTC',
+    :tigem       => 'TIGEM',
+    :ggtc        => 'GGTC',
+    :fhcrc       => 'FHCRC',
+    :escells     => 'ESCells',
+    :tigm        => 'TIGM',
+    :sanger      => 'WTSI'
+  }
+%>
+
+<% if cleaned_names[project.to_sym] %>
+  <%= cleaned_names[project.to_sym] %>
+<% else %>
+  <%= project.titlecase %>
+<% end %>

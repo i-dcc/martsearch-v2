@@ -1,0 +1,53 @@
+<div class="accordion">
+  <% result_data["ikmc-unitrap"].keys.sort.each do |unitrap_id| %>
+    <h6><a href=""><%= unitrap_id %></a></h6>
+    <div>
+      <table class="nocol noborder" width="100%" style="margin-bottom:0;">
+        <% result_data["ikmc-unitrap"][unitrap_id].keys.sort.each do |project| %>
+          <tr>
+            <th class="nobg" width="12%" style="text-align:center;">
+              <%= partial( "datasets/ikmc-unitrap/project_name", :locals => { :project => project } ) %>
+              <%=
+                partial(
+                  "datasets/ikmc-unitrap/order_button",
+                  :locals => {
+                    :project    => project,
+                    :trap       => result_data["ikmc-unitrap"][unitrap_id][project][0],
+                    :mgi_acc_id => result_data["index"]["marker_symbol"]
+                  }
+                )
+              %>
+            </th>
+            <td>
+              <table width="100%" class="bg" style="margin-bottom:4px;border: 1px solid #999;">
+                  <tr>
+                    <th>Design Type</th>
+                    <th>Trap Name</th>
+                    <th>Vector Name</th>
+                    <th>ES Cell Clone</th>
+                    <th>ES Cell Line</th>
+                    <th>ES Cell Strain</th>
+                  </tr>
+                <% result_data["ikmc-unitrap"][unitrap_id][project].each_index do |index| %>
+                  <%
+                    row_class = "even"
+                    row_class = "odd" if index % 2 == 0
+                    trap      = result_data["ikmc-unitrap"][unitrap_id][project][index]
+                  %>
+                  <tr class="<%= row_class %>">
+                    <td><%= trap["design_type"] %></td>
+                    <td><%= trap["trap_name"] %></td>
+                    <td><%= trap["vector_name"] %></td>
+                    <td><%= trap["escell_clone"] %></td>
+                    <td><%= trap["escell_line"] %></td>
+                    <td><%= trap["escell_strain"] %></td>
+                  </tr>
+                <% end %>
+              </table>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>

@@ -1,19 +1,37 @@
 <div class="accordion">
   <% result_data["ikmc-unitrap"].keys.sort.each do |unitrap_id| %>
-    <h6><a href=""><%= unitrap_id %></a></h6>
+    <h6>
+      <a href="">
+        <%= unitrap_id %> (<%= result_data["ikmc-unitrap"][unitrap_id]["ensembl_exon_id"] %>) 
+        - 
+        <span class="header_annotation">
+          <%= result_data["ikmc-unitrap"][unitrap_id]["count"] %> 
+          <% if result_data["ikmc-unitrap"][unitrap_id]["count"] > 1 %>
+            gene traps
+          <% else %>
+            gene trap
+          <% end %>
+        </span>
+      </a>
+    </h6>
     <div>
       <table class="nocol noborder" width="100%" style="margin-bottom:0;">
         <% result_data["ikmc-unitrap"][unitrap_id].keys.sort.each do |project| %>
+          <%
+            keys_to_miss = ["ensembl_exon_id","count"]
+            next if keys_to_miss.include?(project)
+          %>
           <tr>
             <th class="nobg" width="12%" style="text-align:center;">
-              <%= partial( "datasets/ikmc-unitrap/project_name", :locals => { :project => project } ) %>
+              <%= project %>
               <%=
                 partial(
                   "datasets/ikmc-unitrap/order_button",
                   :locals => {
-                    :project    => project,
-                    :trap       => result_data["ikmc-unitrap"][unitrap_id][project][0],
-                    :mgi_acc_id => result_data["index"]["marker_symbol"]
+                    :project       => project,
+                    :trap          => result_data["ikmc-unitrap"][unitrap_id][project][0],
+                    :mgi_acc_id    => result_data["index"]["mgi_accession_id_key"],
+                    :marker_symbol => result_data["index"]["marker_symbol"]
                   }
                 )
               %>

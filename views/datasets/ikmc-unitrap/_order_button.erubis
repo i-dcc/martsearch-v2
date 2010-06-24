@@ -1,12 +1,14 @@
 <%
   order_links = {
     :eucomm => "http://www.eummcr.org/order.php",
-    :tigm   => "http://www.tigm.org/cgi-bin/tigminfo.cgi?survey=IKMC%20Website&mgi1=#{mgi_acc_id}&gene1=Hnrnpf&comments1=#{trap["escell_clone"]}"
+    :tigm   => "http://www.tigm.org/cgi-bin/tigminfo.cgi?survey=IKMC%20Website&mgi1=#{mgi_acc_id}&gene1=#{marker_symbol}&comments1=#{trap["escell_clone"]}"
   }
+  
+  project_sym = project.gsub(" ","_").downcase.to_sym
 %>
 
-<% if order_links[project.downcase.to_sym] %>
+<% if order_links[project_sym] %>
   <div style="margin-top:10px;">
-    <a href="<%= order_links[project.downcase.to_sym] %>" target="_blank" class="button order">order</a>
+    <a href="<%= order_links[project_sym] %>" target="_blank" class="button order">order</a>
   </div>
 <% end %>

@@ -1,7 +1,7 @@
 /* sanger-phenotyping custom css */
 
 .sanger-phenotyping table td { background: #fff; }
-.sanger-phenotyping table td.test_not_done {	background-color: #f1f1f1; }
+.sanger-phenotyping table td.test_pending {	background-color: #f1f1f1; }
 .sanger-phenotyping table td.completed_data_available {	background-color: #376598; }
 .sanger-phenotyping table td.significant_difference {	background-color: #de2920; }
 .sanger-phenotyping table td.no_significant_difference { background-color: #6998cb; }

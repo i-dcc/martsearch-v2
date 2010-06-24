@@ -460,12 +460,13 @@ end
 # a CSS class that is used to draw the heat map
 def sanger_phenotyping_css_class_for_test(status_desc)
   case status_desc
-  when /Done but not considered interesting/i then "no_significant_difference"
-  when /Considered interesting/i              then "significant_difference"
-  when /Not applicable/i                      then "not_applicable"
-  when /Early indication/i                    then "early_indication_of_possible_phenotype"
-  when /Complete and data/i                   then "completed_data_available"
-  else                                             "test_not_done"
+  when "Test complete and data\/resources available"  then "completed_data_available"
+  when "Test complete and considered interesting"     then "significant_difference"
+  when "Test complete but not considered interesting" then "no_significant_difference"
+  when "Early indication of possible phenotype"       then "early_indication_of_possible_phenotype"
+  when /^Test not performed or applicable/i           then "not_applicable"
+  when "Test abandoned"                               then "test_abandoned"
+  else                                                     "test_pending"
   end
 end
 

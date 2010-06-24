@@ -2,33 +2,33 @@
   <tr>
     <td class="noborder"><strong>Legend:</strong></td>
     <td class="completed_data_available pheno_result"></td>
-    <td class="noborder">test complete and data/resources available</td>
+    <td class="noborder">Test complete and data/resources available</td>
     <td class="noborder"></td>
     <td class="significant_difference pheno_result"></td>
-    <td class="noborder">test considered interesting</td>
+    <td class="noborder">Test complete and considered interesting</td>
   </tr>
   <tr>
     <td class="noborder"></td>
     <td class="early_indication_of_possible_phenotype pheno_result"></td>
-    <td class="noborder">early indication of possible phenotype</td>
+    <td class="noborder">Early indication of possible phenotype</td>
     <td class="noborder"></td>
     <td class="no_significant_difference pheno_result"></td>
-    <td class="noborder">test done but not considered interesting</td>
+    <td class="noborder">Test complete but not considered interesting</td>
   </tr>
   <tr>
     <td class="noborder"></td>
     <td class="not_applicable pheno_result"></td>
-    <td class="noborder">test not applicable, e.g. no LacZ, therefore expression not possible</td>
+    <td class="noborder">Test not performed or applicable e.g. no lacZ reporter therefore no expression</td>
     <td class="noborder"></td>
-    <td class="test_not_done pheno_result"></td>
-    <td class="noborder">test not carried out</td>
+    <td class="test_pending pheno_result"></td>
+    <td class="noborder">Test pending</td>
   </tr>
   <tr>
     <td class="noborder"></td>
+    <td class="noborder"></td>
+    <td class="noborder"></td>
+    <td class="noborder"></td>
     <td class="pheno_result noborder"><img src="<%= BASE_URI %>/images/silk/chart_bar.png" /></td>
     <td class="noborder">link to a phenotyping test report page</td>
-    <td class="noborder"></td>
-    <td class="noborder"></td>
-    <td class="noborder"></td>
   </tr>
 </table>

@@ -32,20 +32,35 @@
       </ul>
     </div>
     
-    <h6><a href="">Background LacZ Staining in Adults</a></h6>
+    <h6><a href="">Background LacZ Staining in Adult</a></h6>
     <div class="sanger-phenotyping-adult-expression-images">
       <p style="text-align:left">
-        The adult wholemount LacZ expression protocol has been refined to
-        minimize background staining however, it can still occur. We have
-        systematically documented the sites and intensities of this
-        background stain in male and female wildtype C57BL/6
-        (C57BL/6J-Tyr&lt;c-Brd&gt;; C57BL/6NTac/Den) mice. The major locations
-        where background staining may be observed are the nasal cavity,
-        thyroid gland, glandular stomach, kidney and male genitals.
-        Additional background staining is observed occasionally in the rib
-        cage, thymus, mesenteric lymph nodes and ovaries. Examples of the
-        pattern and level of background stain are presented below.
+         The adult wholemount LacZ expression protocol has been refined to minimize
+         background staining however, it can still occur. We have systematically
+         documented the sites and intensities of this background stain in male and
+         female wildtype C57BL/6 (C57BL/6J-Tyr&lt;c-Brd&gt;; C57BL/6NTac/Den) mice. 
+         The major locations where background staining may be observed are:
+         <ul style="text-align:left">
+           <li>Nasal cavity</li>
+           <li>Thyroid gland</li>
+           <li>Glandular stomach</li>
+           <li>Kidney</li>
+           <li>Male genitals</li>
+         </ul>
       </p>
+      <p style="text-align:left">
+        Additional background staining is observed occasionally in:
+        <ul style="text-align:left">
+          <li>Rib cage</li>
+          <li>Thymus</li>
+          <li>Mesenteric lymph nodes</li>
+          <li>Ovaries</li>
+        </ul>
+      </p>
+      <p style="text-align:left">
+        Examples of the pattern and level of background stain are presented below.
+      </p>
+      
       <ul class="sanger-phenotyping-adult-expression-image-list">
         <% @bg_staining_imgs.each do |img| %>
           <%= partial( "datasets/sanger-phenotyping/adult_expression_images", :locals => { :img => img, :gallery_name => "bgstain" } ) %>

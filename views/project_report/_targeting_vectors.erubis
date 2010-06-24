@@ -1,0 +1,47 @@
+<div class="dataset">
+  <h4 class="dataset_title toggle-open">Targeting Vectors</h4>
+  <div class="dataset_content">
+    <% if @data['targeting_vectors'] %>
+      <% order_vector_url = @data.include?('order_vector_url') ? @data['order_vector_url'] : @data['order_default_url'] %>
+      
+      <img src="<%= @data['vector_image'] %>" width="940px" />
+      <div class="clear"></div>
+      
+      <table>
+        <thead>
+          <th class="hide_on_print"></th>
+          <th>Gene</th>
+          <th>Design ID</th>
+          <th>Design Type</th>
+          <th>Targeting Vector</th>
+          <th>Floxed Exon</th>
+          <th>Cassette</th>
+          <th>Backbone</th>
+          <th class="hide_on_print">Genbank File</th>
+        </thead>
+        <tbody>
+          <% @data['targeting_vectors'].each do |targvec| %>
+            <tr>
+              <td class="hide_on_print">
+                <a href="<%= order_vector_url %>" class="order" target="_blank">Order</a>
+              </td>
+              <td><%= @data['marker_symbol'] %></td>
+              <td><%= targvec['design_id'] %></td>
+              <td><%= targvec['design_type'] %></td>
+              <td><%= targvec['name'] %></td>
+              <td><%= targvec['floxed_exon'] %></td>
+              <td><%= targvec['cassette'] %></td>
+              <td><%= targvec['backbone'] %></td>
+              <td class="hide_on_print">
+                <a href="<%= targvec['genbank_file'] %>" target="_blank" class="file ext_link">View</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <em>No distributable targeting vector available for this project.</em>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+</div>

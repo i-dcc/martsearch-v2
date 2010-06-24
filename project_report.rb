@@ -76,7 +76,7 @@ def get_vectors_and_cells( project_id )
       data.update(
         'intermediate_vectors' => [],
         'targeting_vectors'    => [],
-        'es_cells'             => { 'conditionals' => [], 'non_conditionals' => [] },
+        'es_cells'             => { 'conditional' => [], 'targeted non-conditional' => [] },
         'allele_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image",
         'vector_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/vector-image",
         'allele_gb'    => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file",
@@ -92,9 +92,7 @@ def get_vectors_and_cells( project_id )
         else ''
       end
     
-    #
-    #   Intermediate Vectors
-    #
+    # Intermediate Vectors
     data['intermediate_vectors'].push(
       'name'        => result['intermediate_vector'],
       'design_id'   => result['design_id'],
@@ -103,9 +101,7 @@ def get_vectors_and_cells( project_id )
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
     
-    #
-    #   Targeting Vectors
-    #
+    # Targeting Vectors
     data['targeting_vectors'].push(
       'name'         => result['targeting_vector'],
       'design_id'    => result['design_id'],
@@ -115,12 +111,12 @@ def get_vectors_and_cells( project_id )
       'floxed_exon'  => result['floxed_start_exon']
     ) unless result['mutation_subtype'] == 'targeted_non_conditional'
     
-    #
-    #   ES Cells
-    #
+    # ES Cells
     next if result['escell_clone'].nil? or result['escell_clone'].empty?
     
-    push_to = result['mutation_subtype'] == 'conditional_ready' ? 'conditionals' : 'non_conditionals'
+    push_to = 'targeted non-conditional'
+    push_to = 'conditional' if result['mutation_subtype'] == 'conditional_ready'
+    
     data['es_cells'][push_to].push(
       'name'                      => result['escell_clone'],
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
@@ -132,8 +128,8 @@ def get_vectors_and_cells( project_id )
   unless data.empty?
     data['intermediate_vectors'].uniq!
     data['targeting_vectors'].uniq!
-    data['es_cells']['conditionals'].uniq!
-    data['es_cells']['non_conditionals'].uniq!
+    data['es_cells']['conditional'].uniq!
+    data['es_cells']['targeted non-conditional'].uniq!
   end
   
   return data

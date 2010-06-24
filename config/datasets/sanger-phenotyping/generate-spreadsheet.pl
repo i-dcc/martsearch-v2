@@ -143,12 +143,12 @@ sub _xls_setup_result_formats {
   my ( $workbook, $default_props ) = @_;
 
   my $xls_formats = {
-    test_not_done             => { bg => 'white' },
     completed_data_available  => { bg => 'navy', col => 'white' },
     significant_difference    => { bg => 'red' },
     no_significant_difference => { bg => 44 }, # light blue
+    early_indication          => { bg => 'yellow' },
     not_applicable            => { bg => 'silver' },
-    early_indication          => { bg => 'yellow' }
+    test_pending              => { bg => 'white' }
   };
   
   foreach my $result ( keys %{$xls_formats} ) {
@@ -170,10 +170,10 @@ sub _xls_setup_test_result_code {
   my $test_mapping = {
     completed_data_available  => 1,
     significant_difference    => 2,
-    early_indication          => 3,
-    no_significant_difference => 4,
+    no_significant_difference => 3,
+    early_indication          => 4,
     not_applicable            => 5,
-    test_not_done             => 6
+    test_pending              => 6
   };
   return $test_mapping;
 }
@@ -184,12 +184,13 @@ sub _xls_test_result_format {
   my ( $tf, $result ) = @_;
   my $form;
   
-  if    ( $result =~ /Done but not considered interesting/i ) { $form = $tf->{no_significant_difference}; }
-  elsif ( $result =~ /Considered interesting/i )              { $form = $tf->{significant_difference}; }
-  elsif ( $result =~ /Not applicable/i )                      { $form = $tf->{not_applicable}; }
-  elsif ( $result =~ /Early indication/i )                    { $form = $tf->{early_indication}; }
-  elsif ( $result =~ /Complete and data/i )                   { $form = $tf->{completed_data_available}; }
-  else                                                        { $form = $tf->{test_not_done}; }
+  if    ( $result eq "Test complete and data\/resources available" )  { $form = $tf->{completed_data_available}; }
+  elsif ( $result eq "Test complete and considered interesting" )     { $form = $tf->{significant_difference}; }
+  elsif ( $result eq "Test complete but not considered interesting" ) { $form = $tf->{no_significant_difference}; }
+  elsif ( $result eq "Early indication of possible phenotype" )       { $form = $tf->{early_indication}; }
+  elsif ( $result =~ /^Test not performed or applicable/i )           { $form = $tf->{not_applicable}; }
+  elsif ( $result eq "Test abandoned" )                               { $form = $tf->{test_abandoned}; }
+  else                                                                { $form = $tf->{test_pending}; }
   
   return $form;
 }
@@ -324,20 +325,20 @@ sub write_unsorted_legend {
   my $linked_formats   = $formats->{linked_tests};
   
   $worksheet->write( 2, $number_of_columns+2, "LEGEND" );
-  $worksheet->write( 4, $number_of_columns+3, "test complete and data/resources available" );
+  $worksheet->write( 4, $number_of_columns+3, "Test complete and data/resources available" );
   $worksheet->write( 4, $number_of_columns+2, "", $unlinked_formats->{completed_data_available} );
-  $worksheet->write( 5, $number_of_columns+3, "test considered interesting" );
+  $worksheet->write( 5, $number_of_columns+3, "Test complete and considered interesting" );
   $worksheet->write( 5, $number_of_columns+2, "", $unlinked_formats->{significant_difference} );
-  $worksheet->write( 6, $number_of_columns+3, "early indication of possible phenotype" );
-  $worksheet->write( 6, $number_of_columns+2, "", $unlinked_formats->{early_indication} );
-  $worksheet->write( 7, $number_of_columns+3, "test done but not considered interesting" );
-  $worksheet->write( 7, $number_of_columns+2, "", $unlinked_formats->{no_significant_difference} );
-  $worksheet->write( 8, $number_of_columns+3, "test not applicable, e.g. no LacZ, therefore expression not possible" );
+  $worksheet->write( 6, $number_of_columns+3, "Test complete but not considered interesting" );
+  $worksheet->write( 6, $number_of_columns+2, "", $unlinked_formats->{no_significant_difference} );
+  $worksheet->write( 7, $number_of_columns+3, "Early indication of possible phenotype" );
+  $worksheet->write( 7, $number_of_columns+2, "", $unlinked_formats->{early_indication} );
+  $worksheet->write( 8, $number_of_columns+3, "Test not performed or applicable e.g. no lacZ reporter therefore no expression" );
   $worksheet->write( 8, $number_of_columns+2, "", $unlinked_formats->{not_applicable} );
-  $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
-  $worksheet->write( 9, $number_of_columns+2, "", $unlinked_formats->{test_not_done} );
-  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
-  $worksheet->write( 10, $number_of_columns+2, ">", $linked_formats->{test_not_done} );
+  $worksheet->write( 9, $number_of_columns+3, "Test pending" );
+  $worksheet->write( 9, $number_of_columns+2, "", $unlinked_formats->{test_pending} );
+  $worksheet->write( 10, $number_of_columns+3, "Link to a phenotyping test report page" );
+  $worksheet->write( 10, $number_of_columns+2, ">", $linked_formats->{test_pending} );
 }
 
 # Helper function to write the cells for the sortable heatmap.
@@ -349,20 +350,20 @@ sub write_sorted_legend {
   my $test_code      = _xls_setup_test_result_code();
   
   $worksheet->write( 2, $number_of_columns+2, "LEGEND" );
-  $worksheet->write( 4, $number_of_columns+3, "test complete and data/resources available" );
+  $worksheet->write( 4, $number_of_columns+3, "Test complete and data/resources available" );
   $worksheet->write( 4, $number_of_columns+2, $test_code->{completed_data_available}, $test_formats->{completed_data_available} );
-  $worksheet->write( 5, $number_of_columns+3, "test considered interesting" );
+  $worksheet->write( 5, $number_of_columns+3, "Test complete and considered interesting" );
   $worksheet->write( 5, $number_of_columns+2, $test_code->{significant_difference}, $test_formats->{significant_difference} );
-  $worksheet->write( 6, $number_of_columns+3, "early indication of possible phenotype" );
-  $worksheet->write( 6, $number_of_columns+2, $test_code->{early_indication}, $test_formats->{early_indication} );
-  $worksheet->write( 7, $number_of_columns+3, "test done but not considered interesting" );
-  $worksheet->write( 7, $number_of_columns+2, $test_code->{no_significant_difference}, $test_formats->{no_significant_difference} );
-  $worksheet->write( 8, $number_of_columns+3, "test not applicable, e.g. no LacZ, therefore expression not possible" );
+  $worksheet->write( 6, $number_of_columns+3, "Test complete but not considered interesting" );
+  $worksheet->write( 6, $number_of_columns+2, $test_code->{no_significant_difference}, $test_formats->{no_significant_difference} );
+  $worksheet->write( 7, $number_of_columns+3, "Early indication of possible phenotype" );
+  $worksheet->write( 7, $number_of_columns+2, $test_code->{early_indication}, $test_formats->{early_indication} );
+  $worksheet->write( 8, $number_of_columns+3, "Test not performed or applicable e.g. no lacZ reporter therefore no expression" );
   $worksheet->write( 8, $number_of_columns+2, $test_code->{not_applicable}, $test_formats->{not_applicable} );
-  $worksheet->write( 9, $number_of_columns+3, "test not carried out" );
-  $worksheet->write( 9, $number_of_columns+2, $test_code->{test_not_done}, $test_formats->{test_not_done} );
-  $worksheet->write( 10, $number_of_columns+3, "link to a phenotyping test report page" );
-  $worksheet->write( 10, $number_of_columns+2, "x", $linked_formats->{test_not_done} );
+  $worksheet->write( 9, $number_of_columns+3, "Test pending" );
+  $worksheet->write( 9, $number_of_columns+2, $test_code->{test_pending}, $test_formats->{test_pending} );
+  $worksheet->write( 10, $number_of_columns+3, "Link to a phenotyping test report page" );
+  $worksheet->write( 10, $number_of_columns+2, "x", $linked_formats->{test_pending} );
   
 }
 

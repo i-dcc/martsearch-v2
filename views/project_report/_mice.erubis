@@ -1,0 +1,38 @@
+<div class="dataset">
+  <h4 class="dataset_title toggle-open">Mice</h4>
+  <div class="dataset_content">
+    <% if @data['mice'] %>
+      <div class="clear"></div>
+      <table>
+        <thead>
+          <th>Gene</th>
+          <th>Allele</th>
+          <th>ES Cell Clone</th>
+          <th>Parental ES Cell Strain</th>
+          <th>Parental ES Cell Line</th>
+          <th>Microinjection Status</th>
+          <th class="noborder nocol nobg hide_on_print"></th>
+        </thead>
+        <tbody>
+          <% @data['mice'].each do |mouse| %>
+            <tr>
+              <td><%= @data['marker_symbol'] %></td>
+              <td><%= mouse['allele_name'] %></td>
+              <td><%= mouse['escell_clone'] %></td>
+              <td><%= mouse['escell_strain'] %></td>
+              <td><%= mouse['escell_line'] %></td>
+              <td><%= mouse['status']%></td>
+              <td class="nobg noborder hide_on_print">
+                <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
+                <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <em>No mouse available for this project.</em>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+</div>

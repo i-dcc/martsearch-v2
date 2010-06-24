@@ -1,0 +1,30 @@
+<div class="dataset">
+  <h4 class="dataset_title toggle-open">Intermediate Vectors</h4>
+  <div class="dataset_content">
+    <% if @data['intermediate_vectors'] %>
+      <table>
+        <thead>
+          <th>Gene</th>
+          <th>Design ID</th>
+          <th>Design Type</th>
+          <th>Intermediate Vector</th>
+          <th>Floxed Exon</th>
+        </thead>
+        <tbody>
+          <% @data['intermediate_vectors'].each do |intvec| %>
+            <tr>
+              <td><%= @data['marker_symbol'] %></td>
+              <td><%= intvec['design_id'] %></td>
+              <td><%= intvec['design_type'] %></td>
+              <td><%= intvec['name'] %></td>
+              <td><%= intvec['floxed_exon'] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <em>No intermediate vector found for this project.</em>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+</div>

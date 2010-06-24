@@ -166,11 +166,9 @@ get "/phenotyping/:colony_prefix/:pheno_test/?" do
   # If we still can't figure out the pipeline, we have to guess...
   test_conf = JSON.parse( @@ms.cache.fetch("sanger-phenotyping-test_conf") )
   if pipeline.nil?
-    # Try MGP-Pipeline 1/2 first
+    # Try MGP-Pipeline 1/2 first, if that brings back nothing, try MouseGP
     @test = test_conf["eumodic-pipeline-1-2"][params[:pheno_test]]
-    
-    # if that brings back nothing, try MouseGP
-    if @test.nil? then @test = test_conf["sanger-mgp"][params[:pheno_test]] end
+    @test = test_conf["sanger-mgp"][params[:pheno_test]] if @test.nil?
   else
     @test = test_conf[pipeline][params[:pheno_test]]
   end

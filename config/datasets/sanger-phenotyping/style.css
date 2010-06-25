@@ -1,7 +1,7 @@
 /* sanger-phenotyping custom css */
 
 .sanger-phenotyping table td { background: #fff; }
-.sanger-phenotyping table td.test_not_done {	background-color: #f1f1f1; }
+.sanger-phenotyping table td.test_pending {	background-color: #fff; }
 .sanger-phenotyping table td.completed_data_available {	background-color: #376598; }
 .sanger-phenotyping table td.significant_difference {	background-color: #de2920; }
 .sanger-phenotyping table td.no_significant_difference { background-color: #6998cb; }
@@ -127,12 +127,12 @@ table.expression_ticklist td.ambiguous {
 	text-transform: lowercase;
 }
 
-#sanger-phenotyping-adult-expression-images {
+.sanger-phenotyping-adult-expression-images {
 	margin: 0 auto;
 	text-align: center;
 }
 
-#sanger-phenotyping-adult-expression-image-list li {
+.sanger-phenotyping-adult-expression-image-list li {
 	list-style-type: none;
 	margin: 5px;
 	padding: 5px;
@@ -153,7 +153,7 @@ table.expression_ticklist td.ambiguous {
 	_height: 190px;
 }
 
-#sanger-phenotyping-adult-expression-image-list li img {
+.sanger-phenotyping-adult-expression-image-list li img {
 	padding: 2px;
 	border: 1px solid #ccc;
 	background-color: #fff;
@@ -165,20 +165,20 @@ table.expression_ticklist td.ambiguous {
 	width: 180px;
 }
 
-#sanger-phenotyping-adult-expression-image-list li img:hover {
+.sanger-phenotyping-adult-expression-image-list li img:hover {
 	background-color: #fcf9b2;
 }
 
-#sanger-phenotyping-adult-expression-image-list .gender {
+.sanger-phenotyping-adult-expression-image-list .gender {
 	width: 16px;
 	height: 16px;
 	float: right;
 }
 
-#sanger-phenotyping-adult-expression-image-list .male {
+.sanger-phenotyping-adult-expression-image-list .male {
 	background-image: url(../images/silk/male.png);
 }
 
-#sanger-phenotyping-adult-expression-image-list .female {
+.sanger-phenotyping-adult-expression-image-list .female {
 	background-image: url(../images/silk/female.png);
 }

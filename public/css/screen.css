@@ -292,6 +292,16 @@ a#search_explaination_toggle {
 	height: 16px;
 }
 
+.search_explaination table.search_explaination_detail {
+  margin-bottom: 0;
+  margin-left: 20px;
+}
+
+.search_explaination table.search_explaination_detail th {
+  text-align: right;
+  font-style: italic;
+}
+
 span.highlight {
 	font-weight: bold;
 	color: #f91d1b;
@@ -457,6 +467,18 @@ tr.odd td {
 table.nopadding th, table.nopadding td {
 	padding-top: 2px;
 	padding-bottom: 2px;
+}
+
+.border, table.border th, table.border td {
+	border: 1px solid #999 !important;
+}
+
+.bg tr.odd {
+	background: #f1f1f1 !important;
+}
+
+.padding th, .padding td {
+	padding: 6px 6px !important;
 }
 
 table ul.noindent li {

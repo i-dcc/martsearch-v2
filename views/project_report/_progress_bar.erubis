@@ -1,0 +1,60 @@
+<div class="pipeline_stage hide_on_print">
+  <table class="ikmc-pipeline-progress-bar">
+    <thead>
+      <th class="nobg noborder"></th>
+      <th width="20%" class="centre">Pre-pipeline</th>
+      <th width="20%" class="centre">Designs</th>
+      <th width="20%" class="centre">Vectors</th>
+      <th width="20%" class="centre">ES Cells</th>
+      <th width="20%" class="centre">Mice</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <% if @data[:stage] == 'pre' %>
+          <td class="start_<%= @data[:stage_type] %>"></td>
+          <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="end_incomp incomp"></td>
+        <% elsif @data[:stage] == 'designs' %>
+          <td class="start_normal"></td>
+          <td class="normal normal_<%= @data[:stage_type] %>"></td>
+          <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="end_incomp incomp"></td>
+        <% elsif @data[:stage] == 'vectors' %>
+          <td class="start_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_<%= @data[:stage_type] %>"></td>
+          <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="end_incomp incomp"></td>
+        <% elsif @data[:stage] == 'cells' %>
+          <td class="start_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_<%= @data[:stage_type] %>"></td>
+          <td class="<%= @data[:stage_type] %> <%= @data[:stage_type] %>_incomp"><%= @data['status'] %></td>
+          <td class="end_incomp incomp"></td>
+        <% elsif @data[:stage] == 'mice' %>
+          <td class="start_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_normal"></td>
+          <td class="normal normal_<%= @data[:stage_type] %>"></td>
+          <td class="end_<%= @data[:stage_type] %> <%= @data[:stage_type] %>"><%= @data['status'] %></td>
+        <% else %>
+          <td class="start_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="incomp incomp_incomp"></td>
+          <td class="end_incomp incomp"></td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>

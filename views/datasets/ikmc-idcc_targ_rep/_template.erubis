@@ -20,6 +20,7 @@
             partial(
               "datasets/ikmc-idcc_targ_rep/links",
               :locals => {
+                :pipeline        => project['pipeline'],
                 :allele_id       => project['allele_id'],
                 :ikmc_project_id => project['ikmc_project_id'],
                 :ensembl_gene_id => project['ensembl_gene_id']

@@ -4,6 +4,7 @@ file_path                   = File.expand_path(File.dirname(__FILE__))
 SANGER_PHENO_IMG_LOC        = "#{file_path}/../../../public/images/pheno_images"
 SANGER_PHENO_ABR_LOC        = "#{file_path}/../../../tmp/pheno_abr"
 SANGER_PHENO_TEST_DESC_FILE = "#{file_path}/test_conf.json"
+SANGER_PHENO_WT_LACZ_IMG    = "#{file_path}/adult_expression_background_staining.csv"
 
 # Function to run through the pheno test images directory (supplied by Jacqui) 
 # and returns a hash like so:
@@ -332,6 +333,64 @@ def sanger_phenotyping_setup
     @@ms.cache.write( "sanger-phenotyping-wholemount_expression_lookup", expression_lookup.to_json, :expires_in => 12.hours )
   end
   
+  unless @@ms.cache.fetch("sanger-phenotyping-expression_background_staining")
+    background_images   = []
+    mouse_ids           = {}
+    selected_images_csv = File.read(SANGER_PHENO_WT_LACZ_IMG)
+    
+    parsed_csv = []
+    if CSV.const_defined? :Reader
+      parsed_csv = CSV.parse( selected_images_csv, "," ) # Ruby < 1.9 CSV code
+    else
+      parsed_csv = CSV.parse( selected_images_csv, { :col_sep => "," } ) # Ruby >= 1.9 CSV code
+    end
+    
+    parsed_csv.shift
+    parsed_csv.each do |image_info|
+      mouse_ids[ image_info[2] ] = [] if mouse_ids[ image_info[2] ].nil?
+      mouse_ids[ image_info[2] ].push({ "order" => image_info[0], "image_id" => image_info[3]})
+    end
+    
+    image_data = microscopy_img_ds.search(
+      :process_results => true,
+      :filters => {
+        "image_type" => "Wildtype Expression",
+        "genotype"   => "Wildtype",
+        "mouse_id"   => mouse_ids.keys
+      },
+      :attributes => [
+        "colony_prefix",
+        "mouse_id",
+        "gender",
+        "genotype",
+        "genotype_locked",
+        "age_at_death",
+        "tissue",
+        "image_type",
+        "description",
+        "annotations",
+        "comments",
+        "full_image_url"
+      ]
+    )
+    
+    image_data.each do |result|
+      save_this_img = false
+      
+      mouse_ids[ result["mouse_id"] ].each do |img_conf|
+        if result["full_image_url"].match( img_conf["image_id"] )
+          save_this_img           = true
+          result["thumbnail_url"] = result["full_image_url"].sub("\.(\w+)$","thumb.\1")
+          result["order"]         = img_conf["order"]
+        end
+      end
+      
+      background_images[ result["order"].to_i - 1 ] = result if save_this_img
+    end
+    
+    @@ms.cache.write( "sanger-phenotyping-expression_background_staining", background_images.to_json, :expires_in => 12.hours )
+  end
+  
   unless @@ms.cache.fetch("sanger-phenotyping-abr_results")
     @@ms.cache.write( "sanger-phenotyping-abr_results", sanger_phenotyping_find_pheno_abr_results.to_json, :expires_in => 12.hours )
   end
@@ -401,12 +460,13 @@ end
 # a CSS class that is used to draw the heat map
 def sanger_phenotyping_css_class_for_test(status_desc)
   case status_desc
-  when /Done but not considered interesting/i then "no_significant_difference"
-  when /Considered interesting/i              then "significant_difference"
-  when /Not applicable/i                      then "not_applicable"
-  when /Early indication/i                    then "early_indication_of_possible_phenotype"
-  when /Complete and data/i                   then "completed_data_available"
-  else                                             "test_not_done"
+  when "Test complete and data\/resources available"  then "completed_data_available"
+  when "Test complete and considered interesting"     then "significant_difference"
+  when "Test complete but not considered interesting" then "no_significant_difference"
+  when "Early indication of possible phenotype"       then "early_indication_of_possible_phenotype"
+  when /^Test not performed or applicable/i           then "not_applicable"
+  when "Test abandoned"                               then "test_abandoned"
+  else                                                     "test_pending"
   end
 end
 

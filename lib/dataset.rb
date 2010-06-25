@@ -221,16 +221,32 @@ class Dataset
   end
   
   def data_origin_url( query )
-    attrs = []
-    @attributes.each do |attribute|
-      attrs.push("#{@dataset_name}.default.attributes.#{attribute}")
+    url = @url + "/martview?VIRTUALSCHEMANAME=default&VISIBLEPANEL=resultspanel"
+    
+    # Filters...
+    filters = []
+    
+    filters_to_build = { @joined_biomart_filter => query }
+    filters_to_build.merge!( @filters ) unless @filters.nil?
+    
+    filters_to_build.each do |key,value|
+      filter = "#{@dataset_name}.default.filters.#{key}.&quot;"
+      
+      if value.is_a?(Array) then filter << "#{CGI::escape(value.join(","))}&quot;"
+      else                       filter << "#{CGI::escape(value)}&quot;"
+      end
+      
+      filters.push(filter)
     end
     
-    url = @url + "/martview?VIRTUALSCHEMANAME=default&VISIBLEPANEL=resultspanel&FILTERS="
-    url << "#{@dataset_name}.default.filters.#{@joined_biomart_filter}.&quot;"
+    url << "&FILTERS=#{filters.join("|")}"
     
-    if query.is_a?(Array) then url << "#{CGI::escape(query.join(","))}&quot;&ATTRIBUTES="
-    else                       url << "#{CGI::escape(query)}&quot;&ATTRIBUTES="
+    # Attributes...
+    attrs = []
+    url << "&ATTRIBUTES="
+    
+    @attributes.each do |attribute|
+      attrs.push("#{@dataset_name}.default.attributes.#{attribute}")
     end
     
     while ( url.length + attrs.join("|").length ) > 2048

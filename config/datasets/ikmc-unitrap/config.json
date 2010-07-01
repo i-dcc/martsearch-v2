@@ -44,7 +44,7 @@
       "design_type"
     ],
     "filters": {
-      "pipeline": "Bay Genomics,EGTC,ESCells,EUCOMM,GGTC,Stanford,TIGEM,TIGM,Vanderbilt,WTSI"
+      "pipeline": ["EGTC","EUCOMM","TIGM"]
     }
   }
 }

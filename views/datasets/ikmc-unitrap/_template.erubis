@@ -5,7 +5,7 @@
   traps_by = result_data['ikmc-unitrap']['traps_by']
 %>
 
-<table>
+<table class="unitrap_matrix">
   <tr>
     <th></th>
     <% projects.each do |project| %>
@@ -25,9 +25,14 @@
         <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 0 %>
           <a href="#" class="unitraps_by_link" rel="<%= unitrap %>">
             <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
+            <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 1 %>
+              traps
+            <% else %>
+              trap
+            <% end %>
           </a>
         <% else %>
-          <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
+          0 traps
         <% end %>
       </td>
     </tr>
@@ -38,10 +43,15 @@
       <td>
         <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 0 %>
           <a href="#" class="unitraps_by_link" rel="<%= project %>">
-            <%= result_data['ikmc-unitrap']['project_counts_total'][project] %>
+            <%= result_data['ikmc-unitrap']['project_counts_total'][project] %> 
+            <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 1 %>
+              traps
+            <% else %>
+              trap
+            <% end %>
           </a>
         <% else %>
-          <%= result_data['ikmc-unitrap']['project_counts_total'][project] %>
+          0 traps
         <% end %>
       </td>
     <% end %>

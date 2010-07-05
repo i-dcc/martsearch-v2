@@ -1,0 +1,12 @@
+/* ikmc-unitrap custom css */
+
+table.unitrap_matrix td,
+table.unitrap_matrix th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+div.unitraps_by table caption {
+  text-align: left;
+  font-weight: bold;
+}

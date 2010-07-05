@@ -1,7 +1,8 @@
 <%
-  projects = result_data['ikmc-unitrap']['project_counts'].keys.sort.each
-  unitraps = result_data['ikmc-unitrap']['unitrap_counts'].keys.sort.each
-  data     = result_data['ikmc-unitrap']['data']
+  projects = result_data['ikmc-unitrap']['project_counts_total'].keys.sort.each
+  unitraps = result_data['ikmc-unitrap']['unitrap_counts_total'].keys.sort.each
+  traps    = result_data['ikmc-unitrap']['traps']
+  traps_by = result_data['ikmc-unitrap']['traps_by']
 %>
 
 <table>
@@ -17,66 +18,75 @@
       <th><%= unitrap %></th>
       <% projects.each do |project| %>
         <td>
-          <%= data[project][unitrap].is_a?(Array) ? data[project][unitrap].size : 0 %>
+          <%= traps[project][unitrap].is_a?(Array) ? traps[project][unitrap].size : 0 %>
         </td>
       <% end %>
-      <td><strong><%= result_data['ikmc-unitrap']['unitrap_counts'][unitrap] %></strong></td>
+      <td>
+        <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 0 %>
+          <a href="#" class="unitraps_by_link" rel="<%= unitrap %>">
+            <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
+          </a>
+        <% else %>
+          <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   <tr>
     <td></td>
     <% projects.each do |project| %>
-      <td><strong><%= result_data['ikmc-unitrap']['project_counts'][project] %></strong></td>
+      <td>
+        <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 0 %>
+          <a href="#" class="unitraps_by_link" rel="<%= project %>">
+            <%= result_data['ikmc-unitrap']['project_counts_total'][project] %>
+          </a>
+        <% else %>
+          <%= result_data['ikmc-unitrap']['project_counts_total'][project] %>
+        <% end %>
+      </td>
     <% end %>
     <td></td>
   </tr>
 </table>
 
-<!-- Traps by project -->
-<div class="unitraps_by_project">
+<div class="unitraps_by">
+  <!-- Traps by project -->
   <% projects.each do |project| %>
-    <%
-      traps = data[project].values.flatten
-      traps.sort!{ |a,b| a['unitrap_accession_id'] <=> b['unitrap_accession_id'] }
-    %>
-    <% if traps.size > 0 %>
+    <% if traps_by[project].size > 0 %>
       <div class="<%= project %>">
         <%=
           partial(
             "datasets/ikmc-unitrap/trap_table",
             :locals => {
-              :traps              => traps,
+              :traps              => traps_by[project],
               :caption            => "Traps produced by #{project}",
               :first_cell_header  => 'UniTrap',
-              :first_cell_content => 'unitrap_accession_id'
+              :first_cell_content => 'unitrap_accession_id',
+              :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
+              :marker_symbol      => result_data['index']['marker_symbol']
+              
             }
           )
         %>
       </div>
     <% end %>
   <% end %>
-</div>
-
-<!-- Traps by UniTrap -->
-<div class="unitraps_by_unitrap">
+  
+  <!-- Traps by UniTrap -->
   <% unitraps.each do |unitrap| %>
-    <%
-      traps = []
-      data.each do |project,data_by_unitrap|
-        traps.push( data_by_unitrap[unitrap] ) unless data_by_unitrap[unitrap].nil?
-      end
-      traps = traps.flatten.sort{ |a,b| a['project'] <=> b['project'] }
-    %>
-    <% if traps.size > 0 %>
+    <% if traps_by[unitrap].size > 0 %>
       <div class="<%= unitrap %>">
         <%=
           partial(
             "datasets/ikmc-unitrap/trap_table",
             :locals => {
-              :traps              => traps,
+              :traps              => traps_by[unitrap],
               :caption            => "Traps clustered as #{unitrap}",
               :first_cell_header  => 'Project',
-              :first_cell_content => 'project'
+              :first_cell_content => 'project',
+              :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
+              :marker_symbol      => result_data['index']['marker_symbol']
+              
             }
           )
         %>

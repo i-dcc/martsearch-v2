@@ -8,6 +8,7 @@
     <th>ES Cell Clone</th>
     <th>ES Cell Line</th>
     <th>ES Cell Strain</th>
+    <th>Order</th>
   </tr>
   <% traps.each_index do |index| %>
     <%
@@ -23,6 +24,18 @@
       <td><%= trap['escell_clone'] %></td>
       <td><%= trap['escell_line'] %></td>
       <td><%= trap['escell_strain'] %></td>
+      <td>
+        <%=
+          partial(
+            "datasets/ikmc-unitrap/order_button",
+            :locals => {
+              :trap          => trap,
+              :mgi_acc_id    => mgi_acc_id,
+              :marker_symbol => marker_symbol
+            }
+          )
+        %>
+      </td>
     </tr>
   <% end %>
 </table>

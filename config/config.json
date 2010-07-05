@@ -210,13 +210,13 @@
   },
   "datasets": [
     "mgi-markers",
+    "europhenome-europhenome",
+    "eurexpress-template",
+    "emma-strains",
     "ikmc-dcc-knockout_attempts",
     "ikmc-idcc_targ_rep",
-    "ikmc-dcc-trapped_products",
     "ikmc-unitrap",
-    "ikmc-dcc-other_mutants",
-    "eurexpress-template",
-    "europhenome-europhenome",
-    "emma-strains"
+    "ikmc-dcc-trapped_products",
+    "ikmc-dcc-other_mutants"
   ]
 }

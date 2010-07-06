@@ -39,9 +39,13 @@
 
 /* Phenotyping details pages */
 
-#test-description, .test-parameter-group {
+#sanger-phenotyping-report #test-images {
+  text-align: center;
+}
+
+#sanger-phenotyping-report .test-descriptor {  
 	border: 1px solid #ccc;
-	padding: 5px;
+	padding: 10px;
 	margin-bottom: 15px;
 	background-color: #f1f1f1;
 	border-radius: 2px;
@@ -50,37 +54,30 @@
 	-o-border-radius: 2px;
 }
 
-.test-parameter-group {
-	padding: 10px;
+#sanger-phenotyping-report .test-descriptor h4 {
+  margin-bottom: 7px;
 }
 
-.test-parameter-group p {
-  margin-bottom: 0;
-}
-
-.test-parameter-group table td {
+#sanger-phenotyping-report .test-descriptor table td {
 	background-color: #fff;
 }
 
-.test-parameter-group .help {
+#sanger-phenotyping-report .test-descriptor .help {
 	background-color: #fff;
 }
 
-.test-parameter-group .gchart {
+#sanger-phenotyping-report .test-descriptor .gchart {
 	border: 1px solid #ccc;
 	background-color: #fff;
 	padding: 0 10px;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	-o-border-radius: 2px;
 }
 
-#test-parameter-groups div.test-parameter-group div.pheno_result {
-	text-align: center;
-	margin-bottom: 7px;
-}
+/* ABR pages */
 
 #results-summary,
 #methods-summary,
@@ -100,7 +97,7 @@
 	border: 1px solid #999;
 }
 
-/* Adult Expression Specific Code */
+/* Adult Expression Pages */
 
 table.expression_ticklist {
 	margin: 0 auto;

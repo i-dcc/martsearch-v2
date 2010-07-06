@@ -149,7 +149,7 @@
     },
     "skin-screen": {
       "description": "Skin screen collaboration (week 14) (Mice were fed on Mouse Breeder Diet (5021, Labdiet) from weaning):  Whole mount preparations of tail epidermis were prepared essentially as described by Braun et al (Development 130:5241-5255, 2003). Whole mounts were labeled with antibodies to keratin 14 (red) and keratin 15 (green), and counter-stained with DAPI to reveal cell nuclei (blue). Keratin 14 is expressed by undifferentiated cells in the hair follicles, sebaceous glands and interfollicular epidermis. Keratin 15 is expressed by the reservoir of stem cells in the hair follicle bulge.",
-      "images": [{"skinif":"Images - Miscellaneous 2"}],
+      "images": [{"skinif":"Images - Miscellaneous 2"},{"skinifwt":"Images - Miscellaneous 2"},{"skinifhet":"Images - Miscellaneous 2"},{"skinifhom":"Images - Miscellaneous 2"}],
       "name": "Skin Screen",
       "second_description": "",
       "slug": "skin-screen"
@@ -293,7 +293,7 @@
     },
     "skin-screen": {
       "description": "Skin screen collaboration (week 16) [Mice were fed on High Fat Diet (21.4% crude fat content, Western RD, 829100, Special Diets Services) from 4 weeks of age]:  Whole mount preparations of tail epidermis were prepared essentially as described by Braun et al (Development 130:5241-5255, 2003). Whole mounts were labeled with antibodies to keratin 14 (red) and keratin 15 (green), and counter-stained with DAPI to reveal cell nuclei (blue). Keratin 14 is expressed by undifferentiated cells in the hair follicles, sebaceous glands and interfollicular epidermis. Keratin 15 is expressed by the reservoir of stem cells in the hair follicle bulge.",
-      "images": [{"skinif":"Images - Miscellaneous 2"}],
+      "images": [{"skinif":"Images - Miscellaneous 2"},{"skinifwt":"Images - Miscellaneous 2"},{"skinifhet":"Images - Miscellaneous 2"},{"skinifhom":"Images - Miscellaneous 2"}],
       "name": "Skin Screen",
       "second_description": "",
       "slug": "skin-screen"

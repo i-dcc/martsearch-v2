@@ -221,6 +221,7 @@
     "sanger-bacs",
     "eurexpress-template",
     "europhenome-europhenome",
-    "emma-strains"
+    "emma-strains",
+    "ensembl-mouse-homologs"
   ]
 }

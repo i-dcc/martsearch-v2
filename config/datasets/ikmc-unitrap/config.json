@@ -44,7 +44,7 @@
       "design_type"
     ],
     "filters": {
-      "pipeline": ["EGTC","EUCOMM","TIGM"]
+      "project": ["EGTC","EUCOMM","TIGM"]
     }
   }
 }

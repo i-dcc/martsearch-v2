@@ -18,7 +18,7 @@
 # 
 # projects = JSON.parse( @@ms.cache.fetch('ikmc-unitrap-projects') )
 
-projects = @@ms.datasets_by_name[:"ikmc-unitrap"].config['searching']['filters']['pipeline']
+projects = @@ms.datasets_by_name[:"ikmc-unitrap"].config['searching']['filters']['project']
 
 ##
 ## Collate all of the info we need from the result data
@@ -63,26 +63,26 @@ end
 ##
 
 sorted_results.each do |result_key,result_value|
-  result_value['traps_by'] = {}
-  
-  # Group traps by project...
-  result_value['project_counts_total'].keys.each do |project|
-    traps = result_value['traps'][project].values.flatten
-    traps.sort!{ |a,b| a['unitrap_accession_id'] <=> b['unitrap_accession_id'] }
-    
-    result_value['traps_by'][project] = traps
-  end
-  
-  # Group traps by unitrap...
-  result_value['unitrap_counts_total'].keys.each do |unitrap|
-    traps = []
-    result_value['traps'].each do |project,data_by_unitrap|
-      traps.push( data_by_unitrap[unitrap] ) unless data_by_unitrap[unitrap].nil?
-    end
-    traps = traps.flatten.sort{ |a,b| a['project'] <=> b['project'] }
-    
-    result_value['traps_by'][unitrap] = traps
-  end
+ result_value['traps_by'] = {}
+ 
+ # Group traps by project...
+ result_value['project_counts_total'].keys.each do |project|
+   traps = result_value['traps'][project].values.flatten
+   traps.sort!{ |a,b| a['unitrap_accession_id'] <=> b['unitrap_accession_id'] }
+   
+   result_value['traps_by'][project] = traps
+ end
+ 
+ # Group traps by unitrap...
+ result_value['unitrap_counts_total'].keys.each do |unitrap|
+   traps = []
+   result_value['traps'].each do |project,data_by_unitrap|
+     traps.push( data_by_unitrap[unitrap] ) unless data_by_unitrap[unitrap].nil?
+   end
+   traps = traps.flatten.sort{ |a,b| a['project'] <=> b['project'] }
+   
+   result_value['traps_by'][unitrap] = traps
+ end
 end
 
 return sorted_results

@@ -6,7 +6,7 @@
   "custom_css":           true,
   "custom_js":            true,
   "custom_view_helpers":  true,
-  "custom_routes":        false,
+  "custom_routes":        true,
   "url":                  "http://www.europhenome.org/biomart",
   "dataset_name":         "europhenome",
   "display_name":         "Europhenome",

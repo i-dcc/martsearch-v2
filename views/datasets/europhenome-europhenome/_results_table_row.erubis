@@ -1,48 +1,34 @@
 <tr>
   <td><%= line_data["line_name"] %>&nbsp;(<%= line_data['zygosity'] %>)</td>
-  <% pipeline_parameters.each do |parameter_id| %>
-    <% ['Male','Female'].each do |sex| %>
+  <% mp_group_chunks.each do |mp_group| %>
+    <% ['male','female'].each do |sex| %>
       <%
-        cell_class = "no-data"
-        if line_data['pipeline_data'][parameter_id]
-          if line_data['pipeline_data'][parameter_id]["is_#{sex.downcase}_signifigant"]
-            cell_class = "significant"
+        cell_class = 'no-data'
+        unless line_data['mp_groups'][mp_group[:term]].nil?
+          if line_data['mp_groups'][mp_group[:term]]["is_#{sex}_significant"] == true
+            cell_class = 'significant'
+          elsif line_data['mp_groups'][mp_group[:term]]["is_#{sex}_significant"] == false
+            cell_class = 'not-significant'
           else
-            cell_class = "not-significant"
+            cell_class = 'no-data'
           end
-        end
-
-        # Make url for barchart img
-        if cell_class == 'significant'
-          result_ids = []
-          line_data['pipeline_data'][parameter_id]['parameters'].sort_by { |k,v| v['parameter_name'] }.each do |id,parameter|
-            parameter['results'].each do |result|
-              if result['sex'] == sex and BigDecimal.new(result['significance']).to_f < 0.0001
-                result_ids.push(parameter['parameter_eslim_id'])
-              end
-            end
-          end
-          url = europhenome_link_url( line_data["europhenome_id"], sex, parameter_id, result_ids.uniq )
         end
       %>
       <% if cell_class == "significant" %>
         <td 
           class="pheno-result <%= cell_class %>"
-          title="<%= partial( "datasets/europhenome-europhenome/popup", :locals => { :line_data => line_data, :parameter_id => parameter_id, :sex => sex } ) %>"
+          title="<%= partial( "datasets/europhenome-europhenome/popup", :locals => { :line_data => line_data, :parameters => line_data['mp_groups'][mp_group[:term]]["#{sex}_results"]['significant'], :sex => sex } ) %>"
           rel="qtip"
         >
-          <a href="<%= url %>" target="_blank" title="View details at Europhenome">
-            <img src="<%= BASE_URI %>/images/silk/chart_bar.png" />
-          </a>
         </td>
       <% else %>
         <td class="pheno-result <%= cell_class %>"></td>
       <% end %>
     <% end %>
   <% end %>
-
-  <% if pipeline_parameters.size < europhenome_tests_per_row %>
-    <% ( europhenome_tests_per_row - pipeline_parameters.size ).times do |fill| %>
+  
+  <% if mp_group_chunks.size < europhenome_tests_per_row %>
+    <% ( europhenome_tests_per_row - mp_group_chunks.size ).times do |fill| %>
       <td class="nobg noborder"></td>
       <td class="nobg noborder"></td>
     <% end %>

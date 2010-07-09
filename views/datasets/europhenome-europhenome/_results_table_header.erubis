@@ -5,7 +5,7 @@
     </th>
     <% mp_group_chunks.each do |mp_group| %>
       <th colspan="2">
-        <span class="vertical_text"><%= mp_group[:name] %></span>
+        <span class="vertical_text"><%= mp_group['name'] %></span>
       </th>
     <% end %>
   

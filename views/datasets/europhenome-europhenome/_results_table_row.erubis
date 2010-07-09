@@ -4,10 +4,10 @@
     <% ['male','female'].each do |sex| %>
       <%
         cell_class = 'no-data'
-        unless line_data['mp_groups'][mp_group[:term]].nil?
-          if line_data['mp_groups'][mp_group[:term]]["is_#{sex}_significant"] == true
+        unless line_data['mp_groups'][mp_group['term']].nil?
+          if line_data['mp_groups'][mp_group['term']]["is_#{sex}_significant"] == true
             cell_class = 'significant'
-          elsif line_data['mp_groups'][mp_group[:term]]["is_#{sex}_significant"] == false
+          elsif line_data['mp_groups'][mp_group['term']]["is_#{sex}_significant"] == false
             cell_class = 'not-significant'
           else
             cell_class = 'no-data'
@@ -17,7 +17,7 @@
       <% if cell_class == "significant" %>
         <td 
           class="pheno-result <%= cell_class %>"
-          title="<%= partial( "datasets/europhenome-europhenome/popup", :locals => { :line_data => line_data, :parameters => line_data['mp_groups'][mp_group[:term]]["#{sex}_results"]['significant'], :sex => sex } ) %>"
+          title="<%= partial( "datasets/europhenome-europhenome/popup", :locals => { :line_data => line_data, :parameters => line_data['mp_groups'][mp_group['term']]["#{sex}_results"]['significant'], :sex => sex } ) %>"
           rel="qtip"
         >
         </td>

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "rubygems"
+require "yaml"
 require "tree"
 require "sequel"
 require "json"
@@ -46,28 +47,28 @@ mp_ontology.children.sort{ |a,b| a.term_name <=> b.term_name }.each do |child|
   puts "#{child.term} - #{child.term_name.gsub(' phenotype','')}"
   
   conf_data = {
-    :term                => child.term,
-    :name                => child.term_name.gsub(' phenotype',''),
-    :child_terms         => [ child.term, child.all_child_terms ].flatten,
-    :test_eslim_ids      => [],
-    :parameter_eslim_ids => []
+    'term'                => child.term,
+    'name'                => child.term_name.gsub(' phenotype',''),
+    'child_terms'         => [ child.term, child.all_child_terms ].flatten,
+    'test_eslim_ids'      => [],
+    'parameter_eslim_ids' => []
   }
   
-  conf_data[:child_terms].each do |term|
+  conf_data['child_terms'].each do |term|
     parameter_map.each do |param_eslim_id,param_terms|
       if param_terms.include?(term)
-        conf_data[:test_eslim_ids].push( param_eslim_id[ 0, ( param_eslim_id.size - 4 ) ] )
-        conf_data[:parameter_eslim_ids].push(param_eslim_id)
+        conf_data['test_eslim_ids'].push( param_eslim_id[ 0, ( param_eslim_id.size - 4 ) ] )
+        conf_data['parameter_eslim_ids'].push(param_eslim_id)
       end
     end
   end
   
-  conf_data[:test_eslim_ids].uniq!
-  conf_data[:parameter_eslim_ids].uniq!
+  conf_data['test_eslim_ids'].uniq!
+  conf_data['parameter_eslim_ids'].uniq!
   
   config.push(conf_data)
 end
 
-File.open( "#{CURR_PATH}/mp_conf.marshal", 'w' ) do |file|
-  file.write( Marshal.dump(config) )
+File.open( "#{CURR_PATH}/mp_conf.json", 'w' ) do |file|
+  file.write( config.to_json )
 end

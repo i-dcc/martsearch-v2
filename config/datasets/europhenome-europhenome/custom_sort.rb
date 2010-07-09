@@ -51,10 +51,10 @@ europhenome_significance_cutoff = 0.0001
     
     if result['mp_term']
       # Can we test by MP term?
-      mp_group = mp_conf[:term] if mp_conf[:child_terms].include?( result['mp_term'] )
+      mp_group = mp_conf['term'] if mp_conf['child_terms'].include?( result['mp_term'] )
     else
       # No MP term - try to match via ESLIM ID's
-      mp_group = mp_conf[:term] if mp_conf[:test_eslim_ids].include?( test_eslim_id )
+      mp_group = mp_conf['term'] if mp_conf['test_eslim_ids'].include?( test_eslim_id )
     end
   end
   

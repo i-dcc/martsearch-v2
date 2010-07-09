@@ -23,21 +23,23 @@ require "biomart"
 
 require "shoulda"
 
-require "#{File.dirname(__FILE__)}/../lib/mock.rb"
-require "#{File.dirname(__FILE__)}/../lib/string.rb"
-require "#{File.dirname(__FILE__)}/../lib/array.rb"
-require "#{File.dirname(__FILE__)}/../lib/dataset.rb"
-require "#{File.dirname(__FILE__)}/../lib/index.rb"
-require "#{File.dirname(__FILE__)}/../lib/ontology_term.rb"
-require "#{File.dirname(__FILE__)}/../lib/martsearch.rb"
-require "#{File.dirname(__FILE__)}/../lib/index_builder.rb"
+MARTSEARCHR_PATH = "#{File.expand_path(File.dirname(__FILE__))}/.."
+
+require "#{MARTSEARCHR_PATH}/lib/mock.rb"
+require "#{MARTSEARCHR_PATH}/lib/string.rb"
+require "#{MARTSEARCHR_PATH}/lib/array.rb"
+require "#{MARTSEARCHR_PATH}/lib/dataset.rb"
+require "#{MARTSEARCHR_PATH}/lib/index.rb"
+require "#{MARTSEARCHR_PATH}/lib/ontology_term.rb"
+require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
+require "#{MARTSEARCHR_PATH}/lib/index_builder.rb"
 
 ##
 ## Some basic setup shared between the test suites
 ##
 
 # Read in our config
-@@conf_file = "#{File.dirname(__FILE__)}/../config/config.json"
+@@conf_file = "#{MARTSEARCHR_PATH}/config/config.json"
 conf_obj  = JSON.load( File.new( @@conf_file, "r" ) )
 
 # Override the portal_url for tests...
@@ -48,5 +50,5 @@ conf_obj["portal_url"] = "http://example.org/"
 # Setup the connection parameters for our OLS database...
 env = ENV['RACK_ENV']
 env = 'production' if env.nil?
-dbc = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/../config/ols_database.yml")[env]
+dbc = YAML.load_file("#{MARTSEARCHR_PATH}/config/ols_database.yml")[env]
 OLS_DB = Sequel.connect("mysql://#{dbc['username']}:#{dbc['password']}@#{dbc['host']}:#{dbc['port']}/#{dbc['database']}")

@@ -17,7 +17,6 @@
     "allow_document_creation": false,
     "attribute_map": [
       { "attr": "ensembl_gene_id",       "idx": "ensembl_gene_id",     "use_to_map": true },
-      { "attr": "ensembl_transcript_id", "idx": "ensembl_transcript_id" },
       { "attr": "ensembl_exon_id",       "idx": "ensembl_exon_id" },
       { "attr": "unitrap_accession_id",  "idx": "unitrap_accession_id" },
       { "attr": "escell_clone",          "idx": "escell" }
@@ -29,7 +28,6 @@
     "joined_biomart_attribute": "ensembl_gene_id",
     "attributes": [
       "ensembl_gene_id",
-      "ensembl_transcript_id",
       "ensembl_exon_id",
       "unitrap_accession_id",
       "genbank_id",

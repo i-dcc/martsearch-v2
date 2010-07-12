@@ -76,21 +76,21 @@ def get_vectors_and_cells( project_id )
       data.update(
         'intermediate_vectors' => [],
         'targeting_vectors'    => [],
-        'es_cells'             => { 'conditional' => [], 'targeted non-conditional' => [] },
-        'allele_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image",
+        'es_cells'             => {
+          'conditional'              => { 'cells' => [], 'allele_img' => nil, 'allele_gb' => nil }, 
+          'targeted non-conditional' => { 'cells' => [], 'allele_img' => nil, 'allele_gb' => nil }
+        },
         'vector_image' => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/vector-image",
-        'allele_gb'    => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file",
         'vector_gb'    => "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/targeting-vector-genbank-file"
       )
     end
     
-    design_type =
-      case result['mutation_subtype']
-        when 'conditional_ready'        then 'Conditional (Frameshift)'
-        when 'deletion'                 then 'Deletion'
-        when 'targeted_non_conditional' then 'Targeted, Non-Conditional'
-        else ''
-      end
+    design_type = case result['mutation_subtype']
+      when 'conditional_ready'        then 'Conditional (Frameshift)'
+      when 'deletion'                 then 'Deletion'
+      when 'targeted_non_conditional' then 'Targeted, Non-Conditional'
+      else ''
+    end
     
     # Intermediate Vectors
     data['intermediate_vectors'].push(
@@ -117,7 +117,9 @@ def get_vectors_and_cells( project_id )
     push_to = 'targeted non-conditional'
     push_to = 'conditional' if result['mutation_subtype'] == 'conditional_ready'
     
-    data['es_cells'][push_to].push(
+    data['es_cells'][push_to]['allele_img'] = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
+    data['es_cells'][push_to]['allele_gb']  = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
+    data['es_cells'][push_to]['cells'].push(
       'name'                      => result['escell_clone'],
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
       'parental_cell_line'        => result['parental_cell_line'],
@@ -128,8 +130,8 @@ def get_vectors_and_cells( project_id )
   unless data.empty?
     data['intermediate_vectors'].uniq!
     data['targeting_vectors'].uniq!
-    data['es_cells']['conditional'].uniq!
-    data['es_cells']['targeted non-conditional'].uniq!
+    data['es_cells']['conditional']['cells'].uniq!
+    data['es_cells']['targeted non-conditional']['cells'].uniq!
   end
   
   return data

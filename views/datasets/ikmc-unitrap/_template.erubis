@@ -3,6 +3,8 @@
   unitraps = result_data['ikmc-unitrap']['unitrap_counts_total'].keys.sort.each
   traps    = result_data['ikmc-unitrap']['traps']
   traps_by = result_data['ikmc-unitrap']['traps_by']
+  
+  mgi_acc_id_for_ref = result_data['index']['mgi_accession_id_key'].gsub(':','')
 %>
 
 <table class="unitrap_matrix">
@@ -23,7 +25,8 @@
       <% end %>
       <td>
         <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 0 %>
-          <a href="#" class="unitraps_by_link" rel="<%= unitrap %>">
+          <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-unitrap', unitrap ].join('-') %>
+          <a href="#<%= anchor_ref %>" class="unitraps_by_link" rel="<%= unitrap %>">
             <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
             <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 1 %>
               traps
@@ -42,7 +45,8 @@
     <% projects.each do |project| %>
       <td>
         <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 0 %>
-          <a href="#" class="unitraps_by_link" rel="<%= project %>">
+          <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project ].join('-') %>
+          <a href="#<%= anchor_ref %>" class="unitraps_by_link" rel="<%= project %>">
             <%= result_data['ikmc-unitrap']['project_counts_total'][project] %> 
             <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 1 %>
               traps
@@ -63,7 +67,8 @@
   <!-- Traps by project -->
   <% projects.each do |project| %>
     <% if traps_by[project].size > 0 %>
-      <div class="<%= project %>">
+      <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project ].join('-') %>
+      <div id="<%= anchor_ref %>" class="<%= project %>">
         <%=
           partial(
             "datasets/ikmc-unitrap/trap_table",
@@ -74,7 +79,6 @@
               :first_cell_content => 'unitrap_accession_id',
               :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
               :marker_symbol      => result_data['index']['marker_symbol']
-              
             }
           )
         %>
@@ -85,7 +89,8 @@
   <!-- Traps by UniTrap -->
   <% unitraps.each do |unitrap| %>
     <% if traps_by[unitrap].size > 0 %>
-      <div class="<%= unitrap %>">
+      <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-unitrap', unitrap ].join('-') %>
+      <div id="<%= anchor_ref %>" class="<%= unitrap %>">
         <%=
           partial(
             "datasets/ikmc-unitrap/trap_table",
@@ -96,7 +101,6 @@
               :first_cell_content => 'project',
               :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
               :marker_symbol      => result_data['index']['marker_symbol']
-              
             }
           )
         %>

@@ -3,10 +3,10 @@
 <div class="dataset">
   <h4 class="dataset_title toggle-open">ES Cell Clones (<%= cond_vs_noncond.titlecase %>)</h4>
   <div class="dataset_content">
-    <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond].empty? %>
-      <%- cells = @data['es_cells'][cond_vs_noncond].sort_by { |cell| cell['name'] } -%>
+    <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
+      <%- cells = @data['es_cells'][cond_vs_noncond]['cells'].sort_by { |cell| cell['name'] } -%>
       
-      <img src="<%= @data['allele_image'] %>" width="940px" />
+      <img src="<%= @data['es_cells'][cond_vs_noncond]['allele_img'] %>" width="940px" />
       <div class="clear"></div>
       
       <% if cond_vs_noncond == 'targeted non-conditional' %>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           <% cells.each_with_index do |cell,i| %>
-            <tr class="<% unless i == 0 %>toggle_conditional_row<% end %>">
+            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
               <td class="hide_on_print">
                 <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
               </td>
@@ -39,7 +39,7 @@
               <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
               <td><%= cell['parental_cell_line'] %></td>
               <td class="hide_on_print">
-                <a href="<%= @data['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
+                <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
               </td>
               <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
                 <td>Yes</td>
@@ -52,7 +52,7 @@
       </table>
     
       <% if cells.length > 1 %>
-        <a href="#" id="toggle_conditionals" class="toggle-open hide_on_print">
+        <a href="#" id="toggle_<%= cond_vs_noncond.gsub(' ','_') %>" class="toggle-open hide_on_print">
           Click here to see <%= cells.length - 1 %> more...
         </a>
       <% end %>

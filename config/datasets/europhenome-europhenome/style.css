@@ -1,3 +1,5 @@
+/* @override http://localhost:4567/dataset-css/europhenome-europhenome.css */
+
 /* europhenome-europhenome custom css */
 
 .europhenome-europhenome table.europhenome-data td {
@@ -5,7 +7,15 @@
 }
 
 .europhenome-europhenome table.europhenome-data th {
-  text-align: center;
+	vertical-align:	bottom;
+	height: 184px;
+	min-width: 32px;
+	white-space: nowrap;
+}
+
+.europhenome-europhenome table.europhenome-data .vertical_text {
+	width: 32px;
+	margin-bottom: 10px;
 }
 
 .europhenome-europhenome table.europhenome-data td.no-data {
@@ -27,38 +37,37 @@
 	padding: 0;
 }
 
-.europhenome-europhenome table.europhenome-data tr.male-female th,
-.europhenome-europhenome table.europhenome-data th.male,
-.europhenome-europhenome table.europhenome-data th.female {
+.europhenome-europhenome table.europhenome-data tr.male-female td,
+.europhenome-europhenome table.europhenome-data td.male,
+.europhenome-europhenome table.europhenome-data td.female {
 	text-align: center;
 	text-indent: -9999px;
 	background: #e8e8e8 none no-repeat center center;
 }
 
-.europhenome-europhenome table.europhenome-data th.male {
-  background-image: url('../images/silk/male.png') !important;
+.europhenome-europhenome table.europhenome-data td.male {
+	background-image: url('../images/silk/male.png') !important;
 }
 
-.europhenome-europhenome table.europhenome-data th.female {
-  background-image: url('../images/silk/female.png') !important;
+.europhenome-europhenome table.europhenome-data td.female {
+	background-image: url('../images/silk/female.png') !important;
 }
 
 .europhenome-europhenome table.europhenome-data td.pheno-result a img {
-  background-color: #fff;
-  border: 1px solid #999;
-  padding: 1px;
+	background-color: #fff;
+	border: 1px solid #999;
+	padding: 1px;
 }
 
 .qtip table.pheno-result-details {
-  background: #fff;
-  color: #535353;
-  font-size: 0.9em !important;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+	font-size: 0.9em !important;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 .qtip table.pheno-result-details th,
 .qtip table.pheno-result-details td {
-  padding: 4px;
+	padding: 3px;
+	vertical-align: middle;
 }

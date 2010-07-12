@@ -42,9 +42,7 @@ class OntologyTerm < Tree::TreeNode
   # Returns the children of this term as a tree. Will include the 
   # current term as the 'root' of the tree.
   def child_tree
-    get_children unless @already_fetched_children
-    @already_fetched_children = true
-    
+    child_check
     child_tree = self.clone
     child_tree.removeFromParent!
     child_tree
@@ -52,11 +50,22 @@ class OntologyTerm < Tree::TreeNode
   
   # Returns an array of the direct children of this term.
   def children
-    if @children.nil? or @children.empty?
-      get_children unless @already_fetched_children
-      @already_fetched_children = true
-    end
+    child_check
     super
+  end
+  
+  # Returns a flat array containing all the possible child terms
+  # for this given ontology term
+  def all_child_terms
+    get_all_child_lists
+    return @all_child_terms
+  end
+  
+  # Returns a flat array containing all the possible child term 
+  # names for this given ontology term
+  def all_child_names
+    get_all_child_lists
+    return @all_child_names
   end
   
   private
@@ -159,8 +168,36 @@ class OntologyTerm < Tree::TreeNode
     OLS_DB[sql,node.term].each do |row|
       child = OntologyTerm.new( row[:child_identifier], row[:child_term] )
       node << child
-      get_children( child )
     end
   end
   
+  # Helper function to check whether the children have already been 
+  # found or not.
+  def child_check
+    if @children.nil? or @children.empty?
+      get_children unless @already_fetched_children
+      @already_fetched_children = true
+    end
+  end
+  
+  # Helper function to produce the flat lists of all the child
+  # terms and names.
+  def get_all_child_lists
+    child_check
+    
+    if @all_child_terms.nil? and @all_child_names.nil?
+      @all_child_terms = []
+      @all_child_names = []
+      
+      self.children.each do |child|
+        @all_child_terms.push( child.term )
+        @all_child_terms.push( child.all_child_terms )
+        @all_child_names.push( child.term_name )
+        @all_child_names.push( child.all_child_names )
+      end
+      
+      @all_child_terms = @all_child_terms.flatten.uniq
+      @all_child_names = @all_child_names.flatten.uniq
+    end
+  end
 end

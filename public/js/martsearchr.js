@@ -81,16 +81,16 @@ function setup_toggles() {
   
   // Add Toggling for Project Report
   jQuery('.toggle_conditional_row').hide();
-  jQuery('.toggle_non_conditional_row').hide();
+  jQuery('.toggle_targeted_non-conditional_row').hide();
   
-  jQuery('#toggle_conditionals').click( function() {
+  jQuery('#toggle_conditional').click( function() {
       jQuery('.toggle_conditional_row').toggle();
       jQuery(this).hide();
       return false;
   });
   
-  jQuery('#toggle_non_conditionals').click( function() {
-      jQuery('.toggle_non_conditional_row').toggle();
+  jQuery('#toggle_targeted_non-conditional').click( function() {
+      jQuery('.toggle_targeted_non-conditional_row').toggle();
       jQuery(this).hide();
       return false;
   });

@@ -1,0 +1,54 @@
+<%
+  orthalog_species = [ 'human', 'rat' ]
+  ensembl_db_url   = { 'human' => 'Homo_sapiens', 'rat' => 'Rattus_norvegicus' }
+  
+  show_orthalogs = false
+
+  orthalog_species.each do |orth|
+    if result_data["mgi-markers"]["#{orth}_orthologs"].size > 0
+      show_orthalogs = true
+    end
+  end
+%>
+
+<% if show_orthalogs %>
+  <div>
+    <h6>Orthologs / Homologs</h6>
+    <table>
+      <thead>
+        <tr>
+          <th>Species</th>
+          <th>Marker Symbol</th>
+          <th>Entrez Gene ID</th>
+          <th>Ensembl Gene ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orthalog_species.each do |orth| %>
+          <% result_data["mgi-markers"]["#{orth}_orthologs"].each do |orth_data| %>
+            <tr>
+              <td><%= orth.capitalize %></td>
+              <td><%= orth_data["symbol"] %></td>
+              <td><%= link_to( orth_data["entrez_gene_id"], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data["entrez_gene_id"]}" ) %></td>
+              <% if result_data["ensembl-mouse-homologs"] %>
+                <td>
+                  <%
+                    ensembl_ids   = result_data["ensembl-mouse-homologs"]["#{orth}_ensembl_gene"]
+                    ensembl_links = []
+                    for ensembl_id in ensembl_ids
+                      ensembl_links.push( link_to( ensembl_id, "http://www.ensembl.org/#{ensembl_db_url[orth]}/contigview?gene=#{ensembl_id}" ) )
+                    end
+                  %>
+                  <%= ensembl_links.join(", ") %>
+                </td>
+              <% else %>
+                <td></td>
+                <td></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

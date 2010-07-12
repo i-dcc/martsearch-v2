@@ -1,21 +1,27 @@
-<h2>
-  <% if @marker_symbol %>
-    Adult Expression Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
-  <% else %>
-    Adult Expression Data for <%= @colony_prefix %>
-  <% end %>
-</h2>
-
-<div id="test-description">
-  <%= @test["description"] %>
-</div>
-
-<div id="test-parameter-groups">
-  <div class="test-parameter-group">
-    <% if @test["second_description"] %>
-      <p><%= @test["second_description"] %></p>
+<div id="sanger-phenotyping-report">
+  <h2>
+    <% if @marker_symbol %>
+      Adult Expression Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+    <% else %>
+      Adult Expression Data for <%= @colony_prefix %>
     <% end %>
+  </h2>
+
+  <div id="test-overview" class="test-descriptor">
+    <h4>Overview</h4>
+    <div class="test-descriptor-content">
+      <%= @test["description"] %>
+    </div>
   </div>
+
+  <% unless @test["second_description"].empty? %>
+    <div id="test-display-criteria" class="test-descriptor">
+      <h4>Display Criteria</h4>
+      <div class="test-descriptor-content">
+        <%= @test["second_description"] %>
+      </div>
+    </div>
+  <% end %>
   
   <div class="accordion">
     <h6><a href="">Ticklist</a></h6>
@@ -31,7 +37,7 @@
         <% end %>
       </ul>
     </div>
-    
+  
     <h6><a href="">Background LacZ Staining in Adult</a></h6>
     <div class="sanger-phenotyping-adult-expression-images">
       <p style="text-align:left">
@@ -60,7 +66,7 @@
       <p style="text-align:left">
         Examples of the pattern and level of background stain are presented below.
       </p>
-      
+    
       <ul class="sanger-phenotyping-adult-expression-image-list">
         <% @bg_staining_imgs.each do |img| %>
           <%= partial( "datasets/sanger-phenotyping/adult_expression_images", :locals => { :img => img, :gallery_name => "bgstain" } ) %>

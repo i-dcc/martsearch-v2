@@ -1,13 +1,13 @@
-<h2>
-  <% if @marker_symbol %>
-    Fertility Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
-  <% else %>
-    Fertility Data for <%= @colony_prefix %>
-  <% end %>
-</h2>
+<div id="sanger-phenotyping-report">
+  <h2>
+    <% if @marker_symbol %>
+      Fertility Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+    <% else %>
+      Fertility Data for <%= @colony_prefix %>
+    <% end %>
+  </h2>
 
-<div id="test-parameter-groups">
-  <div class="test-parameter-group">
+  <div class="test-descriptor">
     <table class="tablesorter" width="100%">
       <thead>
         <tr>

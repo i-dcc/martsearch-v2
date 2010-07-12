@@ -1,18 +1,13 @@
 <table class="europhenome-data-legend europhenome-data">
   <tr>
     <td class="noborder"><strong>Legend:</strong></td>
-    <td class="pheno_result no-data" width="16px"></td>
+    <td class="pheno_result no-data" width="12px"></td>
     <td class="noborder">No Raw Data</td>
     <td class="noborder"></td>
-    <td class="pheno_result not-significant" width="16px"></td>
+    <td class="pheno_result not-significant" width="12px"></td>
     <td class="noborder">No Significant Annotations</td>
-  </tr>
-  <tr>
     <td class="noborder"></td>
-    <td class="pheno_result significant"></td>
+    <td class="pheno_result significant" width="12px"></td>
     <td class="noborder">Significant Annotation Present</td>
-    <td class="noborder"></td>
-    <td class="pheno-result noborder"><a href="#"><img src="<%= BASE_URI %>/images/silk/chart_bar.png" /></a></td>
-    <td class="noborder">Link to Raw Phenotyping Data at Europhenome</td>
   </tr>
 </table>

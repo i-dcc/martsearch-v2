@@ -3,13 +3,13 @@
   "use_in_search":        true,
   "index":                true,
   "custom_sort":          true,
-  "custom_css":           false,
-  "custom_js":            false,
+  "custom_css":           true,
+  "custom_js":            true,
   "custom_view_helpers":  false,
   "custom_routes":        false,
-  "url":                  "http://htgt.internal.sanger.ac.uk:3010/biomart",
+  "url":                  "http://biomart.helmholtz-muenchen.de/biomart",
   "dataset_name":         "unitrap",
-  "display_name":         "Trapped Products",
+  "display_name":         "UniTrap Trapped Products",
   "attribution":          "UniTrap",
   "attribution_link":     "http://unitrap.cbm.fvg.it/",
   "description":          "Gene trapped mutant ES cells and vectors identified by the UniTrap resource.",
@@ -44,7 +44,7 @@
       "design_type"
     ],
     "filters": {
-      "pipeline": "Bay Genomics,EGTC,ESCells,EUCOMM,GGTC,Stanford,TIGEM,TIGM,Vanderbilt,WTSI"
+      "project": ["EGTC","EUCOMM","TIGM"]
     }
   }
 }

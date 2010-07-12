@@ -1,13 +1,13 @@
-<h2>
-  <% if @marker_symbol %>
-    Homozygote Viability Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
-  <% else %>
-    Homozygote Viability Data for <%= @colony_prefix %>
-  <% end %>
-</h2>
+<div id="sanger-phenotyping-report">
+  <h2>
+    <% if @marker_symbol %>
+      Homozygote Viability Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+    <% else %>
+      Homozygote Viability Data for <%= @colony_prefix %>
+    <% end %>
+  </h2>
 
-<div id="test-parameter-groups">
-  <div class="test-parameter-group">
+  <div class="test-descriptor">
     <table>
       <tr>
         <th># Mice</th>
@@ -31,7 +31,7 @@
           <%
             lethality_text = ""
             hom_ratio      = (@test_data["hom_ratio"].to_f * 100).round
-            
+          
             if @test_data["total_wt_het_hom"].to_i > 28
               if hom_ratio > 13
                 lethality_text = "Viable"
@@ -48,7 +48,7 @@
         </td>
       </tr>
     </table>
-    
+  
     <table class="nobg noborder" width="100%">
       <tr>
         <td width="40%" style="text-align:center; vertical-align:top;">

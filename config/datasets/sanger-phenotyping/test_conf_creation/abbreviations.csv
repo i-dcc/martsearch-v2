@@ -108,6 +108,7 @@ MGP Pipeline 1,Number of Ribs Left,x-ray-imaging,ribleft,
 MGP Pipeline 1,Number of Digits,x-ray-imaging,digit,
 MGP Pipeline 1,Polydactylism,x-ray-imaging,polydact,
 MGP Pipeline 1,Fusion of Vertebrae,x-ray-imaging,vertfusion,
+MGP Pipeline 1,Fusion of Processes,x-ray-imaging,procfusion,
 MGP Pipeline 1,Syndactylism,x-ray-imaging,syndact,
 MGP Pipeline 1,Fusion of Ribs,x-ray-imaging,ribfusion,
 MGP Pipeline 1,Digit Integrity,x-ray-imaging,digitinteg,
@@ -270,7 +271,7 @@ MGP Pipeline 2,Cataract visible using ophtalmoscope,eye-morphology,cat,
 MGP Pipeline 2,Left eye Bergmeister's papilla,eye-morphology,bergleft,
 MGP Pipeline 2,Right eye Bergmeister's papilla,eye-morphology,bergright,
 MGP Pipeline 2,Eyes Bulging,eye-morphology,bulge,or het or hom
-MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,
+MGP Pipeline 2,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 Mouse GP,Cumulative Food Intake,indirect-calorimetry,food,
 Mouse GP,Respiratory Exchange Ratio,indirect-calorimetry,rer,
 Mouse GP,VCO2,indirect-calorimetry,vco2,
@@ -457,10 +458,11 @@ Mouse GP,Number of Ribs Left,x-ray-imaging,ribleft
 Mouse GP,Number of Digits,x-ray-imaging,digit
 Mouse GP,Polydactylism,x-ray-imaging,polydact
 Mouse GP,Fusion of Vertebrae,x-ray-imaging,vertfusion
+Mouse GP,Fusion of Processes,x-ray-imaging,procfusion
 Mouse GP,Syndactylism,x-ray-imaging,syndact
 Mouse GP,Fusion of Ribs,x-ray-imaging,ribfusion
 Mouse GP,Digit Integrity,x-ray-imaging,digitinteg
-Mouse GP,Brachydactylism,x-ray-imaging,brachydact
+Mouse GP,Brachydactylism,x-ray-imaging,brachydact,
 Mouse GP,Number of Caudal Vertebrae,x-ray-imaging,caudal,
 Mouse GP,Shape of Ribcage,x-ray-imaging,ribcage,
 Mouse GP,Transitional Vertebrae,x-ray-imaging,transitionalvert,or het or hom
@@ -524,7 +526,7 @@ Mouse GP,Grip Strength All Paws Trial 2,grip-strength,allpaw2,
 Mouse GP,Grip Strength All Paws Trial 3,grip-strength,allpaw3,
 Mouse GP,Body Weight,grip-strength,bodywt,
 Mouse GP,Weight Curve,body-weight-curve-high-fat-diet,hfd,or het or hom
-Mouse GP,Images - miscellaneous 2,skin-screen,skinif,
+Mouse GP,Images - miscellaneous 2,skin-screen,skinif,or het or hom
 MGP Pipeline 1,Mean bacterial shedding,citrobacter-infection,shedding
 MGP Pipeline 1,Mean spleen counts,citrobacter-infection,citrospleen
 MGP Pipeline 1,Mean liver counts,citrobacter-infection,citroliver

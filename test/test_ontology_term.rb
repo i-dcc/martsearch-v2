@@ -20,7 +20,7 @@ class OntologyTermTest < Test::Unit::TestCase
     end
     
     should "raise appropriate errors" do
-      assert_raise(OntologyTermNotFoundError)       { OntologyTerm.new("FLIBBLE:5") }
+      assert_raise(OntologyTermNotFoundError) { OntologyTerm.new("FLIBBLE:5") }
     end
     
     should "respond correctly to the .parentage method" do
@@ -39,6 +39,18 @@ class OntologyTermTest < Test::Unit::TestCase
       assert( @ont.children.is_a?(Array), "OntologyTerm.children is not an Array when we have children." )
       assert( @ont.children[0].is_a?(OntologyTerm), "OntologyTerm.children[0] does not return an OntologyTerm tree." )
       assert_equal( 3, @ont.children.size, "OntologyTerm.children is not returning the correct number of entries (we expect 3 direct children for #{@emap_id})." )
+    end
+    
+    should "be able to generate a flat list of all child terms/names" do
+      assert( @ont.all_child_terms.is_a?(Array), "OntologyTerm.all_child_terms is not an Array." )
+      assert( @ont.all_child_terms[0].is_a?(String), "OntologyTerm.all_child_terms[0] is not an String." )
+      assert_equal( 14, @ont.all_child_terms.size, "OntologyTerm.all_child_terms is not returning the correct number of entries (we expect 14 children for #{@emap_id})." )
+      
+      assert( @ont.all_child_names.is_a?(Array), "OntologyTerm.all_child_names is not an Array." )
+      assert( @ont.all_child_names[0].is_a?(String), "OntologyTerm.all_child_names[0] is not an String." )
+      assert_equal( 14, @ont.all_child_names.size, "OntologyTerm.all_child_names is not returning the correct number of entries (we expect 14 children for #{@emap_id})." )
+      
+      assert_equal( @ont.all_child_terms.size, @ont.all_child_names.size, "OntologyTerm.all_child_terms and OntologyTerm.all_child_names do not produce an array of the same size." )
     end
     
     should "be able to locate ontology terms via synonyms" do

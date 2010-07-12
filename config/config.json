@@ -265,6 +265,7 @@
     "sanger-wholemount_expression",
     "sanger-kermits",
     "ikmc-idcc_targ_rep",
-    "sanger-bacs"
+    "sanger-bacs",
+    "ensembl-mouse-homologs"
   ]
 }

@@ -1,0 +1,39 @@
+<table>
+  <caption><%= caption %></caption>
+  <tr>
+    <th><%= first_cell_header %></th>
+    <th>Design Type</th>
+    <th>Vector Name</th>
+    <th>ES Cell Clone</th>
+    <th>ES Cell Line</th>
+    <th>ES Cell Strain</th>
+    <th>Order</th>
+  </tr>
+  <% traps.each_index do |index| %>
+    <%
+      row_class = "even"
+      row_class = "odd" if index % 2 == 0
+      trap      = traps[index]
+    %>
+    <tr class="<%= row_class %>">
+      <td><%= trap[first_cell_content]%></td>
+      <td><%= trap['design_type'] %></td>
+      <td><%= trap['vector_name'] %></td>
+      <td><%= trap['escell_clone'] %></td>
+      <td><%= trap['escell_line'] %></td>
+      <td><%= trap['escell_strain'] %></td>
+      <td>
+        <%=
+          partial(
+            "datasets/ikmc-unitrap/order_button",
+            :locals => {
+              :trap          => trap,
+              :mgi_acc_id    => mgi_acc_id,
+              :marker_symbol => marker_symbol
+            }
+          )
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>

@@ -1,71 +1,106 @@
-<div class="accordion">
-  <% result_data["ikmc-unitrap"].keys.sort.each do |unitrap_id| %>
-    <h6>
-      <a href="">
-        <%= unitrap_id %> (<%= result_data["ikmc-unitrap"][unitrap_id]["ensembl_exon_id"] %>) 
-        - 
-        <span class="header_annotation">
-          <%= result_data["ikmc-unitrap"][unitrap_id]["count"] %> 
-          <% if result_data["ikmc-unitrap"][unitrap_id]["count"] > 1 %>
-            gene traps
-          <% else %>
-            gene trap
-          <% end %>
-        </span>
-      </a>
-    </h6>
-    <div>
-      <table class="nocol noborder" width="100%" style="margin-bottom:0;">
-        <% result_data["ikmc-unitrap"][unitrap_id].keys.sort.each do |project| %>
-          <%
-            keys_to_miss = ["ensembl_exon_id","count"]
-            next if keys_to_miss.include?(project)
-          %>
-          <tr>
-            <th class="nobg" width="12%" style="text-align:center;">
-              <%= project %>
-              <%=
-                partial(
-                  "datasets/ikmc-unitrap/order_button",
-                  :locals => {
-                    :project       => project,
-                    :trap          => result_data["ikmc-unitrap"][unitrap_id][project][0],
-                    :mgi_acc_id    => result_data["index"]["mgi_accession_id_key"],
-                    :marker_symbol => result_data["index"]["marker_symbol"]
-                  }
-                )
-              %>
-            </th>
-            <td>
-              <table width="100%" class="bg" style="margin-bottom:4px;border: 1px solid #999;">
-                  <tr>
-                    <th>Design Type</th>
-                    <th>Trap Name</th>
-                    <th>Vector Name</th>
-                    <th>ES Cell Clone</th>
-                    <th>ES Cell Line</th>
-                    <th>ES Cell Strain</th>
-                  </tr>
-                <% result_data["ikmc-unitrap"][unitrap_id][project].each_index do |index| %>
-                  <%
-                    row_class = "even"
-                    row_class = "odd" if index % 2 == 0
-                    trap      = result_data["ikmc-unitrap"][unitrap_id][project][index]
-                  %>
-                  <tr class="<%= row_class %>">
-                    <td><%= trap["design_type"] %></td>
-                    <td><%= trap["trap_name"] %></td>
-                    <td><%= trap["vector_name"] %></td>
-                    <td><%= trap["escell_clone"] %></td>
-                    <td><%= trap["escell_line"] %></td>
-                    <td><%= trap["escell_strain"] %></td>
-                  </tr>
-                <% end %>
-              </table>
-            </td>
-          </tr>
+<%
+  projects = result_data['ikmc-unitrap']['project_counts_total'].keys.sort.each
+  unitraps = result_data['ikmc-unitrap']['unitrap_counts_total'].keys.sort.each
+  traps    = result_data['ikmc-unitrap']['traps']
+  traps_by = result_data['ikmc-unitrap']['traps_by']
+%>
+
+<table class="unitrap_matrix">
+  <tr>
+    <th></th>
+    <% projects.each do |project| %>
+      <th><%= project %></th>
+    <% end %>
+    <td></td>
+  </tr>
+  <% unitraps.each do |unitrap| %>
+    <tr>
+      <th><%= unitrap %></th>
+      <% projects.each do |project| %>
+        <td>
+          <%= traps[project][unitrap].is_a?(Array) ? traps[project][unitrap].size : 0 %>
+        </td>
+      <% end %>
+      <td>
+        <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 0 %>
+          <a href="#" class="unitraps_by_link" rel="<%= unitrap %>">
+            <%= result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] %>
+            <% if result_data['ikmc-unitrap']['unitrap_counts_total'][unitrap] > 1 %>
+              traps
+            <% else %>
+              trap
+            <% end %>
+          </a>
+        <% else %>
+          0 traps
         <% end %>
-      </table>
-    </div>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <% projects.each do |project| %>
+      <td>
+        <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 0 %>
+          <a href="#" class="unitraps_by_link" rel="<%= project %>">
+            <%= result_data['ikmc-unitrap']['project_counts_total'][project] %> 
+            <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 1 %>
+              traps
+            <% else %>
+              trap
+            <% end %>
+          </a>
+        <% else %>
+          0 traps
+        <% end %>
+      </td>
+    <% end %>
+    <td></td>
+  </tr>
+</table>
+
+<div class="unitraps_by">
+  <!-- Traps by project -->
+  <% projects.each do |project| %>
+    <% if traps_by[project].size > 0 %>
+      <div class="<%= project %>">
+        <%=
+          partial(
+            "datasets/ikmc-unitrap/trap_table",
+            :locals => {
+              :traps              => traps_by[project],
+              :caption            => "Traps produced by #{project}",
+              :first_cell_header  => 'UniTrap',
+              :first_cell_content => 'unitrap_accession_id',
+              :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
+              :marker_symbol      => result_data['index']['marker_symbol']
+              
+            }
+          )
+        %>
+      </div>
+    <% end %>
+  <% end %>
+  
+  <!-- Traps by UniTrap -->
+  <% unitraps.each do |unitrap| %>
+    <% if traps_by[unitrap].size > 0 %>
+      <div class="<%= unitrap %>">
+        <%=
+          partial(
+            "datasets/ikmc-unitrap/trap_table",
+            :locals => {
+              :traps              => traps_by[unitrap],
+              :caption            => "Traps clustered as #{unitrap}",
+              :first_cell_header  => 'Project',
+              :first_cell_content => 'project',
+              :mgi_acc_id         => result_data['index']['mgi_accession_id_key'],
+              :marker_symbol      => result_data['index']['marker_symbol']
+              
+            }
+          )
+        %>
+      </div>
+    <% end %>
   <% end %>
 </div>

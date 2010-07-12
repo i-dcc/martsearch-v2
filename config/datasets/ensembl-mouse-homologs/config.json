@@ -1,8 +1,8 @@
 {
   "display":              false,
-  "use_in_search":        false,
+  "use_in_search":        true,
   "index":                true,
-  "custom_sort":          false,
+  "custom_sort":          true,
   "custom_css":           false,
   "custom_js":            false,
   "custom_view_helpers":  false,
@@ -27,5 +27,20 @@
       { "attr": "rat_ensembl_gene",                  "idx": "ensembl_gene_id" },
       { "attr": "rat_homolog_ensembl_peptide",       "idx": "ensembl_peptide_id" }
     ]
+  },
+  "searching": {
+    "joined_index_field":       "ensembl_gene_id",
+    "joined_biomart_filter":    "ensembl_gene_id",
+    "joined_biomart_attribute": "ensembl_gene_id",
+    "attributes": [
+      "ensembl_gene_id",
+      "human_ensembl_gene",
+      "human_homolog_ensembl_peptide",
+      "zebrafish_ensembl_gene",
+      "zebrafish_homolog_ensembl_peptide",
+      "rat_ensembl_gene",
+      "rat_homolog_ensembl_peptide"
+    ],
+    "filters": {}
   }
 }

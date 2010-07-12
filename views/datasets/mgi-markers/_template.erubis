@@ -47,7 +47,7 @@
 </table>
 
 <div>
-  <h5 class="mgi-markers_toggle">Other IDs</h5>
+  <h5 class="mgi-markers_toggle">More Information</h5>
   <div class="mgi-markers_content">
     <table>
       <tr>
@@ -112,43 +112,8 @@
       <% end %>
     <% end %>
     
-    <%= partial( "datasets/index/gene_ontology", :locals => { :result_data => result_data } ) %>
-    <%= partial( "datasets/index/interpro",      :locals => { :result_data => result_data } ) %>
+    <%= partial( "datasets/index/gene_ontology",   :locals => { :result_data => result_data } ) %>
+    <%= partial( "datasets/index/interpro",        :locals => { :result_data => result_data } ) %>
+    <%= partial( "datasets/mgi-markers/orthalogs", :locals => { :result_data => result_data } ) %>
   </div>
 </div>
-
-<!--
-<%
-  orthalog_species = [ "human", "rat" ]
-  show_orthalogs = false
-  
-  orthalog_species.each do |orth|
-    if result_data["mgi-markers"]["#{orth}_orthologs"].size > 0
-      show_orthalogs = true
-    end
-  end
-%>
-
-<% if show_orthalogs %>
-  <div>
-    <h5 class="mgi-markers_toggle">Orthologs</h5>
-    <div class="mgi-markers_content">
-      <% orthalog_species.each do |orth| %>
-        <h6><%= orth.capitalize %></h6>
-        <table>
-          <tr>
-            <th>Marker Symbol</th>
-            <th>Entrez Gene ID</th>
-          </tr>
-          <% result_data["mgi-markers"]["#{orth}_orthologs"].each do |orth_data| %>
-            <tr>
-              <td><%= orth_data["symbol"] %></td>
-              <td><%= link_to( orth_data["entrez_gene_id"], "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=Retrieve&amp;dopt=Graphics&amp;list_uids=#{orth_data["entrez_gene_id"]}" ) %></td>
-            </tr>
-          <% end %>
-        </table>
-      <% end %>
-    </div>
-  </div>
-<% end %>
--->

@@ -1,29 +1,35 @@
-<h2>
-  <% if @marker_symbol %>
-    <%= @test["name"] %> Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
-  <% else %>
-    <%= @test["name"] %> Data for <%= @colony_prefix %>
-  <% end %>
-</h2>
-
-<div id="test-description">
-  <%= @test["description"] %>
-</div>
-
-<div id="test-parameter-groups">
-  <div class="test-parameter-group">
-    <% if @test["second_description"] %>
-      <p><%= @test["second_description"] %></p>
+<div id="sanger-phenotyping-report">
+  <h2>
+    <% if @marker_symbol %>
+      <%= @test["name"] %> Data for <%= @marker_symbol %> (<%= @colony_prefix %>)
+    <% else %>
+      <%= @test["name"] %> Data for <%= @colony_prefix %>
     <% end %>
-    
+  </h2>
+
+  <div id="test-overview" class="test-descriptor">
+    <h4>Overview</h4>
+    <div class="test-descriptor-content">
+      <%= @test["description"] %>
+    </div>
+  </div>
+
+  <% unless @test["second_description"].empty? %>
+    <div id="test-display-criteria" class="test-descriptor">
+      <h4>Display Criteria</h4>
+      <div class="test-descriptor-content">
+        <%= @test["second_description"] %>
+      </div>
+    </div>
+  <% end %>
+
+  <div id="test-images">
     <% @test["ordered_images"].each do |img| %>
       <% if @test_images[img] %>
-        <div class="pheno_result">
-          <img 
-            src="<%= "#{BASE_URI}/images/pheno_images/#{@colony_prefix}/#{@test["slug"]}/#{@test_images[img]["file"]}?v=#{PORTAL_VERSION}" %>"
-            alt="<%= @test_images[img]["desc"] %>"
-          />
-        </div>
+        <img 
+          src="<%= "#{BASE_URI}/images/pheno_images/#{@colony_prefix}/#{@test["slug"]}/#{@test_images[img]["file"]}?v=#{PORTAL_VERSION}" %>"
+          alt="<%= @test_images[img]["desc"] %>"
+        />
       <% end %>
     <% end %>
   </div>

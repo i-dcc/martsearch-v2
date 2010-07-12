@@ -4,7 +4,6 @@
     <% if @data['intermediate_vectors'] %>
       <table>
         <thead>
-          <th>Gene</th>
           <th>Design ID</th>
           <th>Design Type</th>
           <th>Intermediate Vector</th>
@@ -13,7 +12,6 @@
         <tbody>
           <% @data['intermediate_vectors'].each do |intvec| %>
             <tr>
-              <td><%= @data['marker_symbol'] %></td>
               <td><%= intvec['design_id'] %></td>
               <td><%= intvec['design_type'] %></td>
               <td><%= intvec['name'] %></td>

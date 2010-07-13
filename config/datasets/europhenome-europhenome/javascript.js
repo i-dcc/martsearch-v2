@@ -13,8 +13,12 @@ jQuery(document).ready(function() {
     });
   });
   
-  jQuery(".europhenome-europhenome table.europhenome-data th").css({ "height": "30px", "overflow": "hidden" });
-  jQuery(".europhenome-europhenome table.europhenome-data th")
-    .live( "mouseover", function() { jQuery(this).css({ "height": "184px" }); })
-    .live( "mouseout", function()  { jQuery(this).css({ "height": "30px" });  });
+  if ( ! jQuery.browser.msie ) {
+    jQuery(".europhenome-europhenome table.europhenome-data th .user_instructions").show();
+    jQuery(".europhenome-europhenome table.europhenome-data th").css({ "height": "30px", "overflow": "hidden" });
+    jQuery(".europhenome-europhenome table.europhenome-data th")
+      .live( "mouseover", function() { jQuery(this).css({ "height": "188px" }); })
+      .live( "mouseout", function()  { jQuery(this).css({ "height": "30px" });  });
+  }
+  
 });

@@ -1,24 +1,4 @@
-##
-## First cache all the possible projects from the UniTrap mart
-##
-
-# unless @@ms.cache.fetch('ikmc-unitrap-projects')
-#   projects = []
-#   results = @@ms.datasets_by_name[:"ikmc-unitrap"].dataset.search(
-#     :attributes          => ['project'],
-#     :required_attributes => ['project']
-#   )
-#   
-#   results[:data].each do |data_line|
-#     projects.push( data_line[0] )
-#   end
-#   
-#   @@ms.cache.write( 'ikmc-unitrap-projects', projects.to_json, :expires_in => 24.hours )
-# end
-# 
-# projects = JSON.parse( @@ms.cache.fetch('ikmc-unitrap-projects') )
-
-projects = @@ms.datasets_by_name[:"ikmc-unitrap"].config['searching']['filters']['project']
+projects = @@ms.datasets_by_name[:"ikmc-unitrap"].config['searching']['filters']['project'].split(',')
 
 ##
 ## Collate all of the info we need from the result data
@@ -27,6 +7,8 @@ projects = @@ms.datasets_by_name[:"ikmc-unitrap"].config['searching']['filters']
 sorted_results = {}
 
 @current_search_results.each do |result|
+  next if result['project'].nil?
+  
   unless sorted_results[ result[ @joined_biomart_attribute ] ]
     sorted_results[ result[ @joined_biomart_attribute ] ] = {
       'traps'                => {},
@@ -79,7 +61,7 @@ sorted_results.each do |result_key,result_value|
    result_value['traps'].each do |project,data_by_unitrap|
      traps.push( data_by_unitrap[unitrap] ) unless data_by_unitrap[unitrap].nil?
    end
-   traps = traps.flatten.sort{ |a,b| a['project'] <=> b['project'] }
+   traps.flatten!.sort!{ |a,b| a['project'] <=> b['project'] }
    
    result_value['traps_by'][unitrap] = traps
  end

@@ -44,6 +44,7 @@
         "vega_gene_id":                { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "ncbi_gene_id":                { "type": "tint", "indexed": true, "stored": true, "multi_valued": true },
         "ccds_id":                     { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
+        "omim_gene_disorder":          { "type": "text", "indexed": false, "stored": true, "multi_valued": true },
         "omim_id":                     { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "omim_desc":                   { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "ikmc_project":                { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
@@ -162,6 +163,7 @@
       "ikmc-dcc-gene_details",
       "ikmc-dcc-knockout_attempts",
       "mgi-markers",
+      "ikmc-idcc_targ_rep",
       "sanger-htgt_targ",
       "sanger-kermits",
       "sanger-phenotyping",
@@ -171,13 +173,13 @@
       "europhenome-europhenome",
       "emma-strains",
       "sanger-htgt_trap",
-      "ikmc-idcc_targ_rep",
       "ikmc-unitrap",
       "ensembl-mouse-homologs",
       "ensembl-mouse-interpro_features",
       "ensembl-mouse-go_bio_process",
       "ensembl-mouse-go_cell_component",
-      "ensembl-mouse-go_mol_function"
+      "ensembl-mouse-go_mol_function",
+      "ikmc-omim"
     ]
   },
   "browsable_content": {

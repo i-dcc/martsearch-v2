@@ -18,7 +18,8 @@
     "attribute_map": [
       { "attr": "mgi_accession_id", "idx": "mgi_accession_id_key", "use_to_map": true },
       { "attr": "omim_id",          "idx": "omim_id" },
-      { "attr": "disorder_name",    "idx": "omim_desc" }
+      { "attr": "disorder_name",    "idx": "omim_desc" },
+      { "attr": "title",            "idx": "ignore_me" }
     ],
     "grouped_attributes": [
       {

@@ -1,13 +1,27 @@
 <%
-  projects = result_data['ikmc-unitrap']['project_counts_total'].keys.sort.each
-  unitraps = result_data['ikmc-unitrap']['unitrap_counts_total'].keys.sort.each
+  ikmc_projects     = [ 'TIGM', 'ESCells', 'Stanford', 'EUCOMM' ]
+  non_ikmc_projects = result_data['ikmc-unitrap']['project_counts_total'].keys.sort - ikmc_projects
+  
+  projects = ikmc_projects + non_ikmc_projects
+  unitraps = result_data['ikmc-unitrap']['unitrap_counts_total'].keys.sort
   traps    = result_data['ikmc-unitrap']['traps']
   traps_by = result_data['ikmc-unitrap']['traps_by']
   
   mgi_acc_id_for_ref = result_data['index']['mgi_accession_id_key'].gsub(':','')
 %>
 
+<div class="dataset_warning">
+  Please note that the data supplied within this dataset is currently incomplete. 
+  This view is supplied for evaluation purpose only.
+</div>
+
 <table class="unitrap_matrix">
+  <tr>
+    <th></th>
+    <th colspan="<%= ikmc_projects.size %>">IKMC Projects</th>
+    <th colspan="<%= non_ikmc_projects.size %>">Non IKMC Projects</th>
+    <td></td>
+  </tr>
   <tr>
     <th></th>
     <% projects.each do |project| %>
@@ -19,8 +33,9 @@
     <tr>
       <th><%= unitrap %></th>
       <% projects.each do |project| %>
-        <td>
-          <%= traps[project][unitrap].is_a?(Array) ? traps[project][unitrap].size : 0 %>
+        <% trap_count = traps[project][unitrap].is_a?(Array) ? traps[project][unitrap].size : 0 %>
+        <td <% if trap_count == 0 %>class="zero"<% end %>>
+          <%= trap_count %>
         </td>
       <% end %>
       <td>
@@ -45,8 +60,8 @@
     <% projects.each do |project| %>
       <td>
         <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 0 %>
-          <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project ].join('-') %>
-          <a href="#<%= anchor_ref %>" class="unitraps_by_link" rel="<%= project %>">
+          <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project.gsub(' ','_') ].join('-') %>
+          <a href="#<%= anchor_ref %>" class="unitraps_by_link" rel="<%= project.gsub(' ','_') %>">
             <%= result_data['ikmc-unitrap']['project_counts_total'][project] %> 
             <% if result_data['ikmc-unitrap']['project_counts_total'][project] > 1 %>
               traps
@@ -67,8 +82,8 @@
   <!-- Traps by project -->
   <% projects.each do |project| %>
     <% if traps_by[project].size > 0 %>
-      <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project ].join('-') %>
-      <div id="<%= anchor_ref %>" class="<%= project %>">
+      <% anchor_ref = [ mgi_acc_id_for_ref, 'traps-by-project', project.gsub(' ','_') ].join('-') %>
+      <div id="<%= anchor_ref %>" class="<%= project.gsub(' ','_') %>">
         <%=
           partial(
             "datasets/ikmc-unitrap/trap_table",
@@ -95,7 +110,7 @@
           partial(
             "datasets/ikmc-unitrap/trap_table",
             :locals => {
-              :traps              => traps_by[unitrap],
+              :traps              => traps_by[unitrap].sort{ |a,b| projects.index(a['project']) <=> projects.index(b['project']) },
               :caption            => "Traps clustered as #{unitrap}",
               :first_cell_header  => 'Project',
               :first_cell_content => 'project',

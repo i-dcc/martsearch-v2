@@ -219,6 +219,19 @@ a.button:hover, a.order:hover {
 	padding-left: 20px;
 }
 
+.dataset_warning {
+  	border: 1px solid #f1f737;
+	padding: 7px 7px 7px 36px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	background: #fcf9ad url(../images/silk/exclamation.png) no-repeat 10px center;
+  	font-style: italic;
+  	color: #333;
+}
+
 /* Toggle Controls */
 
 .toggle-open, .toggle-close {

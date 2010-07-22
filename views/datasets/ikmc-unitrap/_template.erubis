@@ -1,5 +1,5 @@
 <%
-  ikmc_projects     = [ 'TIGM', 'ESCells', 'EUCOMM' ]
+  ikmc_projects     = [ 'TIGM', 'ESCells', 'Stanford', 'EUCOMM' ]
   non_ikmc_projects = result_data['ikmc-unitrap']['project_counts_total'].keys.sort - ikmc_projects
   
   projects = ikmc_projects + non_ikmc_projects
@@ -9,6 +9,11 @@
   
   mgi_acc_id_for_ref = result_data['index']['mgi_accession_id_key'].gsub(':','')
 %>
+
+<div class="dataset_warning">
+  Please note that the data supplied within this dataset is currently incomplete. 
+  This view is supplied for evaluation purpose only.
+</div>
 
 <table class="unitrap_matrix">
   <tr>

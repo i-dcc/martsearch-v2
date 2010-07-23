@@ -112,6 +112,7 @@
       <% end %>
     <% end %>
     
+    <%= partial( "datasets/mgi-markers/omim",      :locals => { :result_data => result_data } ) %>
     <%= partial( "datasets/index/gene_ontology",   :locals => { :result_data => result_data } ) %>
     <%= partial( "datasets/index/interpro",        :locals => { :result_data => result_data } ) %>
     <%= partial( "datasets/mgi-markers/orthalogs", :locals => { :result_data => result_data } ) %>

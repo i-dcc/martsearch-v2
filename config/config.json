@@ -215,7 +215,6 @@
     "ikmc-idcc_targ_rep",
     "ikmc-unitrap",
     "ikmc-dcc-other_mutants",
-    "sanger-htgt_targ",
     "sanger-kermits",
     "sanger-phenotyping",
     "sanger-wholemount_expression",
@@ -223,6 +222,7 @@
     "eurexpress-template",
     "europhenome-europhenome",
     "emma-strains",
-    "ensembl-mouse-homologs"
+    "ensembl-mouse-homologs",
+    "ikmc-omim"
   ]
 }

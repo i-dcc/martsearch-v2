@@ -1,0 +1,20 @@
+<% unless result_data['ikmc-omim'].nil? %>
+  <h6>Related Human Conditions (from OMIM)</h6>
+  <ul>
+    <% result_data['ikmc-omim'].each do |omim| %>
+      <li>
+        <%
+          display_str = omim['disorder_name']
+          
+          unless omim['disorder_omim_id'].nil?
+            display_str = link_to(
+              display_str, 
+              "http://www.ncbi.nlm.nih.gov/omim/#{omim['disorder_omim_id']}", { :target => '_blank' }
+            )
+          end
+        %>
+        <%= display_str %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

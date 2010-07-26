@@ -6,6 +6,10 @@ table.unitrap_matrix th {
   vertical-align: middle;
 }
 
+table.unitrap_matrix td.zero {
+	color: #999;
+}
+
 div.unitraps_by table caption {
   text-align: left;
   font-weight: bold;

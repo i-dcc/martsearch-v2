@@ -1,7 +1,6 @@
-<thead>
   <tr>
     <th style="vertical-align:middle;font-weight:normal;">
-      <small><em>hover to expand headers</em></small>
+      <small class="user_instructions" style="display:none;"><em>hover to expand headers</em></small>
     </th>
     <% mp_group_chunks.each do |mp_group| %>
       <th colspan="2">
@@ -29,4 +28,3 @@
       <% end %>
     <% end %>
   </tr>
-</thead>

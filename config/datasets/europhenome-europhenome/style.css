@@ -8,12 +8,13 @@
 
 .europhenome-europhenome table.europhenome-data th {
 	vertical-align:	bottom;
-	height: 184px;
+	height: 188px;
 	min-width: 32px;
 	white-space: nowrap;
 }
 
 .europhenome-europhenome table.europhenome-data .vertical_text {
+	text-align: center;
 	width: 32px;
 	margin-bottom: 10px;
 }
@@ -24,7 +25,6 @@
 
 .europhenome-europhenome table.europhenome-data td.significant {
 	background-color: #de2920;
-	cursor: pointer;
 }
 
 .europhenome-europhenome table.europhenome-data td.not-significant {
@@ -34,13 +34,14 @@
 .europhenome-europhenome table.europhenome-data td.pheno-result {
 	text-align: center;
 	vertical-align: middle;
-	padding: 0;
 }
 
-.europhenome-europhenome table.europhenome-data tr.male-female td,
+.europhenome-europhenome table.europhenome-data tr.male-female td {
+	text-align: center;
+}
+
 .europhenome-europhenome table.europhenome-data td.male,
 .europhenome-europhenome table.europhenome-data td.female {
-	text-align: center;
 	text-indent: -9999px;
 	background: #e8e8e8 none no-repeat center center;
 }
@@ -51,12 +52,6 @@
 
 .europhenome-europhenome table.europhenome-data td.female {
 	background-image: url('../images/silk/female.png') !important;
-}
-
-.europhenome-europhenome table.europhenome-data td.pheno-result a img {
-	background-color: #fff;
-	border: 1px solid #999;
-	padding: 1px;
 }
 
 .qtip table.pheno-result-details {

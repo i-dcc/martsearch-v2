@@ -10,7 +10,6 @@
       <table>
         <thead>
           <th class="hide_on_print"></th>
-          <th>Gene</th>
           <th>Design ID</th>
           <th>Design Type</th>
           <th>Targeting Vector</th>
@@ -25,7 +24,6 @@
               <td class="hide_on_print">
                 <a href="<%= order_vector_url %>" class="order" target="_blank">Order</a>
               </td>
-              <td><%= @data['marker_symbol'] %></td>
               <td><%= targvec['design_id'] %></td>
               <td><%= targvec['design_type'] %></td>
               <td><%= targvec['name'] %></td>

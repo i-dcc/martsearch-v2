@@ -39,7 +39,7 @@ require "#{MARTSEARCHR_PATH}/lib/martsearch.rb"
 # We're going to use the version number as a cache breaker 
 # for the CSS and javascript code. Update with each release 
 # of your portal (especially if you change the CSS or JS)!!!
-PORTAL_VERSION    = "0.0.13"
+PORTAL_VERSION    = "0.0.15"
 DEFAULT_CSS_FILES = [
   "reset.css",
   "jquery.prettyPhoto.css",
@@ -176,7 +176,8 @@ helpers do
   def link_to(text, link = nil, options = {})
     link ||= text
     link = url_for(link)
-    "<a href=\"#{link}\">#{text}</a>"
+    tag_options = tag_options(options, true) unless options.empty?
+    "<a href=\"#{link}\"#{tag_options}>#{text}</a>"
   end
 
   def url_for(link_options)

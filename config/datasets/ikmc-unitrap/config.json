@@ -9,10 +9,10 @@
   "custom_routes":        false,
   "url":                  "http://biomart.helmholtz-muenchen.de/biomart",
   "dataset_name":         "unitrap",
-  "display_name":         "UniTrap Trapped Products",
+  "display_name":         "IKMC Trapped Products",
   "attribution":          "UniTrap",
   "attribution_link":     "http://unitrap.cbm.fvg.it/",
-  "description":          "Gene trapped mutant ES cells and vectors identified by the UniTrap resource.",
+  "description":          "Gene trapped mutant ES cells and vectors.",
   "indexing": {
     "allow_document_creation": false,
     "attribute_map": [
@@ -28,21 +28,15 @@
     "joined_biomart_attribute": "ensembl_gene_id",
     "attributes": [
       "ensembl_gene_id",
-      "ensembl_exon_id",
       "unitrap_accession_id",
-      "genbank_id",
-      "genbank_accession",
-      "ambiguous",
       "project",
-      "trap_name",
-      "vector_name",
       "escell_clone",
       "escell_line",
       "escell_strain",
       "design_type"
     ],
     "filters": {
-      "project": ["EGTC","EUCOMM","TIGM"]
+      "project": "Bay Genomics,EGTC,ESCells,EUCOMM,FHCRC,GGTC,Lexicon,Stanford,TIGEM,TIGM,Vanderbilt,WTSI"
     }
   }
 }

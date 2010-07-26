@@ -82,6 +82,11 @@ class IndexBuilder
       
       results = @current[:biomart].search(biomart_search_params)
       
+      # require 'json'
+      # file = File.open("#{dataset_conf['internal_name']}.json","w")
+      # file.write( results.to_json )
+      # file.close
+      
       # Now loop through the results building up document structures
       unless @test_environment
         puts "  - processing #{results[:data].size} rows of Biomart results"

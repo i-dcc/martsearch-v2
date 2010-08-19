@@ -1,8 +1,8 @@
 {
   "display":              false,
-  "use_in_search":        false,
+  "use_in_search":        true,
   "index":                true,
-  "custom_sort":          false,
+  "custom_sort":          true,
   "custom_css":           false,
   "custom_js":            false,
   "custom_view_helpers":  false,
@@ -18,14 +18,21 @@
     "attribute_map": [
       { "attr": "mgi_accession_id", "idx": "mgi_accession_id_key", "use_to_map": true },
       { "attr": "omim_id",          "idx": "omim_id" },
-      { "attr": "disorder_name",    "idx": "omim_desc" }
-    ],
-    "grouped_attributes": [
-      {
-        "attrs": ["omim_id","title","disorder_name"],
-        "idx":   "omim_gene_disorder"
-      }
+      { "attr": "disorder_name",    "idx": "omim_desc" },
+      { "attr": "disorder_omim_id", "idx": "omim_id" }
     ]
   },
-  "searching": {}
+  "searching": {
+    "joined_index_field":       "mgi_accession_id_key",
+    "joined_biomart_filter":    "mgi_accession_id",
+    "joined_biomart_attribute": "mgi_accession_id",
+    "attributes": [
+      "mgi_accession_id",
+      "disorder_name",
+      "disorder_omim_id",
+      "disorder_type",
+      "tentative"
+    ],
+    "filters": {}
+  }
 }

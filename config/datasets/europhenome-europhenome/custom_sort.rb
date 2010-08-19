@@ -7,7 +7,7 @@ sorted_results = {}
 europhenome_significance_cutoff = 0.0001
 
 @current_search_results.each do |result|
-  next unless result["mgi_accession_id"] and result["europhenome_id"]
+  next unless result["mgi_accession_id"] and result["europhenome_id"] and result["significance"]
   
   if sorted_results[ result[ @joined_biomart_attribute ] ].nil?
     sorted_results[ result[ @joined_biomart_attribute ] ] = {}

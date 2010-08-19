@@ -44,7 +44,6 @@
         "vega_gene_id":                { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "ncbi_gene_id":                { "type": "tint", "indexed": true, "stored": true, "multi_valued": true },
         "ccds_id":                     { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
-        "omim_gene_disorder":          { "type": "text", "indexed": false, "stored": true, "multi_valued": true },
         "omim_id":                     { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "omim_desc":                   { "type": "text", "indexed": true, "stored": true, "multi_valued": true },
         "ikmc_project":                { "type": "textTight", "indexed": true, "stored": false, "multi_valued": true },
@@ -163,6 +162,7 @@
       "ikmc-dcc-gene_details",
       "ikmc-dcc-knockout_attempts",
       "mgi-markers",
+      "mgi-markers-microrna",
       "ikmc-idcc_targ_rep",
       "sanger-htgt_targ",
       "sanger-kermits",
@@ -219,6 +219,7 @@
     "ikmc-idcc_targ_rep",
     "ikmc-unitrap",
     "ikmc-dcc-other_mutants",
-    "ensembl-mouse-homologs"
+    "ensembl-mouse-homologs",
+    "ikmc-omim"
   ]
 }

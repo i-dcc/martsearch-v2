@@ -176,7 +176,8 @@ helpers do
   def link_to(text, link = nil, options = {})
     link ||= text
     link = url_for(link)
-    "<a href=\"#{link}\">#{text}</a>"
+    tag_options = tag_options(options, true) unless options.empty?
+    "<a href=\"#{link}\"#{tag_options}>#{text}</a>"
   end
 
   def url_for(link_options)

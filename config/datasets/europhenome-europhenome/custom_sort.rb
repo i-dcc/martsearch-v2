@@ -41,9 +41,6 @@ europhenome_significance_cutoff = 0.0001
   ## Now process and store the individual results data...
   ##
   
-  parameter_eslim_id = result["parameter_eslim_id"]
-  test_eslim_id      = parameter_eslim_id[ 0, ( parameter_eslim_id.size - 4 ) ]
-  
   # First, determine which MP group (top-level term) it belongs to
   mp_group = nil
   EUROPHENOME_MP_CONF.each do |mp_conf|
@@ -54,7 +51,11 @@ europhenome_significance_cutoff = 0.0001
       mp_group = mp_conf['term'] if mp_conf['child_terms'].include?( result['mp_term'] )
     else
       # No MP term - try to match via ESLIM ID's
-      mp_group = mp_conf['term'] if mp_conf['test_eslim_ids'].include?( test_eslim_id )
+      if result["parameter_eslim_id"] != nil
+        parameter_eslim_id = result["parameter_eslim_id"]
+        test_eslim_id      = parameter_eslim_id[ 0, ( parameter_eslim_id.size - 4 ) ]
+        mp_group           = mp_conf['term'] if mp_conf['test_eslim_ids'].include?( test_eslim_id )
+      end
     end
   end
   

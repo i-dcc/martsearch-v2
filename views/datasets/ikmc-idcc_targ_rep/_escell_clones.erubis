@@ -10,7 +10,6 @@
         <th>Design ID</th>
         <th># Conditional Clones</th>
         <th># Targeted Non-conditional Clones</th>
-        <th>Genbank File</th>
       </tr>
     </thead>
     
@@ -20,9 +19,22 @@
           <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a> 
           (<%= design_type %>)
         </td>
-        <td><%= conditional_clones.length %></td>
-        <td><%= nonconditional_clones.length %></td>
-        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
+        <td>
+          <%= conditional_clones.length %>
+          (
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/vector-image" class="image" rel="prettyPhoto">vector&nbsp;image</a>
+          )
+        </td>
+        <td>
+          <%= nonconditional_clones.length %>
+          (
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/vector-image" class="image" rel="prettyPhoto">vector&nbsp;image</a>
+          )
+        </td>
       </tr>
     </tbody>
   </table>

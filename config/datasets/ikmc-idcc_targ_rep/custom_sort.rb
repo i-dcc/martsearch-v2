@@ -24,7 +24,6 @@ sorted_results = {}
   
   unless pipeline_store[ project_key ]
     pipeline_store[ project_key ] = {
-      'allele_id'               => result['allele_id'],
       'pipeline'                => result['pipeline'],
       'mgi_accession_id'        => result['mgi_accession_id'],
       'design_id'               => result['design_id'],
@@ -53,6 +52,7 @@ sorted_results = {}
   if result['targeting_vector']
     targ_vec = {
       'ikmc_project_id'     => ikmc_project_id,
+      'allele_id'           => result['allele_id'],
       'cassette'            => result['cassette'],
       'backbone'            => result['backbone'],
       'targeting_vector'    => result['targeting_vector'],
@@ -116,8 +116,10 @@ sorted_results = {}
     # Push cells into to the right basket ('conditional' or 'nonconditional')
     if ['targeted_non_conditional', 'deletion'].include? result['mutation_subtype']
       clone_type = "nonconditional_clones"
+      project['nonconditional_allele_id'] = result['allele_id']
     else
       clone_type = "conditional_clones"
+      project['conditional_allele_id'] = result['allele_id']
     end
     
     unless project[clone_type].include? es_cell

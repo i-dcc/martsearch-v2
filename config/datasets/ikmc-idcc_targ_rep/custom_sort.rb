@@ -73,8 +73,46 @@ sorted_results = {}
       'escell_clone'              => result['escell_clone'],
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
       'parental_cell_line'        => result['parental_cell_line'],
+      'qc_count'                  => 0
     }
-  
+    
+    # Sort and store the QC metrics for the clones
+    qc_metrics = [
+      'production_qc_five_prime_screen',
+      'production_qc_loxp_screen',
+      'production_qc_three_prime_screen',
+      'production_qc_loss_of_allele',
+      'production_qc_vector_integrity',
+      'distribution_qc_karyotype_high',
+      'distribution_qc_karyotype_low',
+      'distribution_qc_copy_number',
+      'distribution_qc_five_prime_sr_pcr',
+      'distribution_qc_three_prime_sr_pcr',
+      'user_qc_southern_blot',
+      'user_qc_map_test',
+      'user_qc_karyotype',
+      'user_qc_tv_backbone_assay',
+      'user_qc_five_prime_lr_pcr',
+      'user_qc_loss_of_wt_allele',
+      'user_qc_neo_count_qpcr',
+      'user_qc_lacz_sr_pcr',
+      'user_qc_five_prime_cassette_integrity',
+      'user_qc_neo_sr_pcr',
+      'user_qc_mutant_specific_sr_pcr',
+      'user_qc_loxp_confirmation',
+      'user_qc_three_prime_lr_pcr',
+      'user_qc_comment'
+    ]
+    
+    qc_metrics.each do |metric|
+      if result[metric].nil?
+        es_cell[metric] = '-'
+      else
+        es_cell[metric]     = result[metric]
+        es_cell['qc_count'] = es_cell['qc_count'] + 1
+      end
+    end
+    
     # Push cells into to the right basket ('conditional' or 'nonconditional')
     if ['targeted_non_conditional', 'deletion'].include? result['mutation_subtype']
       clone_type = "nonconditional_clones"

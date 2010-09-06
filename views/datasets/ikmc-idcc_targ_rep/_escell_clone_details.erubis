@@ -5,7 +5,7 @@
     end
 %>
 
-<table>
+<table width="100%">
   <thead>
     <tr>
       <th>ES Cell Clone</th>
@@ -13,6 +13,7 @@
       <th>ES Cell Strain</th>
       <th>ES Cell Line</th>
       <th>Allele</th>
+      <th>QC/Screening Data</th>
     </tr>
   </thead>
   <tbody>
@@ -47,7 +48,23 @@
         </td>
         <td><%= clone["parental_cell_line"] %></td>
         <td><%= clone["allele_symbol_superscript"] %></td>
+        <td>
+          <% if clone['qc_count'] > 0 %>
+            <a class="ikmc-idcc_targ_rep_escell_qc_details_toggle">
+              view&nbsp;details
+            </a>
+          <% else %>
+            <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+          <% end %>
+        </td>
       </tr>
+      <% if clone['qc_count'] > 0 %>
+        <tr class="ikmc-idcc_targ_rep_escell_qc_details">
+          <td colspan="6">
+            <%= partial( "datasets/ikmc-idcc_targ_rep/escell_clone_qc", :locals => { :clone => clone } ) %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

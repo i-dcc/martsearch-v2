@@ -104,7 +104,10 @@
             <td style="vertical-align:middle;">
               <a href="<%= BASE_URI %>/pheno_overview.xls" title="Download the Phenotyping Overview">Download</a> 
               a heat map of phenotyping results by assay.  This spreadsheet also links to the detailed phenotyping 
-              data on this portal.
+              data on this portal.<br/><br/>
+              You can also access (and search) the same data via the 
+              <a title="Visit the MGP Phenotyping BioMart" target="_blank" href="http://www.sanger.ac.uk/htgt/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=phenotyping.default.heatmap.marker_symbol|phenotyping.default.heatmap.colony_prefix|phenotyping.default.heatmap.pipeline&FILTERS=&VISIBLEPANEL=mainpanel">
+              MGP Phenotyping BioMart</a>.
             </td>
           </tr>
           <tr>

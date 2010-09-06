@@ -139,7 +139,7 @@ end
 
 # Will query Kermits mart
 def get_mice( marker_symbol )
-  conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/sanger-kermits/config.json","r") )
+  conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/ikmc-kermits/config.json","r") )
   dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
   results = dataset.search({
     :filters => { 'marker_symbol' => marker_symbol, 'active' => '1' },

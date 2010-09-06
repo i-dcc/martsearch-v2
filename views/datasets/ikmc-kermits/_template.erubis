@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <% result_data["sanger-kermits"].each do |result| %>
+    <% result_data["ikmc-kermits"].each do |result| %>
       <tr>
         <td><%= result["allele_name"] %></td>
         <td><%= result["allele_type"] %></td>

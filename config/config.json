@@ -4,7 +4,7 @@
   "debug":       false,
   "email": {
     "to":   "team87@sanger.ac.uk",
-    "from": "martsearch@sanger.ac.uk"
+    "from": "do2@sanger.ac.uk"
   },
   "cache": {
     "type":           "file",

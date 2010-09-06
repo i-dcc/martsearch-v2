@@ -49,20 +49,21 @@
         <td><%= clone["parental_cell_line"] %></td>
         <td><%= clone["allele_symbol_superscript"] %></td>
         <td>
-          <% if clone['qc_count'] %>
+          <% if clone['qc_count'] > 0 %>
             <a class="ikmc-idcc_targ_rep_escell_qc_details_toggle">view&nbsp;data</a>
-            ( 
-              <a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank">test&nbsp;descriptions</a>
-              <% if pipeline == 'EUCOMM' %>
-                | <a href="http://www.eucomm.org/#disclaimer" target="_blank">EUCOMM disclaimer</a>
-              <% end %>
-            )
           <% else %>
             <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
           <% end %>
+          &nbsp;&nbsp;
+          ( 
+            <a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank">test&nbsp;descriptions</a>
+            <% if pipeline == 'EUCOMM' %>
+              | <a href="http://www.eucomm.org/#disclaimer" target="_blank">EUCOMM&nbsp;disclaimer</a>
+            <% end %>
+          )
         </td>
       </tr>
-      <% if clone['qc_count'] %>
+      <% if clone['qc_count'] > 0 %>
         <tr class="ikmc-idcc_targ_rep_escell_qc_details">
           <td colspan="6">
             <%= partial( "datasets/ikmc-idcc_targ_rep/escell_clone_qc", :locals => { :clone => clone } ) %>

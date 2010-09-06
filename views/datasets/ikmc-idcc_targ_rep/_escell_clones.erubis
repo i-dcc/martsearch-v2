@@ -8,8 +8,8 @@
     <thead>
       <tr>
         <th>Design ID</th>
-        <th># Conditional Clones</th>
-        <th># Targeted Non-conditional Clones</th>
+        <th># Knockout First Clones</th>
+        <th># Targeted Non-Conditional Clones</th>
       </tr>
     </thead>
     
@@ -21,6 +21,7 @@
         </td>
         <td>
           <%= conditional_clones.length %>
+          &nbsp;
           (
           <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
           <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
@@ -29,6 +30,7 @@
         </td>
         <td>
           <%= nonconditional_clones.length %>
+          &nbsp;
           (
           <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
           <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
@@ -46,7 +48,7 @@
     <div class="ikmc-idcc_targ_rep_allele_progress_clones_content" style="clear:both;margin-top:10px">
 
       <!-- Conditional Clones -->
-      <h5 style="margin-bottom:5px;">Conditional Clones</h5>
+      <h5 style="margin-bottom:5px;">ES Cell Clones With Conditional Potential</h5>
       <% unless conditional_clones.empty? %>
         <%=
           partial(
@@ -59,7 +61,7 @@
       <% end %>
       
       <!-- Non-Conditional Clones -->
-      <h5 style="margin-bottom:5px;">Targeted Non-conditional Clones</h5>
+      <h5 style="margin-bottom:5px;">ES Cell Clones Without Conditional Potential</h5>
       <% unless nonconditional_clones.empty? %>
         <%=
           partial(

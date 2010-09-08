@@ -10,6 +10,7 @@
           <th>ES Cell Clone</th>
           <th>Parental ES Cell Strain</th>
           <th>Parental ES Cell Line</th>
+          <th>Microinjection Centre</th>
           <th>Microinjection Status</th>
           <th class="noborder nocol nobg hide_on_print"></th>
         </thead>
@@ -21,6 +22,7 @@
               <td><%= mouse['escell_clone'] %></td>
               <td><%= mouse['escell_strain'] %></td>
               <td><%= mouse['escell_line'] %></td>
+              <td><%= mouse['mi_centre']%></td>
               <td><%= mouse['status']%></td>
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>

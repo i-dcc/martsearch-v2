@@ -47,6 +47,11 @@
                 <td>No</td>
               <% end %>
             </tr>
+            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
+              <td colspan="7">
+                Add the QC information that Darren is sticking onto Martsearch into the cell-view
+              </td>
+            </tr>
           <% end %>
         </tbody>
       </table>

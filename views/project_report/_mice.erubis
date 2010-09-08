@@ -29,6 +29,11 @@
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
               </td>
             </tr>
+            <tr>
+              <td colspan="8">
+                <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
+              </td>
+            </tr>
           <% end %>
         </tbody>
       </table>

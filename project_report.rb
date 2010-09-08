@@ -143,7 +143,24 @@ def get_mice( marker_symbol )
   dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
   results = dataset.search({
     :filters => { 'marker_symbol' => marker_symbol, 'active' => '1' },
-    :attributes => ['status', 'allele_name', 'escell_clone', 'escell_strain', 'escell_line', 'mi_centre'],
+    :attributes => [
+        'status',
+        'allele_name',
+        'escell_clone',
+        'escell_strain',
+        'escell_line',
+        'mi_centre',
+        'qc_five_prime_cass_integrity',
+        'qc_lacz_sr_pcr',
+        'qc_neo_sr_pcr',
+        'qc_five_prime_lr_pcr',
+        'qc_neo_count_qpcr',
+        'qc_mutant_specific_sr_pcr',
+        'qc_loxp_confirmation',
+        'qc_southern_blot',
+        'qc_tv_backbone_assay',
+        'qc_loa_qpcr'
+    ],
     :process_results => true
   })
   results.reject! { |result| result['status'].nil? }

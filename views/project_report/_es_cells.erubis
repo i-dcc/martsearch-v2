@@ -49,7 +49,7 @@
             </tr>
             <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
               <td colspan="7">
-                Add the QC information that Darren is sticking onto Martsearch into the cell-view
+                <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
               </td>
             </tr>
           <% end %>

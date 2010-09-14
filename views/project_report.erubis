@@ -43,5 +43,15 @@
   jQuery(".mouse_qc_result").hide();
   jQuery(".mouse_qc_result_toggle").addClass("toggle-open");
   jQuery(".mouse_qc_result_toggle").removeClass("toggle-close");
+
+  jQuery(".escell_clone_qc_result_toggle").live("click", function () {
+    jQuery(this).parent().parent().next("tr.escell_clone_qc_result").toggle();
+    jQuery(this).toggleClass("toggle-open");
+    jQuery(this).toggleClass("toggle-close");
+  });
+
+  jQuery(".escell_clone_qc_result").hide();
+  jQuery(".escell_clone_qc_result_toggle").addClass("toggle-open");
+  jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-close");
 </script>
 

@@ -27,6 +27,7 @@
           <th>Parental ES Cell Line</th>
           <th class="hide_on_print">Genbank File</th>
           <th>Mouse</th>
+          <th>QC Results</th>
         </thead>
         <tbody>
           <% cells.each_with_index do |cell,i| %>
@@ -46,9 +47,10 @@
               <% else %>
                 <td>No</td>
               <% end %>
+              <td><a class="escell_clone_qc_result_toggle">view data</a></td>
             </tr>
-            <tr>
-              <td colspan="7">
+            <tr class="escell_clone_qc_result">
+              <td colspan="8">
                 <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
               </td>
             </tr>

@@ -30,7 +30,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="8">
+              <td class="mouse_qc_result" colspan="8">
                 <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
               </td>
             </tr>

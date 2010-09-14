@@ -12,6 +12,7 @@
           <th>Parental ES Cell Line</th>
           <th>Microinjection Centre</th>
           <th>Microinjection Status</th>
+          <th>QC Data</th>
           <th class="noborder nocol nobg hide_on_print"></th>
         </thead>
         <tbody>
@@ -24,15 +25,14 @@
               <td><%= mouse['escell_line'] %></td>
               <td><%= mouse['mi_centre']%></td>
               <td><%= mouse['status']%></td>
+              <td><a class="mouse_qc_result_toggle">View</a></td>
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
-                </br>
-                <a class="mouse_qc_result_toggle">view data</a>
               </td>
             </tr>
             <tr class="mouse_qc_result">
-              <td colspan="8">
+              <td colspan="9">
                 <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
               </td>
             </tr>

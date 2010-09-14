@@ -27,7 +27,7 @@
           <th>Parental ES Cell Line</th>
           <th class="hide_on_print">Genbank File</th>
           <th>Mouse</th>
-          <th>QC Results</th>
+          <th>QC Data</th>
         </thead>
         <tbody>
           <% cells.each_with_index do |cell,i| %>
@@ -47,7 +47,7 @@
               <% else %>
                 <td>No</td>
               <% end %>
-              <td><a class="escell_clone_qc_result_toggle">view data</a></td>
+              <td><a class="escell_clone_qc_result_toggle">View</a></td>
             </tr>
             <tr class="escell_clone_qc_result">
               <td colspan="8">

@@ -27,10 +27,12 @@
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
+                </br>
+                <a class="mouse_qc_result_toggle toggle-open">view data</a>
               </td>
             </tr>
-            <tr>
-              <td class="mouse_qc_result" colspan="8">
+            <tr class="mouse_qc_result">
+              <td colspan="8">
                 <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
               </td>
             </tr>

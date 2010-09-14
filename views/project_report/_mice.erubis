@@ -28,7 +28,7 @@
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
                 </br>
-                <a class="mouse_qc_result_toggle toggle-open">view data</a>
+                <a class="mouse_qc_result_toggle">view data</a>
               </td>
             </tr>
             <tr class="mouse_qc_result">

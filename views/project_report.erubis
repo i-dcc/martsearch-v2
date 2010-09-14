@@ -39,5 +39,9 @@
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
   });
+
+  jQuery(".mouse_qc_result").hide();
+  jQuery(".mouse_qc_result_toggle").addClass("toggle-open");
+  jQuery(".mouse_qc_result_toggle").removeClass("toggle-close");
 </script>
 

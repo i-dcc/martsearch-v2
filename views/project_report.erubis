@@ -32,3 +32,12 @@
     <%= partial("project_report/intermediate_vectors") %>
   </div>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery(".mouse_qc_result_toggle").live("click", function () {
+    jQuery(this).parent().parent().next("tr.mouse_qc_result").toggle();
+    jQuery(this).toggleClass("toggle-open");
+    jQuery(this).toggleClass("toggle-close");
+  });
+</script>
+

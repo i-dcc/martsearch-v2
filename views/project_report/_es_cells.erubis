@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           <% cells.each_with_index do |cell,i| %>
-            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
+            <tr>
               <td class="hide_on_print">
                 <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
               </td>
@@ -47,7 +47,7 @@
                 <td>No</td>
               <% end %>
             </tr>
-            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
+            <tr>
               <td colspan="7">
                 <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
               </td>
@@ -55,12 +55,6 @@
           <% end %>
         </tbody>
       </table>
-    
-      <% if cells.length > 1 %>
-        <a href="#" id="toggle_<%= cond_vs_noncond.gsub(' ','_') %>" class="toggle-open hide_on_print">
-          Click here to see <%= cells.length - 1 %> more...
-        </a>
-      <% end %>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

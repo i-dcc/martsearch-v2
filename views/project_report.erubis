@@ -53,5 +53,11 @@
   jQuery(".escell_clone_qc_result").hide();
   jQuery(".escell_clone_qc_result_toggle").addClass("toggle-open");
   jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-close");
+
+  // Hide the rest of the escells from view
+  jQuery("tbody.escells").each( function() {
+    var escell_count = jQuery(this).children().size();
+    jQuery(this).children().slice(2, escell_count).css("background-color", "red");
+  });
 </script>
 

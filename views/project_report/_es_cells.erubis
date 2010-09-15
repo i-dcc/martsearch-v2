@@ -29,7 +29,7 @@
           <th>Mouse</th>
           <th>QC Data</th>
         </thead>
-        <tbody class="escells">
+        <tbody class="<%= cond_vs_noncond == 'conditional' ? 'conditional_escells' : 'non_conditional_escells' %>">
           <% cells.each_with_index do |cell,i| %>
             <tr>
               <td class="hide_on_print">
@@ -57,7 +57,7 @@
           <% end %>
         </tbody>
       </table>
-      <a class="escells_toggle ">View More ES Cells</a>
+      <a class="<%= cond_vs_noncond == 'conditional' ? 'conditional_escells_toggle' : 'non_conditional_escells_toggle' %>">View More ES Cells</a>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

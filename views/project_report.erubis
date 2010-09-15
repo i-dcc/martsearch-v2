@@ -55,24 +55,24 @@
   jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-close");
 
   // Hide the rest of the conditional ES cells from view
-  var conditional_escells = jQuery("a.conditional_escells_toggle").parent().children("table").children("tbody.conditional_escells").children();
+  var conditional_escells = jQuery("a.conditional_escells_toggle").parent().children("table").children("tbody.conditional_escells").children().not(".escell_clone_qc_result");
 
   jQuery("a.conditional_escells_toggle").live("click", function () {
-    conditional_escells.slice(2, conditional_escells.size()).toggle();
+    conditional_escells.slice(1, conditional_escells.size()).toggle();
   });
 
-  conditional_escells.slice(2, conditional_escells.size()).hide();
+  conditional_escells.slice(1, conditional_escells.size()).hide();
   jQuery(".conditional_escells_toggle").addClass("toggle-open");
   jQuery(".conditional_escells_toggle").removeClass("toggle-close");  
 
   // Hide the rest of the non_conditional ES cells from view
-  var non_conditional_escells = jQuery("a.non_conditional_escells_toggle").parent().children("table").children("tbody.non_conditional_escells").children();
+  var non_conditional_escells = jQuery("a.non_conditional_escells_toggle").parent().children("table").children("tbody.non_conditional_escells").children().not(".escell_clone_qc_result");
 
   jQuery("a.non_conditional_escells_toggle").live("click", function () {
-    non_conditional_escells.slice(2, non_conditional_escells.size()).toggle();
+    non_conditional_escells.slice(1, non_conditional_escells.size()).toggle();
   });
 
-  non_conditional_escells.slice(2, non_conditional_escells.size()).hide();
+  non_conditional_escells.slice(1, non_conditional_escells.size()).hide();
   jQuery(".non_conditional_escells_toggle").addClass("toggle-open");
   jQuery(".non_conditional_escells_toggle").removeClass("toggle-close");  
 </script>

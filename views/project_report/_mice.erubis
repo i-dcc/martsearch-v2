@@ -25,7 +25,7 @@
               <td><%= mouse['escell_line'] %></td>
               <td><%= mouse['mi_centre']%></td>
               <td><%= mouse['status']%></td>
-              <td><a class="mouse_qc_result_toggle">View</a></td>
+              <td><a class="mouse_qc_result_toggle">view</a></td>
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>

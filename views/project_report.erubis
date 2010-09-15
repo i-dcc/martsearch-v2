@@ -34,6 +34,7 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
+  // Mouse QC toggles
   jQuery(".mouse_qc_result_toggle").live("click", function () {
     jQuery(this).parent().parent().next("tr.mouse_qc_result").toggle();
     jQuery(this).toggleClass("toggle-open");
@@ -44,6 +45,7 @@
   jQuery(".mouse_qc_result_toggle").removeClass("toggle-open");
   jQuery(".mouse_qc_result_toggle").addClass("toggle-close");
 
+  // ES cell QC toggles
   jQuery(".escell_clone_qc_result_toggle").live("click", function () {
     jQuery(this).parent().parent().next("tr.escell_clone_qc_result").toggle();
     jQuery(this).toggleClass("toggle-open");
@@ -54,6 +56,7 @@
   jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-open");
   jQuery(".escell_clone_qc_result_toggle").addClass("toggle-close");
 
+  // ES cell "rest/tail" toggles
   jQuery("a.escells_toggle").live("click", function () {
     var rows = jQuery(this).parent().find("tbody.escells").children().not(".escell_clone_qc_result");
     rows.slice(1, rows.size()).toggle();
@@ -61,7 +64,6 @@
     jQuery(this).toggleClass("toggle-close");
   });
 
-  // Hide the rest of the ES cells from view
   jQuery("tbody.escells").each( function () {
     var rows = jQuery(this).children().not(".escell_clone_qc_result");
     rows.slice(1, rows.size()).hide();

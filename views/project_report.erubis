@@ -41,8 +41,8 @@
   });
 
   jQuery(".mouse_qc_result").hide();
-  jQuery(".mouse_qc_result_toggle").addClass("toggle-open");
-  jQuery(".mouse_qc_result_toggle").removeClass("toggle-close");
+  jQuery(".mouse_qc_result_toggle").removeClass("toggle-open");
+  jQuery(".mouse_qc_result_toggle").addClass("toggle-close");
 
   jQuery(".escell_clone_qc_result_toggle").live("click", function () {
     jQuery(this).parent().parent().next("tr.escell_clone_qc_result").toggle();
@@ -51,12 +51,14 @@
   });
 
   jQuery(".escell_clone_qc_result").hide();
-  jQuery(".escell_clone_qc_result_toggle").addClass("toggle-open");
-  jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-close");
+  jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-open");
+  jQuery(".escell_clone_qc_result_toggle").addClass("toggle-close");
 
   jQuery("a.escells_toggle").live("click", function () {
     var rows = jQuery(this).parent().find("tbody.escells").children().not(".escell_clone_qc_result");
     rows.slice(1, rows.size()).toggle();
+    jQuery(this).toggleClass("toggle-open");
+    jQuery(this).toggleClass("toggle-close");
   });
 
   // Hide the rest of the ES cells from view
@@ -65,7 +67,7 @@
     rows.slice(1, rows.size()).hide();
   });
 
-  jQuery(".escells_toggle").addClass("toggle-open");
-  jQuery(".escells_toggle").removeClass("toggle-close");  
+  jQuery(".escells_toggle").addClass("toggle-close");
+  jQuery(".escells_toggle").removeClass("toggle-open");  
 </script>
 

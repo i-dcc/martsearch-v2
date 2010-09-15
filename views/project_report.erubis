@@ -54,10 +54,15 @@
   jQuery(".escell_clone_qc_result_toggle").addClass("toggle-open");
   jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-close");
 
-  // Hide the rest of the escells from view
-  jQuery("tbody.escells").each( function() {
-    var escell_count = jQuery(this).children().size();
-    jQuery(this).children().slice(2, escell_count).css("background-color", "red");
+  // Hide the rest of the conditional ES cells from view
+  var conditional_escells = jQuery("a.conditional_escells_toggle").parent().children("table").children("tbody.conditional_escells").children();
+
+  jQuery("a.conditional_escells_toggle").live("click", function () {
+    conditional_escells.slice(2, conditional_escells.size()).toggle();
   });
+
+  conditional_escells.slice(2, conditional_escells.size()).hide();
+  jQuery(".conditional_escells_toggle").addClass("toggle-open");
+  jQuery(".conditional_escells_toggle").removeClass("toggle-close");  
 </script>
 

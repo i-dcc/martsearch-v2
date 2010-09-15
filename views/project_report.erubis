@@ -64,5 +64,16 @@
   conditional_escells.slice(2, conditional_escells.size()).hide();
   jQuery(".conditional_escells_toggle").addClass("toggle-open");
   jQuery(".conditional_escells_toggle").removeClass("toggle-close");  
+
+  // Hide the rest of the non_conditional ES cells from view
+  var non_conditional_escells = jQuery("a.non_conditional_escells_toggle").parent().children("table").children("tbody.non_conditional_escells").children();
+
+  jQuery("a.non_conditional_escells_toggle").live("click", function () {
+    non_conditional_escells.slice(2, non_conditional_escells.size()).toggle();
+  });
+
+  non_conditional_escells.slice(2, non_conditional_escells.size()).hide();
+  jQuery(".non_conditional_escells_toggle").addClass("toggle-open");
+  jQuery(".non_conditional_escells_toggle").removeClass("toggle-close");  
 </script>
 

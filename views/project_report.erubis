@@ -58,8 +58,12 @@
 
   // ES cell "rest/tail" toggles
   jQuery("a.escells_toggle").live("click", function () {
-    var rows = jQuery(this).parent().find("tbody.escells").children().not(".escell_clone_qc_result");
-    rows.slice(1, rows.size()).toggle();
+    var rows    = jQuery(this).parent().find("tbody.escells").children().not(".escell_clone_qc_result").slice(1);
+    var qc_rows = jQuery(this).parent().find("tbody.escells .escell_clone_qc_result");
+    
+    if ( rows.first().is(":visible") ) { qc_rows.hide(); rows.hide(); }
+    else                               { rows.show(); }
+    
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
   });

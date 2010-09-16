@@ -101,9 +101,21 @@ def get_vectors_and_cells( project_id )
      ].flatten,
     :process_results => true
   })
-  
+
+  # Test for QC data - set each empty qc_metric to '-' or count it
+  results.each do |result|
+    result['qc_count'] = 0
+    qc_metrics.each do |metric|
+      if result[metric].nil?
+        result[metric] = '-'
+      else
+        result['qc_count'] = result['qc_count'] + 1
+      end
+    end
+  end
+
   data = {}
-  
+
   results.each do |result|
     if data.empty?
       data.update(
@@ -146,18 +158,24 @@ def get_vectors_and_cells( project_id )
     
     # ES Cells
     next if result['escell_clone'].nil? or result['escell_clone'].empty?
-    
+
     push_to = 'targeted non-conditional'
     push_to = 'conditional' if result['mutation_subtype'] == 'conditional_ready'
-    
+
+    # Prepare the QC data
+    qc_data = {}
+    qc_metrics.each do |metric|
+      qc_data[metric] = result[metric]
+    end
+
     data['es_cells'][push_to]['allele_img'] = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
     data['es_cells'][push_to]['allele_gb']  = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
-    data['es_cells'][push_to]['cells'].push(
+    data['es_cells'][push_to]['cells'].push({
       'name'                      => result['escell_clone'],
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
       'parental_cell_line'        => result['parental_cell_line'],
       'targeting_vector'          => result['targeting_vector']
-    )
+    }.merge(qc_data) )
   end
   
   unless data.empty?

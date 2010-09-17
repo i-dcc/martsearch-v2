@@ -55,12 +55,7 @@
             <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
           <% end %>
           &nbsp;&nbsp;
-          ( 
-            <a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank">test&nbsp;descriptions</a>
-            <% if pipeline == 'EUCOMM' %>
-              | <a href="http://www.eucomm.org/#disclaimer" target="_blank">EUCOMM&nbsp;disclaimer</a>
-            <% end %>
-          )
+          ( <a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank" class="ext_link">about</a> )
         </td>
       </tr>
       <% if clone['qc_count'] > 0 %>

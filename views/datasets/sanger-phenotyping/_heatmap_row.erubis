@@ -1,8 +1,8 @@
 <%
   # See if there is a joined kermits entry
   related_kermits_entry = nil
-  if result["colony_prefix"] && result_data["sanger-kermits"]
-    result_data["sanger-kermits"].each do |kerm|
+  if result["colony_prefix"] && result_data["ikmc-kermits"]
+    result_data["ikmc-kermits"].each do |kerm|
       if kerm["colony_prefix"] === result["colony_prefix"]
         related_kermits_entry = kerm
       end

@@ -16,14 +16,19 @@
       
         <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
           <!-- Links -->
+          <%
+            ensembl_gene_id = project['ensembl_gene_id']
+            if ensembl_gene_id.nil? and result_data['mgi-markers'] != nil
+              ensembl_gene_id = result_data['mgi-markers']['ensembl_gene_ids'].first()
+            end
+          %>
           <%=
             partial(
               "datasets/ikmc-idcc_targ_rep/links",
               :locals => {
                 :pipeline        => project['pipeline'],
-                :allele_id       => project['allele_id'],
                 :ikmc_project_id => project['ikmc_project_id'],
-                :ensembl_gene_id => project['ensembl_gene_id']
+                :ensembl_gene_id => ensembl_gene_id
               }
             )
           %>
@@ -33,12 +38,13 @@
             partial(
               "datasets/ikmc-idcc_targ_rep/escell_clones",
               :locals => {
-                :allele_id             => project['allele_id'],
-                :design_id             => project['design_id'],
-                :design_type           => project['design_type'],
-                :pipeline              => project['pipeline'],
-                :conditional_clones    => project['conditional_clones'],
-                :nonconditional_clones => project['nonconditional_clones']
+                :design_id                => project['design_id'],
+                :design_type              => project['design_type'],
+                :pipeline                 => project['pipeline'],
+                :conditional_clones       => project['conditional_clones'],
+                :conditional_allele_id    => project['conditional_allele_id'],
+                :nonconditional_clones    => project['nonconditional_clones'],
+                :nonconditional_allele_id => project['nonconditional_allele_id']
               }
             )
           %>
@@ -50,7 +56,6 @@
               partial(
                 "datasets/ikmc-idcc_targ_rep/targeting_vectors",
                 :locals => {
-                  :allele_id         => project['allele_id'],
                   :pipeline          => project['pipeline'],
                   :targeting_vectors => project['targeting_vectors']
                 }

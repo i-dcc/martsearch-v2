@@ -27,10 +27,11 @@
           <th>Parental ES Cell Line</th>
           <th class="hide_on_print">Genbank File</th>
           <th>Mouse</th>
+          <th>QC Data</th>
         </thead>
-        <tbody>
+        <tbody class="escells">
           <% cells.each_with_index do |cell,i| %>
-            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
+            <tr>
               <td class="hide_on_print">
                 <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
               </td>
@@ -39,23 +40,24 @@
               <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
               <td><%= cell['parental_cell_line'] %></td>
               <td class="hide_on_print">
-                <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
+                <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">view</a>
               </td>
               <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
                 <td>Yes</td>
               <% else %>
                 <td>No</td>
               <% end %>
+              <td><a class="escell_clone_qc_result_toggle">view</a></td>
+            </tr>
+            <tr class="escell_clone_qc_result">
+              <td colspan="8">
+                <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
+              </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-    
-      <% if cells.length > 1 %>
-        <a href="#" id="toggle_<%= cond_vs_noncond.gsub(' ','_') %>" class="toggle-open hide_on_print">
-          Click here to see <%= cells.length - 1 %> more...
-        </a>
-      <% end %>
+      <a class="escells_toggle">show/hide more ES cells</a>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

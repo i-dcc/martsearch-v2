@@ -7,7 +7,7 @@ sorted_results = {}
 europhenome_significance_cutoff = 0.0001
 
 @current_search_results.each do |result|
-  next unless result["mgi_accession_id"] and result["europhenome_id"]
+  next unless result["mgi_accession_id"] and result["europhenome_id"] and result["significance"]
   
   if sorted_results[ result[ @joined_biomart_attribute ] ].nil?
     sorted_results[ result[ @joined_biomart_attribute ] ] = {}
@@ -42,7 +42,11 @@ europhenome_significance_cutoff = 0.0001
   ##
   
   parameter_eslim_id = result["parameter_eslim_id"]
-  test_eslim_id      = parameter_eslim_id[ 0, ( parameter_eslim_id.size - 4 ) ]
+  test_eslim_id      = nil
+  
+  unless parameter_eslim_id.nil?
+    test_eslim_id = parameter_eslim_id[ 0, ( parameter_eslim_id.size - 4 ) ]
+  end
   
   # First, determine which MP group (top-level term) it belongs to
   mp_group = nil
@@ -54,7 +58,9 @@ europhenome_significance_cutoff = 0.0001
       mp_group = mp_conf['term'] if mp_conf['child_terms'].include?( result['mp_term'] )
     else
       # No MP term - try to match via ESLIM ID's
-      mp_group = mp_conf['term'] if mp_conf['test_eslim_ids'].include?( test_eslim_id )
+      if test_eslim_id != nil
+        mp_group = mp_conf['term'] if mp_conf['test_eslim_ids'].include?( test_eslim_id )
+      end
     end
   end
   

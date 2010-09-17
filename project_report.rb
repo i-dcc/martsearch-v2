@@ -56,21 +56,66 @@ end
 
 # Will query IDCC targ rep mart
 def get_vectors_and_cells( project_id )
-  conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/ikmc-idcc_targ_rep/config.json","r") )
-  dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+  conf       = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/ikmc-idcc_targ_rep/config.json","r") )
+  dataset    = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+  qc_metrics = [
+      'production_qc_five_prime_screen',
+      'production_qc_loxp_screen',
+      'production_qc_three_prime_screen',
+      'production_qc_loss_of_allele',
+      'production_qc_vector_integrity',
+      'distribution_qc_karyotype_high',
+      'distribution_qc_karyotype_low',
+      'distribution_qc_copy_number',
+      'distribution_qc_five_prime_sr_pcr',
+      'distribution_qc_three_prime_sr_pcr',
+      'user_qc_southern_blot',
+      'user_qc_map_test',
+      'user_qc_karyotype',
+      'user_qc_tv_backbone_assay',
+      'user_qc_five_prime_lr_pcr',
+      'user_qc_loss_of_wt_allele',
+      'user_qc_neo_count_qpcr',
+      'user_qc_lacz_sr_pcr',
+      'user_qc_five_prime_cassette_integrity',
+      'user_qc_neo_sr_pcr',
+      'user_qc_mutant_specific_sr_pcr',
+      'user_qc_loxp_confirmation',
+      'user_qc_three_prime_lr_pcr'
+  ]
   results = dataset.search({
     :filters => { 'ikmc_project_id' => project_id },
     :attributes => [
-      'allele_id', 'design_id', 'mutation_subtype',
-      'cassette', 'backbone', 'targeting_vector', 'intermediate_vector',
-      'allele_symbol_superscript', 'escell_clone', 'parental_cell_line',
-      'floxed_start_exon'
-    ],
+      'allele_id',
+      'design_id',
+      'mutation_subtype',
+      'cassette',
+      'backbone',
+      'intermediate_vector',
+      'targeting_vector',
+      'allele_symbol_superscript',
+      'escell_clone',
+      'floxed_start_exon',
+      'parental_cell_line',
+      qc_metrics
+     ].flatten,
     :process_results => true
   })
-  
+
+  # Test for QC data - set each empty qc_metric to '-' or count it
+  results.each do |result|
+    result['qc_count'] = 0
+    qc_metrics.each do |metric|
+      if result[metric].nil?
+        result[metric] = '-'
+      else
+        result['qc_count'] = result['qc_count'] + 1
+      end
+    end
+  end
+
   data = {}
-  
+
   results.each do |result|
     if data.empty?
       data.update(
@@ -113,18 +158,24 @@ def get_vectors_and_cells( project_id )
     
     # ES Cells
     next if result['escell_clone'].nil? or result['escell_clone'].empty?
-    
+
     push_to = 'targeted non-conditional'
     push_to = 'conditional' if result['mutation_subtype'] == 'conditional_ready'
-    
+
+    # Prepare the QC data
+    qc_data = {}
+    qc_metrics.each do |metric|
+      qc_data[metric] = result[metric]
+    end
+
     data['es_cells'][push_to]['allele_img'] = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
     data['es_cells'][push_to]['allele_gb']  = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
-    data['es_cells'][push_to]['cells'].push(
+    data['es_cells'][push_to]['cells'].push({
       'name'                      => result['escell_clone'],
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
       'parental_cell_line'        => result['parental_cell_line'],
       'targeting_vector'          => result['targeting_vector']
-    )
+    }.merge(qc_data) )
   end
   
   unless data.empty?
@@ -139,15 +190,49 @@ end
 
 # Will query Kermits mart
 def get_mice( marker_symbol )
-  conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/sanger-kermits/config.json","r") )
-  dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+  conf       = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/ikmc-kermits/config.json","r") )
+  dataset    = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+  qc_metrics = [
+        'qc_southern_blot',
+        'qc_tv_backbone_assay',
+        'qc_five_prime_lr_pcr',
+        'qc_loa_qpcr',
+        'qc_homozygous_loa_sr_pcr',
+        'qc_neo_count_qpcr',
+        'qc_lacz_sr_pcr',
+        'qc_five_prime_cass_integrity',
+        'qc_neo_sr_pcr',
+        'qc_mutant_specific_sr_pcr',
+        'qc_loxp_confirmation',
+        'qc_three_prime_lr_pcr'
+  ]
   results = dataset.search({
     :filters => { 'marker_symbol' => marker_symbol, 'active' => '1' },
-    :attributes => ['status', 'allele_name', 'escell_clone', 'escell_strain', 'escell_line'],
+    :attributes => [
+        'status',
+        'allele_name',
+        'escell_clone',
+        'escell_strain',
+        'escell_line',
+        'mi_centre',
+        qc_metrics
+    ].flatten,
     :process_results => true
   })
   results.reject! { |result| result['status'].nil? }
-  
+
+  # Test for QC data - set each empty qc_metric to '-' or count it
+  results.each do |result|
+    result['qc_count'] = 0
+    qc_metrics.each do |metric|
+      if result[metric].nil?
+        result[metric] = '-'
+      else
+        result['qc_count'] = result['qc_count'] + 1
+      end
+    end
+  end
+
   results.empty? ? {} : { 'mice' => results }
 end
 

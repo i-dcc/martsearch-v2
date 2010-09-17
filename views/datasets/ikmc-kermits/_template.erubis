@@ -1,4 +1,4 @@
-<table>
+<table width="100%">
   <thead>
     <tr>
       <th>Allele Name</th>
@@ -6,11 +6,12 @@
       <th>Colony Prefix</th>
       <th>ES Cell Clone Name</th>
       <th>Genetic Background</th>
-      <th class="nobg noborder"></th>
+      <th>QC/Screening Data</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <% result_data["sanger-kermits"].each do |result| %>
+    <% result_data["ikmc-kermits"].each do |result| %>
       <tr>
         <td><%= result["allele_name"] %></td>
         <td><%= result["allele_type"] %></td>
@@ -25,7 +26,21 @@
           %>
           <%= genetic_background.join(';') %>
         </td>
-        <td class="nobg noborder">
+        <td>
+          <% if result['qc_count'] > 0 %>
+            <a class="ikmc-kermits_qc_details_toggle">view&nbsp;data</a>
+          <% else %>
+            <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+          <% end %>
+          <br />
+          ( 
+            <a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank">test&nbsp;descriptions</a>
+            <% if result["sponsor"] == 'EUCOMM' %>
+              | <a href="http://www.eucomm.org/#disclaimer" target="_blank">EUCOMM&nbsp;disclaimer</a>
+            <% end %>
+          )
+        </td>
+        <td>
           <% if result["emma"] === "1" %>
             <%
               link = nil
@@ -45,6 +60,13 @@
           <% end %>
         </td>
       </tr>
+      <% if result['qc_count'] > 0 %>
+        <tr class="ikmc-kermits_qc_details">
+          <td colspan="7">
+            <%= partial('ikmc-kermits/qc_data', :locals => { :result => result }) %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

@@ -16,13 +16,19 @@
       
         <div class="ikmc-idcc_targ_rep_allele_progress_details_content">
           <!-- Links -->
+          <%
+            ensembl_gene_id = project['ensembl_gene_id']
+            if ensembl_gene_id.nil? and result_data['mgi-markers'] != nil
+              ensembl_gene_id = result_data['mgi-markers']['ensembl_gene_ids'].first()
+            end
+          %>
           <%=
             partial(
               "datasets/ikmc-idcc_targ_rep/links",
               :locals => {
                 :pipeline        => project['pipeline'],
                 :ikmc_project_id => project['ikmc_project_id'],
-                :ensembl_gene_id => project['ensembl_gene_id']
+                :ensembl_gene_id => ensembl_gene_id
               }
             )
           %>

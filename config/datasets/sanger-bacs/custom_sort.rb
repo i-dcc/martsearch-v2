@@ -15,8 +15,7 @@ sorted_results = {}
       "min_left"     => -1,
       "max_right"    => -1,
       "max_left"     => -1,
-      "min_right"    => -1,
-      "ensembl_link" => nil
+      "min_right"    => -1
     }
   end
   
@@ -55,46 +54,14 @@ sorted_results.each do |key,data|
   data["max_left"]  = data["max_left"]  - 10000
   data["min_right"] = data["min_right"] + 10000
   
-  tracks_to_change = {
-    "contig"                                          => "normal",
-    "ruler"                                           => "normal",
-    "scalebar"                                        => "normal",
-    "transcript_core_ensembl"                         => "compact",
-    "transcript_vega_otter"                           => "off",
-    "alignment_compara_364_constrained"               => "off",
-    "das:http://das.sanger.ac.uk/das/ens_m37_129AB22" => "normal",
-    "das:http://das.sanger.ac.uk/das/ens_m37_micer"   => "normal",
-    "das:http://das.sanger.ac.uk/das/ens_m37_bacmap"  => "normal",
-    "alignment_compara_364_scores"                    => "off",
-    "chr_band_core"                                   => "off",
-    "dna_align_cdna_cDNA_update"                      => "off",
-    "dna_align_core_CCDS"                             => "off",
-    "fg_regulatory_features_funcgen"                  => "off",
-    "fg_regulatory_features_legend"                   => "off",
-    "gene_legend"                                     => "off",
-    "gc_plot"                                         => "off",
-    "info"                                            => "off",
-    "missing"                                         => "off",
-    "transcript_core_ncRNA"                           => "off",
-    "transcript_core_ensembl_IG_gene"                 => "off",
-    "variation_legend"                                => "off"
-  }
-
-  settings = [];
-  tracks_to_change.each do |track,setting|
-    settings.push("#{track}=#{setting}")
-  end
-
-  ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
-  ensembl_link += "?r=#{data["chr"]}:#{data["max_left"]}-#{data["min_right"]};"
-  ensembl_link += "contigviewbottom=#{settings.join(",")}"
-  
   # Remove un-needed data from the sorted_results hash
   sorted_results_to_return[key] = {
+    "chr"          => data["chr"],
+    "start_pos"    => data["max_left"],
+    "end_pos"      => data["min_right"],
     "s7_count"     => data["s7_count"],
     "b6_count"     => data["b6_count"],
-    "micer_count"  => data["micer_count"],
-    "ensembl_link" => ensembl_link
+    "micer_count"  => data["micer_count"]
   }
 end
 

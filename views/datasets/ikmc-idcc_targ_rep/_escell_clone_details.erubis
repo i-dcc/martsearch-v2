@@ -55,7 +55,7 @@
             <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
           <% end %>
           &nbsp;&nbsp;
-          ( <a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank" class="ext_link">about</a> )
+          (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank" class="ext_link">about</a>&nbsp;)
         </td>
       </tr>
       <% if clone['qc_count'] > 0 %>

@@ -33,12 +33,7 @@
             <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
           <% end %>
           <br />
-          ( 
-            <a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank">test&nbsp;descriptions</a>
-            <% if result["sponsor"] == 'EUCOMM' %>
-              | <a href="http://www.eucomm.org/#disclaimer" target="_blank">EUCOMM&nbsp;disclaimer</a>
-            <% end %>
-          )
+          (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank" class="ext_link">about</a>&nbsp;)
         </td>
         <td>
           <% if result["emma"] === "1" %>

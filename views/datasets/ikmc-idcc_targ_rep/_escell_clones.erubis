@@ -8,9 +8,8 @@
     <thead>
       <tr>
         <th>Design ID</th>
-        <th># Conditional Clones</th>
-        <th># Targeted Non-conditional Clones</th>
-        <th>Genbank File</th>
+        <th># Knockout First Clones</th>
+        <th># Targeted Non-Conditional Clones</th>
       </tr>
     </thead>
     
@@ -20,9 +19,24 @@
           <a href="http://www.sanger.ac.uk/htgt/design/designedit/refresh_design?design_id=<%= design_id %>"><%= design_id %></a> 
           (<%= design_type %>)
         </td>
-        <td><%= conditional_clones.length %></td>
-        <td><%= nonconditional_clones.length %></td>
-        <td><a href="http://www.i-dcc.org/targ_rep/alleles/<%= allele_id %>/escell-clone-genbank-file" class="file ext_link">view</a></td>
+        <td>
+          <%= conditional_clones.length %>
+          &nbsp;
+          (
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= conditional_allele_id %>/vector-image" class="image" rel="prettyPhoto">vector&nbsp;image</a>
+          )
+        </td>
+        <td>
+          <%= nonconditional_clones.length %>
+          &nbsp;
+          (
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/escell-clone-genbank-file" class="file">genbank&nbsp;file</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/allele-image" class="image" rel="prettyPhoto">allele&nbsp;image</a> | 
+          <a href="http://www.i-dcc.org/targ_rep/alleles/<%= nonconditional_allele_id %>/vector-image" class="image" rel="prettyPhoto">vector&nbsp;image</a>
+          )
+        </td>
       </tr>
     </tbody>
   </table>
@@ -32,45 +46,33 @@
     <div><a class="ikmc-idcc_targ_rep_allele_progress_clones_toggle">view all available ES cell clones</a></div>
     <div class="clear"></div>
     <div class="ikmc-idcc_targ_rep_allele_progress_clones_content" style="clear:both;margin-top:10px">
-      <table>
-        <tr>
-          
-          <!-- Conditional Clones -->
-          
-          <td width="50%" class="noborder">
-            <h5>Conditional Clones</h5>
-            
-            <% unless conditional_clones.empty? %>
-              <%=
-                partial(
-                  "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-                  :locals => { :pipeline => pipeline, :clones => conditional_clones }
-                )
-              %>
-            <% else %>
-              <em>No clones available.</em>
-            <% end %>
-          </td>
-          
-          <!-- Non-Conditional Clones -->
-          
-          <td width="50%" class="noborder">
-            <h5>Targeted Non-conditional Clones</h5>
-            
-            <% unless nonconditional_clones.empty? %>
-              <%=
-                partial(
-                  "datasets/ikmc-idcc_targ_rep/escell_clone_details",
-                  :locals => { :pipeline => pipeline, :clones => nonconditional_clones }
-                )
-              %>
-            <% else %>
-              <em>No clones available.</em>
-            <% end %>
-          </td>
-          
-        </tr>
-      </table>
+
+      <!-- Conditional Clones -->
+      <h5 style="margin-bottom:5px;">ES Cell Clones With Conditional Potential</h5>
+      <% unless conditional_clones.empty? %>
+        <%=
+          partial(
+            "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+            :locals => { :pipeline => pipeline, :clones => conditional_clones }
+          )
+        %>
+      <% else %>
+        <p><em>No clones available.</em></p>
+      <% end %>
+      
+      <!-- Non-Conditional Clones -->
+      <h5 style="margin-bottom:5px;">ES Cell Clones Without Conditional Potential</h5>
+      <% unless nonconditional_clones.empty? %>
+        <%=
+          partial(
+            "datasets/ikmc-idcc_targ_rep/escell_clone_details",
+            :locals => { :pipeline => pipeline, :clones => nonconditional_clones }
+          )
+        %>
+      <% else %>
+        <p><em>No clones available.</em></p>
+      <% end %>
+      
     </div>
   </div>
 <% else %>

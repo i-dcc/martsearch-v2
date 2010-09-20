@@ -79,22 +79,6 @@ function setup_toggles() {
     return false;
   });
   
-  // Add Toggling for Project Report
-  jQuery('.toggle_conditional_row').hide();
-  jQuery('.toggle_targeted_non-conditional_row').hide();
-  
-  jQuery('#toggle_conditional').click( function() {
-      jQuery('.toggle_conditional_row').toggle();
-      jQuery(this).hide();
-      return false;
-  });
-  
-  jQuery('#toggle_targeted_non-conditional').click( function() {
-      jQuery('.toggle_targeted_non-conditional_row').toggle();
-      jQuery(this).hide();
-      return false;
-  });
-  
   // Add Toggling for error messages
   jQuery(".error_msg_toggle").live("click", function() {
     jQuery(this).parent().parent().find(".error_msg_content").slideToggle("fast");

@@ -1,0 +1,34 @@
+<table width="100%" style="margin-bottom:5px;">
+  <tr>
+    <th width="20%">Southern Blot</th>
+    <td><%= result['qc_southern_blot'] %></td>
+    <th width="20%">TV Backbone Assay</th>
+    <td><%= result['qc_tv_backbone_assay'] %></td>
+    <th width="20%">5' LR-PCR</th>
+    <td><%= result['qc_five_prime_lr_pcr'] %></td>
+  </tr>
+  <tr>
+    <th>Loss of WT Allele (LOA) qPCR</th>
+    <td><%= result['qc_loa_qpcr'] %></td>
+    <th>Homozygous Loss of WT Allele (LOA) SR-PCR</th>
+    <td><%= result['qc_homozygous_loa_sr_pcr'] %></td>
+    <th>Neo Count (qPCR)</th>
+    <td><%= result['qc_neo_count_qpcr'] %></td>
+  </tr>
+  <tr>
+    <th>LacZ SR-PCR</th>
+    <td><%= result['qc_lacz_sr_pcr'] %></td>
+    <th>5' Cassette Integrity</th>
+    <td><%= result['qc_five_prime_cass_integrity'] %></td>
+    <th>Neo SR-PCR</th>
+    <td><%= result['qc_neo_sr_pcr'] %></td>
+  </tr>
+  <tr>
+    <th>Mutant Specific SR-PCR</th>
+    <td><%= result['qc_mutant_specific_sr_pcr'] %></td>
+    <th>LoxP Confirmation</th>
+    <td><%= result['qc_loxp_confirmation'] %></td>
+    <th>3' LR-PCR</th>
+    <td><%= result['qc_three_prime_lr_pcr'] %></td>
+  </tr>
+</table>

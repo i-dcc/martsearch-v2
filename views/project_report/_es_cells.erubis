@@ -4,7 +4,7 @@
   <h4 class="dataset_title toggle-open">ES Cell Clones (<%= cond_vs_noncond.titlecase %>)</h4>
   <div class="dataset_content">
     <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
-      <%- cells = @data['es_cells'][cond_vs_noncond]['cells'].sort_by { |cell| cell['name'] } -%>
+      <%- cells = @data['es_cells'][cond_vs_noncond]['cells'] -%>
       
       <img src="<%= @data['es_cells'][cond_vs_noncond]['allele_img'] %>" width="940px" />
       <div class="clear"></div>
@@ -27,35 +27,43 @@
           <th>Parental ES Cell Line</th>
           <th class="hide_on_print">Genbank File</th>
           <th>Mouse</th>
+          <th>QC Data</th>
         </thead>
-        <tbody>
-          <% cells.each_with_index do |cell,i| %>
-            <tr class="<% unless i == 0 %>toggle_<%= cond_vs_noncond.gsub(' ','_') %>_row<% end %>">
+        <tbody class="escells">
+          <% cells.each do |cell| %>
+            <tr>
               <td class="hide_on_print">
-                <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                <a href="<%= order_cell_url %>" class="order" target="_blank">order</a>
               </td>
               <td><%= cell['name'] %></td>
               <td><%= cell['targeting_vector'] %></td>
               <td><%= @data['marker_symbol'] %><sup><%= cell['allele_symbol_superscript'] %></sup></td>
               <td><%= cell['parental_cell_line'] %></td>
               <td class="hide_on_print">
-                <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">View</a>
+                <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">view</a>
               </td>
-              <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
-                <td>Yes</td>
-              <% else %>
-                <td>No</td>
-              <% end %>
+              <td><%= cell['mouse?'] %></td>
+              <td>
+                <% if cell['qc_count'] > 0 %>
+                  <a class="escell_clone_qc_result_toggle">view</a>
+                <% else %>
+                  <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+                <% end %>
+                &nbsp;&nbsp;
+                (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank" class="ext_link">about</a>&nbsp;)
+              </td>
             </tr>
+            <% if cell['qc_count'] > 0 %>
+              <tr class="escell_clone_qc_result">
+                <td colspan="8">
+                  <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>
-    
-      <% if cells.length > 1 %>
-        <a href="#" id="toggle_<%= cond_vs_noncond.gsub(' ','_') %>" class="toggle-open hide_on_print">
-          Click here to see <%= cells.length - 1 %> more...
-        </a>
-      <% end %>
+      <a class="escells_toggle">show/hide more ES cells</a>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

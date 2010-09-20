@@ -1,0 +1,84 @@
+<table width="100%">
+  <caption>Production Centre</caption>
+  <tr>
+    <th width="20%">5' Screen</th>
+    <td><%= clone['production_qc_five_prime_screen'] %></td>
+    <th width="20%">LoxP Screen</th>
+    <td><%= clone['production_qc_loxp_screen'] %></td>
+    <th width="20%">3' Screen</th>
+    <td><%= clone['production_qc_three_prime_screen'] %></td>
+  </tr>
+  <tr>
+    <th>Loss of WT Allele (LOA)</th>
+    <td><%= clone['production_qc_loss_of_allele'] %></td>
+    <th>Vector Integrity</th>
+    <td><%= clone['production_qc_vector_integrity'] %></td>
+    <td colspan="2" class="noborder nocol"></td>
+  </tr>
+</table>
+
+<table width="100%">
+  <caption>Distribution Centre</caption>
+  <tr>
+    <th width="20%">Karyotype</th>
+    <td>
+      <% if clone['distribution_qc_karyotype_high'] != '-' and clone['distribution_qc_karyotype_low'] != '-' %>
+        <%= clone['distribution_qc_karyotype_high'] %> - <%= clone['distribution_qc_karyotype_low'] %>
+      <% else %>
+        -
+      <% end %>
+    </td>
+    <th width="20%">Copy Number</th>
+    <td><%= clone['distribution_qc_copy_number'] %></td>
+    <td width="20%" class="noborder nocol"></td>
+    <td class="noborder nocol"></td>
+  </tr>
+  <tr>
+    <th>5' SR-PCR</th>
+    <td><%= clone['distribution_qc_five_prime_sr_pcr'] %></td>
+    <th>3' SR-PCR</th>
+    <td><%= clone['distribution_qc_three_prime_sr_pcr'] %></td>
+    <td colspan="2" class="noborder nocol"></td>
+  </tr>
+</table>
+
+<table width="100%">
+  <caption>User/Mouse Clinic</caption>
+  <tr>
+    <th width="20%">Southern Blot</th>
+    <td><%= clone['user_qc_southern_blot'] %></td>
+    <th width="20%">Map Test</th>
+    <td><%= clone['user_qc_map_test'] %></td>
+    <th width="20%">Karyotype</th>
+    <td><%= clone['user_qc_karyotype'] %></td>
+  </tr>
+  <tr>
+    <th>TV Backbone Assay</th>
+    <td><%= clone['user_qc_tv_backbone_assay'] %></td>
+    <th>5' LR-PCR</th>
+    <td><%= clone['user_qc_five_prime_lr_pcr'] %></td>
+    <th>Loss of WT Allele (LOA)</th>
+    <td><%= clone['user_qc_loss_of_wt_allele'] %></td>
+  </tr>
+  <tr>
+    <th>Neo Count (qPCR)</th>
+    <td><%= clone['user_qc_neo_count_qpcr'] %></td>
+    <th>LacZ SR-PCR</th>
+    <td><%= clone['user_qc_lacz_sr_pcr'] %></td>
+    <th>5' Cassette Integrity</th>
+    <td><%= clone['user_qc_five_prime_cassette_integrity'] %></td>
+  </tr>
+  <tr>
+    <th>Neo SR-PCR</th>
+    <td><%= clone['user_qc_neo_sr_pcr'] %></td>
+    <th>Mutant Specific SR-PCR</th>
+    <td><%= clone['user_qc_mutant_specific_sr_pcr'] %></td>
+    <th>LoxP Confirmation</th>
+    <td><%= clone['user_qc_loxp_confirmation'] %></td>
+  </tr>
+  <tr>
+    <th>3' LR-PCR</th>
+    <td><%= clone['user_qc_three_prime_lr_pcr'] %></td>
+    <td colspan="4" class="noborder nocol"></td>
+  </tr>
+</table>

@@ -10,7 +10,9 @@
           <th>ES Cell Clone</th>
           <th>Parental ES Cell Strain</th>
           <th>Parental ES Cell Line</th>
+          <th>Microinjection Centre</th>
           <th>Microinjection Status</th>
+          <th>QC Data</th>
           <th class="noborder nocol nobg hide_on_print"></th>
         </thead>
         <tbody>
@@ -21,12 +23,29 @@
               <td><%= mouse['escell_clone'] %></td>
               <td><%= mouse['escell_strain'] %></td>
               <td><%= mouse['escell_line'] %></td>
+              <td><%= mouse['mi_centre']%></td>
               <td><%= mouse['status']%></td>
+              <td>
+                <% if mouse['qc_count'] > 0 %>
+                  <a class="mouse_qc_result_toggle">view</a>
+                <% else %>
+                  <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+                <% end %>
+                <br />
+                (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank" class="ext_link">about</a>&nbsp;)
+              </td>
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
               </td>
             </tr>
+            <% if mouse['qc_count'] > 0 %>
+              <tr class="mouse_qc_result">
+                <td colspan="9">
+                  <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>

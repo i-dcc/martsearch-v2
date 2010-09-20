@@ -168,7 +168,12 @@ def get_vectors_and_cells( project_id, mouse_data )
         qc_data['qc_count'] = qc_data['qc_count'] + 1
       end
     end
-
+    
+    do_i_have_a_mouse = 'no'
+    unless mouse_data.nil?
+      do_i_have_a_mouse = 'yes' if mouse_data.any?{ |mouse| mouse['escell_clone'] == result['escell_clone'] }
+    end
+    
     data['es_cells'][push_to]['allele_img'] = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/allele-image"
     data['es_cells'][push_to]['allele_gb']  = "#{conf['attribution_link']}targ_rep/alleles/#{result['allele_id']}/escell-clone-genbank-file"
     data['es_cells'][push_to]['cells'].push({
@@ -176,7 +181,7 @@ def get_vectors_and_cells( project_id, mouse_data )
       'allele_symbol_superscript' => result['allele_symbol_superscript'],
       'parental_cell_line'        => result['parental_cell_line'],
       'targeting_vector'          => result['targeting_vector'],
-      'mouse?'                    => mouse_data.any?{ |mouse| mouse['escell_clone'] == result['escell_clone'] } ? 'yes' : 'no'
+      'mouse?'                    => do_i_have_a_mouse
     }.merge(qc_data) )
   end
   

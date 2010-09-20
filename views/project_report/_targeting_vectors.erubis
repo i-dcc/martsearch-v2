@@ -22,7 +22,7 @@
           <% @data['targeting_vectors'].each do |targvec| %>
             <tr>
               <td class="hide_on_print">
-                <a href="<%= order_vector_url %>" class="order" target="_blank">Order</a>
+                <a href="<%= order_vector_url %>" class="order" target="_blank">order</a>
               </td>
               <td><%= targvec['design_id'] %></td>
               <td><%= targvec['design_type'] %></td>

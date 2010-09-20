@@ -25,17 +25,27 @@
               <td><%= mouse['escell_line'] %></td>
               <td><%= mouse['mi_centre']%></td>
               <td><%= mouse['status']%></td>
-              <td><a class="mouse_qc_result_toggle">view</a></td>
+              <td>
+                <% if mouse['qc_count'] > 0 %>
+                  <a class="mouse_qc_result_toggle">view</a>
+                <% else %>
+                  <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+                <% end %>
+                <br />
+                (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank" class="ext_link">about</a>&nbsp;)
+              </td>
               <td class="nobg noborder hide_on_print">
                 <% order_url = @data.include?('order_mouse_url') ? @data['order_mouse_url'] : @data['order_default_url'] %>
                 <a href="<%= order_url %>" class="order" target="_blank">register&nbsp;interest</a>
               </td>
             </tr>
-            <tr class="mouse_qc_result">
-              <td colspan="9">
-                <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
-              </td>
-            </tr>
+            <% if mouse['qc_count'] > 0 %>
+              <tr class="mouse_qc_result">
+                <td colspan="9">
+                  <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => mouse }) %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>

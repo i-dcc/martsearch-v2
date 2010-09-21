@@ -220,8 +220,8 @@ helpers do
     end
   end
   
-  def standard_ensembl_tracks
-    {
+  def process_ensembl_tracks( additional_tracks=[] )
+    standard_tracks = {
       "contig"                            => "normal",
       "ruler"                             => "normal",
       "scalebar"                          => "normal",
@@ -242,30 +242,35 @@ helpers do
       "transcript_core_ensembl_IG_gene"   => "off",
       "variation_legend"                  => "off"
     }
-  end
-  
-  def ensembl_link_url_from_gene( gene, das_tracks=[] )
-    settings = standard_ensembl_tracks.collect { |key,value| "#{key}=#{value}" }
-    das_tracks.each do |track|
+    settings = standard_tracks.collect { |key,value| "#{key}=#{value}" }
+    
+    additional_tracks.each do |track|
       settings.unshift("#{track}=normal")
     end
     
+    return settings.join(",")
+  end
+  
+  def ensembl_human_link_url_from_gene( gene, das_tracks=[] )
+    ensembl_link = "http://www.ensembl.org/Homo_sapiens/Location/View"
+    ensembl_link += "?g=#{gene};"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
+    
+    return ensembl_link
+  end
+  
+  def ensembl_link_url_from_gene( gene, das_tracks=[] )
     ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
     ensembl_link += "?g=#{gene};"
-    ensembl_link += "contigviewbottom=#{settings.join(",")}"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
     
     return ensembl_link
   end
   
   def ensembl_link_url_from_coords( chr, start_pos, end_pos, das_tracks=[] )
-    settings = standard_ensembl_tracks.collect { |key,value| "#{key}=#{value}" }
-    das_tracks.each do |track|
-      settings.unshift("#{track}=normal")
-    end
-    
     ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
     ensembl_link += "?r=#{chr}:#{start_pos}-#{end_pos};"
-    ensembl_link += "contigviewbottom=#{settings.join(",")}"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
     
     return ensembl_link
   end

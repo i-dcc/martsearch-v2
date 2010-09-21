@@ -14,6 +14,7 @@
         @data = nil
       else
         @data.update( common_data )
+        @data.update( get_human_homolog( @data['ensembl_gene_id'] ) ) if @data['ensembl_gene_id']
         @data.update( get_mice(@data['marker_symbol']) ) if @data['marker_symbol']
         @data.update( get_vectors_and_cells( project_id, @data['mice'] ) )
         @data.update( order_buttons_url(@data) )
@@ -52,6 +53,19 @@ def get_common_data( project_id )
   })
   
   return results[0]
+end
+
+def get_human_homolog( ensembl_gene_id )
+  conf    = JSON.load( File.new("#{File.dirname(__FILE__)}/config/datasets/ensembl-mouse-homologs/config.json","r") )
+  dataset = Biomart::Dataset.new( conf['url'], { :name => conf['dataset_name'] } )
+  results = dataset.search({
+    :filters             => { 'ensembl_gene_id' => ensembl_gene_id },
+    :attributes          => [ 'human_ensembl_gene' ],
+    :process_results     => true,
+    :required_attributes => [ 'human_ensembl_gene' ]
+  })
+  
+  results.empty? ? {} : { 'human_ensembl_gene' => results[0]['human_ensembl_gene'] }
 end
 
 # Will query IDCC targ rep mart

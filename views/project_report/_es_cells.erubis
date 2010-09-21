@@ -18,6 +18,17 @@
         </p>
       <% end %>
       
+      <% unless @data['ensembl_gene_id'].nil? and @data['human_ensembl_gene'].nil? %>
+        <div style="margin-bottom:7px;">
+          <% unless @data['ensembl_gene_id'].nil? %>
+            <a href="<%= ensembl_link_url_from_gene( @data['ensembl_gene_id'], ['das:http://das.sanger.ac.uk/das/ikmc_products'] ) %>" class="ensembl_link" target="_blank">view in ensembl (mouse)</a> 
+          <% end %>
+          <% unless @data['human_ensembl_gene'].nil? %>
+            <a href="<%= ensembl_human_link_url_from_gene( @data['human_ensembl_gene'], ['das:http://das.sanger.ac.uk/das/mouse_KOs'] ) %>" class="ensembl_link" target="_blank">view in ensembl (human)</a>
+          <% end %>
+        </div>
+      <% end %>
+      
       <table>
         <thead>
           <th class="hide_on_print"></th>

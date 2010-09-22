@@ -33,7 +33,7 @@
             <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
           <% end %>
           <br />
-          (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/87/" target="_blank" class="ext_link">about</a>&nbsp;)
+          (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/90/" target="_blank" class="ext_link">about</a>&nbsp;)
         </td>
         <td>
           <% if result["emma"] === "1" %>

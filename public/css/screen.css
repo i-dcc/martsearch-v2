@@ -129,6 +129,11 @@ a.ext_link {
 	padding: 2px 0 2px 16px;
 }
 
+a.ensembl_link {
+  background: url(../images/ensembl_link.gif) no-repeat left center;
+	padding: 4px 0 4px 24px;
+}
+
 a.feed {
 	background: url(../images/feed.png) no-repeat left center;
 	padding: 4px 2px 4px 20px;
@@ -234,7 +239,7 @@ a.button:hover, a.order:hover {
 
 /* Toggle Controls */
 
-.toggle-open, .toggle-close {
+.toggle-open, .toggle-close, .toggle-up {
 	background: url(../images/silk/bullet_arrow_down.png) no-repeat 0 center;
 	padding-left: 16px;
 	padding-top: 2px;
@@ -242,10 +247,14 @@ a.button:hover, a.order:hover {
 }
 
 .toggle-close {
+	background: url(../images/silk/bullet_arrow_right.png) no-repeat 0 center;
+}
+
+.toggle-up {
 	background: url(../images/silk/bullet_arrow_up.png) no-repeat 0 center;
 }
 
-.toggle-open:hover, .toggle-close:hover {
+.toggle-open:hover, .toggle-close:hover, .toggle-up:hover {
 	cursor: pointer;
 }
 
@@ -617,6 +626,16 @@ table.welcome table.noborder td {
 table.welcome table#summary_statistics,
 table.welcome table#summary_statistics th {
 	text-align: center;
+}
+
+ul.ensembl_link_list {
+  list-style-type: none;
+  text-align: center;
+}
+
+ul.ensembl_link_list li {
+  display: inline-block;
+  margin: 0 5px;
 }
 
 /* jQuery UI Overrides */

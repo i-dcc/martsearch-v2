@@ -34,46 +34,35 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
-  // Mouse QC toggles
-  jQuery(".mouse_qc_result_toggle").live("click", function () {
-    jQuery(this).parent().parent().next("tr.mouse_qc_result").toggle();
+  // QC results toggles
+  jQuery(".qc_results_toggle").live("click", function () {
+    jQuery(this).parent().parent().next(".qc_results").toggle();
     jQuery(this).toggleClass("toggle-open");
     jQuery(this).toggleClass("toggle-close");
   });
-
-  jQuery(".mouse_qc_result").hide();
-  jQuery(".mouse_qc_result_toggle").removeClass("toggle-open");
-  jQuery(".mouse_qc_result_toggle").addClass("toggle-close");
-
-  // ES cell QC toggles
-  jQuery(".escell_clone_qc_result_toggle").live("click", function () {
-    jQuery(this).parent().parent().next("tr.escell_clone_qc_result").toggle();
-    jQuery(this).toggleClass("toggle-open");
-    jQuery(this).toggleClass("toggle-close");
-  });
-
-  jQuery(".escell_clone_qc_result").hide();
-  jQuery(".escell_clone_qc_result_toggle").removeClass("toggle-open");
-  jQuery(".escell_clone_qc_result_toggle").addClass("toggle-close");
-
-  // ES cell "rest/tail" toggles
-  jQuery("a.escells_toggle").live("click", function () {
-    var rows    = jQuery(this).parent().find("tbody.escells").children().not(".escell_clone_qc_result").slice(1);
-    var qc_rows = jQuery(this).parent().find("tbody.escells .escell_clone_qc_result");
+  
+  jQuery(".qc_results").hide();
+  jQuery(".qc_results_toggle").removeClass("toggle-open");
+  jQuery(".qc_results_toggle").addClass("toggle-close");
+  
+  // Products toggles
+  jQuery("a.products_toggle").live("click", function () {
+    var rows    = jQuery(this).parent().find("tbody.products").children().not(".qc_results").slice(1);
+    var qc_rows = jQuery(this).parent().find("tbody.products .qc_results");
     
     if ( rows.first().is(":visible") ) { qc_rows.hide(); rows.hide(); }
     else                               { rows.show(); }
     
-    jQuery(this).toggleClass("toggle-open");
+    jQuery(this).toggleClass("toggle-up");
     jQuery(this).toggleClass("toggle-close");
   });
 
-  jQuery("tbody.escells").each( function () {
-    var rows = jQuery(this).children().not(".escell_clone_qc_result");
+  jQuery("tbody.products").each( function () {
+    var rows = jQuery(this).children().not(".qc_results");
     rows.slice(1, rows.size()).hide();
   });
 
-  jQuery(".escells_toggle").addClass("toggle-close");
-  jQuery(".escells_toggle").removeClass("toggle-open");  
+  jQuery(".products_toggle").addClass("toggle-close");
+  jQuery(".products_toggle").removeClass("toggle-up");  
 </script>
 

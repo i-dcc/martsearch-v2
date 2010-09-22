@@ -1,3 +1,15 @@
+<%
+  data = result_data['sanger-bacs']
+  
+  # EnsEMBL link...
+  das_tracks = [
+    'das:http://das.sanger.ac.uk/das/ens_m37_129AB22',
+    'das:http://das.sanger.ac.uk/das/ens_m36_micer',
+    'das:http://das.sanger.ac.uk/das/ens_m37_bacmap',
+    'das:http://das.sanger.ac.uk/das/ikmc_products'
+  ]
+  ensembl_link_url = ensembl_link_url_from_coords( data['chr'], data['start_pos'], data['end_pos'], das_tracks )
+%>
 <table>
   <thead>
     <tr>
@@ -10,26 +22,25 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= result_data["sanger-bacs"]["b6_count"] %></td>
-      <td><%= result_data["sanger-bacs"]["s7_count"] %></td>
-      <td><%= result_data["sanger-bacs"]["micer_count"] %></td>
+      <td><%= data['b6_count'] %></td>
+      <td><%= data['s7_count'] %></td>
+      <td><%= data['micer_count'] %></td>
       <td>
         <%
           targ_vect_count = 0
-          project         = {}
-          if result_data["sanger-htgt_targ"]
-            project = result_data["sanger-htgt_targ"][0]
-            result_data["sanger-htgt_targ"].each do |project|
-              if project["targeting_vectors"]
-                targ_vect_count += project["targeting_vectors"].size
+          unless result_data['ikmc-idcc_targ_rep'].nil?
+            result_data['ikmc-idcc_targ_rep'].each do |project|
+              if project['targeting_vectors'] and ( project['pipeline'] == 'EUCOMM' or project['pipeline'] == 'KOMP-CSD' )
+                targ_vect_count += project['targeting_vectors'].size
               end
             end
           end
         %>
-        <%= targ_vect_count %>&nbsp;&nbsp;
-        <%= partial( "datasets/sanger-htgt_targ/order_button", :locals => { :project => project, :order_type => 'vector' } ) %>
+        <%= targ_vect_count %>
       </td>
-      <td><a href="<%= result_data["sanger-bacs"]["ensembl_link"] %>" class="external-link">link</a></td>
+      <td>
+        <a href="<%= ensembl_link_url %>" target="_blank" class="ext_link">link</a>
+      </td>
     </tr>
   </tbody>
 </table>

@@ -7,6 +7,8 @@
       <img src="<%= @data['vector_image'] %>" width="940px" />
       <div class="clear"></div>
       
+      <%= partial("project_report/ensembl_links") %>
+      
       <table>
         <thead>
           <th class="hide_on_print"></th>
@@ -18,7 +20,7 @@
           <th>Backbone</th>
           <th class="hide_on_print">Genbank File</th>
         </thead>
-        <tbody>
+        <tbody class="products">
           <% @data['targeting_vectors'].each do |targvec| %>
             <tr>
               <td class="hide_on_print">
@@ -37,6 +39,9 @@
           <% end %>
         </tbody>
       </table>
+      <% if @data['targeting_vectors'].size > 1 %>
+        <a class="products_toggle">show/hide more targeting vectors</a>
+      <% end %>
     <% else %>
       <em>No distributable targeting vector available for this project.</em>
     <% end %>

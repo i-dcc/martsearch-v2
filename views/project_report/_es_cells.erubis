@@ -18,6 +18,8 @@
         </p>
       <% end %>
       
+      <%= partial("project_report/ensembl_links") %>
+      
       <table>
         <thead>
           <th class="hide_on_print"></th>
@@ -29,7 +31,7 @@
           <th>Mouse</th>
           <th>QC Data</th>
         </thead>
-        <tbody class="escells">
+        <tbody class="products">
           <% cells.each do |cell| %>
             <tr>
               <td class="hide_on_print">
@@ -45,7 +47,7 @@
               <td><%= cell['mouse?'] %></td>
               <td>
                 <% if cell['qc_count'] > 0 %>
-                  <a class="escell_clone_qc_result_toggle">view</a>
+                  <a class="qc_results_toggle">view</a>
                 <% else %>
                   <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
                 <% end %>
@@ -54,7 +56,7 @@
               </td>
             </tr>
             <% if cell['qc_count'] > 0 %>
-              <tr class="escell_clone_qc_result">
+              <tr class="qc_results">
                 <td colspan="8">
                   <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
                 </td>
@@ -63,7 +65,9 @@
           <% end %>
         </tbody>
       </table>
-      <a class="escells_toggle">show/hide more ES cells</a>
+      <% if cells.size > 1 %>
+        <a class="products_toggle">show/hide more ES cells</a>
+      <% end %>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

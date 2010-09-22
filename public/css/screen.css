@@ -633,6 +633,16 @@ table.welcome table#summary_statistics th {
 	text-align: center;
 }
 
+ul.ensembl_link_list {
+  list-style-type: none;
+  text-align: center;
+}
+
+ul.ensembl_link_list li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
 /* WTSI Header Customizations */
  
 #wrapper {

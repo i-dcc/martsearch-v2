@@ -136,7 +136,7 @@
   <ul class="larger ensembl_link_list">
     <li><a href="<%= ensembl_link_url_from_coords( 5, 151365628, 151394454, ['das:http://das.sanger.ac.uk/das/ikmc_products'] ) %>" class="ensembl_link" target="_blank">IKMC alleles in Ensembl Mouse</a></li>
     <li><a href="<%= ensembl_link_url_from_coords( 5, 151375042, 151385041, ['das:http://das.sanger.ac.uk/das/ens_m37_129AB22','das:http://das.sanger.ac.uk/das/ens_m36_micer','das:http://das.sanger.ac.uk/das/ens_m37_bacmap'] ) %>" class="ensembl_link" target="_blank">Sanger DNA products in Ensembl Mouse</a></li>
-    <li><a href="<%= ensembl_human_link_url_from_coords( 17, 46063149, 46263148, ['das:http://das.sanger.ac.uk/das/mouse_KOs'] ) %>" class="ensembl_link" target="_blank">IKMC alleles on homologous genes in Ensembl Human</a></li>
+    <li><a href="<%= ensembl_human_link_url_from_coords( 17, 46063149, 46263148, ['das:http://das.sanger.ac.uk/das/mouse_KOs'] ) %>" class="ensembl_link" target="_blank">IKMC alleles on orthologous genes in Ensembl Human</a></li>
   </ul>
   
   <hr />

@@ -246,7 +246,7 @@ a.button:hover, a.order:hover {
 }
 
 .toggle-close {
-	background: url(../images/silk/bullet_arrow_up.png) no-repeat 0 center;
+	background: url(../images/silk/bullet_arrow_right.png) no-repeat 0 center;
 }
 
 .toggle-open:hover, .toggle-close:hover {

@@ -238,7 +238,7 @@ a.button:hover, a.order:hover {
 
 /* Toggle Controls */
 
-.toggle-open, .toggle-close {
+.toggle-open, .toggle-close, .toggle-up {
 	background: url(../images/silk/bullet_arrow_down.png) no-repeat 0 center;
 	padding-left: 16px;
 	padding-top: 2px;
@@ -249,7 +249,11 @@ a.button:hover, a.order:hover {
 	background: url(../images/silk/bullet_arrow_right.png) no-repeat 0 center;
 }
 
-.toggle-open:hover, .toggle-close:hover {
+.toggle-up {
+	background: url(../images/silk/bullet_arrow_up.png) no-repeat 0 center;
+}
+
+.toggle-open:hover, .toggle-close:hover, .toggle-up:hover {
 	cursor: pointer;
 }
 

@@ -53,7 +53,7 @@
     if ( rows.first().is(":visible") ) { qc_rows.hide(); rows.hide(); }
     else                               { rows.show(); }
     
-    jQuery(this).toggleClass("toggle-open");
+    jQuery(this).toggleClass("toggle-up");
     jQuery(this).toggleClass("toggle-close");
   });
 
@@ -63,6 +63,6 @@
   });
 
   jQuery(".products_toggle").addClass("toggle-close");
-  jQuery(".products_toggle").removeClass("toggle-open");  
+  jQuery(".products_toggle").removeClass("toggle-up");  
 </script>
 

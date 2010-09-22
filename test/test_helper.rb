@@ -4,11 +4,14 @@ require "cgi"
 require "yaml"
 
 require "rubygems"
+
+gem "activesupport", "=2.3.8"
+require 'active_support'
+
 require "erubis"
 require "json"
 require "rdiscount"
 require "mail"
-require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"

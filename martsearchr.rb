@@ -259,6 +259,14 @@ helpers do
     return ensembl_link
   end
   
+  def ensembl_human_link_url_from_coords( chr, start_pos, end_pos, das_tracks=[] )
+    ensembl_link = "http://www.ensembl.org/Homo_sapiens/Location/View"
+    ensembl_link += "?r=#{chr}:#{start_pos}-#{end_pos};"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
+    
+    return ensembl_link
+  end
+  
   def ensembl_link_url_from_gene( gene, das_tracks=[] )
     ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
     ensembl_link += "?g=#{gene};"

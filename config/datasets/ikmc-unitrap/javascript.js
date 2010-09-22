@@ -16,4 +16,9 @@ jQuery(document).ready(function() {
     return false;
   });
   
+  // Temp Add-in for viv...
+  jQuery(".ikmc-unitrap").hide();
+  var header = jQuery(".ikmc-unitrap").parent().find(".dataset_title");
+  header.removeClass("toggle-open");
+  header.addClass("toggle-close");
 });

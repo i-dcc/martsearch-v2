@@ -5,13 +5,15 @@ require "net/http"
 require "cgi"
 
 require "rubygems"
-require "sinatra"
+
+gem "activesupport", "=2.3.8"
+require 'active_support'
+
 require "erubis"
 require "newrelic_rpm"
 require "json"
 require "rdiscount"
 require "mail"
-require "active_support"
 require "will_paginate/collection"
 require "will_paginate/view_helpers"
 require "rack/utils"
@@ -217,6 +219,61 @@ helpers do
         link_options
       end
     end
+  end
+  
+  def process_ensembl_tracks( additional_tracks=[] )
+    standard_tracks = {
+      "contig"                            => "normal",
+      "ruler"                             => "normal",
+      "scalebar"                          => "normal",
+      "transcript_core_ensembl"           => "transcript_label",
+      "transcript_vega_otter"             => "transcript_label",
+      "alignment_compara_364_constrained" => "compact",
+      "alignment_compara_364_scores"      => "off",
+      "chr_band_core"                     => "off",
+      "dna_align_cdna_cDNA_update"        => "off",
+      "dna_align_core_CCDS"               => "off",
+      "fg_regulatory_features_funcgen"    => "off",
+      "fg_regulatory_features_legend"     => "off",
+      "gene_legend"                       => "off",
+      "gc_plot"                           => "off",
+      "info"                              => "off",
+      "missing"                           => "off",
+      "transcript_core_ncRNA"             => "off",
+      "transcript_core_ensembl_IG_gene"   => "off",
+      "variation_legend"                  => "off"
+    }
+    settings = standard_tracks.collect { |key,value| "#{key}=#{value}" }
+    
+    additional_tracks.each do |track|
+      settings.unshift("#{track}=normal")
+    end
+    
+    return settings.join(",")
+  end
+  
+  def ensembl_human_link_url_from_gene( gene, das_tracks=[] )
+    ensembl_link = "http://www.ensembl.org/Homo_sapiens/Location/View"
+    ensembl_link += "?g=#{gene};"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
+    
+    return ensembl_link
+  end
+  
+  def ensembl_link_url_from_gene( gene, das_tracks=[] )
+    ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
+    ensembl_link += "?g=#{gene};"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
+    
+    return ensembl_link
+  end
+  
+  def ensembl_link_url_from_coords( chr, start_pos, end_pos, das_tracks=[] )
+    ensembl_link = "http://www.ensembl.org/Mus_musculus/Location/View"
+    ensembl_link += "?r=#{chr}:#{start_pos}-#{end_pos};"
+    ensembl_link += "contigviewbottom=#{process_ensembl_tracks(das_tracks)}"
+    
+    return ensembl_link
   end
   
   # Load in any custom (per dataset) helpers

@@ -20,14 +20,14 @@ jQuery(".ikmc-idcc_targ_rep_escell_qc_details_toggle").live("click", function ()
  
 jQuery(document).ready(function() {
   jQuery(".ikmc-idcc_targ_rep_allele_progress_clones_content").hide();
-  jQuery(".ikmc-idcc_targ_rep_allele_progress_clones_toggle").addClass("toggle-open");
-  jQuery(".ikmc-idcc_targ_rep_allele_progress_clones_toggle").removeClass("toggle-close");
+  jQuery(".ikmc-idcc_targ_rep_allele_progress_clones_toggle").removeClass("toggle-open");
+  jQuery(".ikmc-idcc_targ_rep_allele_progress_clones_toggle").addClass("toggle-close");
   
   jQuery(".ikmc-idcc_targ_rep_allele_progress_details_content").hide();
-  jQuery(".ikmc-idcc_targ_rep_allele_progress_details_toggle").addClass("toggle-open");
-  jQuery(".ikmc-idcc_targ_rep_allele_progress_details_toggle").removeClass("toggle-close");
+  jQuery(".ikmc-idcc_targ_rep_allele_progress_details_toggle").removeClass("toggle-open");
+  jQuery(".ikmc-idcc_targ_rep_allele_progress_details_toggle").addClass("toggle-close");
   
   jQuery(".ikmc-idcc_targ_rep_escell_qc_details").hide();
-  jQuery(".ikmc-idcc_targ_rep_escell_qc_details_toggle").addClass("toggle-open");
-  jQuery(".ikmc-idcc_targ_rep_escell_qc_details_toggle").removeClass("toggle-close");
+  jQuery(".ikmc-idcc_targ_rep_escell_qc_details_toggle").removeClass("toggle-open");
+  jQuery(".ikmc-idcc_targ_rep_escell_qc_details_toggle").addClass("toggle-close");
 });

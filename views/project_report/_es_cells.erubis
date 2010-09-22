@@ -4,7 +4,7 @@
   <h4 class="dataset_title toggle-open">ES Cell Clones (<%= cond_vs_noncond.titlecase %>)</h4>
   <div class="dataset_content">
     <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
-      <%- cells = @data['es_cells'][cond_vs_noncond]['cells'].sort_by { |cell| cell['name'] } -%>
+      <%- cells = @data['es_cells'][cond_vs_noncond]['cells'] -%>
       
       <img src="<%= @data['es_cells'][cond_vs_noncond]['allele_img'] %>" width="940px" />
       <div class="clear"></div>
@@ -18,6 +18,8 @@
         </p>
       <% end %>
       
+      <%= partial("project_report/ensembl_links") %>
+      
       <table>
         <thead>
           <th class="hide_on_print"></th>
@@ -29,11 +31,11 @@
           <th>Mouse</th>
           <th>QC Data</th>
         </thead>
-        <tbody class="escells">
-          <% cells.each_with_index do |cell,i| %>
+        <tbody class="products">
+          <% cells.each do |cell| %>
             <tr>
               <td class="hide_on_print">
-                <a href="<%= order_cell_url %>" class="order" target="_blank">Order</a>
+                <a href="<%= order_cell_url %>" class="order" target="_blank">order</a>
               </td>
               <td><%= cell['name'] %></td>
               <td><%= cell['targeting_vector'] %></td>
@@ -42,22 +44,30 @@
               <td class="hide_on_print">
                 <a href="<%= @data['es_cells'][cond_vs_noncond]['allele_gb'] %>" target="_blank" class="file ext_link">view</a>
               </td>
-              <% if @data['mice'] and @data['mice'].any? { |mouse| mouse['escell_clone'] == cell['name'] } %>
-                <td>Yes</td>
-              <% else %>
-                <td>No</td>
-              <% end %>
-              <td><a class="escell_clone_qc_result_toggle">view</a></td>
-            </tr>
-            <tr class="escell_clone_qc_result">
-              <td colspan="8">
-                <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
+              <td><%= cell['mouse?'] %></td>
+              <td>
+                <% if cell['qc_count'] > 0 %>
+                  <a class="qc_results_toggle">view</a>
+                <% else %>
+                  <em style="color:#999;">no&nbsp;data&nbsp;reported</em>
+                <% end %>
+                &nbsp;&nbsp;
+                (&nbsp;<a href="http://www.knockoutmouse.org/kb/entry/78/" target="_blank" class="ext_link">about</a>&nbsp;)
               </td>
             </tr>
+            <% if cell['qc_count'] > 0 %>
+              <tr class="qc_results">
+                <td colspan="8">
+                  <%= partial('datasets/ikmc-idcc_targ_rep/escell_clone_qc', :locals => { :clone => cell }) %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>
-      <a class="escells_toggle">show/hide more ES cells</a>
+      <% if cells.size > 1 %>
+        <a class="products_toggle">show/hide more ES cells</a>
+      <% end %>
     <% else %>
       <em>No distributable ES cell clones (<%= cond_vs_noncond %>) available for this project.</em>
     <% end %>

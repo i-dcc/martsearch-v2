@@ -4,12 +4,15 @@ begin
   require "cgi"
 
   require "rubygems"
+  
+  gem "activesupport", "=2.3.8"
+  require "active_support"
+  
   require "json"
   require "sinatra"
   require "mail"
   require "builder"
-  require "active_support"
-
+  
   gem "biomart", ">=0.2.0"
   require "biomart"
 

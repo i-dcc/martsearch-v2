@@ -58,7 +58,7 @@
       <% if result['qc_count'] > 0 %>
         <tr class="ikmc-kermits_qc_details">
           <td colspan="7">
-            <%= partial('ikmc-kermits/qc_data', :locals => { :result => result }) %>
+            <%= partial('datasets/ikmc-kermits/qc_data', :locals => { :result => result }) %>
           </td>
         </tr>
       <% end %>

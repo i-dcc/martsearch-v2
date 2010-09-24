@@ -33,7 +33,7 @@
               <td><%= targvec['cassette'] %></td>
               <td><%= targvec['backbone'] %></td>
               <td class="hide_on_print">
-                <a href="<%= targvec['genbank_file'] %>" target="_blank" class="file ext_link">view</a>
+                <a href="<%= @data['vector_gb'] %>" target="_blank" class="file ext_link">view</a>
               </td>
             </tr>
           <% end %>

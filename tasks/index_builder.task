@@ -4,6 +4,10 @@ begin
   require "cgi"
 
   require "rubygems"
+  
+  gem "activesupport", "=2.3.8"
+  require "active_support"
+  
   require "json"
   require "sinatra"
   require "rdiscount"
@@ -13,7 +17,6 @@ begin
   require "tree"
   require "sequel"
   
-  require "active_support"
   require "will_paginate/array"
   require "will_paginate/view_helpers"
 

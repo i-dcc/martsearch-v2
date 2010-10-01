@@ -34,11 +34,12 @@
     <td class="noborder nocol"></td>
   </tr>
   <tr>
+    <th>5' LR-PCR</th>
+    <td><%= clone['distribution_qc_five_prime_lr_pcr'] %></td>
     <th>5' SR-PCR</th>
     <td><%= clone['distribution_qc_five_prime_sr_pcr'] %></td>
     <th>3' SR-PCR</th>
     <td><%= clone['distribution_qc_three_prime_sr_pcr'] %></td>
-    <td colspan="2" class="noborder nocol"></td>
   </tr>
 </table>
 

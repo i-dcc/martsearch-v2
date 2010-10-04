@@ -30,7 +30,7 @@
       { "attr": "mouse_entrez_gene_id_108", "idx": "ncbi_gene_id" }
     ],
     "filters": {
-      "marker_type_107": ["Gene"]
+      "ancestor_term_1023_filter": ["gene"]
     }
   },
   "searching": {

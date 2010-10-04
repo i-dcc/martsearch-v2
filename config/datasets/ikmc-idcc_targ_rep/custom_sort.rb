@@ -86,6 +86,7 @@ sorted_results = {}
       'distribution_qc_karyotype_high',
       'distribution_qc_karyotype_low',
       'distribution_qc_copy_number',
+      'distribution_qc_five_prime_lr_pcr',
       'distribution_qc_five_prime_sr_pcr',
       'distribution_qc_three_prime_sr_pcr',
       'user_qc_southern_blot',

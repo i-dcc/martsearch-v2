@@ -6,7 +6,7 @@
   <% else %>
     <% title = 'without conditional potential' %>
   <% end %>
-  <h4 class="dataset_title toggle-open">ES Cell Clones (<%= title.titlecase %>)</h4>
+  <h4 class="dataset_title toggle-open">ES Cell Clones <%= title.titlecase %></h4>
   <div class="dataset_content">
     <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
       <%- cells = @data['es_cells'][cond_vs_noncond]['cells'] -%>

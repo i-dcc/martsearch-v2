@@ -198,6 +198,10 @@ def get_vectors_and_cells( project_id, mouse_data )
       'targeting_vector'          => result['targeting_vector'],
       'mouse?'                    => do_i_have_a_mouse
     }.merge(qc_data) )
+
+    if design_type != 'conditional_ready'
+      data['es_cells'][push_to]['design_type'] = design_type
+    end
   end
   
   unless data.empty?

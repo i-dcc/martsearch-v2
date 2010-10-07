@@ -5,7 +5,7 @@
       <table>
         <thead>
           <th>Design ID</th>
-          <th>Design Type</th>
+          <th>Vector Type</th>
           <th>Intermediate Vector</th>
           <th>Floxed Exon</th>
         </thead>

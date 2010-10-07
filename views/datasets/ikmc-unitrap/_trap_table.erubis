@@ -2,7 +2,7 @@
   <caption><%= caption %></caption>
   <tr>
     <th><%= first_cell_header %></th>
-    <th>Design Type</th>
+    <th>Vector Type</th>
     <th>ES Cell Clone</th>
     <th>ES Cell Line</th>
     <th>ES Cell Strain</th>

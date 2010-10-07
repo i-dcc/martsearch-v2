@@ -7,7 +7,7 @@
   "custom_js":            false,
   "custom_view_helpers":  false,
   "custom_routes":        false,
-  "url":                  "http://www.ensembl.org/biomart",
+  "url":                  "http://www.biomart.org/biomart",
   "dataset_name":         "mmusculus_gene_ensembl",
   "display_name":         "Ensembl Mouse - GO Biological Process",
   "attribution":          "Ensembl",

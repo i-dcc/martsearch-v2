@@ -1,3 +1,14 @@
+require 'yaml'
+
+require 'rubygems'
+
+gem "activesupport", "=2.3.8"
+require 'active_support'
+
+gem "will_paginate", "=2.3.15"
+require "will_paginate/collection"
+require "will_paginate/view_helpers"
+
 desc 'Default task: run all tests'
 task :default => [:test]
 

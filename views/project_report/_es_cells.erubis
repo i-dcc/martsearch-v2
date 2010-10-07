@@ -1,7 +1,12 @@
 <% order_cell_url = @data.include?('order_cell_url') ? @data['order_cell_url'] : @data['order_default_url'] %>
 
 <div class="dataset">
-  <h4 class="dataset_title toggle-open">ES Cell Clones (<%= cond_vs_noncond.titlecase %>)</h4>
+  <%if cond_vs_noncond == 'conditional' %>
+    <% title = 'with conditional potential' %>
+  <% else %>
+    <% title = 'without conditional potential' %>
+  <% end %>
+  <h4 class="dataset_title toggle-open">ES Cell Clones <%= title.titlecase %></h4>
   <div class="dataset_content">
     <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
       <%- cells = @data['es_cells'][cond_vs_noncond]['cells'] -%>
@@ -12,7 +17,7 @@
       <% if cond_vs_noncond == 'targeted non-conditional' %>
         <p>
           <strong>Note:</strong>
-          Mutations of type &quot;Targeted Non-Conditional&quot; are correctly
+          Mutations of type &quot;Without Conditional Potential&quot; are correctly
           targeted clones that have lost the 3&apos; LoxP site. 
           These mutations cannot be converted into conditional alleles.
         </p>

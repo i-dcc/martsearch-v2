@@ -9,13 +9,15 @@ require "rubygems"
 gem "activesupport", "=2.3.8"
 require 'active_support'
 
+gem "will_paginate", "=2.3.15"
+require "will_paginate/collection"
+require "will_paginate/view_helpers"
+
 require "erubis"
 require "newrelic_rpm"
 require "json"
 require "rdiscount"
 require "mail"
-require "will_paginate/collection"
-require "will_paginate/view_helpers"
 require "rack/utils"
 require "rsolr"
 require "tree"

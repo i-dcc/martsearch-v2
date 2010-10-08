@@ -13,7 +13,7 @@
         <thead>
           <th class="hide_on_print"></th>
           <th>Design ID</th>
-          <th>Design Type</th>
+          <th>Vector Type</th>
           <th>Targeting Vector</th>
           <th>Floxed Exon</th>
           <th>Cassette</th>

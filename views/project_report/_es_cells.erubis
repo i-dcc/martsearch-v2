@@ -4,9 +4,13 @@
   <%if cond_vs_noncond == 'conditional' %>
     <% title = 'with conditional potential' %>
   <% else %>
-    <% title = 'without conditional potential' %>
+    <% if @data['es_cells'][cond_vs_noncond]['design_type'] == 'Deletion' %>
+       <% title = '- deletion' %>
+    <% else %>
+       <% title = 'without conditional potential' %>
+    <% end %>
   <% end %>
-  <h4 class="dataset_title toggle-open">ES Cell Clones (<%= title.titlecase %>)</h4>
+  <h4 class="dataset_title toggle-open">ES Cell Clones <%= title.titlecase %></h4>
   <div class="dataset_content">
     <% if @data['es_cells'] != nil and !@data['es_cells'][cond_vs_noncond]['cells'].empty? %>
       <%- cells = @data['es_cells'][cond_vs_noncond]['cells'] -%>
@@ -15,12 +19,21 @@
       <div class="clear"></div>
       
       <% if cond_vs_noncond == 'targeted non-conditional' %>
-        <p>
-          <strong>Note:</strong>
-          Mutations of type &quot;Without Conditional Potential&quot; are correctly
-          targeted clones that have lost the 3&apos; LoxP site. 
-          These mutations cannot be converted into conditional alleles.
-        </p>
+        <% if @data['es_cells'][cond_vs_noncond]['design_type'] == 'Deletion' %>
+          <p>
+            <strong>Note:</strong>
+            Mutations of type &quot;Deletion&quot; are correctly
+            targeted clones that have had the target exon removed.
+            These mutations cannot be converted into conditional alleles.
+          </p>
+        <% else %>
+          <p>
+            <strong>Note:</strong>
+            Mutations of type &quot;Without Conditional Potential&quot; are correctly
+            targeted clones that have lost the 3&apos; LoxP site.
+            These mutations cannot be converted into conditional alleles.
+          </p>
+        <% end %>
       <% end %>
       
       <%= partial("project_report/ensembl_links") %>

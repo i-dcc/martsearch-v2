@@ -15,7 +15,7 @@ class IndexBuilder
     end
     @config["datasets"] = dataset_index_conf()
     
-    @solr       = RSolr.connect :url => @config["url"]
+    @solr       = RSolr.connect :url => @config["builder_url"]
     @batch_size = 1000
     
     # Create a document cache, and a helper lookup variable

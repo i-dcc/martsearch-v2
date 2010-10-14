@@ -282,8 +282,7 @@ def sanger_phenotyping_setup
     image_data = microscopy_img_ds.search(
       :process_results => true,
       :filters => {
-        "image_type" => "Wholemount Expression",
-        "genotype"   => ["Heterozygous","Homozygous","Hemizygous"]
+        "image_type" => "Wholemount Expression"
       },
       :attributes => [
         "colony_prefix",
@@ -355,7 +354,6 @@ def sanger_phenotyping_setup
       :process_results => true,
       :filters => {
         "image_type" => "Wildtype Expression",
-        "genotype"   => "Wildtype",
         "mouse_id"   => mouse_ids.keys
       },
       :attributes => [

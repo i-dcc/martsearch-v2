@@ -1,5 +1,5 @@
 {
-  "portal_name": "WTSI Mouse Resources Portal",
+  "portal_name": "Mouse Resources Portal",
   "portal_url":  "http://www.sanger.ac.uk/mouseportal",
   "debug":       false,
   "email": {

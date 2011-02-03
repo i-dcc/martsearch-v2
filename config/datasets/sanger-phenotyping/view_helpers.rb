@@ -126,35 +126,82 @@ def sanger_phenotyping_setup
   unless @@ms.cache.fetch("sanger-phenotyping-homviable_lookup")
     homviable_results = {}
     homviable_lookup  = {}
-    homviable_data    = pheno_dataset.search(
-      :process_results => true,
-      :attributes => [
-        "hom_viability_colony_prefix",
-        "genetic_background",
-        "colony_ppl",
-        "female_wt",
-        "male_wt",
-        "female_het",
-        "male_het",
-        "female_hom",
-        "male_hom",
-        "wt_ratio",
-        "het_ratio",
-        "hom_ratio",
-        "total_untested",
-        "total_failed",
-        "total_wt",
-        "total_het",
-        "total_hom",
-        "total_wt_het_hom",
-        "wt_expected",
-        "het_expected",
-        "hom_expected",
-        "chi_sqred",
-        "p_value",
-        "significant"
-      ]
-    )
+    homviable_data    = {}
+    begin
+      homviable_data = pheno_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "hom_viability_colony_prefix",
+          "genetic_background",
+          "colony_ppl",
+          "female_wt",
+          "male_wt",
+          "female_het",
+          "male_het",
+          "female_hom",
+          "male_hom",
+          "wt_ratio",
+          "het_ratio",
+          "hom_ratio",
+          "total_untested",
+          "total_failed",
+          "total_wt",
+          "total_het",
+          "total_hom",
+          "total_wt_het_hom",
+          "wt_expected",
+          "het_expected",
+          "hom_expected",
+          "chi_sqred",
+          "p_value",
+          "significant"
+        ]
+      )
+    rescue
+      homviable_data = pheno_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "hom_viability_colony_prefix",
+          "hom_viability_genetic_background",
+          "hom_viability_colony_ppl",
+          "hom_viability_female_wt",
+          "hom_viability_male_wt",
+          "hom_viability_female_het",
+          "hom_viability_male_het",
+          "hom_viability_female_hom",
+          "hom_viability_male_hom",
+          "hom_viability_wt_ratio",
+          "hom_viability_het_ratio",
+          "hom_viability_hom_ratio",
+          "hom_viability_total_untested",
+          "hom_viability_total_failed",
+          "hom_viability_total_wt",
+          "hom_viability_total_het",
+          "hom_viability_total_hom",
+          "hom_viability_total_wt_het_hom",
+          "hom_viability_wt_expected",
+          "hom_viability_het_expected",
+          "hom_viability_hom_expected",
+          "hom_viability_chi_sqred",
+          "hom_viability_p_value",
+          "hom_viability_significant"
+        ]
+      )
+      
+      processed_homviable_data = []
+      homviable_data.each do |row|
+        data = {}
+        row.each do |key,value|
+          if key == 'hom_viability_colony_prefix'
+            data['hom_viability_colony_prefix'] = value
+          else
+            data[ key.gsub(/^hom_viability\_/,'') ] = value
+          end
+        end
+        processed_homviable_data.push(data)
+      end
+      homviable_data = processed_homviable_data
+    end
     
     homviable_data.each do |result|
       unless result['hom_viability_colony_prefix'].nil?
@@ -173,30 +220,71 @@ def sanger_phenotyping_setup
   unless @@ms.cache.fetch("sanger-phenotyping-fertility_lookup")
     fertility_results = {}
     fertility_lookup  = {}
+    fertility_data    = {}
     
-    fertility_data    = pheno_dataset.search(
-      :process_results => true,
-      :attributes => [
-        "fertility_colony_prefix",
-        "mir_project_licence",
-        "breeding_name",
-        "breeding_category",
-        "father",
-        "father_age_at_setup",
-        "mother",
-        "mother_age_at_setup",
-        "father_genotype",
-        "mother_genotype",
-        "setup_date",
-        "separation_date",
-        "length_of_mating_weeks",
-        "number_of_pups_born",
-        "number_of_pups_weaned",
-        "total_number_of_litters_born",
-        "number_prewean_deaths",
-        "number_prewean_culls"
-      ]
-    )
+    begin
+      fertility_data = pheno_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "fertility_colony_prefix",
+          "mir_project_licence",
+          "breeding_name",
+          "breeding_category",
+          "father",
+          "father_age_at_setup",
+          "mother",
+          "mother_age_at_setup",
+          "father_genotype",
+          "mother_genotype",
+          "setup_date",
+          "separation_date",
+          "length_of_mating_weeks",
+          "number_of_pups_born",
+          "number_of_pups_weaned",
+          "total_number_of_litters_born",
+          "number_prewean_deaths",
+          "number_prewean_culls"
+        ]
+      )
+    rescue
+      fertility_data = pheno_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "fertility_colony_prefix",
+          "fertility_mir_project_licence",
+          "fertility_breeding_name",
+          "fertility_breeding_category",
+          "fertility_father",
+          "fertility_father_age_at_setup",
+          "fertility_mother",
+          "fertility_mother_age_at_setup",
+          "fertility_father_genotype",
+          "fertility_mother_genotype",
+          "fertility_setup_date",
+          "fertility_separation_date",
+          "fertility_length_of_mating_weeks",
+          "fertility_number_of_pups_born",
+          "fertility_number_of_pups_weaned",
+          "fertility_total_number_of_litters_born",
+          "fertility_number_prewean_deaths",
+          "fertility_number_prewean_culls"
+        ]
+      )
+      
+      processed_fertility_data = []
+      fertility_data.each do |row|
+        data = {}
+        row.each do |key,value|
+          if key == 'fertility_colony_prefix'
+            data['fertility_colony_prefix'] = value
+          else
+            data[ key.gsub(/^fertility\_/,'') ] = value
+          end
+        end
+        processed_fertility_data.push(data)
+      end
+      fertility_data = processed_fertility_data
+    end
     
     fertility_data.each do |result|
       unless result['fertility_colony_prefix'].nil?
@@ -218,88 +306,198 @@ def sanger_phenotyping_setup
   unless @@ms.cache.fetch("sanger-phenotyping-wholemount_expression_lookup")
     expression_results = {}
     expression_lookup  = {}
+    ticklist_data      = []
+    image_data         = []
     
-    ticklist_data = expre_dataset.search(
-      :process_results => true,
-      :attributes => [
-        "colony_prefix",
-        "colony_name",
-        "mouse_id",
-        "mouse_name",
-        "cohort_name",
-        "age_in_weeks",
-        "birth_date",
-        "gender",
-        "strain",
-        "genotype",
-        "pipeline",
-        "comments",
-        "anaesthetic",
-        "adrenal_gland",
-        "bone",
-        "brain",
-        "brown_adipose_tissue",
-        "cartilage",
-        "colon",
-        "eye",
-        "gall_bladder",
-        "heart",
-        "kidney",
-        "large_intestine",
-        "liver",
-        "lung",
-        "mammary_gland",
-        "mesenteric_lymph_node",
-        "nasal_epithelia",
-        "oesophagus",
-        "oral_epithelia",
-        "ovaries",
-        "oviduct",
-        "pancreas",
-        "parathyroid",
-        "peripheral_nervous_system",
-        "peyers_patch",
-        "pituitary_gland",
-        "prostate",
-        "skeletal_muscle",
-        "skin",
-        "small_intestine",
-        "spinal_cord",
-        "spleen",
-        "stomach",
-        "testis",
-        "thymus",
-        "thyroid",
-        "trachea",
-        "urinary_system",
-        "uterus",
-        "vas_deferens",
-        "vascular_system",
-        "white_adipose_tissue"
-      ]
-    )
+    begin
+      ticklist_data = expre_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "colony_prefix",
+          "colony_name",
+          "mouse_id",
+          "mouse_name",
+          "cohort_name",
+          "age_in_weeks",
+          "birth_date",
+          "gender",
+          "strain",
+          "genotype",
+          "pipeline",
+          "comments",
+          "anaesthetic",
+          "adrenal_gland",
+          "bone",
+          "brain",
+          "brown_adipose_tissue",
+          "cartilage",
+          "colon",
+          "eye",
+          "gall_bladder",
+          "heart",
+          "kidney",
+          "large_intestine",
+          "liver",
+          "lung",
+          "mammary_gland",
+          "mesenteric_lymph_node",
+          "nasal_epithelia",
+          "oesophagus",
+          "oral_epithelia",
+          "ovaries",
+          "oviduct",
+          "pancreas",
+          "parathyroid",
+          "peripheral_nervous_system",
+          "peyers_patch",
+          "pituitary_gland",
+          "prostate",
+          "skeletal_muscle",
+          "skin",
+          "small_intestine",
+          "spinal_cord",
+          "spleen",
+          "stomach",
+          "testis",
+          "thymus",
+          "thyroid",
+          "trachea",
+          "urinary_system",
+          "uterus",
+          "vas_deferens",
+          "vascular_system",
+          "white_adipose_tissue"
+        ]
+      )
+    rescue
+      ticklist_data = pheno_dataset.search(
+        :process_results => true,
+        :attributes => [
+          "adult_expression_colony_prefix",
+          "adult_expression_colony_name",
+          "adult_expression_mouse_id",
+          "adult_expression_mouse_name",
+          "adult_expression_cohort_name",
+          "adult_expression_age_in_weeks",
+          "adult_expression_birth_date",
+          "adult_expression_gender",
+          "adult_expression_strain",
+          "adult_expression_genotype",
+          "adult_expression_pipeline",
+          "adult_expression_comments",
+          "adult_expression_anaesthetic",
+          "adult_expression_adrenal_gland",
+          "adult_expression_bone",
+          "adult_expression_brain",
+          "adult_expression_brown_adipose_tissue",
+          "adult_expression_cartilage",
+          "adult_expression_colon",
+          "adult_expression_eye",
+          "adult_expression_gall_bladder",
+          "adult_expression_heart",
+          "adult_expression_kidney",
+          "adult_expression_large_intestine",
+          "adult_expression_liver",
+          "adult_expression_lung",
+          "adult_expression_mammary_gland",
+          "adult_expression_mesenteric_lymph_node",
+          "adult_expression_nasal_epithelia",
+          "adult_expression_oesophagus",
+          "adult_expression_oral_epithelia",
+          "adult_expression_ovaries",
+          "adult_expression_oviduct",
+          "adult_expression_pancreas",
+          "adult_expression_parathyroid",
+          "adult_expression_peripheral_nervous_system",
+          "adult_expression_peyers_patch",
+          "adult_expression_pituitary_gland",
+          "adult_expression_prostate",
+          "adult_expression_skeletal_muscle",
+          "adult_expression_skin",
+          "adult_expression_small_intestine",
+          "adult_expression_spinal_cord",
+          "adult_expression_spleen",
+          "adult_expression_stomach",
+          "adult_expression_testis",
+          "adult_expression_thymus",
+          "adult_expression_thyroid",
+          "adult_expression_trachea",
+          "adult_expression_urinary_system",
+          "adult_expression_uterus",
+          "adult_expression_vas_deferens",
+          "adult_expression_vascular_system",
+          "adult_expression_white_adipose_tissue"
+        ]
+      )
+      
+      processed_ticklist_data = []
+      ticklist_data.each do |row|
+        data = {}
+        row.each do |key,value|
+          data[ key.gsub(/^adult_expression\_/,'') ] = value
+        end
+        processed_ticklist_data.push(data)
+      end
+      ticklist_data = processed_ticklist_data
+    end
     
-    image_data = microscopy_img_ds.search(
-      :process_results => true,
-      :filters => {
-        "image_type" => "Wholemount Expression",
-        "genotype"   => ["Heterozygous","Homozygous","Hemizygous"]
-      },
-      :attributes => [
-        "colony_prefix",
-        "mouse_id",
-        "gender",
-        "genotype",
-        "genotype_locked",
-        "age_at_death",
-        "tissue",
-        "image_type",
-        "description",
-        "annotations",
-        "comments",
-        "full_image_url"
-      ]
-    )
+    begin
+      image_data = microscopy_img_ds.search(
+        :process_results => true,
+        :filters => {
+          "image_type" => "Wholemount Expression",
+          "genotype"   => ["Heterozygous","Homozygous","Hemizygous"]
+        },
+        :attributes => [
+          "colony_prefix",
+          "mouse_id",
+          "gender",
+          "genotype",
+          "age_at_death",
+          "tissue",
+          "image_type",
+          "description",
+          "annotations",
+          "comments",
+          "full_image_url"
+        ]
+      )
+    rescue
+      image_data = pheno_dataset.search(
+        :process_results => true,
+        :filters => {
+          "published_images_image_type" => "Wholemount Expression",
+          "published_images_genotype"   => ["Heterozygous","Homozygous","Hemizygous"]
+        },
+        :attributes => [
+          "published_images_colony_prefix",
+          "published_images_mouse_id",
+          "published_images_gender",
+          "published_images_genotype",
+          "published_images_age_at_death",
+          "published_images_tissue",
+          "published_images_image_type",
+          "published_images_description",
+          "published_images_annotations",
+          "published_images_comments",
+          "published_images_url"
+        ]
+      )
+      
+      processed_image_data = []
+      image_data.each do |row|
+        data = {}
+        row.each do |key,value|
+          if key == 'published_images_url'
+            data['full_image_url'] = value
+          else
+            data[ key.gsub(/^published_images\_/,'') ] = value            
+          end
+        end
+        processed_image_data.push(data)
+      end
+      image_data = processed_image_data
+    end
     
     ticklist_data.each do |result|
       expression_lookup[ result["colony_prefix"] ] = true
@@ -335,6 +533,7 @@ def sanger_phenotyping_setup
   
   unless @@ms.cache.fetch("sanger-phenotyping-expression_background_staining")
     background_images   = []
+    image_data          = []
     mouse_ids           = {}
     selected_images_csv = File.read(SANGER_PHENO_WT_LACZ_IMG)
     
@@ -351,28 +550,65 @@ def sanger_phenotyping_setup
       mouse_ids[ image_info[2] ].push({ "order" => image_info[0], "image_id" => image_info[3]})
     end
     
-    image_data = microscopy_img_ds.search(
-      :process_results => true,
-      :filters => {
-        "image_type" => "Wildtype Expression",
-        "genotype"   => "Wildtype",
-        "mouse_id"   => mouse_ids.keys
-      },
-      :attributes => [
-        "colony_prefix",
-        "mouse_id",
-        "gender",
-        "genotype",
-        "genotype_locked",
-        "age_at_death",
-        "tissue",
-        "image_type",
-        "description",
-        "annotations",
-        "comments",
-        "full_image_url"
-      ]
-    )
+    begin
+      image_data = microscopy_img_ds.search(
+        :process_results => true,
+        :filters => {
+          "image_type" => "Wildtype Expression",
+          "genotype"   => "Wildtype",
+          "mouse_id"   => mouse_ids.keys
+        },
+        :attributes => [
+          "colony_prefix",
+          "mouse_id",
+          "gender",
+          "genotype",
+          "age_at_death",
+          "tissue",
+          "image_type",
+          "description",
+          "annotations",
+          "comments",
+          "full_image_url"
+        ]
+      )
+    rescue
+      image_data = pheno_dataset.search(
+        :process_results => true,
+        :filters => {
+          "published_images_image_type" => "Wildtype Expression",
+          "published_images_genotype"   => "Wildtype",
+          "published_images_mouse_id"   => mouse_ids.keys
+        },
+        :attributes => [
+          "published_images_colony_prefix",
+          "published_images_mouse_id",
+          "published_images_gender",
+          "published_images_genotype",
+          "published_images_age_at_death",
+          "published_images_tissue",
+          "published_images_image_type",
+          "published_images_description",
+          "published_images_annotations",
+          "published_images_comments",
+          "published_images_url"
+        ]
+      )
+      
+      processed_image_data = []
+      image_data.each do |row|
+        data = {}
+        row.each do |key,value|
+          if key == 'published_images_url'
+            data['full_image_url'] = value
+          else
+            data[ key.gsub(/^published_images\_/,'') ] = value            
+          end
+        end
+        processed_image_data.push(data)
+      end
+      image_data = processed_image_data
+    end
     
     image_data.each do |result|
       save_this_img = false

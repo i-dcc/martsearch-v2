@@ -61,6 +61,10 @@
 </div>
 
 <a href="<%= BASE_URI %>/pheno_overview.xls" class="sanger-phenotyping-heatmap-link button">download a spreadsheet containing all WTSI phenotyping data</a>
+<div class="status_msgs messages" style="margin-left:0;margin-right:0;">
+  <strong>PLEASE NOTE:</strong> This heatmap download is now showing data from the <strong>NEW</strong> MGP Phenotyping 
+  heatmap/setup - as such, some of the links contained within the spreadsheet may not work correctly.
+</div>
 <div class="clear"></div>
 
 <%= partial( "datasets/sanger-phenotyping/heatmap_legend" ) %>

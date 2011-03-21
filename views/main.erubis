@@ -32,19 +32,35 @@
   <table class="welcome" width="100%">
     <tr>
       <td width="60%" style="padding: 0; padding-right: 10px;">
-        <h2>Summary</h2>
+        <h2>Phenotyping Summary</h2>
         <p class="larger">
-          The table below displays the number of unique genes with each individual 
+          The table below displays the <strong>number of mouse lines</strong> that have completed 
+          different stages of the MGP Phenotyping pipeline (funded by <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a> 
+          &amp; <a href="http://www.eumodic.org/">EUMODIC</a>)
+        </p>
+        <table width="100%">
+          <tr>
+            <th>Comprehensive Phenotyping Substantively Complete</th>
+            <td width="25%" style="text-align:center;">265</td>
+          </tr>
+          <tr>
+            <th>Infection Challenge (Salmonella and Citrobacter)</th>
+            <td style="text-align:center;">172</td>
+          </tr>
+          <tr>
+            <th>LacZ Expression (Adult and E14.5)</th>
+            <td style="text-align:center;">225</td>
+          </tr>
+        </table>
+        <h2>Other Data Summary</h2>
+        <p class="larger">
+          The table below displays the <strong>number of unique genes</strong> with each individual 
           product type produced at the Wellcome Trust Sanger Institute.
         </p>
         <table id="summary_statistics">
           <thead>
             <tr>
               <th class="nobg noborder">Funding:</th>
-              <th>
-                <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a><br /> 
-                <a href="http://www.eumodic.org/">EUMODIC</a>
-              </th>
               <th>
                 <a href="http://www.sanger.ac.uk/Teams/Team109/">WTSI</a><br /> 
                 <a href="http://www.eumodic.org/">EUMODIC</a>
@@ -69,7 +85,6 @@
             </tr>
             <tr>
               <th class="nobg noborder">Products:</th>
-              <th>Phenotyping</th>
               <th>Mice</th>
               <th>Targeted ES Cells</th>
               <th>Gene Targeting Vectors</th>
@@ -81,7 +96,6 @@
           <tbody>
             <tr>
               <td class="nobg noborder"></td>
-              <td><%= link_to( @counts["phenotyping"]["count"], "#{BASE_URI}/search?query=#{@counts["phenotyping"]["query"]}") %></td>
               <td><%= link_to( @counts["mice"]["count"], "#{BASE_URI}/search?query=#{@counts["mice"]["query"]}") %></td>
               <td><%= link_to( @counts["escells"]["count"], "#{BASE_URI}/search?query=#{@counts["escells"]["query"]}") %></td>
               <td><%= link_to( @counts["targ_vectors"]["count"], "#{BASE_URI}/search?query=#{@counts["targ_vectors"]["query"]}") %></td>
@@ -104,10 +118,16 @@
             <td style="vertical-align:middle;">
               <a href="<%= BASE_URI %>/pheno_overview.xls" title="Download the Phenotyping Overview">Download</a> 
               a heat map of phenotyping results by assay.  This spreadsheet also links to the detailed phenotyping 
-              data on this portal.<br/><br/>
-              You can also access (and search) the same data via the 
+              data on this portal.
+              
+              <div class="status_msgs messages" style="margin-left:0;margin-right:0;">
+                <strong>PLEASE NOTE:</strong> This heatmap download is now showing data from the <strong>NEW</strong> MGP Phenotyping 
+                heatmap/setup - as such, some of the links contained within the spreadsheet may not work correctly.
+              </div>
+              
+              <!-- You can also access (and search) the same data via the 
               <a title="Visit the MGP Phenotyping BioMart" target="_blank" href="http://www.sanger.ac.uk/htgt/biomart/martview?VIRTUALSCHEMANAME=default&ATTRIBUTES=phenotyping.default.heatmap.marker_symbol|phenotyping.default.heatmap.colony_prefix|phenotyping.default.heatmap.pipeline&FILTERS=&VISIBLEPANEL=mainpanel">
-              MGP Phenotyping BioMart</a>.
+              MGP Phenotyping BioMart</a>. -->
             </td>
           </tr>
           <tr>
